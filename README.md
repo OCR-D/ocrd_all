@@ -3,5 +3,21 @@
 This is a project which gets the source of all OCR-D modules.
 It also includes a Makefile for the installation.
 
-Running `make VENV=dir` hopefully installs all modules in a virtual
-Python environment given by `dir` (default: $PWD/venv).
+## Usage
+
+Run `make` with optional parameters:
+
+    make [PYTHON=python3.7] [VENV=venv]
+
+Optional parameters:
+
+- PYTHON        Python version (python3 required)
+- VENV          Directory for virtual Python environment
+
+Examples:
+
+Running `make` without any parameter hopefully installs all OCR-D modules
+in a virtual Python 3.7 environment in directory `venv`.
+
+Running `make ocrd-tesserocr-recognize` installs `ocrd-tesserocr-recognize`
+in the virtual Python environment.
