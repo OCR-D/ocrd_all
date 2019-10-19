@@ -1,12 +1,13 @@
 # Makefile for OCR-D
 
 # Python version (python3 required).
-PYTHON := python3.7
+PYTHON := python3
 
 # Directory for virtual Python environment.
 VENV := $(PWD)/venv
 
 BIN := $(VENV)/bin
+ACTIVATE_VENV := $(VENV)/bin/activate
 
 OCRD_EXECUTABLES :=
 
@@ -37,45 +38,59 @@ OCRD_EXECUTABLES += $(BIN)/ocrd
 
 all: $(VENV) $(OCRD_EXECUTABLES) $(OCRD_MODULES)
 
-$(VENV):
+$(ACTIVATE_VENV) $(VENV):
 	$(PYTHON) -m venv $(VENV)
 
 # Get Python modules.
 
-numpy:
-	. $(VENV)/bin/activate && pip install $@
+numpy: $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && pip install $@
 
-$(OCRD_KRAKEN): clstm
-	. $(VENV)/bin/activate && pip install ocrd-kraken
+$(OCRD_KRAKEN): $(ACTIVATE_VENV) clstm
+	. $(ACTIVATE_VENV) && pip install ocrd-kraken
 
-$(OCRD_OCROPY): $(BIN)/wheel
-	. $(VENV)/bin/activate && pip install ocrd-ocropy
+$(OCRD_OCROPY): $(ACTIVATE_VENV) $(BIN)/wheel
+	. $(ACTIVATE_VENV) && pip install ocrd-ocropy
 
 ocrd: $(BIN)/ocrd
-$(BIN)/ocrd:
-	. $(VENV)/bin/activate && pip install o
+$(BIN)/ocrd: $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && pip install o
 
 wheel: $(BIN)/wheel
-$(BIN)/wheel:
-	. $(VENV)/bin/activate && pip install wheel
+$(BIN)/wheel: $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && pip install wheel
 
 # Install Python modules from local code.
 
-clstm: numpy $(BIN)/wheel
-	#~ . $(VENV)/bin/activate && cd $@ && python setup.py build
-	. $(VENV)/bin/activate && cd $@ && pip install .
+clstm/setup.py:
+	git submodule update --init clstm
 
-$(OCRD_COR_ASV_ANN): $(BIN)/wheel
-	. $(VENV)/bin/activate && cd cor-asv-ann && pip install .
+clstm: $(ACTIVATE_VENV) clstm/setup.py numpy $(BIN)/wheel
+	. $(ACTIVATE_VENV) && cd $@ && pip install .
+
+cor-asv-ann/setup.py:
+	git submodule update --init cor-asv-ann
+
+$(OCRD_COR_ASV_ANN): $(ACTIVATE_VENV) cor-asv-ann/setup.py $(BIN)/wheel
+	. $(ACTIVATE_VENV) && cd cor-asv-ann && pip install .
+
+dinglehopper/setup.py:
+	git submodule update --init dinglehopper
 
 ocrd-dinglehopper: $(BIN)/ocrd-dinglehopper
-$(BIN)/ocrd-dinglehopper: $(BIN)/wheel
-	. $(VENV)/bin/activate && cd dinglehopper && pip install .
+$(BIN)/ocrd-dinglehopper: $(ACTIVATE_VENV) dinglehopper/setup.py $(BIN)/wheel
+	. $(ACTIVATE_VENV) && cd dinglehopper && pip install .
 
-$(OCRD_TESSEROCR): tesserocr
-	. $(VENV)/bin/activate && cd ocrd_tesserocr && pip install .
+ocrd_tesserocr/setup.py:
+	git submodule update --init ocrd_tesserocr
 
-tesserocr: $(BIN)/wheel
-	. $(VENV)/bin/activate && cd $@ && pip install .
+$(OCRD_TESSEROCR): $(ACTIVATE_VENV) ocrd_tesserocr/setup.py tesserocr
+	. $(ACTIVATE_VENV) && cd ocrd_tesserocr && pip install .
+
+tesserocr/setup.py:
+	git submodule update --init tesserocr
+
+tesserocr: $(ACTIVATE_VENV) tesserocr/setup.py $(BIN)/wheel
+	. $(ACTIVATE_VENV) && cd $@ && pip install .
 
 # eof

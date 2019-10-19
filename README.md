@@ -7,7 +7,7 @@ It also includes a Makefile for the installation.
 
 Run `make` with optional parameters:
 
-    make [PYTHON=python3.7] [VENV=venv]
+    make [PYTHON=python3] [VENV=venv]
 
 Optional parameters:
 
@@ -17,7 +17,12 @@ Optional parameters:
 Examples:
 
 Running `make` without any parameter hopefully installs all OCR-D modules
-in a virtual Python 3.7 environment in directory `venv`.
+in a virtual Python 3 environment in directory `venv`.
 
 Running `make ocrd-tesserocr-recognize` installs `ocrd-tesserocr-recognize`
 in the virtual Python environment.
+
+`make` automatically gets the necessary submodules.
+It is also possible to get all OCR-D modules by running
+
+    git submodule update --init
