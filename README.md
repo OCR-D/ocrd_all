@@ -61,3 +61,13 @@ in the virtual Python environment.
 It is also possible to get all OCR-D modules by running
 
     git submodule update --init
+
+## Open issues
+
+The following Python modules need an installation from code for different reasons:
+
+- clstm (needs modified code for Python3)
+- cor-asv-ann (not available in PyPI)
+- dinglehopper (not available in PyPI)
+- ocrd_tesserocr (to old in PyPI)
+- tesserocr (to old in PyPI)
