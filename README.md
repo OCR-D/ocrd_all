@@ -21,7 +21,10 @@ or newer, install the development package:
     # Debian / Ubuntu package.
     sudo apt install libtesseract-dev
 
-Otherwise or for the latest Tesseract it can also be built locally.
+Ubuntu packages for Tesseract 5.0.0 (alpha) are available at the PPA
+https://launchpad.net/~alex-p/+archive/ubuntu/tesseract-ocr-devel.
+
+Otherwise or for the latest Tesseract code it can also be built locally.
 
 ## Usage
 
