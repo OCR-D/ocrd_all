@@ -9,6 +9,14 @@ VENV := $(PWD)/venv
 BIN := $(VENV)/bin
 ACTIVATE_VENV := $(VENV)/bin/activate
 
+TESSDATA := $(VENV)/share/tessdata
+TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast
+TESSERACT_TRAINEDDATA := $(TESSDATA)/eng.traineddata
+TESSERACT_TRAINEDDATA += $(TESSDATA)/equ.traineddata
+TESSERACT_TRAINEDDATA += $(TESSDATA)/osd.traineddata
+
+PKG_CONFIG_PATH := $(VENV)/lib/pkgconfig
+
 OCRD_EXECUTABLES :=
 
 OCRD_COR_ASV_ANN := $(BIN)/ocrd-cor-asv-ann-evaluate
@@ -91,6 +99,36 @@ tesserocr/setup.py:
 	git submodule update --init tesserocr
 
 tesserocr: $(ACTIVATE_VENV) tesserocr/setup.py $(BIN)/wheel
-	. $(ACTIVATE_VENV) && cd $@ && pip install .
+	. $(ACTIVATE_VENV) && cd $@ && PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pip install .
+
+# Tesseract.
+
+# Install Tesseract and required models.
+tesseract: $(BIN)/tesseract $(TESSERACT_TRAINEDDATA)
+
+# Special rule for equ.traineddata which is only available from tesseract-ocr/tessdata.
+$(TESSDATA)/equ.traineddata:
+	@mkdir -p $(dir $@)
+	cd $(dir $@) && wget https://github.com/tesseract-ocr/tessdata/raw/master/$(notdir $@)
+
+# Default rule for all other traineddata models.
+%.traineddata:
+	@mkdir -p $(dir $@)
+	cd $(dir $@) && ( \
+		wget $(TESSDATA_URL)/raw/master/$(notdir $@) || \
+		wget $(TESSDATA_URL)/raw/master/$(notdir $(dir $@))/$(notdir $@) \
+	)
+
+tesseract/configure.ac:
+	git submodule update --init tesseract
+
+tesseract/configure: tesseract/configure.ac
+	cd tesseract && ./autogen.sh
+
+# Build and install Tesseract.
+$(BIN)/tesseract: tesseract/configure
+	mkdir -p tesseract/build
+	cd tesseract/build && ../configure --disable-openmp --disable-shared --prefix="$(VENV)" CXXFLAGS="-g -O2 -fPIC"
+	cd tesseract/build && make install
 
 # eof
