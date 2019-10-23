@@ -87,7 +87,7 @@ $(OCRD_OCROPY): $(ACTIVATE_VENV) $(BIN)/wheel
 
 ocrd: $(BIN)/ocrd
 $(BIN)/ocrd: $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && pip install o
+	. $(ACTIVATE_VENV) && pip install ocrd
 
 wheel: $(BIN)/wheel
 $(BIN)/wheel: $(ACTIVATE_VENV)
