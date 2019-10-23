@@ -9,38 +9,9 @@ VENV := $(PWD)/venv
 BIN := $(VENV)/bin
 ACTIVATE_VENV := $(VENV)/bin/activate
 
-TESSDATA := $(VENV)/share/tessdata
-TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast
-TESSERACT_TRAINEDDATA := $(TESSDATA)/eng.traineddata
-TESSERACT_TRAINEDDATA += $(TESSDATA)/equ.traineddata
-TESSERACT_TRAINEDDATA += $(TESSDATA)/osd.traineddata
-
 PKG_CONFIG_PATH := $(VENV)/lib/pkgconfig
 
-OCRD_EXECUTABLES :=
-
-OCRD_COR_ASV_ANN := $(BIN)/ocrd-cor-asv-ann-evaluate
-OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-process
-OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
-
-OCRD_EXECUTABLES += $(BIN)/ocrd-dinglehopper
-
-OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
-OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
-
-OCRD_OCROPY := $(BIN)/ocrd-ocropy-segment
-OCRD_EXECUTABLES += $(OCRD_OCROPY)
-
-OCRD_TESSEROCR := $(BIN)/ocrd-tesserocr-binarize
-OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-crop
-OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-deskew
-OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-recognize
-OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-line
-OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-region
-OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-word
-OCRD_EXECUTABLES += $(OCRD_TESSEROCR)
-
-OCRD_EXECUTABLES += $(BIN)/ocrd
+OCRD_EXECUTABLES := $(BIN)/ocrd
 
 .PHONY: all clstm numpy ocrd tesserocr
 
@@ -54,8 +25,17 @@ $(ACTIVATE_VENV) $(VENV):
 numpy: $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && pip install $@
 
+OCRD_EXECUTABLES += $(OCRD_KRAKEN)
+
+OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
+OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
+
 $(OCRD_KRAKEN): $(ACTIVATE_VENV) clstm
 	. $(ACTIVATE_VENV) && pip install ocrd-kraken
+
+OCRD_EXECUTABLES += $(OCRD_OCROPY)
+
+OCRD_OCROPY := $(BIN)/ocrd-ocropy-segment
 
 $(OCRD_OCROPY): $(ACTIVATE_VENV) $(BIN)/wheel
 	. $(ACTIVATE_VENV) && pip install ocrd-ocropy
@@ -76,11 +56,18 @@ clstm/setup.py:
 clstm: $(ACTIVATE_VENV) clstm/setup.py numpy $(BIN)/wheel
 	. $(ACTIVATE_VENV) && cd $@ && pip install .
 
+OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
+
+OCRD_COR_ASV_ANN := $(BIN)/ocrd-cor-asv-ann-evaluate
+OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-process
+
 cor-asv-ann/setup.py:
 	git submodule update --init cor-asv-ann
 
 $(OCRD_COR_ASV_ANN): $(ACTIVATE_VENV) cor-asv-ann/setup.py $(BIN)/wheel
 	. $(ACTIVATE_VENV) && cd cor-asv-ann && pip install .
+
+OCRD_EXECUTABLES += $(BIN)/ocrd-dinglehopper
 
 dinglehopper/setup.py:
 	git submodule update --init dinglehopper
@@ -88,6 +75,16 @@ dinglehopper/setup.py:
 ocrd-dinglehopper: $(BIN)/ocrd-dinglehopper
 $(BIN)/ocrd-dinglehopper: $(ACTIVATE_VENV) dinglehopper/setup.py $(BIN)/wheel
 	. $(ACTIVATE_VENV) && cd dinglehopper && pip install .
+
+OCRD_EXECUTABLES += $(OCRD_TESSEROCR)
+
+OCRD_TESSEROCR := $(BIN)/ocrd-tesserocr-binarize
+OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-crop
+OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-deskew
+OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-recognize
+OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-line
+OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-region
+OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-word
 
 ocrd_tesserocr/setup.py:
 	git submodule update --init ocrd_tesserocr
@@ -102,6 +99,12 @@ tesserocr: $(ACTIVATE_VENV) tesserocr/setup.py $(BIN)/wheel
 	. $(ACTIVATE_VENV) && cd $@ && PKG_CONFIG_PATH=$(PKG_CONFIG_PATH) pip install .
 
 # Tesseract.
+
+TESSDATA := $(VENV)/share/tessdata
+TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast
+TESSERACT_TRAINEDDATA := $(TESSDATA)/eng.traineddata
+TESSERACT_TRAINEDDATA += $(TESSDATA)/equ.traineddata
+TESSERACT_TRAINEDDATA += $(TESSDATA)/osd.traineddata
 
 # Install Tesseract and required models.
 tesseract: $(BIN)/tesseract $(TESSERACT_TRAINEDDATA)
