@@ -43,3 +43,6 @@
 [submodule "format-converters"]
 	path = format-converters
 	url = https://github.com/OCR-D/format-converters.git
+[submodule "ocrd_cis"]
+	path = ocrd_cis
+	url = https://github.com/cisocrgroup/ocrd_cis.git
