@@ -72,6 +72,7 @@ all: $(VENV) $(OCRD_EXECUTABLES) $(OCRD_MODULES)
 
 $(ACTIVATE_VENV) $(VENV):
 	$(PYTHON) -m venv $(VENV)
+	pip install --upgrade pip
 
 # Get Python modules.
 
