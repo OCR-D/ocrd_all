@@ -4,7 +4,7 @@
 PYTHON := python3
 
 # Directory for virtual Python environment.
-VENV := $(PWD)/venv
+VENV := $(CURDIR)/venv
 
 BIN := $(VENV)/bin
 ACTIVATE_VENV := $(VENV)/bin/activate
@@ -12,11 +12,15 @@ ACTIVATE_VENV := $(VENV)/bin/activate
 export PKG_CONFIG_PATH := $(VENV)/lib/pkgconfig
 
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
+CUSTOM_INSTALL := $(BIN)/ocrd # add more non-pip installation targets below
 
 OCRD_MODULES := $(shell git submodule status | while read commit dir ref; do echo $$dir; done)
 
-.PHONY: all always-update
-all: $(VENV) $(OCRD_EXECUTABLES) $(OCRD_MODULES)
+.PHONY: all clean always-update
+all: $(VENV) $(OCRD_MODULES)
+
+clean:
+	$(RM) -r $(VENV)
 
 # update subrepos to the commited revisions:
 # - depends on phony always-update,
@@ -72,11 +76,34 @@ OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
 
 OCRD_COR_ASV_ANN := $(BIN)/ocrd-cor-asv-ann-evaluate
 OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-process
+OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-train
+OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-eval
+OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
 
 $(OCRD_COR_ASV_ANN): cor-asv-ann
 
+OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
+
+OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
+OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
+
+$(OCRD_COR_ASV_FST): cor-asv-fst
+
+OCRD_EXECUTABLES += $(BIN)/ocrd-im6convert
+CUSTOM_INSTALL += $(BIN)/ocrd-im6convert
+
+$(BIN)/ocrd-im6convert: ocrd_im6convert
+	cd $< && make install PREFIX=$(VENV)
+
+OCRD_EXECUTABLES += $(BIN)/ocrd-olena-binarize
+CUSTOM_INSTALL += $(BIN)/ocrd-olena-binarize
+
+$(BIN)/ocrd-olena-binarize: ocrd_olena
+	. $(ACTIVATE_VENV) && cd $< && make install
+
 OCRD_EXECUTABLES += $(BIN)/ocrd-dinglehopper
 
+.PHONY: ocrd-dinglehopper
 ocrd-dinglehopper: $(BIN)/ocrd-dinglehopper
 $(BIN)/ocrd-dinglehopper: dinglehopper
 
@@ -123,6 +150,34 @@ OCRD_CIS += $(BIN)/edit-distance
 
 $(OCRD_CIS): ocrd_cis
 
+OCRD_EXECUTABLES += $(OCRD_SEGMENTATION_RUNNER)
+
+OCRD_SEGMENTATION_RUNNER := $(BIN)/ocropus-gpageseg-with-coords
+OCRD_SEGMENTATION_RUNNER += $(BIN)/ocrd-pc-seg-process
+OCRD_SEGMENTATION_RUNNER += $(BIN)/ocrd-pc-seg-single
+
+$(OCRD_SEGMENTATION_RUNNER): segmentation-runner
+
+OCRD_EXECUTABLES += $(OCRD_ANYBASEOCR)
+
+OCRD_ANYBASEOCR := ocrd-anybaseocr-crop
+OCRD_ANYBASEOCR += ocrd-anybaseocr-binarize
+OCRD_ANYBASEOCR += ocrd-anybaseocr-deskew
+OCRD_ANYBASEOCR += ocrd-anybaseocr-dewarp
+OCRD_ANYBASEOCR += ocrd-anybaseocr-tiseg
+OCRD_ANYBASEOCR += ocrd-anybaseocr-textline
+OCRD_ANYBASEOCR += ocrd-anybaseocr-layout-analysis
+OCRD_ANYBASEOCR += ocrd-anybaseocr-block-segmentation
+
+$(OCRD_ANYBASEOCR): LAYoutERkennung
+
+OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
+
+OCRD_TYPECLASS := ocrd-typegroups-classifier
+OCRD_TYPECLASS += typegroups-classifier
+
+$(OCRD_TYPECLASS): ocrd_typegroups_classifier
+
 # Most recipes install more than one tool at once,
 # which make does not know; To avoid races, these
 # rules must be serialised. GNU make does not have
@@ -133,12 +188,15 @@ $(OCRD_CIS): ocrd_cis
 # Build by entering subdir (first dependent), then
 # install ignoring the existing version (to ensure
 # the binary updates):
-$(filter-out $(BIN)/ocrd,$(OCRD_EXECUTABLES)) install-clstm install-tesserocr:
+$(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES)) install-clstm install-tesserocr:
 	. $(ACTIVATE_VENV) && cd $< && pip install -I .
 
 # At last, add venv dependency (must not become first):
 $(OCRD_EXECUTABLES) install-clstm install-tesserocr $(BIN)/wheel: $(ACTIVATE_VENV)
 $(OCRD_EXECUTABLES) install-clstm install-tesserocr: $(BIN)/wheel
+
+# At last, we know what all OCRD_EXECUTABLES are:
+all: $(OCRD_EXECUTABLES)
 
 # Tesseract.
 
