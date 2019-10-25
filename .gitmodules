@@ -1,6 +1,6 @@
 [submodule "clstm"]
 	path = clstm
-	url = https://github.com/stweil/clstm.git
+	url = https://github.com/tmbdev/clstm.git
 [submodule "ocrd_keraslm"]
 	path = ocrd_keraslm
 	url = https://github.com/OCR-D/ocrd_keraslm.git
