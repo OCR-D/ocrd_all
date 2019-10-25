@@ -1,6 +1,6 @@
 [submodule "clstm"]
 	path = clstm
-	url = https://github.com/stweil/clstm.git
+	url = https://github.com/tmbdev/clstm.git
 [submodule "ocrd_keraslm"]
 	path = ocrd_keraslm
 	url = https://github.com/OCR-D/ocrd_keraslm.git
@@ -43,3 +43,21 @@
 [submodule "format-converters"]
 	path = format-converters
 	url = https://github.com/OCR-D/format-converters.git
+[submodule "ocrd_cis"]
+	path = ocrd_cis
+	url = https://github.com/cisocrgroup/ocrd_cis.git
+[submodule "cor-asv-fst"]
+	path = cor-asv-fst
+	url = https://github.com/ASVLeipzig/cor-asv-fst.git
+[submodule "ocrd_im6convert"]
+	path = ocrd_im6convert
+	url = https://github.com/OCR-D/ocrd_im6convert.git
+[submodule "LAYoutERkennung"]
+	path = LAYoutERkennung
+	url = https://github.com/mjenckel/LAYoutERkennung.git
+[submodule "segmentation-runner"]
+	path = segmentation-runner
+	url = https://github.com/ocr-d-modul-2-segmentierung/segmentation-runner.git
+[submodule "ocrd_typegroups_classifier"]
+	path = ocrd_typegroups_classifier
+	url = https://github.com/seuretm/ocrd_typegroups_classifier.git

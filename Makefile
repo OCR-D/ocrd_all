@@ -32,6 +32,7 @@ $(OCRD_MODULES): always-update
 
 $(ACTIVATE_VENV) $(VENV):
 	$(PYTHON) -m venv $(VENV)
+	. $(ACTIVATE_VENV) && pip install --upgrade pip
 
 # Get Python modules.
 
@@ -93,6 +94,34 @@ $(OCRD_TESSEROCR): ocrd_tesserocr install-tesserocr
 
 .PHONY: install-tesserocr
 install-tesserocr: tesserocr
+
+OCRD_EXECUTABLES += $(OCRD_CIS)
+
+OCRD_CIS := $(BIN)/ocrd-cis-aio
+OCRD_CIS += $(BIN)/ocrd-cis-align
+OCRD_CIS += $(BIN)/ocrd-cis-clean
+OCRD_CIS += $(BIN)/ocrd-cis-cutter
+OCRD_CIS += $(BIN)/ocrd-cis-importer
+OCRD_CIS += $(BIN)/ocrd-cis-lang
+OCRD_CIS += $(BIN)/ocrd-cis-ocropy-binarize
+OCRD_CIS += $(BIN)/ocrd-cis-ocropy-clip
+OCRD_CIS += $(BIN)/ocrd-cis-ocropy-denoise
+OCRD_CIS += $(BIN)/ocrd-cis-ocropy-deskew
+OCRD_CIS += $(BIN)/ocrd-cis-ocropy-dewarp
+OCRD_CIS += $(BIN)/ocrd-cis-ocropy-rec
+OCRD_CIS += $(BIN)/ocrd-cis-ocropy-recognize
+OCRD_CIS += $(BIN)/ocrd-cis-ocropy-resegment
+OCRD_CIS += $(BIN)/ocrd-cis-ocropy-segment
+OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
+OCRD_CIS += $(BIN)/ocrd-cis-profile
+OCRD_CIS += $(BIN)/ocrd-cis-stats
+# these are from calamari_ocr, a pip requirement:
+OCRD_CIS += $(BIN)/tqdm
+OCRD_CIS += $(BIN)/calamari-eval
+OCRD_CIS += $(BIN)/calamari-train
+OCRD_CIS += $(BIN)/edit-distance
+
+$(OCRD_CIS): ocrd_cis
 
 # Most recipes install more than one tool at once,
 # which make does not know; To avoid races, these
