@@ -11,6 +11,8 @@ VENV := $(if $(VIRTUAL_ENV),$(VIRTUAL_ENV),$(CURDIR)/venv)
 BIN := $(VENV)/bin
 ACTIVATE_VENV := $(VENV)/bin/activate
 
+WGET := $(if $(shell which wget),wget -O,$(if $(shell which curl),curl -o,$(error "found no cmdline downloader (wget/curl)")))
+
 export PKG_CONFIG_PATH := $(VENV)/lib/pkgconfig
 
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
@@ -264,15 +266,15 @@ tesseract: $(BIN)/tesseract $(TESSERACT_TRAINEDDATA)
 # Special rule for equ.traineddata which is only available from tesseract-ocr/tessdata.
 $(TESSDATA)/equ.traineddata:
 	@mkdir -p $(dir $@)
-	cd $(dir $@) && wget https://github.com/tesseract-ocr/tessdata/raw/master/$(notdir $@)
+	$(WGET) $@ https://github.com/tesseract-ocr/tessdata/raw/master/$(notdir $@) || \
+		{ $(RM) $@; false; }
 
 # Default rule for all other traineddata models.
 %.traineddata:
 	@mkdir -p $(dir $@)
-	cd $(dir $@) && ( \
-		wget $(TESSDATA_URL)/raw/master/$(notdir $@) || \
-		wget $(TESSDATA_URL)/raw/master/$(notdir $(dir $@))/$(notdir $@) \
-	)
+	$(WGET) $@ $(TESSDATA_URL)/raw/master/$(notdir $@) || \
+	$(WGET) $@ $(TESSDATA_URL)/raw/master/$(notdir $(dir $@))/$(notdir $@) || \
+		{ $(RM) $@; false; }
 
 tesseract/configure.ac:
 	git submodule update --init tesseract
