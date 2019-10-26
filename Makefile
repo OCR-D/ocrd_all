@@ -22,7 +22,7 @@ all: $(VENV) $(OCRD_MODULES)
 clean:
 	$(RM) -r $(VENV)
 
-# update subrepos to the commited revisions:
+# update subrepos to the committed revisions:
 # - depends on phony always-update,
 #   so this will not only work on first checkout
 # - updates the module to the revision registered here
@@ -149,6 +149,12 @@ OCRD_CIS += $(BIN)/calamari-train
 OCRD_CIS += $(BIN)/edit-distance
 
 $(OCRD_CIS): ocrd_cis
+
+OCRD_EXECUTABLES += $(OCRD_CALAMARI)
+
+OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
+
+$(OCRD_CALAMARI): ocrd_calamari
 
 OCRD_EXECUTABLES += $(OCRD_SEGMENTATION_RUNNER)
 
