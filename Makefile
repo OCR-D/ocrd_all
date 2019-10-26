@@ -94,7 +94,8 @@ $(BIN)/wheel: $(ACTIVATE_VENV)
 # Install Python modules from local code.
 
 .PHONY: install-clstm
-install-clstm: clstm install-numpy
+install-clstm: clstm
+install-clstm: install-numpy
 
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
 
@@ -112,6 +113,13 @@ OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
 OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
 
 $(OCRD_COR_ASV_FST): cor-asv-fst
+
+OCRD_EXECUTABLES += $(OCRD_KERASLM)
+
+OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
+OCRD_KERASLM += $(BIN)/keraslm-train
+
+$(OCRD_KERASLM): ocrd_keraslm
 
 OCRD_EXECUTABLES += $(BIN)/ocrd-im6convert
 CUSTOM_INSTALL += $(BIN)/ocrd-im6convert
