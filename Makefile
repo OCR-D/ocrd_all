@@ -41,7 +41,7 @@ Targets:
 	show: lists the venv path and all executables (to be) installed
 
 Variables:
-	VIRTUAL_ENV: path to (re-)use for the virtual environment
+	VENV: path to (re-)use for the virtual environment
 	PYTHON: path to the Python binary
 	PIP_OPTIONS: extra options to pass pip install like -q or -v
 EOF
@@ -243,6 +243,11 @@ show:
 	@echo VENV = $(VENV)
 	@echo OCRD_MODULES = $(OCRD_MODULES)
 	@echo OCRD_EXECUTABLES = $(OCRD_EXECUTABLES:$(BIN)/%=%)
+
+# offer abbreviated forms (just the CLI name in the PATH,
+# without its directory):
+.PHONY: $(OCRD_EXECUTABLES:$(BIN)/%=%)
+$(OCRD_EXECUTABLES:$(BIN)/%=%): %: $(BIN)/%
 
 # Tesseract.
 
