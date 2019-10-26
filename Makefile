@@ -2,9 +2,11 @@
 
 # Python version (python3 required).
 PYTHON := python3
+PIP_OPTIONS :=
 
-# Directory for virtual Python environment.
-VENV := $(CURDIR)/venv
+# directory for virtual Python environment
+# (but re-use if already active):
+VENV := $(if $(VIRTUAL_ENV),$(VIRTUAL_ENV),$(CURDIR)/venv)
 
 BIN := $(VENV)/bin
 ACTIVATE_VENV := $(VENV)/bin/activate
@@ -23,7 +25,7 @@ OCRD_MODULES := $(shell git submodule status | while read commit dir ref; do ech
 all: modules # add OCRD_EXECUTABLES at the end
 
 clean:
-	$(RM) -r $(VENV)
+	$(RM) -r $(CURDIR)/venv
 
 export define HELP
 cat <<EOF
@@ -31,16 +33,17 @@ Rules to download and install all OCR-D module processors
 from their source repositories into a single virtualenv.
 
 Targets:
-	ocrd (installs only the virtual environment and OCR-D/core packages)
-	modules (download all submodules to the managed revision)
-	all (installs all executables of all modules)
-	tesseract (download, builds and installs Tesseract)
-	clean (removes the virtual environment directory)
-	show (lists the venv path and all executables (to be) installed)
+	ocrd: installs only the virtual environment and OCR-D/core packages
+	modules: download all submodules to the managed revision
+	all: installs all executables of all modules
+	tesseract: download, builds and installs Tesseract
+	clean: removes the virtual environment directory
+	show: lists the venv path and all executables (to be) installed
 
 Variables:
-	VENV (path to use for the virtual environment)
-	PYTHON (path to the Python binary)
+	VIRTUAL_ENV: path to (re-)use for the virtual environment
+	PYTHON: path to the Python binary
+	PIP_OPTIONS: extra options to pass pip install like -q or -v
 EOF
 endef
 help: ;	@eval "$$HELP"
@@ -84,12 +87,12 @@ $(OCRD_OCROPY): ocrd_ocropy
 .PHONY: ocrd
 ocrd: $(BIN)/ocrd
 $(BIN)/ocrd: core
-	. $(ACTIVATE_VENV) && cd $< && make install PIP_INSTALL="pip install -I"
+	. $(ACTIVATE_VENV) && cd $< && make install PIP_INSTALL="pip install -I $(PIP_OPTIONS)"
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
 $(BIN)/wheel: $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && pip install wheel
+	. $(ACTIVATE_VENV) && pip install -I $(PIP_OPTIONS) wheel
 
 # Install Python modules from local code.
 
@@ -227,7 +230,7 @@ $(OCRD_TYPECLASS): ocrd_typegroups_classifier
 # install ignoring the existing version (to ensure
 # the binary updates):
 $(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES)) install-clstm install-tesserocr:
-	. $(ACTIVATE_VENV) && cd $< && pip install -I .
+	. $(ACTIVATE_VENV) && cd $< && pip install -I $(PIP_OPTIONS) .
 
 # At last, add venv dependency (must not become first):
 $(OCRD_EXECUTABLES) install-clstm install-tesserocr $(BIN)/wheel: $(ACTIVATE_VENV)
