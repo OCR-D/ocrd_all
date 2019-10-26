@@ -16,11 +16,34 @@ CUSTOM_INSTALL := $(BIN)/ocrd # add more non-pip installation targets below
 
 OCRD_MODULES := $(shell git submodule status | while read commit dir ref; do echo $$dir; done)
 
-.PHONY: all clean always-update
-all: $(VENV) $(OCRD_MODULES)
+.DEFAULT_GOAL = ocrd # all is too much for a default
+
+.PHONY: all modules clean help show always-update
+
+all: modules # add OCRD_EXECUTABLES at the end
 
 clean:
 	$(RM) -r $(VENV)
+
+export define HELP
+cat <<EOF
+Rules to download and install all OCR-D module processors
+from their source repositories into a single virtualenv.
+
+Targets:
+	ocrd (installs only the virtual environment and OCR-D/core packages)
+	modules (download all submodules to the managed revision)
+	all (installs all executables of all modules)
+	tesseract (download, builds and installs Tesseract)
+	clean (removes the virtual environment directory)
+	show (lists the venv path and all executables (to be) installed)
+
+Variables:
+	VENV (path to use for the virtual environment)
+	PYTHON (path to the Python binary)
+EOF
+endef
+help: ;	@eval "$$HELP"
 
 # update subrepos to the committed revisions:
 # - depends on phony always-update,
@@ -29,6 +52,7 @@ clean:
 # - then changes the time stamp of the directory to that
 #   of the latest modified file contained in it,
 #   so the directory can be used as a dependency
+modules: $(OCRD_MODULES)
 $(OCRD_MODULES): always-update
 	git submodule status $@ | grep -q '^ ' || { \
 		git submodule update --init $@ && \
@@ -203,6 +227,11 @@ $(OCRD_EXECUTABLES) install-clstm install-tesserocr: $(BIN)/wheel
 
 # At last, we know what all OCRD_EXECUTABLES are:
 all: $(OCRD_EXECUTABLES)
+
+show:
+	@echo VENV = $(VENV)
+	@echo OCRD_MODULES = $(OCRD_MODULES)
+	@echo OCRD_EXECUTABLES = $(OCRD_EXECUTABLES:$(BIN)/%=%)
 
 # Tesseract.
 
