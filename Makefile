@@ -130,7 +130,7 @@ OCRD_EXECUTABLES += $(BIN)/ocrd-im6convert
 CUSTOM_INSTALL += $(BIN)/ocrd-im6convert
 
 $(BIN)/ocrd-im6convert: ocrd_im6convert
-	cd $< && make install PREFIX=$(VENV)
+	. $(ACTIVATE_VENV) && cd $< && make install
 
 OCRD_EXECUTABLES += $(BIN)/ocrd-olena-binarize
 CUSTOM_INSTALL += $(BIN)/ocrd-olena-binarize
