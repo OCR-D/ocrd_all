@@ -89,12 +89,12 @@ $(OCRD_OCROPY): ocrd_ocropy
 .PHONY: ocrd
 ocrd: $(BIN)/ocrd
 $(BIN)/ocrd: core
-	. $(ACTIVATE_VENV) && cd $< && make install PIP_INSTALL="pip install -I $(PIP_OPTIONS)"
+	. $(ACTIVATE_VENV) && cd $< && make install PIP_INSTALL="pip install --force-reinstall $(PIP_OPTIONS)"
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
 $(BIN)/wheel: $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && pip install -I $(PIP_OPTIONS) wheel
+	. $(ACTIVATE_VENV) && pip install --force-reinstall $(PIP_OPTIONS) wheel
 
 # Install Python modules from local code.
 
@@ -229,10 +229,12 @@ $(OCRD_TYPECLASS): ocrd_typegroups_classifier
 .NOTPARALLEL:
 
 # Build by entering subdir (first dependent), then
-# install ignoring the existing version (to ensure
-# the binary updates):
+# install gracefully with dependencies, and finally
+# install again forcefully without depds (to ensure
+# the binary itself updates):
 $(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES)) install-clstm install-tesserocr:
-	. $(ACTIVATE_VENV) && cd $< && pip install -I $(PIP_OPTIONS) .
+	. $(ACTIVATE_VENV) && cd $< && pip install $(PIP_OPTIONS) .
+	. $(ACTIVATE_VENV) && cd $< && pip install --no-deps --force-reinstall $(PIP_OPTIONS) .
 
 # At last, add venv dependency (must not become first):
 $(OCRD_EXECUTABLES) install-clstm install-tesserocr $(BIN)/wheel: $(ACTIVATE_VENV)
