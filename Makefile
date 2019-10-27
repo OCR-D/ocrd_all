@@ -38,13 +38,13 @@ Targets:
 	ocrd: installs only the virtual environment and OCR-D/core packages
 	modules: download all submodules to the managed revision
 	all: installs all executables of all modules
-	tesseract: download, builds and installs Tesseract
+	tesseract: download, build and install Tesseract
 	clean: removes the virtual environment directory
 	show: lists the venv path and all executables (to be) installed
 
 Variables:
 	VENV: path to (re-)use for the virtual environment
-	PYTHON: path to the Python binary
+	PYTHON: name of the Python binary
 	PIP_OPTIONS: extra options to pass pip install like -q or -v
 EOF
 endef
@@ -261,9 +261,17 @@ TESSERACT_TRAINEDDATA := $(TESSDATA)/eng.traineddata
 TESSERACT_TRAINEDDATA += $(TESSDATA)/equ.traineddata
 TESSERACT_TRAINEDDATA += $(TESSDATA)/osd.traineddata
 
+stripdir = $(patsubst %/,%,$(dir $(1)))
+
 # Install Tesseract and required models.
 .PHONY: tesseract
 tesseract: $(BIN)/tesseract $(TESSERACT_TRAINEDDATA)
+
+# Convenience shortcut without the full path:
+%.traineddata: $(TESSDATA)/%.traineddata
+	$(MAKE) $^
+script/%.traineddata: $(TESSDATA)/script/%.traineddata
+	$(MAKE) $^
 
 # Special rule for equ.traineddata which is only available from tesseract-ocr/tessdata.
 $(TESSDATA)/equ.traineddata:
@@ -272,10 +280,10 @@ $(TESSDATA)/equ.traineddata:
 		{ $(RM) $@; false; }
 
 # Default rule for all other traineddata models.
-%.traineddata:
+$(TESSDATA)/%.traineddata:
 	@mkdir -p $(dir $@)
 	$(WGET) $@ $(TESSDATA_URL)/raw/master/$(notdir $@) || \
-	$(WGET) $@ $(TESSDATA_URL)/raw/master/$(notdir $(dir $@))/$(notdir $@) || \
+	$(WGET) $@ $(TESSDATA_URL)/raw/master/$(notdir $(call stripdir,$@))/$(notdir $@) || \
 		{ $(RM) $@; false; }
 
 tesseract/configure.ac:
@@ -289,6 +297,12 @@ $(BIN)/tesseract: tesseract/configure
 	mkdir -p tesseract/build
 	cd tesseract/build && ../configure --disable-openmp --disable-shared --prefix="$(VENV)" CXXFLAGS="-g -O2 -fPIC"
 	cd tesseract/build && make install
+
+# do not delete intermediate targets:
+.SECONDARY:
+
+# suppress all built-in suffix rules:
+.SUFFIXES:
 
 # do not search for implicit rules here:
 Makefile: ;
