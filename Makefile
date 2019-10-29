@@ -6,14 +6,14 @@ PIP_OPTIONS :=
 
 # directory for virtual Python environment
 # (but re-use if already active):
-VENV := $(if $(VIRTUAL_ENV),$(VIRTUAL_ENV),$(CURDIR)/venv)
+VIRTUAL_ENV ?= $(CURDIR)/venv
 
-BIN := $(VENV)/bin
-ACTIVATE_VENV := $(VENV)/bin/activate
+BIN := $(VIRTUAL_ENV)/bin
+ACTIVATE_VENV := $(VIRTUAL_ENV)/bin/activate
 
 WGET := $(if $(shell which wget),wget -O,$(if $(shell which curl),curl -o,$(error "found no cmdline downloader (wget/curl)")))
 
-export PKG_CONFIG_PATH := $(VENV)/lib/pkgconfig
+export PKG_CONFIG_PATH := $(VIRTUAL_ENV)/lib/pkgconfig
 
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_INSTALL := $(BIN)/ocrd # add more non-pip installation targets below
@@ -43,7 +43,7 @@ Targets:
 	show: lists the venv path and all executables (to be) installed
 
 Variables:
-	VENV: path to (re-)use for the virtual environment
+	VIRTUAL_ENV: path to (re-)use for the virtual environment
 	PYTHON: name of the Python binary
 	PIP_OPTIONS: extra options to pass pip install like -q or -v
 EOF
@@ -63,8 +63,8 @@ $(OCRD_MODULES): always-update
 		git submodule update --init $@ && \
 		touch -r $$(find $@ -type f -newer $@ | tail -1 || echo $@) $@; }
 
-$(ACTIVATE_VENV) $(VENV):
-	$(PYTHON) -m venv $(VENV)
+$(ACTIVATE_VENV) $(VIRTUAL_ENV):
+	$(PYTHON) -m venv $(VIRTUAL_ENV)
 	. $(ACTIVATE_VENV) && pip install --upgrade pip
 
 # Get Python modules.
@@ -244,7 +244,7 @@ $(OCRD_EXECUTABLES) install-clstm install-tesserocr: $(BIN)/wheel
 all: $(OCRD_EXECUTABLES)
 
 show:
-	@echo VENV = $(VENV)
+	@echo VIRTUAL_ENV = $(VIRTUAL_ENV)
 	@echo OCRD_MODULES = $(OCRD_MODULES)
 	@echo OCRD_EXECUTABLES = $(OCRD_EXECUTABLES:$(BIN)/%=%)
 
@@ -255,7 +255,7 @@ $(OCRD_EXECUTABLES:$(BIN)/%=%): %: $(BIN)/%
 
 # Tesseract.
 
-TESSDATA := $(VENV)/share/tessdata
+TESSDATA := $(VIRTUAL_ENV)/share/tessdata
 TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast
 TESSERACT_TRAINEDDATA := $(TESSDATA)/eng.traineddata
 TESSERACT_TRAINEDDATA += $(TESSDATA)/equ.traineddata
@@ -295,7 +295,7 @@ tesseract/configure: tesseract/configure.ac
 # Build and install Tesseract.
 $(BIN)/tesseract: tesseract/configure
 	mkdir -p tesseract/build
-	cd tesseract/build && ../configure --disable-openmp --disable-shared --prefix="$(VENV)" CXXFLAGS="-g -O2 -fPIC"
+	cd tesseract/build && ../configure --disable-openmp --disable-shared --prefix="$(VIRTUAL_ENV)" CXXFLAGS="-g -O2 -fPIC"
 	cd tesseract/build && make install
 
 # do not delete intermediate targets:

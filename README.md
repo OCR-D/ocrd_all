@@ -32,7 +32,7 @@ Otherwise or for the latest Tesseract code it can also be built locally.
 
 Run `make` with optional parameters for _variables_ and _targets_ like so:
 
-    make [PYTHON=python3] [VENV=./venv] [target(s)]
+    make [PYTHON=python3] [VIRTUAL_ENV=./venv] [target(s)]
 
 ### Targets
 
@@ -53,9 +53,9 @@ Run `make` with optional parameters for _variables_ and _targets_ like so:
 
 Further targets:
 <dl>
-  <dt>any module name</dt>
+  <dt>[any module name]</dt>
   <dd>Download/update that module, but do not install anything.</dd>
-  <dt>any executable name</dt>
+  <dt>[any executable name]</dt>
   <dd>Install that CLI into the venv. (Depends on that module and on _ocrd_.)</dd>
 </dl>
 
@@ -64,10 +64,8 @@ Further targets:
 <dl>
   <dt>PYTHON</dt>
   <dd>name of the Python binary to use (at least python3 required)</dd>
-  <dt>VENV</dt>
-  <dd>Directory to use for venv</dd>
   <dt>VIRTUAL_ENV</dt>
-  <dd>Override for VENV (so an already activated venv gets re-used).</dd>
+  <dd>Directory to use for venv</dd>
   <dt>PIP_OPTIONS</dt>
   <dd>Extra options to pass to `pip install` (e.g. -q or -v)</dd>
 </dl>
@@ -119,3 +117,8 @@ Modules may require mutually exclusive sets of dependent packages.
 - `Pillow` (`==5.4.1` vs `>=6.2.0`)
 - `tensorflow` (`-gpu` vs CPU, `<2.0` vs `>=2.0`)
 - ...
+
+### System requirements
+
+Modules also depend on system packages. Some of those dependencies are
+formalised via `make deps-ubuntu` or dockerfiles.
