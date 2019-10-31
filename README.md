@@ -1,7 +1,9 @@
 # OCR-D/ocrd_all
 
 This is a project which gets the source of all OCR-D modules.
-It also includes a Makefile for the installation.
+It also includes a Makefile for their installation into a virtual environment (venv).
+(A venv is a local user directory with shell scripts to load/unload itself
+in the current shell environment via PATH and PYTHONHOME.)
 
 ## Preconditions
 
@@ -28,14 +30,45 @@ Otherwise or for the latest Tesseract code it can also be built locally.
 
 ## Usage
 
-Run `make` with optional parameters:
+Run `make` with optional parameters for _variables_ and _targets_ like so:
 
-    make [PYTHON=python3] [VENV=venv] [target(s)]
+    make [PYTHON=python3] [VIRTUAL_ENV=./venv] [target(s)]
 
-Optional parameters:
+### Targets
 
-- PYTHON        Python version (python3 required)
-- VENV          Directory for virtual Python environment
+<dl>
+  <dt>ocrd</dt>
+  <dd>(default goal) Install OCR-D/core and its CLI `ocrd` into the venv.</dd>
+  <dt>all</dt>
+  <dd>Install executables from all modules into the venv. (Depends on _modules_ and _ocrd_.)</dd>
+  <dt>modules</dt>
+  <dd>Download/update all modules, but do not install anything.</dd>
+  <dt>clean</dt>
+  <dd>Remove the venv.</dd>
+  <dt>show</dt>
+  <dd>Print the venv directory, the module directories, and the executable names.</dd>
+  <dt>help</dt>
+  <dd>Print available targets and variables.</dd>
+</dl>
+
+Further targets:
+<dl>
+  <dt>[any module name]</dt>
+  <dd>Download/update that module, but do not install anything.</dd>
+  <dt>[any executable name]</dt>
+  <dd>Install that CLI into the venv. (Depends on that module and on _ocrd_.)</dd>
+</dl>
+
+### Variables
+
+<dl>
+  <dt>PYTHON</dt>
+  <dd>name of the Python binary to use (at least python3 required)</dd>
+  <dt>VIRTUAL_ENV</dt>
+  <dd>Directory to use for venv</dd>
+  <dt>PIP_OPTIONS</dt>
+  <dd>Extra options to pass to `pip install` (e.g. -q or -v)</dd>
+</dl>
 
 ### Examples
 
@@ -47,27 +80,45 @@ To build the latest Tesseract locally, run this command first:
 
 Optionally install additional Tesseract models.
 
-    # Make sure to use the correct tessdata directory.
-    make venv/share/tessdata/script/Latin.traineddata
-    make venv/share/tessdata/script/Fraktur.traineddata
+    # Download models from tessdata_fast into the venv's tessdata directory.
+    make frk.traineddata
+    make script/Latin.traineddata
+    make script/Fraktur.traineddata
 
-Running `make` without any parameter hopefully installs all OCR-D modules
-in a virtual Python 3 environment in directory `venv`.
+Running `make ocrd` or just `make` downloads/updates and installs the `core` module,
+including the `ocrd` CLI in a virtual Python 3 environment under `./venv`.
 
-Running `make ocrd-tesserocr-recognize` installs `ocrd-tesserocr-recognize`
-in the virtual Python environment.
+Running `make ocrd-tesserocr-recognize` downloads/updates the `ocrd_tesserocr` module
+and installs its CLIs, including `ocrd-tesserocr-recognize` in the venv.
 
-`make` automatically gets the necessary submodules.
-It is also possible to get all OCR-D modules by running
+Running `make modules` downloads/updates all modules.
 
-    git submodule update --init
+Running `make all` additionally installs the executables from all modules.
 
-## Open issues
+## Issues
+
+### No published/recent version on PyPI
 
 The following Python modules need an installation from code for different reasons:
 
 - clstm (needs modified code for Python3)
 - cor-asv-ann (not available in PyPI)
+- cor-asv-fst (not available in PyPI)
 - dinglehopper (not available in PyPI)
-- ocrd_tesserocr (to old in PyPI)
-- tesserocr (to old in PyPI)
+- ocrd_cis (not available in PyPI; needs `ocrd>=2.0.0` / core branch `edge`)
+- ocrd_tesserocr (too old in PyPI; needs `ocrd>=2.0.0` / core branch `edge`)
+- tesserocr (too old in PyPI)
+
+### Conflicting requirements
+
+Merging all packages into one venv does not always work.
+Modules may require mutually exclusive sets of dependent packages.
+
+- `Pillow` (`==5.4.1` vs `>=6.2.0`)
+- `tensorflow` (`-gpu` vs CPU, `<2.0` vs `>=2.0`)
+- ...
+
+### System requirements
+
+Modules also depend on system packages. Some of those dependencies are
+formalised via `make deps-ubuntu` or dockerfiles.
