@@ -61,7 +61,7 @@ modules: $(OCRD_MODULES)
 $(OCRD_MODULES): always-update
 	git submodule status $@ | grep -q '^ ' || { \
 		git submodule update --init $@ && \
-		touch -r $$(find $@ -type f -newer $@ | tail -1 || echo $@) $@; }
+		touch -r $$(find $@ -type f -newer $@ -o -type d -name $@ | tail -1) $@; }
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
 	$(PYTHON) -m venv $(VIRTUAL_ENV)
