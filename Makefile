@@ -29,7 +29,7 @@ all: modules # add OCRD_EXECUTABLES at the end
 clean:
 	$(RM) -r $(CURDIR)/venv
 
-export define HELP
+define HELP
 cat <<EOF
 Rules to download and install all OCR-D module processors
 from their source repositories into a single virtualenv.
@@ -48,6 +48,7 @@ Variables:
 	PIP_OPTIONS: extra options to pass pip install like -q or -v
 EOF
 endef
+export HELP
 help: ;	@eval "$$HELP"
 
 # update subrepos to the committed revisions:
