@@ -38,7 +38,7 @@ Targets:
 	ocrd: installs only the virtual environment and OCR-D/core packages
 	modules: download all submodules to the managed revision
 	all: installs all executables of all modules
-	tesseract: download, build and install Tesseract
+	install-tesseract: download, build and install Tesseract
 	clean: removes the virtual environment directory
 	show: lists the venv path and all executables (to be) installed
 
@@ -265,8 +265,8 @@ TESSERACT_TRAINEDDATA += $(TESSDATA)/osd.traineddata
 stripdir = $(patsubst %/,%,$(dir $(1)))
 
 # Install Tesseract and required models.
-.PHONY: tesseract
-tesseract: $(BIN)/tesseract $(TESSERACT_TRAINEDDATA)
+.PHONY: install-tesseract
+install-tesseract: $(BIN)/tesseract $(TESSERACT_TRAINEDDATA)
 
 # Convenience shortcut without the full path:
 %.traineddata: $(TESSDATA)/%.traineddata
@@ -287,17 +287,14 @@ $(TESSDATA)/%.traineddata:
 	$(WGET) $@ $(TESSDATA_URL)/raw/master/$(notdir $(call stripdir,$@))/$(notdir $@) || \
 		{ $(RM) $@; false; }
 
-tesseract/configure.ac:
-	git submodule update --init tesseract
-
-tesseract/configure: tesseract/configure.ac
+tesseract/configure: tesseract
 	cd tesseract && ./autogen.sh
 
 # Build and install Tesseract.
 $(BIN)/tesseract: tesseract/configure
 	mkdir -p tesseract/build
 	cd tesseract/build && ../configure --disable-openmp --disable-shared --prefix="$(VIRTUAL_ENV)" CXXFLAGS="-g -O2 -fPIC"
-	cd tesseract/build && make install
+	cd tesseract/build && $(MAKE) install
 
 # do not delete intermediate targets:
 .SECONDARY:
