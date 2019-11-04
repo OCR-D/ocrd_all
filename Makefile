@@ -196,21 +196,21 @@ $(OCRD_SEGMENTATION_RUNNER): segmentation-runner
 
 OCRD_EXECUTABLES += $(OCRD_ANYBASEOCR)
 
-OCRD_ANYBASEOCR := ocrd-anybaseocr-crop
-OCRD_ANYBASEOCR += ocrd-anybaseocr-binarize
-OCRD_ANYBASEOCR += ocrd-anybaseocr-deskew
-OCRD_ANYBASEOCR += ocrd-anybaseocr-dewarp
-OCRD_ANYBASEOCR += ocrd-anybaseocr-tiseg
-OCRD_ANYBASEOCR += ocrd-anybaseocr-textline
-OCRD_ANYBASEOCR += ocrd-anybaseocr-layout-analysis
-OCRD_ANYBASEOCR += ocrd-anybaseocr-block-segmentation
+OCRD_ANYBASEOCR := $(BIN)/ocrd-anybaseocr-crop
+OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-binarize
+OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-deskew
+OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-dewarp
+OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-tiseg
+OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
+OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
+OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-block-segmentation
 
 $(OCRD_ANYBASEOCR): LAYoutERkennung
 
 OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
 
-OCRD_TYPECLASS := ocrd-typegroups-classifier
-OCRD_TYPECLASS += typegroups-classifier
+OCRD_TYPECLASS := $(BIN)/ocrd-typegroups-classifier
+OCRD_TYPECLASS += $(BIN)/typegroups-classifier
 
 $(OCRD_TYPECLASS): ocrd_typegroups_classifier
 
