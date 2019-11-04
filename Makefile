@@ -9,6 +9,7 @@ PIP_OPTIONS :=
 VIRTUAL_ENV ?= $(CURDIR)/venv
 
 BIN := $(VIRTUAL_ENV)/bin
+SHARE := $(VIRTUAL_ENV)/share
 ACTIVATE_VENV := $(VIRTUAL_ENV)/bin/activate
 
 WGET := $(if $(shell which wget),wget -O,$(if $(shell which curl),curl -o,$(error "found no cmdline downloader (wget/curl)")))
@@ -71,16 +72,17 @@ $(ACTIVATE_VENV) $(VIRTUAL_ENV):
 
 # Get Python modules.
 
-.PHONY: install-numpy
-install-numpy: | $(ACTIVATE_VENV)
+# avoid making this .PHONY so it does not have to be repeated
+$(SHARE)/numpy: | $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && pip install numpy
+	@touch $@
 
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
 
 OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
 
-$(OCRD_KRAKEN): ocrd_kraken clstm | install-clstm
+$(OCRD_KRAKEN): ocrd_kraken $(SHARE)/clstm
 
 OCRD_EXECUTABLES += $(OCRD_OCROPY)
 
@@ -100,9 +102,7 @@ $(BIN)/wheel: | $(ACTIVATE_VENV)
 
 # Install Python modules from local code.
 
-.PHONY: install-clstm
-install-clstm: clstm
-install-clstm: | install-numpy
+$(SHARE)/clstm: | $(SHARE)/numpy
 
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
 
@@ -156,10 +156,7 @@ OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-line
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-region
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-word
 
-$(OCRD_TESSEROCR): ocrd_tesserocr tesserocr | install-tesserocr
-
-.PHONY: install-tesserocr
-install-tesserocr: tesserocr
+$(OCRD_TESSEROCR): ocrd_tesserocr $(SHARE)/tesserocr
 
 OCRD_EXECUTABLES += $(OCRD_CIS)
 
@@ -225,13 +222,19 @@ $(OCRD_TYPECLASS): ocrd_typegroups_classifier
 # install gracefully with dependencies, and finally
 # install again forcefully without depds (to ensure
 # the binary itself updates):
-$(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES)) install-clstm install-tesserocr:
+$(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES)):
 	. $(ACTIVATE_VENV) && cd $< && pip install $(PIP_OPTIONS) .
 	. $(ACTIVATE_VENV) && cd $< && pip install --no-deps --force-reinstall $(PIP_OPTIONS) .
 
+# avoid making these .PHONY so they do not have to be repeated:
+# clstm tesserocr
+$(SHARE)/%: % | $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && cd $< && pip install $(PIP_OPTIONS) .
+	@touch $@
+
 # At last, add venv dependency (must not become first):
-$(OCRD_EXECUTABLES) install-clstm install-tesserocr $(BIN)/wheel: | $(ACTIVATE_VENV)
-$(OCRD_EXECUTABLES) install-clstm install-tesserocr: | $(BIN)/wheel
+$(OCRD_EXECUTABLES) $(BIN)/wheel: | $(ACTIVATE_VENV)
+$(OCRD_EXECUTABLES): | $(BIN)/wheel
 
 # At last, we know what all OCRD_EXECUTABLES are:
 all: $(OCRD_EXECUTABLES)
