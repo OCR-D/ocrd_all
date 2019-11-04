@@ -123,7 +123,7 @@ $(OCRD_COR_ASV_FST): cor-asv-fst
 OCRD_EXECUTABLES += $(OCRD_KERASLM)
 
 OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
-OCRD_KERASLM += $(BIN)/keraslm-train
+OCRD_KERASLM += $(BIN)/keraslm-rate
 
 $(OCRD_KERASLM): ocrd_keraslm
 
@@ -162,12 +162,8 @@ install-tesserocr: tesserocr
 
 OCRD_EXECUTABLES += $(OCRD_CIS)
 
-OCRD_CIS := $(BIN)/ocrd-cis-aio
-OCRD_CIS += $(BIN)/ocrd-cis-align
-OCRD_CIS += $(BIN)/ocrd-cis-clean
-OCRD_CIS += $(BIN)/ocrd-cis-cutter
-OCRD_CIS += $(BIN)/ocrd-cis-importer
-OCRD_CIS += $(BIN)/ocrd-cis-lang
+OCRD_CIS := $(BIN)/ocrd-cis-align
+OCRD_CIS += $(BIN)/ocrd-cis-data
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-binarize
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-clip
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-denoise
@@ -177,14 +173,9 @@ OCRD_CIS += $(BIN)/ocrd-cis-ocropy-rec
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-recognize
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-resegment
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-segment
-OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
+#OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
 OCRD_CIS += $(BIN)/ocrd-cis-profile
-OCRD_CIS += $(BIN)/ocrd-cis-stats
-# these are from calamari_ocr, a pip requirement:
-OCRD_CIS += $(BIN)/tqdm
-OCRD_CIS += $(BIN)/calamari-eval
-OCRD_CIS += $(BIN)/calamari-train
-OCRD_CIS += $(BIN)/edit-distance
+OCRD_CIS += $(BIN)/ocrd-cis-wer
 
 $(OCRD_CIS): ocrd_cis
 
