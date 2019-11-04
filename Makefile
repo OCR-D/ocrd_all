@@ -60,8 +60,9 @@ help: ;	@eval "$$HELP"
 #   so the directory can be used as a dependency
 modules: $(OCRD_MODULES)
 $(OCRD_MODULES): always-update
+	git submodule sync --recursive $@
 	git submodule status $@ | grep -q '^ ' || { \
-		git submodule update --init $@ && \
+		git submodule update --init --recursive $@ && \
 		touch -r $$(find $@ -type f -newer $@ -o -type d -name $@ | tail -1) $@; }
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
