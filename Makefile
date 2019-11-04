@@ -71,7 +71,7 @@ $(ACTIVATE_VENV) $(VIRTUAL_ENV):
 # Get Python modules.
 
 .PHONY: install-numpy
-install-numpy: $(ACTIVATE_VENV)
+install-numpy: | $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && pip install numpy
 
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
@@ -79,7 +79,7 @@ OCRD_EXECUTABLES += $(OCRD_KRAKEN)
 OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
 
-$(OCRD_KRAKEN): ocrd_kraken install-clstm
+$(OCRD_KRAKEN): ocrd_kraken clstm | install-clstm
 
 OCRD_EXECUTABLES += $(OCRD_OCROPY)
 
@@ -94,14 +94,14 @@ $(BIN)/ocrd: core
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
-$(BIN)/wheel: $(ACTIVATE_VENV)
+$(BIN)/wheel: | $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && pip install --force-reinstall $(PIP_OPTIONS) wheel
 
 # Install Python modules from local code.
 
 .PHONY: install-clstm
 install-clstm: clstm
-install-clstm: install-numpy
+install-clstm: | install-numpy
 
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
 
@@ -155,7 +155,7 @@ OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-line
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-region
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-word
 
-$(OCRD_TESSEROCR): ocrd_tesserocr install-tesserocr
+$(OCRD_TESSEROCR): ocrd_tesserocr tesserocr | install-tesserocr
 
 .PHONY: install-tesserocr
 install-tesserocr: tesserocr
@@ -229,8 +229,8 @@ $(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES)) install-clstm install-tesser
 	. $(ACTIVATE_VENV) && cd $< && pip install --no-deps --force-reinstall $(PIP_OPTIONS) .
 
 # At last, add venv dependency (must not become first):
-$(OCRD_EXECUTABLES) install-clstm install-tesserocr $(BIN)/wheel: $(ACTIVATE_VENV)
-$(OCRD_EXECUTABLES) install-clstm install-tesserocr: $(BIN)/wheel
+$(OCRD_EXECUTABLES) install-clstm install-tesserocr $(BIN)/wheel: | $(ACTIVATE_VENV)
+$(OCRD_EXECUTABLES) install-clstm install-tesserocr: | $(BIN)/wheel
 
 # At last, we know what all OCRD_EXECUTABLES are:
 all: $(OCRD_EXECUTABLES)
