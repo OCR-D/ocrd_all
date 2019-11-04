@@ -61,3 +61,6 @@
 [submodule "ocrd_typegroups_classifier"]
 	path = ocrd_typegroups_classifier
 	url = https://github.com/seuretm/ocrd_typegroups_classifier.git
+[submodule "opencv-python"]
+	path = opencv-python
+	url = https://github.com/skvark/opencv-python.git
