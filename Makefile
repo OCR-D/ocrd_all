@@ -9,6 +9,7 @@ PIP_OPTIONS :=
 VIRTUAL_ENV ?= $(CURDIR)/venv
 
 BIN := $(VIRTUAL_ENV)/bin
+SHARE := $(VIRTUAL_ENV)/share
 ACTIVATE_VENV := $(VIRTUAL_ENV)/bin/activate
 
 WGET := $(if $(shell which wget),wget -O,$(if $(shell which curl),curl -o,$(error "found no cmdline downloader (wget/curl)")))
@@ -38,7 +39,7 @@ Targets:
 	ocrd: installs only the virtual environment and OCR-D/core packages
 	modules: download all submodules to the managed revision
 	all: installs all executables of all modules
-	tesseract: download, build and install Tesseract
+	install-tesseract: download, build and install Tesseract
 	clean: removes the virtual environment directory
 	show: lists the venv path and all executables (to be) installed
 
@@ -60,8 +61,9 @@ help: ;	@eval "$$HELP"
 #   so the directory can be used as a dependency
 modules: $(OCRD_MODULES)
 $(OCRD_MODULES): always-update
+	git submodule sync --recursive $@
 	git submodule status $@ | grep -q '^ ' || { \
-		git submodule update --init $@ && \
+		git submodule update --init --recursive $@ && \
 		touch -r $$(find $@ -type f -newer $@ -o -type d -name $@ | tail -1) $@; }
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
@@ -70,16 +72,17 @@ $(ACTIVATE_VENV) $(VIRTUAL_ENV):
 
 # Get Python modules.
 
-.PHONY: install-numpy
-install-numpy: $(ACTIVATE_VENV)
+# avoid making this .PHONY so it does not have to be repeated
+$(SHARE)/numpy: | $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && pip install numpy
+	@touch $@
 
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
 
 OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
 
-$(OCRD_KRAKEN): ocrd_kraken install-clstm
+$(OCRD_KRAKEN): ocrd_kraken $(SHARE)/clstm
 
 OCRD_EXECUTABLES += $(OCRD_OCROPY)
 
@@ -94,14 +97,12 @@ $(BIN)/ocrd: core
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
-$(BIN)/wheel: $(ACTIVATE_VENV)
+$(BIN)/wheel: | $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && pip install --force-reinstall $(PIP_OPTIONS) wheel
 
 # Install Python modules from local code.
 
-.PHONY: install-clstm
-install-clstm: clstm
-install-clstm: install-numpy
+$(SHARE)/clstm: | $(SHARE)/numpy
 
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
 
@@ -123,7 +124,7 @@ $(OCRD_COR_ASV_FST): cor-asv-fst
 OCRD_EXECUTABLES += $(OCRD_KERASLM)
 
 OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
-OCRD_KERASLM += $(BIN)/keraslm-train
+OCRD_KERASLM += $(BIN)/keraslm-rate
 
 $(OCRD_KERASLM): ocrd_keraslm
 
@@ -155,19 +156,12 @@ OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-line
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-region
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-word
 
-$(OCRD_TESSEROCR): ocrd_tesserocr install-tesserocr
-
-.PHONY: install-tesserocr
-install-tesserocr: tesserocr
+$(OCRD_TESSEROCR): ocrd_tesserocr $(SHARE)/tesserocr
 
 OCRD_EXECUTABLES += $(OCRD_CIS)
 
-OCRD_CIS := $(BIN)/ocrd-cis-aio
-OCRD_CIS += $(BIN)/ocrd-cis-align
-OCRD_CIS += $(BIN)/ocrd-cis-clean
-OCRD_CIS += $(BIN)/ocrd-cis-cutter
-OCRD_CIS += $(BIN)/ocrd-cis-importer
-OCRD_CIS += $(BIN)/ocrd-cis-lang
+OCRD_CIS := $(BIN)/ocrd-cis-align
+OCRD_CIS += $(BIN)/ocrd-cis-data
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-binarize
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-clip
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-denoise
@@ -177,14 +171,9 @@ OCRD_CIS += $(BIN)/ocrd-cis-ocropy-rec
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-recognize
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-resegment
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-segment
-OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
+#OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
 OCRD_CIS += $(BIN)/ocrd-cis-profile
-OCRD_CIS += $(BIN)/ocrd-cis-stats
-# these are from calamari_ocr, a pip requirement:
-OCRD_CIS += $(BIN)/tqdm
-OCRD_CIS += $(BIN)/calamari-eval
-OCRD_CIS += $(BIN)/calamari-train
-OCRD_CIS += $(BIN)/edit-distance
+OCRD_CIS += $(BIN)/ocrd-cis-wer
 
 $(OCRD_CIS): ocrd_cis
 
@@ -204,21 +193,21 @@ $(OCRD_SEGMENTATION_RUNNER): segmentation-runner
 
 OCRD_EXECUTABLES += $(OCRD_ANYBASEOCR)
 
-OCRD_ANYBASEOCR := ocrd-anybaseocr-crop
-OCRD_ANYBASEOCR += ocrd-anybaseocr-binarize
-OCRD_ANYBASEOCR += ocrd-anybaseocr-deskew
-OCRD_ANYBASEOCR += ocrd-anybaseocr-dewarp
-OCRD_ANYBASEOCR += ocrd-anybaseocr-tiseg
-OCRD_ANYBASEOCR += ocrd-anybaseocr-textline
-OCRD_ANYBASEOCR += ocrd-anybaseocr-layout-analysis
-OCRD_ANYBASEOCR += ocrd-anybaseocr-block-segmentation
+OCRD_ANYBASEOCR := $(BIN)/ocrd-anybaseocr-crop
+OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-binarize
+OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-deskew
+OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-dewarp
+OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-tiseg
+OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
+OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
+OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-block-segmentation
 
 $(OCRD_ANYBASEOCR): LAYoutERkennung
 
 OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
 
-OCRD_TYPECLASS := ocrd-typegroups-classifier
-OCRD_TYPECLASS += typegroups-classifier
+OCRD_TYPECLASS := $(BIN)/ocrd-typegroups-classifier
+OCRD_TYPECLASS += $(BIN)/typegroups-classifier
 
 $(OCRD_TYPECLASS): ocrd_typegroups_classifier
 
@@ -233,13 +222,19 @@ $(OCRD_TYPECLASS): ocrd_typegroups_classifier
 # install gracefully with dependencies, and finally
 # install again forcefully without depds (to ensure
 # the binary itself updates):
-$(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES)) install-clstm install-tesserocr:
+$(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES)):
 	. $(ACTIVATE_VENV) && cd $< && pip install $(PIP_OPTIONS) .
 	. $(ACTIVATE_VENV) && cd $< && pip install --no-deps --force-reinstall $(PIP_OPTIONS) .
 
+# avoid making these .PHONY so they do not have to be repeated:
+# clstm tesserocr
+$(SHARE)/%: % | $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && cd $< && pip install $(PIP_OPTIONS) .
+	@touch $@
+
 # At last, add venv dependency (must not become first):
-$(OCRD_EXECUTABLES) install-clstm install-tesserocr $(BIN)/wheel: $(ACTIVATE_VENV)
-$(OCRD_EXECUTABLES) install-clstm install-tesserocr: $(BIN)/wheel
+$(OCRD_EXECUTABLES) $(BIN)/wheel: | $(ACTIVATE_VENV)
+$(OCRD_EXECUTABLES): | $(BIN)/wheel
 
 # At last, we know what all OCRD_EXECUTABLES are:
 all: $(OCRD_EXECUTABLES)
@@ -265,8 +260,8 @@ TESSERACT_TRAINEDDATA += $(TESSDATA)/osd.traineddata
 stripdir = $(patsubst %/,%,$(dir $(1)))
 
 # Install Tesseract and required models.
-.PHONY: tesseract
-tesseract: $(BIN)/tesseract $(TESSERACT_TRAINEDDATA)
+.PHONY: install-tesseract
+install-tesseract: $(BIN)/tesseract $(TESSERACT_TRAINEDDATA)
 
 # Convenience shortcut without the full path:
 %.traineddata: $(TESSDATA)/%.traineddata
@@ -287,17 +282,14 @@ $(TESSDATA)/%.traineddata:
 	$(WGET) $@ $(TESSDATA_URL)/raw/master/$(notdir $(call stripdir,$@))/$(notdir $@) || \
 		{ $(RM) $@; false; }
 
-tesseract/configure.ac:
-	git submodule update --init tesseract
-
-tesseract/configure: tesseract/configure.ac
+tesseract/configure: tesseract
 	cd tesseract && ./autogen.sh
 
 # Build and install Tesseract.
 $(BIN)/tesseract: tesseract/configure
 	mkdir -p tesseract/build
 	cd tesseract/build && ../configure --disable-openmp --disable-shared --prefix="$(VIRTUAL_ENV)" CXXFLAGS="-g -O2 -fPIC"
-	cd tesseract/build && make install
+	cd tesseract/build && $(MAKE) install
 
 # do not delete intermediate targets:
 .SECONDARY:
