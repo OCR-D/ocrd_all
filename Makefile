@@ -146,6 +146,13 @@ OCRD_EXECUTABLES += $(BIN)/ocrd-dinglehopper
 ocrd-dinglehopper: $(BIN)/ocrd-dinglehopper
 $(BIN)/ocrd-dinglehopper: dinglehopper
 
+OCRD_EXECUTABLES += $(OCRD_SEGMENT)
+OCRD_SEGMENT := $(BIN)/ocrd-segment-evaluate
+OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-lines
+OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-regions
+OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
+$(OCRD_SEGMENT): ocrd_segment
+
 OCRD_EXECUTABLES += $(OCRD_TESSEROCR)
 
 OCRD_TESSEROCR := $(BIN)/ocrd-tesserocr-binarize
