@@ -209,7 +209,7 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-block-segmentation
 
-$(OCRD_ANYBASEOCR): LAYoutERkennung
+$(OCRD_ANYBASEOCR): OCR-D-LAYoutERkennung
 
 OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
 
