@@ -64,3 +64,6 @@
 [submodule "opencv-python"]
 	path = opencv-python
 	url = https://github.com/skvark/opencv-python.git
+[submodule "workflow-configuration"]
+	path = workflow-configuration
+	url = https://github.com/bertsky/workflow-configuration
