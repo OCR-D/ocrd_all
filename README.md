@@ -28,6 +28,12 @@ https://launchpad.net/~alex-p/+archive/ubuntu/tesseract-ocr-devel.
 
 Otherwise or for the latest Tesseract code it can also be built locally.
 
+System dependencies for Ubuntu 18.04 (or similar) for all modules can be automatically installed by running:
+
+    # Debian / Ubuntu packages.
+    [sudo] make deps-ubuntu
+
+
 ## Usage
 
 Run `make` with optional parameters for _variables_ and _targets_ like so:
@@ -43,6 +49,10 @@ Run `make` with optional parameters for _variables_ and _targets_ like so:
   <dd>Install executables from all modules into the venv. (Depends on _modules_ and _ocrd_.)</dd>
   <dt>modules</dt>
   <dd>Download/update all modules, but do not install anything.</dd>
+  <dt>deps-ubuntu</dt>
+  <dd>Install system packages for all modules</dd>
+  <dt>docker</dt>
+  <dd>(Re-)build a docker image for all modules/executables.</dd>
   <dt>clean</dt>
   <dd>Remove the venv.</dd>
   <dt>show</dt>
@@ -65,7 +75,7 @@ Further targets:
   <dt>PYTHON</dt>
   <dd>name of the Python binary to use (at least python3 required)</dd>
   <dt>VIRTUAL_ENV</dt>
-  <dd>Directory to use for venv</dd>
+  <dd>Directory prefix to use for local installation. (This is set automatically when activating a virtual environment on the shell. The build system will re-use existing venvs.)</dd>
   <dt>PIP_OPTIONS</dt>
   <dd>Extra options to pass to `pip install` (e.g. -q or -v)</dd>
 </dl>
@@ -105,8 +115,8 @@ The following Python modules need an installation from code for different reason
 - cor-asv-ann (not available in PyPI)
 - cor-asv-fst (not available in PyPI)
 - dinglehopper (not available in PyPI)
-- ocrd_cis (not available in PyPI; needs `ocrd>=2.0.0` / core branch `edge`)
-- ocrd_tesserocr (too old in PyPI; needs `ocrd>=2.0.0` / core branch `edge`)
+- ocrd_cis (not available in PyPI; needs `ocrd>=2.0.0`)
+- ocrd_tesserocr (too old in PyPI; needs `ocrd>=2.0.0`)
 - tesserocr (too old in PyPI)
 
 ### Conflicting requirements
@@ -114,11 +124,23 @@ The following Python modules need an installation from code for different reason
 Merging all packages into one venv does not always work.
 Modules may require mutually exclusive sets of dependent packages.
 
-- `Pillow` (`==5.4.1` vs `>=6.2.0`)
-- `tensorflow` (`-gpu` vs CPU, `<2.0` vs `>=2.0`)
+_pip does not stop or resolve conflicts – it merely warns._
+
+- `Pillow`:
+   * `==5.4.1` (required by ocrd_typegroups_classifier)
+   * `>=6.2.0` (required by all others)
+- Tensorflow:
+   * `tensorflow-gpu==1.14.0` (required by ocrd_calamari and OCR-D-LAYoutERkennung)
+   * `tensorflow` (which pulls in `>=2.0` which is incompatible; required by cor-asv-ann and ocrd_keraslm)
+- OpenCV:
+   * `opencv-python-headlesss` (required by core and others, avoids pulling in X11 libraries)
+   * `opencv-python` (required by OCR-D-LAYoutERkennung and segmentation-runner)
+   * custom build on ARM...
+
 - ...
 
 ### System requirements
 
-Modules also depend on system packages. Some of those dependencies are
-formalised via `make deps-ubuntu` or dockerfiles.
+Not all modules advertise their system package requirements via `make deps-ubuntu`.
+
+- clstm: depends on `scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig`

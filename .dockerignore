@@ -1,0 +1,12 @@
+# only for host-local installation
+venv
+# not needed:
+.git
+.gitmodules
+# not needed in Ubuntu:
+opencv-python
+# only needed for testing:
+*/assets
+# avoid interference with host-local builds:
+ocrd_olena/olena-git/build
+tesseract/build

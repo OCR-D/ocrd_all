@@ -14,10 +14,12 @@ ACTIVATE_VENV := $(VIRTUAL_ENV)/bin/activate
 
 WGET := $(if $(shell which wget),wget -O,$(if $(shell which curl),curl -o,$(error "found no cmdline downloader (wget/curl)")))
 
-export PKG_CONFIG_PATH := $(VIRTUAL_ENV)/lib/pkgconfig
+PKG_CONFIG_PATH := $(VIRTUAL_ENV)/lib/pkgconfig
+export PKG_CONFIG_PATH
 
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_INSTALL := $(BIN)/ocrd # add more non-pip installation targets below
+CUSTOM_DEPS := core # add more modules which need deps-ubuntu below
 
 OCRD_MODULES := $(shell git submodule status | while read commit dir ref; do echo $$dir; done)
 
@@ -42,6 +44,7 @@ Targets:
 	install-tesseract: download, build and install Tesseract
 	clean: removes the virtual environment directory
 	show: lists the venv path and all executables (to be) installed
+	docker: (re)build a docker image including all executables
 
 Variables:
 	VIRTUAL_ENV: path to (re-)use for the virtual environment
@@ -130,12 +133,14 @@ $(OCRD_KERASLM): ocrd_keraslm
 
 OCRD_EXECUTABLES += $(BIN)/ocrd-im6convert
 CUSTOM_INSTALL += $(BIN)/ocrd-im6convert
+CUSTOM_DEPS += ocrd_im6convert
 
 $(BIN)/ocrd-im6convert: ocrd_im6convert
 	. $(ACTIVATE_VENV) && cd $< && make install
 
 OCRD_EXECUTABLES += $(BIN)/ocrd-olena-binarize
 CUSTOM_INSTALL += $(BIN)/ocrd-olena-binarize
+CUSTOM_DEPS += ocrd_olena
 
 $(BIN)/ocrd-olena-binarize: ocrd_olena
 	. $(ACTIVATE_VENV) && cd $< && make install
@@ -154,6 +159,7 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 $(OCRD_SEGMENT): ocrd_segment
 
 OCRD_EXECUTABLES += $(OCRD_TESSEROCR)
+CUSTOM_DEPS += ocrd_tesserocr
 
 OCRD_TESSEROCR := $(BIN)/ocrd-tesserocr-binarize
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-crop
@@ -217,6 +223,13 @@ OCRD_TYPECLASS := $(BIN)/ocrd-typegroups-classifier
 OCRD_TYPECLASS += $(BIN)/typegroups-classifier
 
 $(OCRD_TYPECLASS): ocrd_typegroups_classifier
+
+OCRD_EXECUTABLES += $(BIN)/ocrd-make
+CUSTOM_INSTALL += $(BIN)/ocrd-make
+CUSTOM_DEPS += workflow-configuration
+
+$(BIN)/ocrd-make: workflow-configuration
+	cd $< && make install
 
 # Most recipes install more than one tool at once,
 # which make does not know; To avoid races, these
@@ -303,6 +316,26 @@ $(BIN)/tesseract: tesseract/configure
 
 # suppress all built-in suffix rules:
 .SUFFIXES:
+
+# allow installing system dependencies for all modules
+# (mainly intended for docker, not recommended for live systems)
+# FIXME: we should find a way to filter based on the actual executables required
+deps-ubuntu: $(CUSTOM_DEPS)
+	set -e; for dir in $^; do make -C $$dir deps-ubuntu; done
+	# needed for clstm:
+	apt-get -y install scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig
+
+.PHONY: docker
+docker: DOCKER_TAG ?= ocrd/all
+# opencv-python is not needed for Ubuntu x86_64
+docker: DOCKER_MODULES = $(filter-out opencv-python/,$(OCRD_MODULES))
+# get all available processors
+docker: DOCKER_EXECUTABLES = $(OCRD_EXECUTABLES:$(BIN)/%=%)
+docker: Dockerfile modules
+	docker build \
+	--build-arg OCRD_MODULES="$(DOCKER_MODULES)" \
+	--build-arg OCRD_EXECUTABLES="$(DOCKER_EXECUTABLES)" \
+	-t $(DOCKER_TAG) .
 
 # do not search for implicit rules here:
 Makefile: ;
