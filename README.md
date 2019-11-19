@@ -11,6 +11,11 @@ Make sure that there is enough free disk space. 3 GiB or more is recommended for
 the required submodules, build data, temporary data, installed virtual environment
 and pip cache.
 
+Install GNU git and make:
+
+    # Debian / Ubuntu packages.
+    sudo apt install git make
+
 Install the packages for Python3 development and for Python3 virtual environments
 for your operating system / distribution.
 
@@ -28,10 +33,13 @@ https://launchpad.net/~alex-p/+archive/ubuntu/tesseract-ocr-devel.
 
 Otherwise or for the latest Tesseract code it can also be built locally.
 
-System dependencies for Ubuntu 18.04 (or similar) for all modules can be automatically installed by running:
+Other modules will have additional system dependencies.
 
-    # Debian / Ubuntu packages.
-    [sudo] make deps-ubuntu
+System dependencies for all modules on Ubuntu 18.04 (or similar) can also be automatically installed by running:
+
+    # on Debian / Ubuntu:
+    sudo apt install make git
+    sudo make deps-ubuntu
 
 
 ## Usage
@@ -51,6 +59,8 @@ Run `make` with optional parameters for _variables_ and _targets_ like so:
   <dd>Download/update all modules, but do not install anything.</dd>
   <dt>deps-ubuntu</dt>
   <dd>Install system packages for all modules</dd>
+  <dt>fix-pip</dt>
+  <dd>Fix incompatible/inconsistent pip requirements between all modules</dd>
   <dt>docker</dt>
   <dd>(Re-)build a docker image for all modules/executables.</dd>
   <dt>clean</dt>

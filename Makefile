@@ -12,7 +12,9 @@ BIN := $(VIRTUAL_ENV)/bin
 SHARE := $(VIRTUAL_ENV)/share
 ACTIVATE_VENV := $(VIRTUAL_ENV)/bin/activate
 
-WGET := $(if $(shell which wget),wget -O,$(if $(shell which curl),curl -o,$(error "found no cmdline downloader (wget/curl)")))
+define WGET
+$(if $(shell which wget),wget -O $(1) $(2),$(if $(shell which curl),curl -o $(1) $(2),$(error "found no cmdline downloader (wget/curl)")))
+endef
 
 PKG_CONFIG_PATH := $(VIRTUAL_ENV)/lib/pkgconfig
 export PKG_CONFIG_PATH
@@ -306,14 +308,14 @@ script/%.traineddata: $(TESSDATA)/script/%.traineddata
 # Special rule for equ.traineddata which is only available from tesseract-ocr/tessdata.
 $(TESSDATA)/equ.traineddata:
 	@mkdir -p $(dir $@)
-	$(WGET) $@ https://github.com/tesseract-ocr/tessdata/raw/master/$(notdir $@) || \
+	$(call WGET,$@,https://github.com/tesseract-ocr/tessdata/raw/master/$(notdir $@)) || \
 		{ $(RM) $@; false; }
 
 # Default rule for all other traineddata models.
 $(TESSDATA)/%.traineddata:
 	@mkdir -p $(dir $@)
-	$(WGET) $@ $(TESSDATA_URL)/raw/master/$(notdir $@) || \
-	$(WGET) $@ $(TESSDATA_URL)/raw/master/$(notdir $(call stripdir,$@))/$(notdir $@) || \
+	$(call WGET,$@,$(TESSDATA_URL)/raw/master/$(notdir $@)) || \
+	$(call WGET,$@,$(TESSDATA_URL)/raw/master/$(notdir $(call stripdir,$@))/$(notdir $@)) || \
 		{ $(RM) $@; false; }
 
 tesseract/configure: tesseract
@@ -345,10 +347,10 @@ endef
 # allow installing system dependencies for all modules
 # (mainly intended for docker, not recommended for live systems)
 # FIXME: we should find a way to filter based on the actual executables required
+deps-ubuntu: CLSTM_DEPS = scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig
 deps-ubuntu: $(CUSTOM_DEPS)
 	set -e; for dir in $^; do make -C $$dir deps-ubuntu; done
-	# needed for clstm:
-	apt-get -y install scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig
+	apt-get -y install wget $(CLSTM_DEPS)
 
 .PHONY: docker
 docker: DOCKER_TAG ?= ocrd/all
