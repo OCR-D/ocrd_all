@@ -11,22 +11,22 @@ Make sure that there is enough free disk space. 3 GiB or more is recommended for
 the required submodules, build data, temporary data, installed virtual environment
 and pip cache.
 
-Install GNU git and make:
+Install GNU make and git, and wget if you want to download Tesseract models.
 
-    # Debian / Ubuntu packages.
-    sudo apt install git make
+    # on Debian / Ubuntu:
+    sudo apt-get install make git wget
 
 Install the packages for Python3 development and for Python3 virtual environments
 for your operating system / distribution.
 
-    # Debian / Ubuntu packages.
-    sudo apt install python3-dev python3-venv
+    # on Debian / Ubuntu:
+    sudo apt-get install python3-dev python3-venv
 
 Some modules use the Tesseract library. If your distribution provides Tesseract 4.1
 or newer, install the development package:
 
-    # Debian / Ubuntu package.
-    sudo apt install libtesseract-dev
+    # on Debian / Ubuntu:
+    sudo apt-get install libtesseract-dev
 
 Ubuntu packages for Tesseract 5.0.0 (alpha) are available at the PPA
 https://launchpad.net/~alex-p/+archive/ubuntu/tesseract-ocr-devel.
@@ -38,8 +38,8 @@ Other modules will have additional system dependencies.
 System dependencies for all modules on Ubuntu 18.04 (or similar) can also be automatically installed by running:
 
     # on Debian / Ubuntu:
-    sudo apt install make git
-    sudo make deps-ubuntu
+    [sudo] apt-get install make git
+    [sudo] make deps-ubuntu
 
 
 ## Usage
