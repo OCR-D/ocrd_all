@@ -2,7 +2,7 @@
 
 # Python version (python3 required).
 PYTHON := python3
-PIP_OPTIONS :=
+PIP_INSTALL := pip3 install
 
 # directory for virtual Python environment
 # (but re-use if already active):
@@ -53,7 +53,7 @@ Targets:
 Variables:
 	VIRTUAL_ENV: path to (re-)use for the virtual environment
 	PYTHON: name of the Python binary
-	PIP_OPTIONS: extra options to pass pip install like -q or -v
+	PIP_INSTALL: pass extra options to "pip install" like -q or -v
 EOF
 endef
 export HELP
@@ -100,12 +100,12 @@ $(OCRD_OCROPY): ocrd_ocropy
 .PHONY: ocrd
 ocrd: $(BIN)/ocrd
 $(BIN)/ocrd: core
-	. $(ACTIVATE_VENV) && cd $< && make install PIP_INSTALL="pip install --force-reinstall $(PIP_OPTIONS)"
+	. $(ACTIVATE_VENV) && cd $< && make install PIP_INSTALL="$(PIP_INSTALL) --force-reinstall"
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
 $(BIN)/wheel: | $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && pip install --force-reinstall $(PIP_OPTIONS) wheel
+	. $(ACTIVATE_VENV) && $(PIP_INSTALL) --force-reinstall wheel
 
 # Install Python modules from local code.
 
@@ -250,13 +250,13 @@ $(BIN)/ocrd-make: workflow-configuration
 # install again forcefully without depds (to ensure
 # the binary itself updates):
 $(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES)):
-	. $(ACTIVATE_VENV) && cd $< && pip install $(PIP_OPTIONS) .
-	. $(ACTIVATE_VENV) && cd $< && pip install --no-deps --force-reinstall $(PIP_OPTIONS) .
+	. $(ACTIVATE_VENV) && cd $< && $(PIP_INSTALL) .
+	. $(ACTIVATE_VENV) && cd $< && $(PIP_INSTALL) --no-deps --force-reinstall .
 
 # avoid making these .PHONY so they do not have to be repeated:
 # clstm tesserocr
 $(SHARE)/%: % | $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && cd $< && pip install $(PIP_OPTIONS) .
+	. $(ACTIVATE_VENV) && cd $< && $(PIP_INSTALL) .
 	@touch $@
 
 # At last, add venv dependency (must not become first):
@@ -270,7 +270,7 @@ $(OCRD_EXECUTABLES): | $(BIN)/wheel
 # - tensorflow>=2.0, tensorflow_gpu in another version
 # - pillow==5.4.1 instead of >=6.2
 fix-pip:
-	pip install $(PIP_OPTIONS) --force-reinstall \
+	$(PIP_INSTALL) --force-reinstall \
 		opencv-python-headless \
 		pillow>=6.2.0 \
 		$(pip list | grep tensorflow-gpu | sed -E 's/-gpu +/==/')
