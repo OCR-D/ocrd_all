@@ -31,33 +31,6 @@ RUN apt-get update && \
     apt-get install -y apt-utils
 
 # allow passing build-time parameter
-# for list of modules to be installed
-# (defaults to all except opencv-python)
-ARG OCRD_MODULES="\
-    format-converters \
-    core \
-    ocrd_im6convert \
-    ocrd_olena \
-    pixelwise_segmentation_SBB \
-    segmentation-runner \
-    OCR-D-LAYoutERkennung \
-    ocrd_segment \
-    ocrd_ocropy \
-    ocrd_calamari \
-    ocrd_cis \
-    ocrd_tesserocr \
-    clstm \
-    ocrd_kraken \
-    ocrd_typegroups_classifier \
-    tesseract \
-    tesserocr \
-    ocrd_keraslm \
-    cor-asv-ann \
-    cor-asv-fst \
-    dinglehopper \
-    workflow-configuration"
-
-# allow passing build-time parameter
 # for list of tools to be installed
 # (defaults to all, which also requires all modules to be present)
 ARG OCRD_EXECUTABLES=all
@@ -70,6 +43,7 @@ WORKDIR /build
 COPY . .
 
 ENV BUILDDEPS="build-essential automake autoconf libtool pkg-config git"
+ENV PIP_INSTALL="pip install --timeout=300 -q"
 
 # start a shell script (so we can comment individual steps here)
 RUN echo "set -x" > docker.sh
@@ -85,19 +59,12 @@ RUN echo "make -i deps-ubuntu" >> docker.sh
 RUN echo "make -j install-tesseract" >> docker.sh
 # build/install all requested tools:
 RUN echo "make ${OCRD_EXECUTABLES}" >> docker.sh
+# post-install fixup against conflicting requirements
+RUN echo "make fix-pip" >> docker.sh
 # remove build pkgs, but keep `make` for makefile-based workflow processing
 RUN echo "apt-get -y remove $BUILDDEPS" >> docker.sh
 # remove unneeded automatic deps and clear pkg cache
 RUN echo "apt-get -y autoremove && apt-get clean" >> docker.sh
-# post-install fixup: conflicting requirements
-# - opencv-python instead of opencv-python-headless (which needs X11 libs)
-#   (pulled by OCR-D-LAYoutERkennung and segmentation-runner)
-# - tensorflow>=2.0, tensorflow_gpu in another version
-# - pillow==5.4.1 instead of >=6.2
-RUN echo "pip install --force-reinstall \
-          opencv-python-headless \
-          pillow>=6.2.0 \
-          \$(pip list | grep tensorflow-gpu | sed -E 's/-gpu +/==/')" >> docker.sh
 # remove source directories from image
 RUN echo "rm -fr /build" >> docker.sh
 # run the script in one layer/step (to minimise image size)
