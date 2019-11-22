@@ -46,7 +46,7 @@ ENV BUILDDEPS="build-essential automake autoconf libtool pkg-config git"
 ENV PIP_INSTALL="pip install --timeout=300 -q"
 
 # start a shell script (so we can comment individual steps here)
-RUN echo "set -x" > docker.sh
+RUN echo "set -ex" > docker.sh
 # get packages for build
 RUN echo "apt-get -y install $BUILDDEPS make" >> docker.sh
 # create git repo just so the (unconditional) submodule update recipes don't fail
