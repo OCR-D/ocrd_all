@@ -2,7 +2,7 @@
 
 # Python version (python3 required).
 PYTHON := python3
-PIP_INSTALL := pip3 install
+PIP_INSTALL ?= pip3 install
 
 # directory for virtual Python environment
 # (but re-use if already active):
@@ -75,13 +75,13 @@ $(OCRD_MODULES): always-update
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
 	$(PYTHON) -m venv $(VIRTUAL_ENV)
-	. $(ACTIVATE_VENV) && pip install --upgrade pip
+	. $(ACTIVATE_VENV) && $(PIP_INSTALL) --upgrade pip
 
 # Get Python modules.
 
 # avoid making this .PHONY so it does not have to be repeated
 $(SHARE)/numpy: | $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && pip install numpy
+	. $(ACTIVATE_VENV) && $(PIP_INSTALL) numpy
 	@touch $@
 
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
