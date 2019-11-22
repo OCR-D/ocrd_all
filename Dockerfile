@@ -42,13 +42,12 @@ WORKDIR /build
 #  so we must rely on .dockerignore here)
 COPY . .
 
-ENV BUILDDEPS="build-essential automake autoconf libtool pkg-config git"
-ENV PIP_INSTALL="pip install --timeout=300 -q"
+ENV PIP_INSTALL="pip install --timeout=3000 -q"
 
 # start a shell script (so we can comment individual steps here)
 RUN echo "set -ex" > docker.sh
 # get packages for build
-RUN echo "apt-get -y install $BUILDDEPS make" >> docker.sh
+RUN echo "apt-get -y install build-essential automake autoconf libtool pkg-config git make" >> docker.sh
 # create git repo just so the (unconditional) submodule update recipes don't fail
 RUN echo "git init" >> docker.sh
 # we want to use PREFIX as venv
@@ -61,8 +60,6 @@ RUN echo "make -j install-tesseract" >> docker.sh
 RUN echo "make ${OCRD_EXECUTABLES}" >> docker.sh
 # post-install fixup against conflicting requirements
 RUN echo "make fix-pip" >> docker.sh
-# remove build pkgs, but keep `make` for makefile-based workflow processing
-RUN echo "apt-get -y remove $BUILDDEPS" >> docker.sh
 # remove unneeded automatic deps and clear pkg cache
 RUN echo "apt-get -y autoremove && apt-get clean" >> docker.sh
 # remove source directories from image
