@@ -356,7 +356,7 @@ endef
 deps-ubuntu: CLSTM_DEPS = scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig
 deps-ubuntu: $(CUSTOM_DEPS)
 	set -e; for dir in $^; do make -C $$dir deps-ubuntu; done
-	apt-get -y install wget build-essential automake python3-venv $(CLSTM_DEPS)
+	apt-get -y install wget build-essential automake $(CLSTM_DEPS)
 
 .PHONY: docker
 docker: DOCKER_TAG ?= ocrd/all
