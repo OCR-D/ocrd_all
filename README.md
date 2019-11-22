@@ -1,7 +1,7 @@
 # OCR-D/ocrd_all
 
 This is a project which gets the source of all OCR-D modules.
-It also includes a Makefile for their installation into a virtual environment (venv).
+It also includes a Makefile for their installation into a virtual environment (venv) or Docker container.
 (A venv is a local user directory with shell scripts to load/unload itself
 in the current shell environment via PATH and PYTHONHOME.)
 
@@ -14,19 +14,19 @@ and pip cache.
 Install GNU make and git, and wget if you want to download Tesseract models.
 
     # on Debian / Ubuntu:
-    sudo apt-get install make git wget
+    sudo apt install make git wget
 
 Install the packages for Python3 development and for Python3 virtual environments
 for your operating system / distribution.
 
     # on Debian / Ubuntu:
-    sudo apt-get install python3-dev python3-venv
+    sudo apt install python3-dev python3-venv
 
 Some modules use the Tesseract library. If your distribution provides Tesseract 4.1
 or newer, install the development package:
 
     # on Debian / Ubuntu:
-    sudo apt-get install libtesseract-dev
+    sudo apt install libtesseract-dev
 
 Ubuntu packages for Tesseract 5.0.0 (alpha) are available at the PPA
 https://launchpad.net/~alex-p/+archive/ubuntu/tesseract-ocr-devel.
@@ -35,11 +35,24 @@ Otherwise or for the latest Tesseract code it can also be built locally.
 
 Other modules will have additional system dependencies.
 
-System dependencies for all modules on Ubuntu 18.04 (or similar) can also be automatically installed by running:
+System dependencies for all modules on Ubuntu 18.04 (or similar) can also be installed _automatically_ by running:
 
     # on Debian / Ubuntu:
-    [sudo] apt-get install make git
-    [sudo] make deps-ubuntu
+    sudo apt install make git
+    sudo make deps-ubuntu
+
+Moreover, the (shell) environment must have a Unicode-based localization. (Otherwise Python code based on `click` will not work, i.e. most OCR-D CLIs.) This is true for most installations today, and can be verified by:
+
+    locale | fgrep .UTF-8
+
+This should show several `LC_*` variables. Otherwise, either select another localization globally...
+
+    sudo dpkg-reconfigure locales
+
+... or use the Unicode-based POSIX locale temporarily:
+
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
 
 
 ## Usage
@@ -115,6 +128,21 @@ Running `make modules` downloads/updates all modules.
 
 Running `make all` additionally installs the executables from all modules.
 
+### Results
+
+To use the built executables, simply activate the virtual environment:
+
+    . ${VIRTUAL_ENV:-venv}/bin/activate
+    ocrd --help
+    ocrd-...
+
+For the Docker image, run it with your data path mounted as a user:
+
+    docker run -it -u $(id -u):$(id -g) $PWD:/data ocrd/all
+    ocrd --help
+    ocrd-...
+
+
 ## Issues
 
 ### No published/recent version on PyPI
@@ -125,8 +153,7 @@ The following Python modules need an installation from code for different reason
 - cor-asv-ann (not available in PyPI)
 - cor-asv-fst (not available in PyPI)
 - dinglehopper (not available in PyPI)
-- ocrd_cis (not available in PyPI; needs `ocrd>=2.0.0`)
-- ocrd_tesserocr (too old in PyPI; needs `ocrd>=2.0.0`)
+- ocrd_cis (not available in PyPI)
 - tesserocr (too old in PyPI)
 
 ### Conflicting requirements
@@ -141,10 +168,14 @@ _pip does not stop or resolve conflicts – it merely warns._
    * `>=6.2.0` (required by all others)
 - Tensorflow:
    * `tensorflow-gpu==1.14.0` (required by ocrd_calamari and OCR-D-LAYoutERkennung)
-   * `tensorflow` (which pulls in `>=2.0` which is incompatible; required by cor-asv-ann and ocrd_keraslm)
+   * `tensorflow` (required by cor-asv-ann and ocrd_keraslm)
+   
+   Both can be installed in parallel in different versions, but may depend on a mutually exclusive set of `tensorboard` and `tensorflow_estimator`.
+   
+   Moreover, in the future, some modules (but not others) may depend on `tensorflow>=2.0`, which again is incompatible.
 - OpenCV:
    * `opencv-python-headlesss` (required by core and others, avoids pulling in X11 libraries)
-   * `opencv-python` (required by OCR-D-LAYoutERkennung and segmentation-runner)
+   * `opencv-python` (required by OCR-D-LAYoutERkennung)
    * custom build on ARM...
 
 - ...
