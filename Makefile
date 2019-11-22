@@ -101,6 +101,8 @@ $(OCRD_OCROPY): ocrd_ocropy
 ocrd: $(BIN)/ocrd
 $(BIN)/ocrd: core
 	. $(ACTIVATE_VENV) && cd $< && make install PIP_INSTALL="$(PIP_INSTALL) --force-reinstall"
+	# workaround for core#351:
+	. $(ACTIVATE_VENV) && cd $< && make install PIP_INSTALL="$(PIP_INSTALL) --no-deps"
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
