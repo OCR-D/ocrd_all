@@ -227,9 +227,12 @@ OCRD_TYPECLASS += $(BIN)/typegroups-classifier
 
 $(OCRD_TYPECLASS): ocrd_typegroups_classifier
 
-OCRD_EXECUTABLES += $(BIN)/ocrd-make
-CUSTOM_INSTALL += $(BIN)/ocrd-make
+OCRD_EXECUTABLES += $(WORKFLOW_CONFIGURATION)
+CUSTOM_INSTALL += $(WORKFLOW_CONFIGURATION)
 CUSTOM_DEPS += workflow-configuration
+
+WORKFLOW_CONFIGURATION := $(BIN)/ocrd-make
+WORKFLOW_CONFIGURATION += $(BIN)/ocrd-import
 
 $(BIN)/ocrd-make: workflow-configuration
 	cd $< && make install
