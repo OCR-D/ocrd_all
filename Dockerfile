@@ -67,6 +67,10 @@ RUN echo "rm -fr /build" >> docker.sh
 # run the script in one layer/step (to minimise image size)
 RUN bash docker.sh
 
+# remove (dated) security workaround preventing use of
+# ImageMagick's convert on PDF/PS/EPS/XPS:
+RUN rm /etc/ImageMagick-6/policy.xml
+
 ENV DEBIAN_FRONTEND teletype
 
 WORKDIR /data
