@@ -99,7 +99,7 @@ $(OCRD_OCROPY): ocrd_ocropy
 .PHONY: ocrd
 ocrd: $(BIN)/ocrd
 $(BIN)/ocrd: core
-	. $(ACTIVATE_VENV) && cd $< && make install PIP_INSTALL="pip install --force-reinstall $(PIP_OPTIONS)"
+	. $(ACTIVATE_VENV) && cd $< && $(MAKE) install PIP_INSTALL="pip install --force-reinstall $(PIP_OPTIONS)"
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
@@ -139,14 +139,14 @@ CUSTOM_INSTALL += $(BIN)/ocrd-im6convert
 CUSTOM_DEPS += ocrd_im6convert
 
 $(BIN)/ocrd-im6convert: ocrd_im6convert
-	. $(ACTIVATE_VENV) && cd $< && make install
+	. $(ACTIVATE_VENV) && cd $< && $(MAKE) install
 
 OCRD_EXECUTABLES += $(BIN)/ocrd-olena-binarize
 CUSTOM_INSTALL += $(BIN)/ocrd-olena-binarize
 CUSTOM_DEPS += ocrd_olena
 
 $(BIN)/ocrd-olena-binarize: ocrd_olena
-	. $(ACTIVATE_VENV) && cd $< && make install
+	. $(ACTIVATE_VENV) && cd $< && $(MAKE) install
 
 OCRD_EXECUTABLES += $(BIN)/ocrd-dinglehopper
 
@@ -235,7 +235,7 @@ WORKFLOW_CONFIGURATION := $(BIN)/ocrd-make
 WORKFLOW_CONFIGURATION += $(BIN)/ocrd-import
 
 $(BIN)/ocrd-make: workflow-configuration
-	cd $< && make install
+	cd $< && $(MAKE) install
 
 # Most recipes install more than one tool at once,
 # which make does not know; To avoid races, these
@@ -352,7 +352,7 @@ endef
 # FIXME: we should find a way to filter based on the actual executables required
 deps-ubuntu: CLSTM_DEPS = scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig
 deps-ubuntu: $(CUSTOM_DEPS)
-	set -e; for dir in $^; do make -C $$dir deps-ubuntu; done
+	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu; done
 	apt-get -y install wget python3-venv $(CLSTM_DEPS)
 
 .PHONY: docker
