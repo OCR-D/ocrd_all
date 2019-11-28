@@ -145,7 +145,17 @@ OCRD_EXECUTABLES += $(BIN)/ocrd-olena-binarize
 CUSTOM_INSTALL += $(BIN)/ocrd-olena-binarize
 CUSTOM_DEPS += ocrd_olena
 
-$(BIN)/ocrd-olena-binarize: ocrd_olena
+ocrd_olena/olena-git:
+	cd ocrd_olena && $(MAKE) olena-git
+
+# ocrd_olena fails to configure the dependency tracking, so disable it.
+# ocrd_olena fails to compile scribo unless SCRIBO_NDEBUG is defined.
+$(BIN)/ocrd-olena-binarize: ocrd_olena ocrd_olena/olena-git
+	. $(ACTIVATE_VENV) && cd ocrd_olena/olena-git && \
+		mkdir -p build && cd build && \
+		../configure --prefix="$(VIRTUAL_ENV)" --enable-scribo \
+			--disable-dependency-tracking \
+			SCRIBO_CXXFLAGS="-DNDEBUG -DSCRIBO_NDEBUG -O2"
 	. $(ACTIVATE_VENV) && cd $< && $(MAKE) install
 
 OCRD_EXECUTABLES += $(BIN)/ocrd-dinglehopper
