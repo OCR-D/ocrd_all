@@ -21,8 +21,8 @@ PKG_CONFIG_PATH := $(VIRTUAL_ENV)/lib/pkgconfig
 export PKG_CONFIG_PATH
 
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
-CUSTOM_INSTALL := $(BIN)/ocrd # add more non-pip installation targets below
-CUSTOM_DEPS := core # add more modules which need deps-ubuntu below
+CUSTOM_INSTALL = $(BIN)/ocrd # add more non-pip installation targets below
+CUSTOM_DEPS = core # add more modules which need deps-ubuntu below
 
 OCRD_MODULES := $(shell git submodule status | while read commit dir ref; do echo $$dir; done)
 
