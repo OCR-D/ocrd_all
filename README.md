@@ -223,4 +223,4 @@ Not all modules advertise their system package requirements via `make deps-ubunt
 
 - clstm: depends on `scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig`
 
-_(Solved by maintaining these requriements under `deps-ubuntu` here.)_
+_(Solved by maintaining these requirements under `deps-ubuntu` here.)_
