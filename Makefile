@@ -2,7 +2,7 @@
 
 # Python version (python3 required).
 PYTHON := python3
-PIP_OPTIONS :=
+PIP_INSTALL ?= pip3 install
 
 # directory for virtual Python environment
 # (but re-use if already active):
@@ -20,8 +20,8 @@ PKG_CONFIG_PATH := $(VIRTUAL_ENV)/lib/pkgconfig
 export PKG_CONFIG_PATH
 
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
-CUSTOM_INSTALL := $(BIN)/ocrd # add more non-pip installation targets below
-CUSTOM_DEPS := core # add more modules which need deps-ubuntu below
+CUSTOM_INSTALL = $(BIN)/ocrd # add more non-pip installation targets below
+CUSTOM_DEPS = core # add more modules which need deps-ubuntu below
 
 OCRD_MODULES := $(shell git submodule status | while read commit dir ref; do echo $$dir; done)
 
@@ -52,7 +52,7 @@ Targets:
 Variables:
 	VIRTUAL_ENV: path to (re-)use for the virtual environment
 	PYTHON: name of the Python binary
-	PIP_OPTIONS: extra options to pass pip install like -q or -v
+	PIP_INSTALL: `pip install` command, optionally with extra options like `-q` or `-v`
 EOF
 endef
 export HELP
@@ -74,13 +74,13 @@ $(OCRD_MODULES): always-update
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
 	$(PYTHON) -m venv $(VIRTUAL_ENV)
-	. $(ACTIVATE_VENV) && pip install --upgrade pip
+	. $(ACTIVATE_VENV) && $(PIP_INSTALL) --upgrade pip
 
 # Get Python modules.
 
 # avoid making this .PHONY so it does not have to be repeated
 $(SHARE)/numpy: | $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && pip install numpy
+	. $(ACTIVATE_VENV) && $(PIP_INSTALL) numpy
 	@touch $@
 
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
@@ -99,12 +99,14 @@ $(OCRD_OCROPY): ocrd_ocropy
 .PHONY: ocrd
 ocrd: $(BIN)/ocrd
 $(BIN)/ocrd: core
-	. $(ACTIVATE_VENV) && cd $< && $(MAKE) install PIP_INSTALL="pip install --force-reinstall $(PIP_OPTIONS)"
+	. $(ACTIVATE_VENV) && cd $< && make install PIP_INSTALL="$(PIP_INSTALL) --force-reinstall"
+	# workaround for core#351:
+	. $(ACTIVATE_VENV) && cd $< && make install PIP_INSTALL="$(PIP_INSTALL) --no-deps"
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
 $(BIN)/wheel: | $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && pip install --force-reinstall $(PIP_OPTIONS) wheel
+	. $(ACTIVATE_VENV) && $(PIP_INSTALL) --force-reinstall wheel
 
 # Install Python modules from local code.
 
@@ -249,13 +251,13 @@ $(BIN)/ocrd-make: workflow-configuration
 # install again forcefully without depds (to ensure
 # the binary itself updates):
 $(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES)):
-	. $(ACTIVATE_VENV) && cd $< && pip install $(PIP_OPTIONS) .
-	. $(ACTIVATE_VENV) && cd $< && pip install --no-deps --force-reinstall $(PIP_OPTIONS) .
+	. $(ACTIVATE_VENV) && cd $< && $(PIP_INSTALL) .
+	. $(ACTIVATE_VENV) && cd $< && $(PIP_INSTALL) --no-deps --force-reinstall .
 
 # avoid making these .PHONY so they do not have to be repeated:
 # clstm tesserocr
 $(SHARE)/%: % | $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && cd $< && pip install $(PIP_OPTIONS) .
+	. $(ACTIVATE_VENV) && cd $< && $(PIP_INSTALL) .
 	@touch $@
 
 # At last, add venv dependency (must not become first):
@@ -269,7 +271,7 @@ $(OCRD_EXECUTABLES): | $(BIN)/wheel
 # - tensorflow>=2.0, tensorflow_gpu in another version
 # - pillow==5.4.1 instead of >=6.2
 fix-pip:
-	pip install $(PIP_OPTIONS) --force-reinstall \
+	. $(ACTIVATE_VENV) && $(PIP_INSTALL) --force-reinstall \
 		opencv-python-headless \
 		pillow>=6.2.0 \
 		$(pip list | grep tensorflow-gpu | sed -E 's/-gpu +/==/')
@@ -351,9 +353,10 @@ endef
 # (mainly intended for docker, not recommended for live systems)
 # FIXME: we should find a way to filter based on the actual executables required
 deps-ubuntu: CLSTM_DEPS = scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig
+deps-ubuntu: TESSERACT_DEPS = g++ make automake
 deps-ubuntu: $(CUSTOM_DEPS)
 	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu; done
-	apt-get -y install wget python3-venv $(CLSTM_DEPS)
+	apt-get -y install wget python3-venv $(TESSERACT_DEPS) $(CLSTM_DEPS)
 
 .PHONY: docker
 docker: DOCKER_TAG ?= ocrd/all
