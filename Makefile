@@ -7,7 +7,6 @@ PIP_INSTALL ?= pip3 install
 # directory for virtual Python environment
 # (but re-use if already active):
 VIRTUAL_ENV ?= $(CURDIR)/venv
-export VIRTUAL_ENV
 
 BIN := $(VIRTUAL_ENV)/bin
 SHARE := $(VIRTUAL_ENV)/share
