@@ -272,7 +272,7 @@ $(OCRD_EXECUTABLES): | $(BIN)/wheel
 # - tensorflow>=2.0, tensorflow_gpu in another version
 # - pillow==5.4.1 instead of >=6.2
 fix-pip:
-	$(PIP_INSTALL) --force-reinstall \
+	. $(ACTIVATE_VENV) && $(PIP_INSTALL) --force-reinstall \
 		opencv-python-headless \
 		pillow>=6.2.0 \
 		$(pip list | grep tensorflow-gpu | sed -E 's/-gpu +/==/')
