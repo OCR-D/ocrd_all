@@ -220,7 +220,7 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-block-segmentation
 
-$(OCRD_ANYBASEOCR): OCR-D-LAYoutERkennung
+$(OCRD_ANYBASEOCR): ocrd_anybaseocr
 
 OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
 
@@ -267,7 +267,7 @@ $(OCRD_EXECUTABLES): | $(BIN)/wheel
 .PHONY: fix-pip
 # temporary workaround for conflicting requirements between modules:
 # - opencv-python instead of opencv-python-headless (which needs X11 libs)
-#   (pulled by OCR-D-LAYoutERkennung and segmentation-runner)
+#   (pulled by ocrd_anybaseocr and segmentation-runner)
 # - tensorflow>=2.0, tensorflow_gpu in another version
 # - pillow==5.4.1 instead of >=6.2
 fix-pip:
