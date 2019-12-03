@@ -9,9 +9,16 @@ in the current shell environment via PATH and PYTHONHOME.)
 
 ## Preconditions
 
-### Space
+Clone this project recursively
 
-Make sure that there is enough free disk space. 7 GiB or more is recommended for
+```bash=bash
+# Clone ocrd_all repository
+user@localhost:/home/ocrd/git/$git clone -- recursive https://github.com/stweil/ocrd_all.git
+```
+
+### Hardware Requirements
+
+Make sure that there is enough free disk space. 7 GB or more is recommended for
 the required submodules, build data, temporary data, installed virtual environment
 and pip cache.
 
