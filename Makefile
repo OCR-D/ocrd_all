@@ -25,7 +25,7 @@ CUSTOM_DEPS = core # add more modules which need deps-ubuntu below
 
 OCRD_MODULES := $(shell git submodule status | while read commit dir ref; do echo $$dir; done)
 
-.DEFAULT_GOAL = ocrd # all is too much for a default
+.DEFAULT_GOAL = help # all is too much for a default, and ocrd is too little
 
 .PHONY: all modules clean help show always-update
 
