@@ -209,7 +209,7 @@ Modules may require mutually exclusive sets of dependent packages.
    * `==5.4.1` (required by ocrd_typegroups_classifier)
    * `>=6.2.0` (required by all others)
 - Tensorflow:
-   * `tensorflow-gpu==1.14.0` (required by ocrd_calamari and OCR-D-LAYoutERkennung)
+   * `tensorflow-gpu==1.14.0` (required by ocrd_calamari and ocrd_anybaseocr)
    * `tensorflow` (required by cor-asv-ann and ocrd_keraslm)
    
    Both can be installed in parallel in different versions, but may depend on a mutually exclusive set of `tensorboard` and `tensorflow_estimator`.
@@ -217,7 +217,7 @@ Modules may require mutually exclusive sets of dependent packages.
    Moreover, in the future, some modules (but not others) may depend on `tensorflow>=2.0`, which again is incompatible.
 - OpenCV:
    * `opencv-python-headlesss` (required by core and others, avoids pulling in X11 libraries)
-   * `opencv-python` (required by OCR-D-LAYoutERkennung)
+   * `opencv-python` (required by ocrd_anybaseocr)
    * custom build on ARM...
 
 - ...
