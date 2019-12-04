@@ -52,7 +52,7 @@ Targets:
 Variables:
 	VIRTUAL_ENV: path to (re-)use for the virtual environment
 	PYTHON: name of the Python binary
-	PIP_INSTALL: `pip install` command, optionally with extra options like `-q` or `-v`
+	PIP_INSTALL: \`pip install\` command, optionally with extra options like \`-q\` or \`-v\`
 EOF
 endef
 export HELP
