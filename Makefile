@@ -19,6 +19,13 @@ endef
 PKG_CONFIG_PATH := $(VIRTUAL_ENV)/lib/pkgconfig
 export PKG_CONFIG_PATH
 
+# Set TMPDIR (optionally by a value passed by the user),
+# so temporary files for building won't be written to /tmp.
+# Some builds require more than 2 GB free disk space for
+# such temporary files, and /tmp might be too small for that.
+TMPDIR ?= $(shell mkdir -p $(CURDIR)/tmp && echo $(CURDIR)/tmp)
+export TMPDIR
+
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_INSTALL = $(BIN)/ocrd # add more non-pip installation targets below
 CUSTOM_DEPS = core # add more modules which need deps-ubuntu below
