@@ -15,6 +15,13 @@ Make sure that there is enough free disk space. 7 GiB or more is recommended for
 the required submodules, build data, temporary data, installed virtual environment
 and pip cache.
 
+If the `/tmp` directory has less then 5 GiB of free space, you can override the location
+of temporary files by setting the `TMPDIR` variable when calling make:
+
+```sh
+TMPDIR=/path/to/my/tempdir make all
+```
+
 ### Locale
 
 Next, the (shell) environment must have a Unicode-based localization. (Otherwise Python code based on `click` will not work, i.e. most OCR-D CLIs.) This is true for most installations today, and can be verified by:
