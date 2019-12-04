@@ -35,24 +35,26 @@ clean:
 	$(RM) -r $(CURDIR)/venv
 
 define HELP
-cat <<EOF
+cat <<"EOF"
 Rules to download and install all OCR-D module processors
 from their source repositories into a single virtualenv.
 
 Targets:
+	help: this message
+	show: lists the venv path and all executables (to be) installed
 	ocrd: installs only the virtual environment and OCR-D/core packages
 	modules: download all submodules to the managed revision
 	all: installs all executables of all modules
 	fix-pip: try to repair conflicting requirements
 	install-tesseract: download, build and install Tesseract
 	clean: removes the virtual environment directory
-	show: lists the venv path and all executables (to be) installed
 	docker: (re)build a docker image including all executables
 
 Variables:
 	VIRTUAL_ENV: path to (re-)use for the virtual environment
+	TMPDIR: path to use for temporary storage instead of `/tmp`
 	PYTHON: name of the Python binary
-	PIP_INSTALL: \`pip install\` command, optionally with extra options like \`-q\` or \`-v\`
+	PIP_INSTALL: `pip install` command, optionally with extra options like `-q` or `-v`
 EOF
 endef
 export HELP
