@@ -52,7 +52,7 @@ Targets:
 
 Variables:
 	VIRTUAL_ENV: path to (re-)use for the virtual environment
-	TMPDIR: path to use for temporary storage instead of `/tmp`
+	TMPDIR: path to use for temporary storage instead of the system default
 	PYTHON: name of the Python binary
 	PIP_INSTALL: `pip install` command, optionally with extra options like `-q` or `-v`
 EOF
