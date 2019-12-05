@@ -15,6 +15,13 @@ Make sure that there is enough free disk space. 7 GiB or more is recommended for
 the required submodules, build data, temporary data, installed virtual environment
 and pip cache.
 
+If the `/tmp` directory has less than 5 GiB of free space, you can override the location
+of temporary files by setting the `TMPDIR` variable when calling make:
+
+```sh
+TMPDIR=/path/to/my/tempdir make all
+```
+
 ### Locale
 
 Next, the (shell) environment must have a Unicode-based localization. (Otherwise Python code based on `click` will not work, i.e. most OCR-D CLIs.) This is true for most installations today, and can be verified by:
@@ -202,7 +209,7 @@ Modules may require mutually exclusive sets of dependent packages.
    * `==5.4.1` (required by ocrd_typegroups_classifier)
    * `>=6.2.0` (required by all others)
 - Tensorflow:
-   * `tensorflow-gpu==1.14.0` (required by ocrd_calamari and OCR-D-LAYoutERkennung)
+   * `tensorflow-gpu==1.14.0` (required by ocrd_calamari and ocrd_anybaseocr)
    * `tensorflow` (required by cor-asv-ann and ocrd_keraslm)
    
    Both can be installed in parallel in different versions, but may depend on a mutually exclusive set of `tensorboard` and `tensorflow_estimator`.
@@ -210,7 +217,7 @@ Modules may require mutually exclusive sets of dependent packages.
    Moreover, in the future, some modules (but not others) may depend on `tensorflow>=2.0`, which again is incompatible.
 - OpenCV:
    * `opencv-python-headlesss` (required by core and others, avoids pulling in X11 libraries)
-   * `opencv-python` (required by OCR-D-LAYoutERkennung)
+   * `opencv-python` (required by ocrd_anybaseocr)
    * custom build on ARM...
 
 - ...
