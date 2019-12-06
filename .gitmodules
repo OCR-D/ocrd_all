@@ -54,7 +54,7 @@
 	url = https://github.com/OCR-D/ocrd_im6convert.git
 [submodule "ocrd_anybaseocr"]
 	path = ocrd_anybaseocr
-	url = https://github.com/OCR-D/ocrd_anybaseocr.git
+	url = https://github.com/OCR-D/ocrd_anybaseocr
 [submodule "segmentation-runner"]
 	path = segmentation-runner
 	url = https://github.com/ocr-d-modul-2-segmentierung/segmentation-runner.git
