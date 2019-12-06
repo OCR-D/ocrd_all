@@ -52,9 +52,9 @@
 [submodule "ocrd_anybaseocr"]
 	path = ocrd_anybaseocr
 	url = https://github.com/OCR-D/ocrd_anybaseocr.git
-[submodule "segmentation-runner"]
-	path = segmentation-runner
-	url = https://github.com/ocr-d-modul-2-segmentierung/segmentation-runner.git
+[submodule "ocrd_pc_segmentation"]
+	path = ocrd_pc_segmentation
+	url = https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation.git
 [submodule "ocrd_typegroups_classifier"]
 	path = ocrd_typegroups_classifier
 	url = https://github.com/OCR-D/ocrd_typegroups_classifier.git
