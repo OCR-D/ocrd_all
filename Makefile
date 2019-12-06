@@ -203,13 +203,11 @@ OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
 
 $(OCRD_CALAMARI): ocrd_calamari
 
-OCRD_EXECUTABLES += $(OCRD_SEGMENTATION_RUNNER)
+OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 
-OCRD_SEGMENTATION_RUNNER := $(BIN)/ocropus-gpageseg-with-coords
-OCRD_SEGMENTATION_RUNNER += $(BIN)/ocrd-pc-seg-process
-OCRD_SEGMENTATION_RUNNER += $(BIN)/ocrd-pc-seg-single
+OCRD_SEGMENTATION_RUNNER += $(BIN)/ocrd-pc-segmentation
 
-$(OCRD_SEGMENTATION_RUNNER): segmentation-runner
+$(OCRD_PC_SEGMENTATION): ocrd-pc-segmentation
 
 OCRD_EXECUTABLES += $(OCRD_ANYBASEOCR)
 
