@@ -258,10 +258,12 @@ $(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES)):
 
 # avoid making these .PHONY so they do not have to be repeated:
 # clstm tesserocr
-$(SHARE)/%: % | $(ACTIVATE_VENV)
+$(SHARE)/%: % | $(ACTIVATE_VENV) $(SHARE)
 	. $(ACTIVATE_VENV) && cd $< && $(PIP_INSTALL) .
-	@mkdir -p $(dir $@)
 	@touch $@
+
+$(SHARE):
+	@mkdir -p "$@"
 
 # At last, add venv dependency (must not become first):
 $(OCRD_EXECUTABLES) $(BIN)/wheel: | $(ACTIVATE_VENV)
