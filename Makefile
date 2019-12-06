@@ -260,6 +260,7 @@ $(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES)):
 # clstm tesserocr
 $(SHARE)/%: % | $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && cd $< && $(PIP_INSTALL) .
+	@mkdir -p $(dir $@)
 	@touch $@
 
 # At last, add venv dependency (must not become first):
