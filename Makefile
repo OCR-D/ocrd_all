@@ -231,6 +231,10 @@ OCRD_TYPECLASS += $(BIN)/typegroups-classifier
 
 $(OCRD_TYPECLASS): ocrd_typegroups_classifier
 
+OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
+SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-line-detector
+$(SBB_LINE_DETECTOR): sbb_textline_detector
+
 OCRD_EXECUTABLES += $(WORKFLOW_CONFIGURATION)
 CUSTOM_INSTALL += $(WORKFLOW_CONFIGURATION)
 CUSTOM_DEPS += workflow-configuration
