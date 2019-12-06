@@ -28,9 +28,9 @@
 [submodule "tesserocr"]
 	path = tesserocr
 	url = https://github.com/sirfz/tesserocr.git
-[submodule "pixelwise_segmentation_SBB"]
-	path = pixelwise_segmentation_SBB
-	url = https://github.com/qurator-spk/pixelwise_segmentation_SBB.git
+[submodule "sbb_textline_detector"]
+	path = sbb_textline_detector
+	url = https://github.com/qurator-spk/sbb_textline_detector.git
 [submodule "dinglehopper"]
 	path = dinglehopper
 	url = https://github.com/qurator-spk/dinglehopper.git
