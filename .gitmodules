@@ -66,4 +66,4 @@
 	url = https://github.com/bertsky/workflow-configuration
 [submodule "sbb_textline_detector"]
 	path = sbb_textline_detector
-	url = https://github.com/qurator-spk/sbb_textline_detector
+	url = https://github.com/qurator-spk/sbb_textline_detector.git
