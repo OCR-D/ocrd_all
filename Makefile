@@ -277,9 +277,8 @@ $(OCRD_EXECUTABLES): | $(BIN)/wheel
 fix-pip:
 	. $(ACTIVATE_VENV) && $(PIP_INSTALL) --force-reinstall \
 		opencv-python-headless \
-		pillow>=6.2.0 \
-		$(pip list | grep tensorflow-gpu | sed -E 's/-gpu +/==/')
-
+		"pillow>=6.2.0" \
+		$$(pip3 list | grep tensorflow-gpu | sed -E 's/-gpu +/==/')
 
 # At last, we know what all OCRD_EXECUTABLES are:
 all: $(OCRD_EXECUTABLES)
