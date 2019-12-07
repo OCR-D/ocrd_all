@@ -333,7 +333,7 @@ tesseract/configure: tesseract
 # Build and install Tesseract.
 $(BIN)/tesseract: tesseract/configure
 	mkdir -p tesseract/build
-	cd tesseract/build && ../configure --disable-openmp --disable-shared --prefix="$(VIRTUAL_ENV)" CXXFLAGS="-g -O2 -fPIC"
+	cd tesseract/build && ../configure --disable-openmp --prefix="$(VIRTUAL_ENV)" CXXFLAGS="-g -O2 -fPIC"
 	cd tesseract/build && $(MAKE) install
 
 # do not delete intermediate targets:
