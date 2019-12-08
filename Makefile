@@ -372,7 +372,7 @@ ifneq ($(findstring tesseract, $(OCRD_MODULES)),)
 # when not installing via PPA, we must cope without ocrd_tesserocr's deps-ubuntu
 CUSTOM_DEPS += g++ make automake libleptonica-dev
 # but since we are building statically, we need more (static) libs at build time
-#CUSTOM_DEPS += libgif-dev libtiff-dev libpng-dev libjpeg-dev
+CUSTOM_DEPS += libgif-dev libtiff-dev libpng-dev libjpeg-dev
 
 TESSDATA := $(VIRTUAL_ENV)/share/tessdata
 TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast
@@ -412,7 +412,7 @@ tesseract/configure: tesseract
 # Build and install Tesseract.
 $(BIN)/tesseract: tesseract/configure
 	mkdir -p tesseract/build
-	cd tesseract/build && ../configure --disable-openmp --prefix="$(VIRTUAL_ENV)" CXXFLAGS="-g -O2 -fPIC"
+	cd tesseract/build && ../configure --disable-openmp --prefix="$(VIRTUAL_ENV)" CXXFLAGS="-g -O2 -fPIC" LDFLAGS="-static" PKG_CONFIG="pkg-config --static"
 	cd tesseract/build && $(MAKE) install
 
 clean: clean-tesseract
