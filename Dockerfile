@@ -27,13 +27,18 @@ ENV VIRTUAL_ENV $PREFIX
 ENV DEBIAN_FRONTEND noninteractive
 
 # make apt system functional
-RUN apt-get update && \
-    apt-get install -y apt-utils
+RUN apt-get update \
+ && apt-get install -y apt-utils
 
-# allow passing build-time parameter
-# for list of tools to be installed
-# (defaults to all, which also requires all modules to be present)
-ARG OCRD_EXECUTABLES=all
+# allow passing build-time parameter for list of tools to be installed
+# (defaults to medium, which also requires those modules to be present)
+ARG OCRD_MODULES="core dinglehopper format-converters ocrd_calamari ocrd_cis ocrd_im6convert ocrd_keraslm ocrd_olena ocrd_segment ocrd_tesserocr tesseract tesserocr cor-asv-ann workflow-configuration"
+# persist that variable for build-time make to pick it up and run-time users to know what to expect
+ENV OCRD_MODULES="${OCRD_MODULES}"
+
+# allow passing build-time parameter for pip install options
+# (defaults to no extra options)
+ARG PIP_OPTIONS=""
 
 WORKDIR /build
 
@@ -42,35 +47,41 @@ WORKDIR /build
 #  so we must rely on .dockerignore here)
 COPY . .
 
-ENV PIP_INSTALL="pip install --timeout=3000 -q"
+# increase default network timeouts (so builds don't fail because of small bandwidth)
+ENV PIP_OPTIONS="--timeout=3000 ${PIP_OPTIONS}"
+RUN echo "Acquire::http::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
+RUN echo "Acquire::https::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
+RUN echo "Acquire::ftp::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
 
 # start a shell script (so we can comment individual steps here)
 RUN echo "set -ex" > docker.sh
 # get packages for build
-RUN echo "apt-get -y install automake autoconf libtool pkg-config g++ git make" >> docker.sh
-# create git repo just so the (unconditional) submodule update recipes don't fail
-RUN echo "git init" >> docker.sh
+RUN echo "apt-get -y install automake autoconf libtool pkg-config g++ make" >> docker.sh
 # we want to use PREFIX as venv
 RUN echo "> $PREFIX/bin/activate" >> docker.sh
 # try to fetch all modules system requirements
 RUN echo "make -i deps-ubuntu" >> docker.sh
-# instead of the PPA version:
-RUN echo "make -j install-tesseract" >> docker.sh
-# build/install all requested tools:
-RUN echo "make ${OCRD_EXECUTABLES}" >> docker.sh
+# build/install all tools of the requested modules:
+RUN echo "make all" >> docker.sh
 # post-install fixup against conflicting requirements
 RUN echo "make fix-pip" >> docker.sh
 # remove unneeded automatic deps and clear pkg cache
 RUN echo "apt-get -y autoremove && apt-get clean" >> docker.sh
-# remove source directories from image
-RUN echo "rm -fr /build" >> docker.sh
+# remove source directories from image, unless using editable mode
+# (in the latter case, the git repos are also the installation targets
+#  and must be kept; so merely clean-up some temporary files)
+RUN echo "if [[ '${PIP_OPTIONS}' =~ -e|--editable ]]; then make -i clean; else rm -fr /build; fi" >> docker.sh
 # run the script in one layer/step (to minimise image size)
-RUN bash docker.sh
+# (and export all variables)
+RUN set -a; bash docker.sh
+# update ld.so cache for new libs in /usr/local
+RUN ldconfig
 
 # remove (dated) security workaround preventing use of
 # ImageMagick's convert on PDF/PS/EPS/XPS:
-RUN rm /etc/ImageMagick-6/policy.xml
+RUN sed -i 's/rights="none"/rights="read|write"/g' /etc/ImageMagick-6/policy.xml
 
+# reset to interactive
 ENV DEBIAN_FRONTEND teletype
 
 WORKDIR /data
