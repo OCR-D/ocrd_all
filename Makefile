@@ -81,18 +81,18 @@ help: ;	@eval "$$HELP"
 # update subrepos to the committed revisions:
 # - depends on phony always-update,
 #   so this will not only work on first checkout
-# - updates the module to the revision registered here
-# - then changes the time stamp of the directory to that
-#   of the latest modified file contained in it,
+# - updates the module to the revision registered here,
+#   unless it is already up-to-date
+# - then updates the time stamp of the module directory
 #   so the directory can be used as a dependency
 modules: $(OCRD_MODULES)
 # but bypass updates if we have no repo here (e.g. Docker build)
 ifneq (,$(wildcard .git))
 $(OCRD_MODULES): always-update
 	git submodule sync --recursive $@
-	git submodule status $@ | grep -q '^ ' || { \
+	if git submodule status --recursive $@ | grep -qv '^ '; then \
 		git submodule update --init --recursive $@ && \
-		touch -r $$(find $@ -type f -newer $@ -o -type d -name $@ | tail -1) $@; }
+		touch $@; fi
 endif
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
