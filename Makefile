@@ -57,7 +57,7 @@ Targets:
 	ocrd: installs only the virtual environment and OCR-D/core packages
 	modules: download all submodules to the managed revision
 	all: installs all executables of all modules
-	install-tesseract: download, build and install Tesseract (with some models)
+	install-tesseract: download, build and install Tesseract (with required models)
 	fix-pip: try to repair conflicting requirements
 	clean: removes the virtual environment directory, and clean-*
 	clean-tesseract: remove the build directory for tesseract
@@ -71,7 +71,7 @@ Variables:
 	PYTHON: name of the Python binary
 	PIP: name of the Python packaging binary
 	PIP_OPTIONS: extra options for the `pip install` command like `-q` or `-v` or `-e`
-	OCRD_MODULES: list of submodules to include (defaults to all git modules, see `show`)
+	OCRD_MODULES: list of submodules to include (defaults to all git submodules, see `show`)
 	TESSERACT_MODELS: list of models/languages to download for Tesseract
 EOF
 endef
