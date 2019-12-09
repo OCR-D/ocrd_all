@@ -7,9 +7,9 @@
 PYTHON := python3
 # Python packaging
 PIP ?= pip3
-# Derived variables to allow filtering -e, or inserting other options
+# PIP_OPTIONS ?= # empty
+# Derived variable to allow filtering -e, or inserting other options
 # (the option --editable must always be last and only applies to src install)
-PIP_INSTALL = $(PIP) install $(PIP_OPTIONS)
 PIP_OPTIONS_E = $(filter-out -e,$(PIP_OPTIONS))
 
 # directory for virtual Python environment

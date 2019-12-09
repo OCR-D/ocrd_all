@@ -217,7 +217,7 @@ OCRD_MODULES = core ocrd_im6convert ocrd_cis ocrd_tesserocr tesserocr tesseract
 VIRTUAL_ENV = $(CURDIR)/.venv
 
 # install in editable mode (i.e. referencing the git sources)
-PIP_INSTALL = pip3 install -e
+PIP_OPTIONS = -e
 
 # use non-default temporary storage
 TMPDIR = $(CURDIR)/.tmp
