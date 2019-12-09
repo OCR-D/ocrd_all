@@ -1,6 +1,6 @@
 # OCR-D/ocrd_all
 
-This controls installation of all OCR-D modules from source.
+This controls installation of all OCR-D modules from source (as git submodules).
 
 It includes a Makefile for their installation into a virtual environment (venv) or Docker container.
 
@@ -69,7 +69,7 @@ System dependencies **for all modules** on Ubuntu 18.04 (or similar) can also be
     sudo apt install make git
     sudo make deps-ubuntu
 
-(And you can always define the scope of _all modules_ by setting the `OCRD_MODULES` variable.)
+(And you can define the scope of _all modules_ by setting the `OCRD_MODULES` [variable](#Variables).)
 
 ## Usage
 
@@ -79,21 +79,21 @@ Run `make` with optional parameters for _variables_ and _targets_ like so:
 
 ### Targets
 
+#### _deps-ubuntu_
+
+Install system packages for all modules. (Depends on [_modules_](#modules).)
+
+#### _modules_
+
+Download/update all modules, but do not install anything.
+
 #### _ocrd_
 
 Install only OCR-D/core and its CLI `ocrd` into the venv.
 
 #### _all_
 
-Install executables from all modules into the venv. (Depends on _modules_ and _ocrd_.)
-
-#### _modules_
-
-Download/update all modules, but do not install anything.
-
-#### _deps-ubuntu_
-
-Install system packages for all modules
+Install executables from all modules into the venv. (Depends on [_modules_](#modules) and [_ocrd_](#ocrd).)
 
 #### _fix-pip_
 
@@ -101,11 +101,11 @@ Fix incompatible/inconsistent pip requirements between all modules
 
 #### _docker_
 
-(Re-)build a docker image for all modules/executables.
+(Re-)build a docker image for all modules/executables. (Depends on [_modules_](#modules).)
 
 #### _clean_
 
-Remove the venv and the module's build directories.
+Remove the venv and the modules' build directories.
 
 #### _show_
 
@@ -124,28 +124,28 @@ Download/update that module, but do not install anything.
 
 #### _[any executable name]_
 
-Install that CLI into the venv. (Depends on that module and on _ocrd_.)
+Install that CLI into the venv. (Depends on that module and on [_ocrd_](#ocrd).)
 
 ### Variables
 
 #### _OCRD_MODULES_
 
 Override the list of git submodules to include. Targets affected by this include:
-- `deps-ubuntu` (reducing the list of system packages to install)
-- `modules` (reducing the list of modules to checkout/update)
-- `all` (reducing the list of executables to install)
-- `docker` (reducing the list of executables and modules to install)
-- `show` (reducing the list of `OCRD_MODULES` and of `OCRD_EXECUTABLES` to print)
+- [deps-ubuntu](#deps-ubuntu) (reducing the list of system packages to install)
+- [modules](#modules) (reducing the list of modules to checkout/update)
+- [all](#all) (reducing the list of executables to install)
+- [docker](#docker) (reducing the list of executables and modules to install)
+- [show](#show) (reducing the list of `OCRD_MODULES` and of `OCRD_EXECUTABLES` to print)
 
 #### _PYTHON_
 
-Name of the Python binary to use (at least python3 required)
+Name of the Python binary to use (at least python3 required).
 
 #### _VIRTUAL_ENV_
 
 Directory prefix to use for local installation. 
 
-(This is set automatically when activating a virtual environment on the shell. The build system will re-use existing venvs.)
+(This is set automatically when activating a virtual environment on the shell. The build system will re-use the venv if one already exists here, or create one.)
 
 #### _TMPDIR_
 
@@ -156,6 +156,10 @@ Override the default path (`/tmp` on Unix) where temporary files during build ar
 Add extra options to the `pip install` command like `-q` or `-v` or `-e`.
 
 (The latter will install Python modules in _editable mode_, i.e. any update to the source will directly affect the executables.)
+
+#### _GIT_RECURSIVE_
+
+Set to `--recursive` to checkout/update all modules recursively.
 
 #### _TESSERACT_MODELS_
 
@@ -279,6 +283,6 @@ _(Solved temporarily by post-installation `fix-pip`.)_
 Not all modules advertise their system package requirements via `make deps-ubuntu`.
 
 - `clstm`: depends on `scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig`
-- `tesseract` (when installing from source not PPA): depends on `libleptonica-dev`
+- `tesseract` (when installing from source not PPA): depends on `libleptonica-dev` etc
 
 _(Solved by maintaining these requirements under `deps-ubuntu` here.)_
