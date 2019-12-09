@@ -11,6 +11,7 @@ PIP ?= pip3
 # Derived variable to allow filtering -e, or inserting other options
 # (the option --editable must always be last and only applies to src install)
 PIP_OPTIONS_E = $(filter-out -e,$(PIP_OPTIONS))
+GIT_RECURSIVE = # --recursive
 
 # directory for virtual Python environment
 # (but re-use if already active):
@@ -71,6 +72,7 @@ Variables:
 	PYTHON: name of the Python binary
 	PIP: name of the Python packaging binary
 	PIP_OPTIONS: extra options for the `pip install` command like `-q` or `-v` or `-e`
+	GIT_RECURSIVE: set to `--recursive` to checkout/update all submodules recursively
 	OCRD_MODULES: list of submodules to include (defaults to all git submodules, see `show`)
 	TESSERACT_MODELS: list of models/languages to download for Tesseract
 EOF
@@ -89,9 +91,9 @@ modules: $(OCRD_MODULES)
 # but bypass updates if we have no repo here (e.g. Docker build)
 ifneq (,$(wildcard .git))
 $(OCRD_MODULES): always-update
-	git submodule sync --recursive $@
-	if git submodule status --recursive $@ | grep -qv '^ '; then \
-		git submodule update --init --recursive $@ && \
+	git submodule sync $(GIT_RECURSIVE) $@
+	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
+		git submodule update --init $(GIT_RECURSIVE) $@ && \
 		touch $@; fi
 endif
 
