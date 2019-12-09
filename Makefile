@@ -431,8 +431,11 @@ endif
 
 # allow installing system dependencies for all modules
 # (mainly intended for docker, not recommended to use directly for live systems)
+# reset ownership of submodules to that of ocrd_all
+# (in case deps-ubuntu has been used with sudo and some modules were updated)
 deps-ubuntu:
 	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu; done
+	chown -R --reference=$(CURDIR) $^
 	apt-get -y install $(CUSTOM_DEPS)
 
 # Docker builds.
