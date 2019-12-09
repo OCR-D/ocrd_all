@@ -372,7 +372,7 @@ ifneq ($(findstring tesseract, $(OCRD_MODULES)),)
 # when not installing via PPA, we must cope without ocrd_tesserocr's deps-ubuntu
 CUSTOM_DEPS += g++ make automake libleptonica-dev
 # but since we are building statically, we need more (static) libs at build time
-CUSTOM_DEPS += libgif-dev libtiff-dev libpng-dev libjpeg-dev
+CUSTOM_DEPS += libarchive-dev libcurl4-nss-dev libgif-dev libjpeg-dev libpng-dev libtiff-dev
 
 TESSDATA := $(VIRTUAL_ENV)/share/tessdata
 TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast
