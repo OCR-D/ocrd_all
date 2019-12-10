@@ -44,7 +44,7 @@ endif
 
 all: modules # add OCRD_EXECUTABLES at the end
 
-clean:
+clean: # add more prerequisites for clean below
 	$(RM) -r $(CURDIR)/venv
 
 define HELP
@@ -97,102 +97,86 @@ $(OCRD_MODULES): always-update
 		touch $@; fi
 endif
 
+# Get Python modules.
+
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
 	$(PYTHON) -m venv $(VIRTUAL_ENV)
 	. $(ACTIVATE_VENV) && $(PIP) install --upgrade $(PIP_OPTIONS_E) pip
-
-# Get Python modules.
-
-ifneq ($(findstring ocrd_kraken, $(OCRD_MODULES)),)
-# avoid making this .PHONY so it does not have to be repeated
-$(SHARE)/numpy: | $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && $(PIP) install $(PIP_OPTIONS_E) numpy
-	@touch $@
-
-$(SHARE)/clstm: | $(SHARE)/numpy
-CUSTOM_DEPS += scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig
-
-OCRD_EXECUTABLES += $(OCRD_KRAKEN)
-
-OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
-OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
-
-$(OCRD_KRAKEN): ocrd_kraken $(SHARE)/clstm
-endif
-
-ifneq ($(findstring ocrd_ocropy, $(OCRD_MODULES)),)
-OCRD_EXECUTABLES += $(OCRD_OCROPY)
-
-OCRD_OCROPY := $(BIN)/ocrd-ocropy-segment
-
-$(OCRD_OCROPY): ocrd_ocropy
-endif
-
-.PHONY: ocrd
-ocrd: $(BIN)/ocrd
-$(BIN)/ocrd: core
-	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install --force-reinstall $(PIP_OPTIONS)"
-	# workaround for core#351:
-	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install --no-deps $(PIP_OPTIONS)"
-
-deps-ubuntu: core
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
 $(BIN)/wheel: | $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(PIP) install --force-reinstall $(PIP_OPTIONS_E) wheel
 
-# Install Python modules from local code.
+# avoid making this .PHONY so it does not have to be repeated
+$(SHARE)/numpy: | $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && $(PIP) install $(PIP_OPTIONS_E) numpy
+	@touch $@
+
+# Install modules from source.
+
+.PHONY: ocrd
+ocrd: $(BIN)/ocrd
+deps-ubuntu: core
+$(BIN)/ocrd: core
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install --force-reinstall $(PIP_OPTIONS)"
+	# workaround for core#351:
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install --no-deps $(PIP_OPTIONS)"
+
+ifneq ($(findstring ocrd_kraken, $(OCRD_MODULES)),)
+$(SHARE)/clstm: | $(SHARE)/numpy
+CUSTOM_DEPS += scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig
+
+OCRD_EXECUTABLES += $(OCRD_KRAKEN)
+OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
+OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
+$(OCRD_KRAKEN): ocrd_kraken $(SHARE)/clstm
+endif
+
+ifneq ($(findstring ocrd_ocropy, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(OCRD_OCROPY)
+OCRD_OCROPY := $(BIN)/ocrd-ocropy-segment
+$(OCRD_OCROPY): ocrd_ocropy
+endif
 
 ifneq ($(findstring cor-asv-ann, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
-
 OCRD_COR_ASV_ANN := $(BIN)/ocrd-cor-asv-ann-evaluate
 OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-process
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-train
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-eval
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
-
 $(OCRD_COR_ASV_ANN): cor-asv-ann
 endif
 
 ifneq ($(findstring cor-asv-fst, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
-
 OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
 OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
-
 $(OCRD_COR_ASV_FST): cor-asv-fst
 endif
 
 ifneq ($(findstring ocrd_keraslm, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KERASLM)
-
 OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
 OCRD_KERASLM += $(BIN)/keraslm-rate
-
 $(OCRD_KERASLM): ocrd_keraslm
 endif
 
 ifneq ($(findstring ocrd_im6convert, $(OCRD_MODULES)),)
+deps-ubuntu: ocrd_im6convert
 OCRD_EXECUTABLES += $(BIN)/ocrd-im6convert
 CUSTOM_INSTALL += $(BIN)/ocrd-im6convert
-
-deps-ubuntu: ocrd_im6convert
-
 $(BIN)/ocrd-im6convert: ocrd_im6convert
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
 endif
 
 ifneq ($(findstring ocrd_olena, $(OCRD_MODULES)),)
+deps-ubuntu: ocrd_olena
 OCRD_EXECUTABLES += $(BIN)/ocrd-olena-binarize
 CUSTOM_INSTALL += $(BIN)/ocrd-olena-binarize
-
-deps-ubuntu: ocrd_olena
-
 $(BIN)/ocrd-olena-binarize: ocrd_olena
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
-
 clean: clean-olena
 .PHONY: clean-olena
 clean-olena:
@@ -201,7 +185,6 @@ endif
 
 ifneq ($(findstring dinglehopper, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(BIN)/ocrd-dinglehopper
-
 .PHONY: ocrd-dinglehopper
 ocrd-dinglehopper: $(BIN)/ocrd-dinglehopper
 $(BIN)/ocrd-dinglehopper: dinglehopper
@@ -221,6 +204,8 @@ OCRD_EXECUTABLES += $(OCRD_TESSEROCR)
 # only add custom PPA when not building tesseract from source
 ifeq ($(findstring tesseract, $(OCRD_MODULES)),)
 deps-ubuntu: ocrd_tesserocr
+# convert Tesseract model names into Ubuntu/Debian pkg names
+# (does not work with names under script/ though)
 CUSTOM_DEPS += $(subst _,-,$(TESSERACT_MODELS:%=tesseract-ocr-%))
 endif
 
@@ -231,13 +216,11 @@ OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-recognize
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-line
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-region
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-word
-
 $(OCRD_TESSEROCR): ocrd_tesserocr $(SHARE)/tesserocr
 endif
 
 ifneq ($(findstring ocrd_cis, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_CIS)
-
 OCRD_CIS := $(BIN)/ocrd-cis-align
 OCRD_CIS += $(BIN)/ocrd-cis-data
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-binarize
@@ -252,29 +235,23 @@ OCRD_CIS += $(BIN)/ocrd-cis-ocropy-segment
 #OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
 OCRD_CIS += $(BIN)/ocrd-cis-profile
 OCRD_CIS += $(BIN)/ocrd-cis-wer
-
 $(OCRD_CIS): ocrd_cis
 endif
 
 ifneq ($(findstring ocrd_calamari, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
-
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
-
 $(OCRD_CALAMARI): ocrd_calamari
 endif
 
 ifneq ($(findstring ocrd_pc_segmentation, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
-
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
-
 $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
 endif
 
 ifneq ($(findstring ocrd_anybaseocr, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_ANYBASEOCR)
-
 OCRD_ANYBASEOCR := $(BIN)/ocrd-anybaseocr-crop
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-binarize
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-deskew
@@ -283,37 +260,29 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-tiseg
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-block-segmentation
-
 $(OCRD_ANYBASEOCR): ocrd_anybaseocr
 endif
 
 ifneq ($(findstring ocrd_typegroups_classifier, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
-
 OCRD_TYPECLASS := $(BIN)/ocrd-typegroups-classifier
 OCRD_TYPECLASS += $(BIN)/typegroups-classifier
-
 $(OCRD_TYPECLASS): ocrd_typegroups_classifier
 endif
 
 ifneq ($(findstring sbb_textline_detector, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
-
 SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-line-detector
-
 $(SBB_LINE_DETECTOR): sbb_textline_detector
 endif
 
 ifneq ($(findstring workflow-configuration, $(OCRD_MODULES)),)
-OCRD_EXECUTABLES += $(WORKFLOW_CONFIGURATION)
-CUSTOM_INSTALL += $(WORKFLOW_CONFIGURATION)
-
 deps-ubuntu: workflow-configuration
-
+OCRD_EXECUTABLES += $(WORKFLOW_CONFIGURATION)
 WORKFLOW_CONFIGURATION := $(BIN)/ocrd-make
 WORKFLOW_CONFIGURATION += $(BIN)/ocrd-import
-
-$(BIN)/ocrd-make: workflow-configuration
+CUSTOM_INSTALL += $(WORKFLOW_CONFIGURATION)
+$(WORKFLOW_CONFIGURATION): workflow-configuration
 	$(MAKE) -C $< install
 endif
 
@@ -357,7 +326,6 @@ fix-pip:
 
 # At last, we know what all OCRD_EXECUTABLES are:
 all: $(OCRD_EXECUTABLES)
-
 show:
 	@echo VIRTUAL_ENV = $(VIRTUAL_ENV)
 	@echo OCRD_MODULES = $(OCRD_MODULES)
@@ -386,7 +354,6 @@ stripdir = $(patsubst %/,%,$(dir $(1)))
 # Install Tesseract and required models.
 .PHONY: install-tesseract
 install-tesseract: $(BIN)/tesseract $(TESSERACT_TRAINEDDATA)
-
 all: install-tesseract
 
 # Convenience shortcut without the full path:
