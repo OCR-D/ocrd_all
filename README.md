@@ -196,7 +196,7 @@ Set to `--recursive` to checkout/update all modules recursively.
 
 #### _TESSERACT_MODELS_
 
-Override the default list of languages (`eng equ osd`) to install along with Tesseract.
+Add more models to the minimum required list of languages (`eng equ osd`) to install along with Tesseract.
 
 ### Examples
 
@@ -260,7 +260,7 @@ PIP_OPTIONS = -e
 TMPDIR = $(CURDIR)/.tmp
 
 # install more languages/models for Tesseract
-TESSERACT_MODELS = eng equ osd deu frk script/Fraktur script/Latin
+TESSERACT_MODELS = deu frk script/Fraktur script/Latin
 ```
 
 Note: When `local.mk` exists, variables can still be overridden on the command line,

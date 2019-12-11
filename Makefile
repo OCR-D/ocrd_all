@@ -346,12 +346,19 @@ CUSTOM_DEPS += libarchive-dev libcurl4-nss-dev libgif-dev libjpeg-dev libpng-dev
 
 TESSDATA := $(VIRTUAL_ENV)/share/tessdata
 TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast
-TESSERACT_MODELS := eng equ osd
-TESSERACT_TRAINEDDATA := $(TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
+# Required Tesseract models.
+TESSERACT_TRAINEDDATA := $(TESSDATA)/eng.traineddata
+TESSERACT_TRAINEDDATA += $(TESSDATA)/equ.traineddata
+TESSERACT_TRAINEDDATA += $(TESSDATA)/osd.traineddata
+# Optional Tesseract models.
+TESSERACT_MODELS :=
+ifneq ($(TESSERACT_MODELS),)
+TESSERACT_TRAINEDDATA += $(TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
+endif
 
 stripdir = $(patsubst %/,%,$(dir $(1)))
 
-# Install Tesseract and required models.
+# Install Tesseract with models.
 .PHONY: install-tesseract
 install-tesseract: $(BIN)/tesseract $(TESSERACT_TRAINEDDATA)
 all: install-tesseract
