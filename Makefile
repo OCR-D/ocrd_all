@@ -38,7 +38,7 @@ ifeq ($(strip $(OCRD_MODULES)),)
 override OCRD_MODULES := $(shell git submodule status | while read commit dir ref; do echo $$dir; done)
 endif
 
-.DEFAULT_GOAL ?= help # all is too much for a default, and ocrd is too little
+.DEFAULT_GOAL = help # all is too much for a default, and ocrd is too little
 
 .PHONY: all modules clean help show always-update
 
