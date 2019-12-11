@@ -12,6 +12,8 @@ PIP ?= pip3
 # (the option --editable must always be last and only applies to src install)
 PIP_OPTIONS_E = $(filter-out -e,$(PIP_OPTIONS))
 GIT_RECURSIVE = # --recursive
+# Required and optional Tesseract models.
+ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
 
 # directory for virtual Python environment
 # (but re-use if already active):
@@ -74,7 +76,7 @@ Variables:
 	PIP_OPTIONS: extra options for the `pip install` command like `-q` or `-v` or `-e`
 	GIT_RECURSIVE: set to `--recursive` to checkout/update all submodules recursively
 	OCRD_MODULES: list of submodules to include (defaults to all git submodules, see `show`)
-	TESSERACT_MODELS: list of models/languages to download for Tesseract
+	TESSERACT_MODELS: list of additional models/languages to download for Tesseract
 EOF
 endef
 export HELP
@@ -206,7 +208,7 @@ ifeq ($(findstring tesseract, $(OCRD_MODULES)),)
 deps-ubuntu: ocrd_tesserocr
 # convert Tesseract model names into Ubuntu/Debian pkg names
 # (does not work with names under script/ though)
-CUSTOM_DEPS += $(subst _,-,$(TESSERACT_MODELS:%=tesseract-ocr-%))
+CUSTOM_DEPS += $(subst _,-,$(ALL_TESSERACT_MODELS:%=tesseract-ocr-%))
 endif
 
 OCRD_TESSEROCR := $(BIN)/ocrd-tesserocr-binarize
@@ -346,15 +348,7 @@ CUSTOM_DEPS += libarchive-dev libcurl4-nss-dev libgif-dev libjpeg-dev libpng-dev
 
 TESSDATA := $(VIRTUAL_ENV)/share/tessdata
 TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast
-# Required Tesseract models.
-TESSERACT_TRAINEDDATA := $(TESSDATA)/eng.traineddata
-TESSERACT_TRAINEDDATA += $(TESSDATA)/equ.traineddata
-TESSERACT_TRAINEDDATA += $(TESSDATA)/osd.traineddata
-# Optional Tesseract models.
-TESSERACT_MODELS :=
-ifneq ($(TESSERACT_MODELS),)
-TESSERACT_TRAINEDDATA += $(TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
-endif
+TESSERACT_TRAINEDDATA = $(ALL_TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
 
 stripdir = $(patsubst %/,%,$(dir $(1)))
 
