@@ -413,7 +413,7 @@ DOCKER_MODULES ?= $(filter-out opencv-python,$(OCRD_MODULES))
 # Several predefined selections
 # (note: to arrive at smallest possible image size individually,
 #  these variants won't share common layers / steps / data,
-#  so build-time and bandwith are n-fold)
+#  so build-time and bandwidth are n-fold)
 .PHONY: dockers
 ifdef DOCKERS_WITHOUT_REPOS
 dockers: docker-minimum docker-medium docker-maximum

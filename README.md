@@ -263,7 +263,7 @@ TMPDIR = $(CURDIR)/.tmp
 TESSERACT_MODELS = eng equ osd deu frk script/Fraktur script/Latin
 ```
 
-Note: When `local.mk` exists, variables can still be overriden on the command line,
+Note: When `local.mk` exists, variables can still be overridden on the command line,
 (i.e. `make all OCRD_MODULES=` will build all executables for all modules again),
 but not from the shell environment
 (i.e. `OCRD_MODULES= make all` will still use the value from local.mk).
