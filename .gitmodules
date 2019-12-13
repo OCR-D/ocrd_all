@@ -28,9 +28,6 @@
 [submodule "tesserocr"]
 	path = tesserocr
 	url = https://github.com/sirfz/tesserocr.git
-[submodule "pixelwise_segmentation_SBB"]
-	path = pixelwise_segmentation_SBB
-	url = https://github.com/qurator-spk/pixelwise_segmentation_SBB.git
 [submodule "dinglehopper"]
 	path = dinglehopper
 	url = https://github.com/qurator-spk/dinglehopper.git
@@ -55,9 +52,9 @@
 [submodule "ocrd_anybaseocr"]
 	path = ocrd_anybaseocr
 	url = https://github.com/OCR-D/ocrd_anybaseocr.git
-[submodule "segmentation-runner"]
-	path = segmentation-runner
-	url = https://github.com/ocr-d-modul-2-segmentierung/segmentation-runner.git
+[submodule "ocrd_pc_segmentation"]
+	path = ocrd_pc_segmentation
+	url = https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation.git
 [submodule "ocrd_typegroups_classifier"]
 	path = ocrd_typegroups_classifier
 	url = https://github.com/OCR-D/ocrd_typegroups_classifier.git
@@ -67,3 +64,6 @@
 [submodule "workflow-configuration"]
 	path = workflow-configuration
 	url = https://github.com/bertsky/workflow-configuration
+[submodule "sbb_textline_detector"]
+	path = sbb_textline_detector
+	url = https://github.com/qurator-spk/sbb_textline_detector.git

@@ -1,11 +1,44 @@
 # OCR-D/ocrd_all
 
-This controls installation of all OCR-D modules from source.
+This controls installation of all OCR-D modules from source (as git submodules).
 
 It includes a Makefile for their installation into a virtual environment (venv) or Docker container.
 
 (A venv is a local user directory with shell scripts to load/unload itself
 in the current shell environment via PATH and PYTHONHOME.)
+
+* [Preconditions](#preconditions)
+    * [Space](#space)
+    * [Locale](#locale)
+    * [System packages](#system-packages)
+ * [Usage](#usage)
+    * [Targets](#targets)
+       * [<em>deps-ubuntu</em>](#deps-ubuntu)
+       * [<em>modules</em>](#modules)
+       * [<em>ocrd</em>](#ocrd)
+       * [<em>all</em>](#all)
+       * [<em>fix-pip</em>](#fix-pip)
+       * [<em>docker</em>](#docker)
+       * [<em>clean</em>](#clean)
+       * [<em>show</em>](#show)
+       * [<em>help</em> (default goal)](#help-default-goal)
+       * [<em>[any module name]</em>](#any-module-name)
+       * [<em>[any executable name]</em>](#any-executable-name)
+    * [Variables](#variables)
+       * [<em>OCRD_MODULES</em>](#ocrd_modules)
+       * [<em>PYTHON</em>](#python)
+       * [<em>VIRTUAL_ENV</em>](#virtual_env)
+       * [<em>TMPDIR</em>](#tmpdir)
+       * [<em>PIP_OPTIONS</em>](#pip_options)
+       * [<em>GIT_RECURSIVE</em>](#git_recursive)
+       * [<em>TESSERACT_MODELS</em>](#tesseract_models)
+    * [Examples](#examples)
+    * [Results](#results)
+    * [Persistent configuration](#persistent-configuration)
+ * [Challenges](#challenges)
+    * [No published/recent version on PyPI](#no-publishedrecent-version-on-pypi)
+    * [Conflicting requirements](#conflicting-requirements)
+    * [System requirements](#system-requirements)
 
 ## Preconditions
 
@@ -69,30 +102,31 @@ System dependencies **for all modules** on Ubuntu 18.04 (or similar) can also be
     sudo apt install make git
     sudo make deps-ubuntu
 
+(And you can define the scope of _all modules_ by setting the `OCRD_MODULES` [variable](#Variables).)
 
 ## Usage
 
 Run `make` with optional parameters for _variables_ and _targets_ like so:
 
-    make [PYTHON=python3] [VIRTUAL_ENV=./venv] [TARGET]...
+    make [PYTHON=python3] [VIRTUAL_ENV=./venv] [OCRD_MODULES="..."] [TARGET...]
 
 ### Targets
 
-#### _ocrd_
+#### _deps-ubuntu_
 
-(default goal) Install OCR-D/core and its CLI `ocrd` into the venv.
-
-#### _all_
-
-Install executables from all modules into the venv. (Depends on _modules_ and _ocrd_.)
+Install system packages for all modules. (Depends on [_modules_](#modules).)
 
 #### _modules_
 
 Download/update all modules, but do not install anything.
 
-#### _deps-ubuntu_
+#### _ocrd_
 
-Install system packages for all modules
+Install only OCR-D/core and its CLI `ocrd` into the venv.
+
+#### _all_
+
+Install executables from all modules into the venv. (Depends on [_modules_](#modules) and [_ocrd_](#ocrd).)
 
 #### _fix-pip_
 
@@ -100,17 +134,17 @@ Fix incompatible/inconsistent pip requirements between all modules
 
 #### _docker_
 
-(Re-)build a docker image for all modules/executables.
+(Re-)build a docker image for all modules/executables. (Depends on [_modules_](#modules).)
 
 #### _clean_
 
-Remove the venv.
+Remove the venv and the modules' build directories.
 
 #### _show_
 
 Print the venv directory, the module directories, and the executable names.
 
-#### _help_
+#### _help_ (default goal)
 
 Print available targets and variables.
 
@@ -123,23 +157,46 @@ Download/update that module, but do not install anything.
 
 #### _[any executable name]_
 
-Install that CLI into the venv. (Depends on that module and on _ocrd_.)
+Install that CLI into the venv. (Depends on that module and on [_ocrd_](#ocrd).)
 
 ### Variables
 
+#### _OCRD_MODULES_
+
+Override the list of git submodules to include. Targets affected by this include:
+- [deps-ubuntu](#deps-ubuntu) (reducing the list of system packages to install)
+- [modules](#modules) (reducing the list of modules to checkout/update)
+- [all](#all) (reducing the list of executables to install)
+- [docker](#docker) (reducing the list of executables and modules to install)
+- [show](#show) (reducing the list of `OCRD_MODULES` and of `OCRD_EXECUTABLES` to print)
+
 #### _PYTHON_
 
-name of the Python binary to use (at least python3 required)
+Name of the Python binary to use (at least python3 required).
 
 #### _VIRTUAL_ENV_
 
 Directory prefix to use for local installation. 
 
-(This is set automatically when activating a virtual environment on the shell. The build system will re-use existing venvs.)
+(This is set automatically when activating a virtual environment on the shell. The build system will re-use the venv if one already exists here, or create one.)
+
+#### _TMPDIR_
+
+Override the default path (`/tmp` on Unix) where temporary files during build are stored.
 
 #### _PIP_OPTIONS_
 
-Extra options to pass to `pip install` (e.g. -q or -v)
+Add extra options to the `pip install` command like `-q` or `-v` or `-e`.
+
+(The latter will install Python modules in _editable mode_, i.e. any update to the source will directly affect the executables.)
+
+#### _GIT_RECURSIVE_
+
+Set to `--recursive` to checkout/update all modules recursively.
+
+#### _TESSERACT_MODELS_
+
+Add more models to the minimum required list of languages (`eng equ osd`) to install along with Tesseract.
 
 ### Examples
 
@@ -166,6 +223,8 @@ Running `make modules` downloads/updates all modules.
 
 Running `make all` additionally installs the executables from all modules.
 
+Running `make all OCRD_MODULES="core tesseract ocrd_tesserocr ocrd_cis"` installs only the executables from these modules.
+
 ### Results
 
 To use the built executables, simply activate the virtual environment:
@@ -180,6 +239,34 @@ For the Docker image, run it with your data path mounted as a user:
     ocrd --help
     ocrd-...
 
+### Persistent configuration
+
+In order to make choices permanent, you can put your variable preferences
+(or any custom rules) into `local.mk`. This file is always included if it exists.
+So you don't have to type (and memorise) them on the command line or shell environment.
+
+For example, its content could be:
+```make
+# restrict everything to a subset of modules
+OCRD_MODULES = core ocrd_im6convert ocrd_cis ocrd_tesserocr tesserocr tesseract
+
+# use a non-default path for the virtual environment
+VIRTUAL_ENV = $(CURDIR)/.venv
+
+# install in editable mode (i.e. referencing the git sources)
+PIP_OPTIONS = -e
+
+# use non-default temporary storage
+TMPDIR = $(CURDIR)/.tmp
+
+# install more languages/models for Tesseract
+TESSERACT_MODELS = deu frk script/Fraktur script/Latin
+```
+
+Note: When `local.mk` exists, variables can still be overridden on the command line,
+(i.e. `make all OCRD_MODULES=` will build all executables for all modules again),
+but not from the shell environment
+(i.e. `OCRD_MODULES= make all` will still use the value from local.mk).
 
 ## Challenges
 
@@ -228,6 +315,7 @@ _(Solved temporarily by post-installation `fix-pip`.)_
 
 Not all modules advertise their system package requirements via `make deps-ubuntu`.
 
-- clstm: depends on `scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig`
+- `clstm`: depends on `scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig`
+- `tesseract` (when installing from source not PPA): depends on `libleptonica-dev` etc
 
 _(Solved by maintaining these requirements under `deps-ubuntu` here.)_
