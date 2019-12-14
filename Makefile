@@ -284,22 +284,20 @@ OCRD_EXECUTABLES += $(WORKFLOW_CONFIGURATION)
 WORKFLOW_CONFIGURATION := $(BIN)/ocrd-make
 WORKFLOW_CONFIGURATION += $(BIN)/ocrd-import
 CUSTOM_INSTALL += $(WORKFLOW_CONFIGURATION)
-$(WORKFLOW_CONFIGURATION): workflow-configuration
+$(call multirule,$(WORKFLOW_CONFIGURATION)): workflow-configuration
 	$(MAKE) -C $< install
 endif
 
-# Most recipes install more than one tool at once,
-# which make does not know; To avoid races, these
-# rules must be serialised. GNU make does not have
-# local serialisation, so we can as well state it
-# globally:
-.NOTPARALLEL:
+# Convert the executable names (1) to a pattern rule,
+# so that the recipe will be used with single-recipe-
+# multiple-output semantics:
+multirule = $(patsubst $(BIN)/%,\%/%,$(1))
 
 # Build by entering subdir (first dependent), then
 # install gracefully with dependencies, and finally
 # install again forcefully without depds (to ensure
 # the binary itself updates):
-$(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES)):
+$(call multirule,$(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES))):
 	. $(ACTIVATE_VENV) && cd $< && $(PIP) install $(PIP_OPTIONS_E) .
 	. $(ACTIVATE_VENV) && cd $< && $(PIP) install --no-deps --force-reinstall $(PIP_OPTIONS) .
 
