@@ -111,7 +111,7 @@ $(BIN)/wheel: | $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(PIP) install --force-reinstall $(PIP_OPTIONS_E) wheel
 
 # avoid making this .PHONY so it does not have to be repeated
-$(SHARE)/numpy: | $(ACTIVATE_VENV)
+$(SHARE)/numpy: | $(ACTIVATE_VENV) $(SHARE)
 	. $(ACTIVATE_VENV) && $(PIP) install $(PIP_OPTIONS_E) numpy
 	@touch $@
 
@@ -126,7 +126,7 @@ $(BIN)/ocrd: core
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install --no-deps $(PIP_OPTIONS)"
 
 ifneq ($(findstring ocrd_kraken, $(OCRD_MODULES)),)
-$(SHARE)/clstm: | $(SHARE)/numpy
+$(SHARE)/clstm: | $(SHARE)/numpy $(SHARE)
 CUSTOM_DEPS += scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig
 
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
@@ -303,9 +303,12 @@ $(call multirule,$(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES))):
 
 # avoid making these .PHONY so they do not have to be repeated:
 # clstm tesserocr
-$(SHARE)/%: % | $(ACTIVATE_VENV)
+$(SHARE)/%: % | $(ACTIVATE_VENV) $(SHARE)
 	. $(ACTIVATE_VENV) && cd $< && $(PIP) install $(PIP_OPTIONS) .
 	@touch $@
+
+$(SHARE):
+	@mkdir -p "$@"
 
 # At last, add venv dependency (must not become first):
 $(OCRD_EXECUTABLES) $(BIN)/wheel: | $(ACTIVATE_VENV)
