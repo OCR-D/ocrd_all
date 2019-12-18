@@ -67,3 +67,6 @@
 [submodule "sbb_textline_detector"]
 	path = sbb_textline_detector
 	url = https://github.com/qurator-spk/sbb_textline_detector.git
+[submodule "ocrd_repair_inconsistencies"]
+	path = ocrd_repair_inconsistencies
+	url = https://github.com/qurator-spk/ocrd_repair_inconsistencies

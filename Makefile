@@ -278,6 +278,12 @@ SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-line-detector
 $(SBB_LINE_DETECTOR): sbb_textline_detector
 endif
 
+ifneq ($(findstring ocrd_repair_inconsistencies, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(OCRD_REPAIR_INCONSISTENCIES)
+OCRD_REPAIR_INCONSISTENCIES := $(BIN)/ocrd-repair-inconsistencies
+$(OCRD_REPAIR_INCONSISTENCIES): ocrd_repair_inconsistencies
+endif
+
 ifneq ($(findstring workflow-configuration, $(OCRD_MODULES)),)
 deps-ubuntu: workflow-configuration
 OCRD_EXECUTABLES += $(WORKFLOW_CONFIGURATION)
