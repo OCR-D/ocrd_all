@@ -278,6 +278,12 @@ SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-line-detector
 $(SBB_LINE_DETECTOR): sbb_textline_detector
 endif
 
+ifneq ($(findstring ocrd_repair_inconsistencies, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(OCRD_REPAIR_INCONSISTENCIES)
+OCRD_REPAIR_INCONSISTENCIES := $(BIN)/ocrd-repair-inconsistencies
+$(OCRD_REPAIR_INCONSISTENCIES): ocrd_repair_inconsistencies
+endif
+
 ifneq ($(findstring workflow-configuration, $(OCRD_MODULES)),)
 deps-ubuntu: workflow-configuration
 OCRD_EXECUTABLES += $(WORKFLOW_CONFIGURATION)
@@ -428,9 +434,9 @@ endif
 docker-minimum-git docker-medium-git docker-maximum-git: PIP_OPTIONS = -e
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from PPA
-docker-minimum docker-minimum-git: DOCKER_MODULES = core ocrd_im6convert ocrd_cis ocrd_tesserocr tesserocr workflow-configuration
+docker-minimum docker-minimum-git: DOCKER_MODULES = core ocrd_im6convert ocrd_cis ocrd_tesserocr tesserocr workflow-configuration ocrd_repair_inconsistencies
 # Medium-size selection: add Olena binarization and Calamari, use Tesseract from git, add evaluation
-docker-medium docker-medium-git: DOCKER_MODULES = core ocrd_im6convert format-converters ocrd_cis ocrd_tesserocr tesserocr tesseract ocrd_olena ocrd_segment ocrd_keraslm ocrd_calamari dinglehopper cor-asv-ann workflow-configuration
+docker-medium docker-medium-git: DOCKER_MODULES = core ocrd_im6convert format-converters ocrd_cis ocrd_tesserocr tesserocr tesseract ocrd_olena ocrd_segment ocrd_keraslm ocrd_calamari dinglehopper cor-asv-ann workflow-configuration ocrd_repair_inconsistencies
 # Maximum-size selection: use all modules
 docker-maximum docker-maximum-git: DOCKER_MODULES = $(filter-out opencv-python,$(OCRD_MODULES))
 
