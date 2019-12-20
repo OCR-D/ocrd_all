@@ -434,11 +434,11 @@ endif
 docker-minimum-git docker-medium-git docker-maximum-git: PIP_OPTIONS = -e
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from PPA
-docker-minimum docker-minimum-git: DOCKER_MODULES = core ocrd_im6convert ocrd_cis ocrd_tesserocr tesserocr workflow-configuration ocrd_repair_inconsistencies
+docker-minimum docker-minimum-git: DOCKER_MODULES = ocrd_im6convert ocrd_cis ocrd_tesserocr tesserocr workflow-configuration ocrd_repair_inconsistencies
 # Medium-size selection: add Olena binarization and Calamari, use Tesseract from git, add evaluation
-docker-medium docker-medium-git: DOCKER_MODULES = core ocrd_im6convert format-converters ocrd_cis ocrd_tesserocr tesserocr tesseract ocrd_olena ocrd_segment ocrd_keraslm ocrd_calamari dinglehopper cor-asv-ann workflow-configuration ocrd_repair_inconsistencies
+docker-medium docker-medium-git: DOCKER_MODULES = ocrd_im6convert format-converters ocrd_cis ocrd_tesserocr tesserocr tesseract ocrd_olena ocrd_segment ocrd_keraslm ocrd_calamari dinglehopper cor-asv-ann workflow-configuration ocrd_repair_inconsistencies
 # Maximum-size selection: use all modules
-docker-maximum docker-maximum-git: DOCKER_MODULES = $(filter-out opencv-python,$(OCRD_MODULES))
+docker-maximum docker-maximum-git: DOCKER_MODULES = $(filter-out core,$(filter-out opencv-python,$(OCRD_MODULES)))
 
 # Build rule for all selections
 # (maybe we should add --network=host here for smoother build-time?)
