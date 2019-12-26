@@ -69,7 +69,7 @@ Targets:
 	dockers: (re)build docker images for some pre-selected subsets of modules
 
 Variables:
-	VIRTUAL_ENV: path to (re-)use for the virtual environment
+	VIRTUAL_ENV: absolute path to (re-)use for the virtual environment
 	TMPDIR: path to use for temporary storage instead of the system default
 	PYTHON: name of the Python binary
 	PIP: name of the Python packaging binary
