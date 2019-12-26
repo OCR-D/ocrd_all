@@ -24,7 +24,7 @@ SHARE := $(VIRTUAL_ENV)/share
 ACTIVATE_VENV := $(VIRTUAL_ENV)/bin/activate
 
 define WGET
-$(if $(shell which wget),wget -O $(1) $(2),$(if $(shell which curl),curl -o $(1) $(2),$(error "found no cmdline downloader (wget/curl)")))
+$(if $(shell which wget),wget -nv -O $(1) $(2),$(if $(shell which curl),curl -o $(1) $(2),$(error "found no cmdline downloader (wget/curl)")))
 endef
 
 PKG_CONFIG_PATH := $(VIRTUAL_ENV)/lib/pkgconfig
