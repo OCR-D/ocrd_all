@@ -209,6 +209,7 @@ deps-ubuntu: ocrd_tesserocr
 # convert Tesseract model names into Ubuntu/Debian pkg names
 # (does not work with names under script/ though)
 CUSTOM_DEPS += $(subst _,-,$(ALL_TESSERACT_MODELS:%=tesseract-ocr-%))
+CUSTOM_DEPS += libarchive-dev
 endif
 
 OCRD_TESSEROCR := $(BIN)/ocrd-tesserocr-binarize
