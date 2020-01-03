@@ -60,7 +60,7 @@ RUN echo "apt-get -y install automake autoconf libtool pkg-config g++" >> docker
 # we want to use PREFIX as venv
 RUN echo "> $PREFIX/bin/activate" >> docker.sh
 # try to fetch all modules system requirements
-RUN echo "make -i deps-ubuntu" >> docker.sh
+RUN echo "make deps-ubuntu" >> docker.sh
 # build/install all tools of the requested modules:
 RUN echo "make all" >> docker.sh
 # post-install fixup against conflicting requirements
