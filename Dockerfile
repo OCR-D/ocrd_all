@@ -56,11 +56,11 @@ RUN echo "Acquire::ftp::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
 # start a shell script (so we can comment individual steps here)
 RUN echo "set -ex" > docker.sh
 # get packages for build
-RUN echo "apt-get -y install automake autoconf libtool pkg-config g++ make" >> docker.sh
+RUN echo "apt-get -y install automake autoconf libtool pkg-config g++" >> docker.sh
 # we want to use PREFIX as venv
 RUN echo "> $PREFIX/bin/activate" >> docker.sh
 # try to fetch all modules system requirements
-RUN echo "make -i deps-ubuntu" >> docker.sh
+RUN echo "make deps-ubuntu" >> docker.sh
 # build/install all tools of the requested modules:
 RUN echo "make all" >> docker.sh
 # post-install fixup against conflicting requirements

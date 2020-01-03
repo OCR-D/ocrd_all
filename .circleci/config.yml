@@ -6,18 +6,20 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
+      - run: make docker-maximum
+  deploy:
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - checkout
+      - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
+      - run: make docker-minimum
+      - run: make docker-medium
+      - run: make docker-maximum
       - run:
-          name: Build Docker images
+          name: Publish Docker images to Docker Hub
           command: |
-            make dockers
-      - run:
-          name: Build Docker images
-          command: |
-            make dockers
-      - run:
-          name: Publish Docker Image to Docker Hub
-          command: |
-            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
             docker push ocrd/all:minimum
             docker push ocrd/all:medium
             docker push ocrd/all:maximum
@@ -25,7 +27,13 @@ workflows:
   version: 2
   build-master:
     jobs:
-      - build #:
-          # filters:
-            # branches:
-              # only: master
+      - deploy:
+          filters:
+            branches:
+              only: master
+  build-pull-request:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: master
