@@ -6,6 +6,13 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
+      - run: make docker-maximum
+  deploy:
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - checkout
+      - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
       - run: make docker-minimum
       - run: make docker-medium
       - run: make docker-maximum
@@ -20,7 +27,13 @@ workflows:
   version: 2
   build-master:
     jobs:
-      - build #:
-          # filters:
-            # branches:
-              # only: master
+      - deploy:
+          filters:
+            branches:
+              only: master
+  build-pull-request:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: master
