@@ -1,5 +1,8 @@
 # OCR-D/ocrd_all
 
+[![Built on CircleCI](https://circleci.com/gh/OCR-D/ocrd_all.svg?style=svg)](https://circleci.com/gh/OCR-D/ocrd_all)
+[![MIT licensed](https://img.shields.io/github/license/OCR-D/ocrd_all)](https://github.com/OCR-D/ocrd_all/blob/master/LICENSE)
+
 This controls installation of all OCR-D modules from source (as git submodules).
 
 It includes a Makefile for their installation into a virtual environment (venv) or Docker container.
@@ -35,6 +38,7 @@ in the current shell environment via PATH and PYTHONHOME.)
     * [Examples](#examples)
     * [Results](#results)
     * [Persistent configuration](#persistent-configuration)
+    * [Docker Hub](#docker-hub)
  * [Challenges](#challenges)
     * [No published/recent version on PyPI](#no-publishedrecent-version-on-pypi)
     * [Conflicting requirements](#conflicting-requirements)
@@ -270,6 +274,52 @@ Note: When `local.mk` exists, variables can still be overridden on the command l
 (i.e. `make all OCRD_MODULES=` will build all executables for all modules again),
 but not from the shell environment
 (i.e. `OCRD_MODULES= make all` will still use the value from local.mk).
+
+### Docker Hub
+
+The project is available as prebuilt Docker images from [Docker Hub as
+`ocrd/all`](https://hub.docker.com/r/ocrd/all). You can choose from three tags,
+`minimum`, `medium` and `maximum`. These differ in which modules are included,
+with `maximum` being the equivalent of doing `make all`. To download the images
+on the command line:
+
+```sh
+docker pull ocrd/all:minimum
+# or
+docker pull ocrd/all:medium
+# or
+docker pull ocrd/all:maximum
+```
+
+Usage is the same [as if you had built the image yourself](#results).
+
+This table lists which tag contains which module:
+
+| Module                      | `minimum` | `medium` | `maximum` |
+| -----                       | ----      | ----     | ----      |
+| core                        | ☑         | ☑        | ☑         |
+| ocrd_cis                    | ☑         | ☑        | ☑         |
+| ocrd_im6convert             | ☑         | ☑        | ☑         |
+| ocrd_repair_inconsistencies | ☑         | ☑        | ☑         |
+| ocrd_tesserocr              | ☑         | ☑        | ☑         |
+| tesserocr                   | ☑         | ☑        | ☑         |
+| workflow-configuration      | ☑         | ☑        | ☑         |
+| cor-asv-ann                 | -         | ☑        | ☑         |
+| dinglehopper                | -         | ☑        | ☑         |
+| format-converters           | -         | ☑        | ☑         |
+| ocrd_calamari               | -         | ☑        | ☑         |
+| ocrd_keraslm                | -         | ☑        | ☑         |
+| ocrd_olena                  | -         | ☑        | ☑         |
+| ocrd_segment                | -         | ☑        | ☑         |
+| tesseract                   | -         | ☑        | ☑         |
+| ocrd_anybaseocr             | -         | -        | ☑         |
+| ocrd_kraken                 | -         | -        | ☑         |
+| ocrd_ocropy                 | -         | -        | ☑         |
+| ocrd_pc_segmentation        | -         | -        | ☑         |
+| ocrd_typegroups_classifier  | -         | -        | ☑         |
+| sbb_textline_detector       | -         | -        | ☑         |
+| cor-asv-fst                 | -         | -        | ☑         |
+
 
 ## Challenges
 
