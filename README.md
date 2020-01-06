@@ -281,7 +281,7 @@ but not from the shell environment
 The project is available as prebuilt Docker images from [Docker Hub as
 `ocrd/all`](https://hub.docker.com/r/ocrd/all). You can choose from three tags,
 `minimum`, `medium` and `maximum`. These differ in which modules are included,
-with `maximum` being the equivalent of doing `make all`. To download the images
+with `maximum` being the equivalent of doing `make all` with the default (unset) value for `OCRD_MODULES`. To download the images
 on the command line:
 
 ```sh
