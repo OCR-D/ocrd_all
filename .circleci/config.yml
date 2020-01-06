@@ -6,16 +6,16 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
-      - run: make docker-maximum
+      - run: make docker-maximum GIT_RECURSIVE=--recursive
   deploy:
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
-      - run: make docker-minimum
-      - run: make docker-medium
-      - run: make docker-maximum
+      - run: make docker-minimum GIT_RECURSIVE=--recursive
+      - run: make docker-medium GIT_RECURSIVE=--recursive
+      - run: make docker-maximum GIT_RECURSIVE=--recursive
       - run:
           name: Publish Docker images to Docker Hub
           command: |
