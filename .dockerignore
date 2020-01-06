@@ -1,8 +1,8 @@
 # only for host-local installation
 venv
 # not needed:
-.git
-.gitmodules
+# .git
+# .gitmodules
 # not needed in Ubuntu:
 opencv-python
 # only needed for testing:

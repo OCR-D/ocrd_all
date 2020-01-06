@@ -16,6 +16,9 @@ jobs:
       - run: make docker-minimum
       - run: make docker-medium
       - run: make docker-maximum
+      - run: make docker-minimum-git
+      - run: make docker-medium-git
+      - run: make docker-maximum-git
       - run:
           name: Publish Docker images to Docker Hub
           command: |
@@ -23,6 +26,9 @@ jobs:
             docker push ocrd/all:minimum
             docker push ocrd/all:medium
             docker push ocrd/all:maximum
+            docker push ocrd/all:minimum-git
+            docker push ocrd/all:medium-git
+            docker push ocrd/all:maximum-git
 workflows:
   version: 2
   build-master:

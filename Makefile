@@ -125,6 +125,19 @@ $(BIN)/ocrd: core
 	# workaround for core#351:
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install --no-deps $(PIP_OPTIONS)"
 
+ifneq ($(findstring opencv-python, $(OCRD_MODULES)),)
+CUSTOM_DEPS += cmake gcc g++
+# libavcodec-dev libavformat-dev libswscale-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev
+# libpng-dev libjpeg-dev libopenexr-dev libtiff-dev libwebp-dev libjasper-dev
+opencv-python: GIT_RECURSIVE = --recursive
+opencv-python/setup.py: opencv-python
+$(SHARE)/opencv-python: opencv-python/setup.py | $(ACTIVATE_VENV) $(SHARE) $(SHARE)/numpy
+	. $(ACTIVATE_VENV) && ENABLE_HEADLESS=1 $(PYTHON) $< bdist_wheel
+	. $(ACTIVATE_VENV) && $(PIP) install $(<D)/dist/opencv_python_headless-*.whl
+	@touch $@
+$(BIN)/ocrd: $(SHARE)/opencv-python
+endif
+
 ifneq ($(findstring ocrd_kraken, $(OCRD_MODULES)),)
 $(SHARE)/clstm: | $(SHARE)/numpy $(SHARE)
 CUSTOM_DEPS += scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig
@@ -174,6 +187,7 @@ $(BIN)/ocrd-im6convert: ocrd_im6convert
 endif
 
 ifneq ($(findstring ocrd_olena, $(OCRD_MODULES)),)
+ocrd_olena: GIT_RECURSIVE = --recursive
 deps-ubuntu: ocrd_olena
 OCRD_EXECUTABLES += $(BIN)/ocrd-olena-binarize
 CUSTOM_INSTALL += $(BIN)/ocrd-olena-binarize

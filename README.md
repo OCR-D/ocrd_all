@@ -192,7 +192,7 @@ Add extra options to the `pip install` command like `-q` or `-v` or `-e`.
 
 #### _GIT_RECURSIVE_
 
-Set to `--recursive` to checkout/update all modules recursively.
+Set to `--recursive` to checkout/update all modules recursively. (This usually installs additional tests and models.)
 
 #### _TESSERACT_MODELS_
 
@@ -261,6 +261,9 @@ TMPDIR = $(CURDIR)/.tmp
 
 # install more languages/models for Tesseract
 TESSERACT_MODELS = deu frk script/Fraktur script/Latin
+
+# install all of Tesseract's submodules to get unit tests and training tools, too
+tesseract: GIT_RECURSIVE = --recursive
 ```
 
 Note: When `local.mk` exists, variables can still be overridden on the command line,
