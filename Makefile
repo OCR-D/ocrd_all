@@ -35,8 +35,11 @@ CUSTOM_DEPS = wget python3-venv # add more packages for deps-ubuntu below (or mo
 
 # Default to all submodules, but allow overriding by user
 # (and treat the empty value as if it was unset)
+# opencv-python is only needed for aarch64-linux-gnu and other less common platforms,
+# so don't include it by default.
+# XXX Wed Jan  8 13:21:44 CET 2020 kba - disabled cor-asv-fst since it won't build on 18.04 without hacks
 ifeq ($(strip $(OCRD_MODULES)),)
-override OCRD_MODULES := $(shell git submodule status | while read commit dir ref; do echo $$dir; done)
+override OCRD_MODULES := $(filter-out cor-asv-fst,$(filter-out opencv-python,$(shell git submodule status | while read commit dir ref; do echo $$dir; done)))
 endif
 
 .DEFAULT_GOAL = help # all is too much for a default, and ocrd is too little
@@ -443,8 +446,6 @@ deps-ubuntu:
 
 # Docker builds.
 DOCKER_TAG ?= ocrd/all
-# opencv-python is not needed for Ubuntu x86_64
-DOCKER_MODULES ?= $(filter-out opencv-python,$(OCRD_MODULES))
 
 # Several predefined selections
 # (note: to arrive at smallest possible image size individually,
