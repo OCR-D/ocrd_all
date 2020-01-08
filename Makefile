@@ -31,7 +31,6 @@ PKG_CONFIG_PATH := $(VIRTUAL_ENV)/lib/pkgconfig
 export PKG_CONFIG_PATH
 
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
-CUSTOM_INSTALL = $(BIN)/ocrd # add more non-pip installation targets below
 CUSTOM_DEPS = wget python3-venv # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
 # Default to all submodules, but allow overriding by user
@@ -125,6 +124,12 @@ $(BIN)/ocrd: core
 	# workaround for core#351:
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install --no-deps $(PIP_OPTIONS)"
 
+# Convert the executable names (1) to a pattern rule,
+# so that the recipe will be used with single-recipe-
+# multiple-output semantics:
+multirule = $(patsubst $(BIN)/%,\%/%,$(1))
+
+
 ifneq ($(findstring opencv-python, $(OCRD_MODULES)),)
 CUSTOM_DEPS += cmake gcc g++
 # libavcodec-dev libavformat-dev libswscale-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev
@@ -145,13 +150,15 @@ CUSTOM_DEPS += scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev 
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
 OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
-$(OCRD_KRAKEN): ocrd_kraken $(SHARE)/clstm
+$(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(SHARE)/clstm
+	$(pip_install)
 endif
 
 ifneq ($(findstring ocrd_ocropy, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_OCROPY)
 OCRD_OCROPY := $(BIN)/ocrd-ocropy-segment
 $(OCRD_OCROPY): ocrd_ocropy
+	$(pip_install)
 endif
 
 ifneq ($(findstring cor-asv-ann, $(OCRD_MODULES)),)
@@ -161,27 +168,29 @@ OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-process
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-train
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-eval
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
-$(OCRD_COR_ASV_ANN): cor-asv-ann
+$(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann
+	$(pip_install)
 endif
 
 ifneq ($(findstring cor-asv-fst, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
 OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
 OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
-$(OCRD_COR_ASV_FST): cor-asv-fst
+$(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst
+	$(pip_install)
 endif
 
 ifneq ($(findstring ocrd_keraslm, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KERASLM)
 OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
 OCRD_KERASLM += $(BIN)/keraslm-rate
-$(OCRD_KERASLM): ocrd_keraslm
+$(call multirule,$(OCRD_KERASLM)): ocrd_keraslm
+	$(pip_install)
 endif
 
 ifneq ($(findstring ocrd_im6convert, $(OCRD_MODULES)),)
 deps-ubuntu: ocrd_im6convert
 OCRD_EXECUTABLES += $(BIN)/ocrd-im6convert
-CUSTOM_INSTALL += $(BIN)/ocrd-im6convert
 $(BIN)/ocrd-im6convert: ocrd_im6convert
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
 endif
@@ -190,7 +199,6 @@ ifneq ($(findstring ocrd_olena, $(OCRD_MODULES)),)
 ocrd_olena: GIT_RECURSIVE = --recursive
 deps-ubuntu: ocrd_olena
 OCRD_EXECUTABLES += $(BIN)/ocrd-olena-binarize
-CUSTOM_INSTALL += $(BIN)/ocrd-olena-binarize
 $(BIN)/ocrd-olena-binarize: ocrd_olena
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
 clean: clean-olena
@@ -204,6 +212,7 @@ OCRD_EXECUTABLES += $(BIN)/ocrd-dinglehopper
 .PHONY: ocrd-dinglehopper
 ocrd-dinglehopper: $(BIN)/ocrd-dinglehopper
 $(BIN)/ocrd-dinglehopper: dinglehopper
+	$(pip_install)
 endif
 
 ifneq ($(findstring ocrd_segment, $(OCRD_MODULES)),)
@@ -212,7 +221,8 @@ OCRD_SEGMENT := $(BIN)/ocrd-segment-evaluate
 OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-lines
 OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-regions
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
-$(OCRD_SEGMENT): ocrd_segment
+$(call multirule,$(OCRD_SEGMENT)): ocrd_segment
+	$(pip_install)
 endif
 
 ifneq ($(findstring ocrd_tesserocr, $(OCRD_MODULES)),)
@@ -233,7 +243,8 @@ OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-recognize
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-line
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-region
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-word
-$(OCRD_TESSEROCR): ocrd_tesserocr $(SHARE)/tesserocr
+$(call multirule,$(OCRD_TESSEROCR)): ocrd_tesserocr $(SHARE)/tesserocr
+	$(pip_install)
 endif
 
 ifneq ($(findstring ocrd_cis, $(OCRD_MODULES)),)
@@ -252,19 +263,22 @@ OCRD_CIS += $(BIN)/ocrd-cis-ocropy-segment
 #OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
 OCRD_CIS += $(BIN)/ocrd-cis-profile
 OCRD_CIS += $(BIN)/ocrd-cis-wer
-$(OCRD_CIS): ocrd_cis
+$(call multirule,$(OCRD_CIS)): ocrd_cis
+	$(pip_install)
 endif
 
 ifneq ($(findstring ocrd_calamari, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
 $(OCRD_CALAMARI): ocrd_calamari
+	$(pip_install)
 endif
 
 ifneq ($(findstring ocrd_pc_segmentation, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
 $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
+	$(pip_install)
 endif
 
 ifneq ($(findstring ocrd_anybaseocr, $(OCRD_MODULES)),)
@@ -277,26 +291,30 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-tiseg
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-block-segmentation
-$(OCRD_ANYBASEOCR): ocrd_anybaseocr
+$(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
+	$(pip_install)
 endif
 
 ifneq ($(findstring ocrd_typegroups_classifier, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
 OCRD_TYPECLASS := $(BIN)/ocrd-typegroups-classifier
 OCRD_TYPECLASS += $(BIN)/typegroups-classifier
-$(OCRD_TYPECLASS): ocrd_typegroups_classifier
+$(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier
+	$(pip_install)
 endif
 
 ifneq ($(findstring sbb_textline_detector, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
 SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-line-detector
 $(SBB_LINE_DETECTOR): sbb_textline_detector
+	$(pip_install)
 endif
 
 ifneq ($(findstring ocrd_repair_inconsistencies, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_REPAIR_INCONSISTENCIES)
 OCRD_REPAIR_INCONSISTENCIES := $(BIN)/ocrd-repair-inconsistencies
 $(OCRD_REPAIR_INCONSISTENCIES): ocrd_repair_inconsistencies
+	$(pip_install)
 endif
 
 ifneq ($(findstring workflow-configuration, $(OCRD_MODULES)),)
@@ -304,23 +322,18 @@ deps-ubuntu: workflow-configuration
 OCRD_EXECUTABLES += $(WORKFLOW_CONFIGURATION)
 WORKFLOW_CONFIGURATION := $(BIN)/ocrd-make
 WORKFLOW_CONFIGURATION += $(BIN)/ocrd-import
-CUSTOM_INSTALL += $(WORKFLOW_CONFIGURATION)
 $(call multirule,$(WORKFLOW_CONFIGURATION)): workflow-configuration
 	$(MAKE) -C $< install
 endif
-
-# Convert the executable names (1) to a pattern rule,
-# so that the recipe will be used with single-recipe-
-# multiple-output semantics:
-multirule = $(patsubst $(BIN)/%,\%/%,$(1))
 
 # Build by entering subdir (first dependent), then
 # install gracefully with dependencies, and finally
 # install again forcefully without depds (to ensure
 # the binary itself updates):
-$(call multirule,$(filter-out $(CUSTOM_INSTALL),$(OCRD_EXECUTABLES))):
-	. $(ACTIVATE_VENV) && cd $< && $(PIP) install $(PIP_OPTIONS_E) .
-	. $(ACTIVATE_VENV) && cd $< && $(PIP) install --no-deps --force-reinstall $(PIP_OPTIONS) .
+define pip_install
+. $(ACTIVATE_VENV) && cd $< && $(PIP) install $(PIP_OPTIONS_E) .
+. $(ACTIVATE_VENV) && cd $< && $(PIP) install --no-deps --force-reinstall $(PIP_OPTIONS) .
+endef
 
 # avoid making these .PHONY so they do not have to be repeated:
 # clstm tesserocr
