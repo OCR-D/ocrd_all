@@ -18,7 +18,14 @@
 # use OCR-D base container (from ubuntu:18.04)
 FROM ocrd/core
 
-MAINTAINER OCR-D
+ARG VCS_REF
+ARG BUILD_DATE
+LABEL \
+    maintainer="https://ocr-d.de/kontakt" \
+    org.label-schema.vcs-ref=$VCS_REF \
+    org.label-schema.vcs-url="https://github.com/OCR-D/ocrd_all" \
+    org.label-schema.build-date=$BUILD_DATE
+
 
 ENV PREFIX=/usr/local
 ENV VIRTUAL_ENV $PREFIX
