@@ -176,10 +176,12 @@ $(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann
 endif
 
 ifneq ($(findstring cor-asv-fst, $(OCRD_MODULES)),)
+deps-ubuntu: cor-asv-fst
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
 OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
 OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
 $(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst
+	$(MAKE) -C $< deps
 	$(pip_install)
 endif
 
