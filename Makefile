@@ -37,7 +37,9 @@ CUSTOM_DEPS = wget python3-venv # add more packages for deps-ubuntu below (or mo
 # Default to all submodules, but allow overriding by user
 # (and treat the empty value as if it was unset)
 ifeq ($(strip $(OCRD_MODULES)),)
-override OCRD_MODULES := $(shell git submodule status | while read commit dir ref; do echo $$dir; done)
+# opencv-python is only needed for aarch64-linux-gnu and other less common platforms,
+# so don't include it by default.
+override OCRD_MODULES := $(filter-out opencv-python,$(shell git submodule status | while read commit dir ref; do echo $$dir; done))
 endif
 
 .DEFAULT_GOAL = help # all is too much for a default, and ocrd is too little
@@ -430,8 +432,7 @@ deps-ubuntu:
 
 # Docker builds.
 DOCKER_TAG ?= ocrd/all
-# opencv-python is not needed for Ubuntu x86_64
-DOCKER_MODULES ?= $(filter-out opencv-python,$(OCRD_MODULES))
+DOCKER_MODULES ?= $(OCRD_MODULES)
 
 # Several predefined selections
 # (note: to arrive at smallest possible image size individually,
@@ -453,7 +454,7 @@ docker-minimum docker-minimum-git: DOCKER_MODULES = core ocrd_im6convert ocrd_ci
 # Medium-size selection: add Olena binarization and Calamari, use Tesseract from git, add evaluation
 docker-medium docker-medium-git: DOCKER_MODULES = core ocrd_im6convert format-converters ocrd_cis ocrd_tesserocr tesserocr tesseract ocrd_olena ocrd_segment ocrd_keraslm ocrd_calamari dinglehopper cor-asv-ann workflow-configuration ocrd_repair_inconsistencies
 # Maximum-size selection: use all modules
-docker-maximum docker-maximum-git: DOCKER_MODULES = $(filter-out opencv-python,$(OCRD_MODULES))
+docker-maximum docker-maximum-git: DOCKER_MODULES = $(OCRD_MODULES)
 
 # Build rule for all selections
 # (maybe we should add --network=host here for smoother build-time?)
