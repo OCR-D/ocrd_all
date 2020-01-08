@@ -466,7 +466,8 @@ docker-minimum docker-minimum-git: DOCKER_MODULES = core ocrd_im6convert ocrd_ci
 # Medium-size selection: add Olena binarization and Calamari, use Tesseract from git, add evaluation
 docker-medium docker-medium-git: DOCKER_MODULES = core ocrd_im6convert format-converters ocrd_cis ocrd_tesserocr tesserocr tesseract ocrd_olena ocrd_segment ocrd_keraslm ocrd_calamari dinglehopper cor-asv-ann workflow-configuration ocrd_repair_inconsistencies
 # Maximum-size selection: use all modules
-docker-maximum docker-maximum-git: DOCKER_MODULES = $(filter-out opencv-python,$(OCRD_MODULES))
+# XXX Wed Jan  8 13:21:44 CET 2020 kba - disabled cor-asv-fst since it won't build on 18.04 without hacks
+docker-maximum docker-maximum-git: DOCKER_MODULES = $(filter-out cor-asv-fst,$(filter-out opencv-python,$(OCRD_MODULES)))
 
 # Build rule for all selections
 # (maybe we should add --network=host here for smoother build-time?)
