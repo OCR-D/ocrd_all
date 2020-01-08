@@ -39,7 +39,7 @@ CUSTOM_DEPS = wget python3-venv # add more packages for deps-ubuntu below (or mo
 # so don't include it by default.
 # XXX Wed Jan  8 13:21:44 CET 2020 kba - disabled cor-asv-fst since it won't build on 18.04 without hacks
 ifeq ($(strip $(OCRD_MODULES)),)
-override OCRD_MODULES := $(filter-out cor-asv-fst,$(filter-out opencv-python,$(shell git submodule status | while read commit dir ref; do echo $$dir; done)))
+override OCRD_MODULES := $(filter-out cor-asv-fst opencv-python,$(shell git submodule status | while read commit dir ref; do echo $$dir; done))
 endif
 
 .DEFAULT_GOAL = help # all is too much for a default, and ocrd is too little
@@ -467,8 +467,7 @@ docker-minimum docker-minimum-git: DOCKER_MODULES = core ocrd_im6convert ocrd_ci
 # Medium-size selection: add Olena binarization and Calamari, use Tesseract from git, add evaluation
 docker-medium docker-medium-git: DOCKER_MODULES = core ocrd_im6convert format-converters ocrd_cis ocrd_tesserocr tesserocr tesseract ocrd_olena ocrd_segment ocrd_keraslm ocrd_calamari dinglehopper cor-asv-ann workflow-configuration ocrd_repair_inconsistencies
 # Maximum-size selection: use all modules
-# XXX Wed Jan  8 13:21:44 CET 2020 kba - disabled cor-asv-fst since it won't build on 18.04 without hacks
-docker-maximum docker-maximum-git: DOCKER_MODULES = $(filter-out cor-asv-fst,$(filter-out opencv-python,$(OCRD_MODULES)))
+docker-maximum docker-maximum-git: DOCKER_MODULES = $(OCRD_MODULES)
 
 # Build rule for all selections
 # (maybe we should add --network=host here for smoother build-time?)
