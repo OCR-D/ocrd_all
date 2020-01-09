@@ -1,8 +1,8 @@
 # OCR-D/ocrd_all
 
 [![Built on CircleCI](https://circleci.com/gh/OCR-D/ocrd_all.svg?style=svg)](https://circleci.com/gh/OCR-D/ocrd_all)
-![Docker Automated build](https://img.shields.io/docker/automated/ocrd/all)
 [![MIT licensed](https://img.shields.io/github/license/OCR-D/ocrd_all)](https://github.com/OCR-D/ocrd_all/blob/master/LICENSE)
+[![](https://images.microbadger.com/badges/image/ocrd/all:maximum.svg)](https://hub.docker.com/r/ocrd/all)
 
 This controls installation of all OCR-D modules from source (as git submodules).
 

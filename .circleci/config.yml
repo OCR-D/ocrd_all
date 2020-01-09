@@ -29,6 +29,7 @@ jobs:
             docker push ocrd/all:minimum-git
             docker push ocrd/all:medium-git
             docker push ocrd/all:maximum-git
+            curl -X POST "$MICROBADGER_WEBHOOK" || true
 workflows:
   version: 2
   build-master:

@@ -475,6 +475,8 @@ docker-maximum docker-maximum-git: DOCKER_MODULES = $(OCRD_MODULES)
 # (maybe we should add --network=host here for smoother build-time?)
 docker%: Dockerfile $(DOCKER_MODULES)
 	docker build \
+	--build-arg VCS_REF=$$(git rev-parse --short HEAD) \
+	--build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
 	--build-arg OCRD_MODULES="$(DOCKER_MODULES)" \
 	--build-arg PIP_OPTIONS="$(PIP_OPTIONS)" \
 	-t $(DOCKER_TAG):$(or $(*:-%=%),latest) .
