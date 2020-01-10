@@ -20,16 +20,15 @@ jobs:
       - run: make docker-medium-git
       - run: make docker-maximum-git
       - run:
-          name: Publish Docker images to Docker Hub
-          command: |
-            echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
-            docker push ocrd/all:minimum
-            docker push ocrd/all:medium
-            docker push ocrd/all:maximum
-            docker push ocrd/all:minimum-git
-            docker push ocrd/all:medium-git
-            docker push ocrd/all:maximum-git
-            curl -X POST "$MICROBADGER_WEBHOOK" || true
+          name: Login to Docker Hub
+          command: echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+      - run: docker push ocrd/all:minimum
+      - run: docker push ocrd/all:minimum-git
+      - run: docker push ocrd/all:medium
+      - run: docker push ocrd/all:medium-git
+      - run: docker push ocrd/all:maximum
+      - run: docker push ocrd/all:maximum-git
+      - run: curl -X POST "$MICROBADGER_WEBHOOK" || true
 workflows:
   version: 2
   build-master:
