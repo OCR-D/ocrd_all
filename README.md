@@ -314,12 +314,21 @@ This table lists which tag contains which module:
 | ocrd_segment                | -         | ☑        | ☑         |
 | tesseract                   | -         | ☑        | ☑         |
 | ocrd_anybaseocr             | -         | -        | ☑         |
-| ocrd_kraken                 | -         | -        | ☑         |
-| ocrd_ocropy                 | -         | -        | ☑         |
 | ocrd_pc_segmentation        | -         | -        | ☑         |
 | ocrd_typegroups_classifier  | -         | -        | ☑         |
 | sbb_textline_detector       | -         | -        | ☑         |
-| cor-asv-fst                 | -         | -        | ☑         |
+| cor-asv-fst                 | -         | -        | -         |
+| clstm                       | -         | -        | -         |
+| ocrd_kraken                 | -         | -        | -         |
+| ocrd_ocropy                 | -         | -        | -         |
+
+**Note**: The following modules have been disabled by default and can only be
+enabled by explicitly setting `OCRD_MODULES` or `DISABLED_MODULES`:
+
+* cor-asv-fst (runtime issues)
+* ocrd_ocropy (better implementation in ocrd_cis available)
+* ocrd_kraken (currently unmaintained)
+* clstm (required only for ocrd_kraken)
 
 
 ## Challenges
@@ -334,7 +343,6 @@ The following Python modules need an installation from code for different reason
 - cor-asv-ann (not available in PyPI)
 - cor-asv-fst (not available in PyPI)
 - dinglehopper (not available in PyPI)
-- ocrd_cis (not available in PyPI)
 - tesserocr (too old in PyPI)
 
 _(Solved by installation from source.)_
@@ -346,9 +354,6 @@ Modules may require mutually exclusive sets of dependent packages.
 
 `pip` does not even stop or resolve conflicts – it merely warns!
 
-- `Pillow`:
-   * `==5.4.1` (required by ocrd_typegroups_classifier)
-   * `>=6.2.0` (required by all others)
 - Tensorflow:
    * `tensorflow-gpu==1.14.0` (required by ocrd_calamari and ocrd_anybaseocr)
    * `tensorflow` (required by cor-asv-ann and ocrd_keraslm)
