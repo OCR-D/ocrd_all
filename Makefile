@@ -33,13 +33,13 @@ export PKG_CONFIG_PATH
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_DEPS = wget python3-venv # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
+DISABLED_MODULES ?= cor-asv-fst opencv-python ocrd_kraken clstm ocrd_ocropy
 # Default to all submodules, but allow overriding by user
 # (and treat the empty value as if it was unset)
 # opencv-python is only needed for aarch64-linux-gnu and other less common platforms,
 # so don't include it by default.
-# XXX Wed Jan  8 13:21:44 CET 2020 kba - disabled cor-asv-fst since it won't build on 18.04 without hacks
 ifeq ($(strip $(OCRD_MODULES)),)
-override OCRD_MODULES := $(filter-out cor-asv-fst opencv-python,$(shell git submodule status | while read commit dir ref; do echo $$dir; done))
+override OCRD_MODULES := $(filter-out $(DISABLED_MODULES),$(shell git submodule status | while read commit dir ref; do echo $$dir; done))
 endif
 
 .DEFAULT_GOAL = help # all is too much for a default, and ocrd is too little
@@ -78,6 +78,7 @@ Variables:
 	PIP_OPTIONS: extra options for the `pip install` command like `-q` or `-v` or `-e`
 	GIT_RECURSIVE: set to `--recursive` to checkout/update all submodules recursively
 	OCRD_MODULES: list of submodules to include (defaults to all git submodules, see `show`)
+	DISABLED_MODULES: list of disabled modules. Default: $(DISABLED_MODULES)
 	TESSERACT_MODELS: list of additional models/languages to download for Tesseract
 EOF
 endef
@@ -365,7 +366,7 @@ fix-pip:
 		"pillow>=6.2.0" \
 		$$($(PIP) list | grep tensorflow-gpu | sed -E 's/-gpu +/==/')
 
-
+list of disabled modules. Default: $(DISABLED_MODULES)
 # At last, we know what all OCRD_EXECUTABLES are:
 all: $(OCRD_EXECUTABLES)
 show:
