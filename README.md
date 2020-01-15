@@ -323,7 +323,7 @@ This table lists which tag contains which module:
 | ocrd_ocropy                 | -         | -        | -         |
 
 **Note**: The following modules have been disabled by default and can only be
-enabled by explicitly setting the `DISABLED_MODULES`:
+enabled by explicitly setting `OCRD_MODULES` or `DISABLED_MODULES`:
 
 * cor-asv-fst (runtime issues)
 * ocrd_ocropy (better implementation in ocrd_cis available)
