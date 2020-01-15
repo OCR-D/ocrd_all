@@ -366,7 +366,6 @@ fix-pip:
 		"pillow>=6.2.0" \
 		$$($(PIP) list | grep tensorflow-gpu | sed -E 's/-gpu +/==/')
 
-list of disabled modules. Default: $(DISABLED_MODULES)
 # At last, we know what all OCRD_EXECUTABLES are:
 all: $(OCRD_EXECUTABLES)
 show:
