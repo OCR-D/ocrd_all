@@ -421,14 +421,14 @@ tesseract/configure: tesseract
 
 # Build and install Tesseract.
 $(BIN)/tesseract: tesseract/configure
-	mkdir -p tesseract/build
-	cd tesseract/build && ../configure --disable-openmp --disable-shared --prefix="$(VIRTUAL_ENV)" CXXFLAGS="-g -O2 -fPIC"
-	cd tesseract/build && $(MAKE) install
+	mkdir -p $(VIRTUAL_ENV)/build/tesseract
+	cd $(VIRTUAL_ENV)/build/tesseract && $(CURDIR)/tesseract/configure --disable-openmp --disable-shared --prefix="$(VIRTUAL_ENV)" CXXFLAGS="-g -O2 -fPIC"
+	cd $(VIRTUAL_ENV)/build/tesseract && $(MAKE) install
 
 clean: clean-tesseract
 .PHONY: clean-tesseract
 clean-tesseract:
-	$(RM) -r tesseract/build
+	$(RM) -r $(VIRTUAL_ENV)/build/tesseract
 endif
 
 # do not delete intermediate targets:
