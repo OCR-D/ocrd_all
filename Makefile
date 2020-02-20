@@ -443,7 +443,7 @@ endif
 # (in case deps-ubuntu has been used with sudo and some modules were updated)
 deps-ubuntu:
 	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu; done
-	chown -R --reference=$(CURDIR) $^
+	chown -R --reference=$(CURDIR) .git $^
 	apt-get -y install $(CUSTOM_DEPS)
 
 # Docker builds.
