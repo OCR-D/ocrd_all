@@ -134,6 +134,15 @@ $(BIN)/ocrd: core
 multirule = $(patsubst $(BIN)/%,\%/%,$(1))
 
 
+ifneq ($(findstring format-converters, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(PAGE2IMG)
+PAGE2IMG := $(BIN)/page2img
+$(PAGE2IMG): format-converters/page2img.py
+	$(PIP) install validators
+	echo "#!$(BIN)/python3" | cat - $< >$@
+	chmod +x $@
+endif
+
 ifneq ($(findstring opencv-python, $(OCRD_MODULES)),)
 CUSTOM_DEPS += cmake gcc g++
 # libavcodec-dev libavformat-dev libswscale-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev
