@@ -22,12 +22,22 @@ jobs:
       - run:
           name: Login to Docker Hub
           command: echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
-      - run: docker push ocrd/all:minimum
-      - run: docker push ocrd/all:minimum-git
-      - run: docker push ocrd/all:medium
-      - run: docker push ocrd/all:medium-git
-      - run: docker push ocrd/all:maximum
-      - run: docker push ocrd/all:maximum-git
+      - run:
+          name: Push images to Docker Hub in parallel
+          command: |
+            docker push ocrd/all:minimum &
+            jobs=($!)
+            docker push ocrd/all:minimum-git &
+            jobs+=($!)
+            docker push ocrd/all:medium &
+            jobs+=($!)
+            docker push ocrd/all:medium-git &
+            jobs+=($!)
+            docker push ocrd/all:maximum &
+            jobs+=($!)
+            docker push ocrd/all:maximum-git &
+            jobs+=($!)
+            while sleep 60; ps -p "${jobs[*]}"; do :; done
       - run: curl -X POST "$MICROBADGER_WEBHOOK" || true
 workflows:
   version: 2
