@@ -138,7 +138,7 @@ ifneq ($(findstring format-converters, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(PAGE2IMG)
 PAGE2IMG := $(BIN)/page2img
 $(PAGE2IMG): format-converters/page2img.py
-	$(PIP) install validators
+	. $(ACTIVATE_VENV) && $(PIP) install validators
 	echo "#!$(BIN)/python3" | cat - $< >$@
 	chmod +x $@
 endif
