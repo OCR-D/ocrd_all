@@ -87,6 +87,8 @@ RUN ldconfig
 # remove (dated) security workaround preventing use of
 # ImageMagick's convert on PDF/PS/EPS/XPS:
 RUN sed -i 's/rights="none"/rights="read|write"/g' /etc/ImageMagick-6/policy.xml
+# prevent cache resources exhausted errors
+RUN sed -i 's/name="disk" value="1GiB"/name="disk" value="4GiB"/g' /etc/ImageMagick-6/policy.xml
 
 # reset to interactive
 ENV DEBIAN_FRONTEND teletype
