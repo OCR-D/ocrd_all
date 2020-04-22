@@ -488,9 +488,9 @@ endif
 docker-minimum-git docker-medium-git docker-maximum-git: PIP_OPTIONS = -e
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from PPA
-docker-minimum docker-minimum-git: DOCKER_MODULES = core ocrd_im6convert ocrd_cis ocrd_pagetopdf ocrd_tesserocr tesserocr workflow-configuration ocrd_repair_inconsistencies ocrd_fileformat
+docker-minimum docker-minimum-git: DOCKER_MODULES = core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr tesserocr workflow-configuration
 # Medium-size selection: add Olena binarization and Calamari, use Tesseract from git, add evaluation
-docker-medium docker-medium-git: DOCKER_MODULES = core ocrd_im6convert format-converters ocrd_cis ocrd_pagetopdf ocrd_tesserocr tesserocr tesseract ocrd_olena ocrd_segment ocrd_keraslm ocrd_calamari dinglehopper cor-asv-ann workflow-configuration ocrd_repair_inconsistencies ocrd_fileformat
+docker-medium docker-medium-git: DOCKER_MODULES = core cor-asv-ann dinglehopper format-converters ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr tesseract tesserocr workflow-configuration
 # Maximum-size selection: use all modules
 docker-maximum docker-maximum-git: DOCKER_MODULES = $(OCRD_MODULES)
 
