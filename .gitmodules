@@ -72,7 +72,7 @@
 	url = https://github.com/qurator-spk/ocrd_repair_inconsistencies.git
 [submodule "ocrd_fileformat"]
 	path = ocrd_fileformat
-	url = https://github.com/OCR-D/ocrd_fileformat
+	url = https://github.com/OCR-D/ocrd_fileformat.git
 [submodule "ocrd_pagetopdf"]
 	path = ocrd_pagetopdf
 	url = https://github.com/JKamlah/ocrd_pagetopdf.git
