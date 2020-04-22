@@ -282,6 +282,13 @@ $(call multirule,$(OCRD_CIS)): ocrd_cis
 	$(pip_install)
 endif
 
+ifneq ($(findstring ocrd_pagetopdf, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(OCRD_PAGETOPDF)
+OCRD_PAGETOPDF := $(BIN)/ocrd-pagetopdf
+$(OCRD_PAGETOPDF): ocrd_pagetopdf
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
+endif
+
 ifneq ($(findstring ocrd_calamari, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
@@ -474,9 +481,9 @@ endif
 docker-minimum-git docker-medium-git docker-maximum-git: PIP_OPTIONS = -e
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from PPA
-docker-minimum docker-minimum-git: DOCKER_MODULES = core ocrd_im6convert ocrd_cis ocrd_tesserocr tesserocr workflow-configuration ocrd_repair_inconsistencies
+docker-minimum docker-minimum-git: DOCKER_MODULES = core ocrd_im6convert ocrd_cis ocrd_pagetopdf ocrd_tesserocr tesserocr workflow-configuration ocrd_repair_inconsistencies
 # Medium-size selection: add Olena binarization and Calamari, use Tesseract from git, add evaluation
-docker-medium docker-medium-git: DOCKER_MODULES = core ocrd_im6convert format-converters ocrd_cis ocrd_tesserocr tesserocr tesseract ocrd_olena ocrd_segment ocrd_keraslm ocrd_calamari dinglehopper cor-asv-ann workflow-configuration ocrd_repair_inconsistencies
+docker-medium docker-medium-git: DOCKER_MODULES = core ocrd_im6convert format-converters ocrd_cis ocrd_pagetopdf ocrd_tesserocr tesserocr tesseract ocrd_olena ocrd_segment ocrd_keraslm ocrd_calamari dinglehopper cor-asv-ann workflow-configuration ocrd_repair_inconsistencies
 # Maximum-size selection: use all modules
 docker-maximum docker-maximum-git: DOCKER_MODULES = $(OCRD_MODULES)
 
