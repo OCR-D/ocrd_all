@@ -31,7 +31,7 @@ PKG_CONFIG_PATH := $(VIRTUAL_ENV)/lib/pkgconfig
 export PKG_CONFIG_PATH
 
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
-CUSTOM_DEPS = wget python3-venv # add more packages for deps-ubuntu below (or modules as preqrequisites)
+CUSTOM_DEPS = unzip wget python3-venv # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
 DISABLED_MODULES ?= cor-asv-fst opencv-python ocrd_kraken clstm ocrd_ocropy
 # Default to all submodules, but allow overriding by user
@@ -208,6 +208,13 @@ deps-ubuntu: ocrd_im6convert
 OCRD_EXECUTABLES += $(BIN)/ocrd-im6convert
 $(BIN)/ocrd-im6convert: ocrd_im6convert
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
+endif
+
+ifneq ($(findstring ocrd_fileformat, $(OCRD_MODULES)),)
+ocrd_fileformat: GIT_RECURSIVE = --recursive
+OCRD_EXECUTABLES += $(BIN)/ocrd-fileformat
+$(BIN)/ocrd-fileformat: ocrd_fileformat
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< install-fileformat install
 endif
 
 ifneq ($(findstring ocrd_olena, $(OCRD_MODULES)),)
@@ -481,9 +488,9 @@ endif
 docker-minimum-git docker-medium-git docker-maximum-git: PIP_OPTIONS = -e
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from PPA
-docker-minimum docker-minimum-git: DOCKER_MODULES = core ocrd_im6convert ocrd_cis ocrd_pagetopdf ocrd_tesserocr tesserocr workflow-configuration ocrd_repair_inconsistencies
+docker-minimum docker-minimum-git: DOCKER_MODULES = core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr tesserocr workflow-configuration
 # Medium-size selection: add Olena binarization and Calamari, use Tesseract from git, add evaluation
-docker-medium docker-medium-git: DOCKER_MODULES = core ocrd_im6convert format-converters ocrd_cis ocrd_pagetopdf ocrd_tesserocr tesserocr tesseract ocrd_olena ocrd_segment ocrd_keraslm ocrd_calamari dinglehopper cor-asv-ann workflow-configuration ocrd_repair_inconsistencies
+docker-medium docker-medium-git: DOCKER_MODULES = core cor-asv-ann dinglehopper format-converters ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr tesseract tesserocr workflow-configuration
 # Maximum-size selection: use all modules
 docker-maximum docker-maximum-git: DOCKER_MODULES = $(OCRD_MODULES)
 
