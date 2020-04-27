@@ -218,6 +218,10 @@ Optionally install additional Tesseract models.
     make script/Latin.traineddata
     make script/Fraktur.traineddata
 
+Optionally install Tesseract training tools.
+
+    make install-tesseract-training
+
 Running `make ocrd` or just `make` downloads/updates and installs the `core` module,
 including the `ocrd` CLI in a virtual Python 3 environment under `./venv`.
 
@@ -267,7 +271,7 @@ TMPDIR = $(CURDIR)/.tmp
 # install more languages/models for Tesseract
 TESSERACT_MODELS = deu frk script/Fraktur script/Latin
 
-# install all of Tesseract's submodules to get unit tests and training tools, too
+# install all of Tesseract's submodules to support unit tests and training tools, too
 tesseract: GIT_RECURSIVE = --recursive
 ```
 
