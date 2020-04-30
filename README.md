@@ -295,12 +295,13 @@ docker pull ocrd/all:maximum
 Usage is the same [as if you had built the image yourself](#results).
 
 This table lists which tag contains which module:
-
 | Module                      | `minimum` | `medium` | `maximum` |
 | -----                       | ----      | ----     | ----      |
 | core                        | ☑         | ☑        | ☑         |
 | ocrd_cis                    | ☑         | ☑        | ☑         |
+| ocrd_fileformat             | ☑         | ☑        | ☑         |
 | ocrd_im6convert             | ☑         | ☑        | ☑         |
+| ocrd_pagetopdf              | ☑         | ☑        | ☑         |
 | ocrd_repair_inconsistencies | ☑         | ☑        | ☑         |
 | ocrd_tesserocr              | ☑         | ☑        | ☑         |
 | tesserocr                   | ☑         | ☑        | ☑         |
@@ -314,13 +315,12 @@ This table lists which tag contains which module:
 | ocrd_segment                | -         | ☑        | ☑         |
 | tesseract                   | -         | ☑        | ☑         |
 | ocrd_anybaseocr             | -         | -        | ☑         |
+| ocrd_kraken                 | -         | -        | ☑         |
+| ocrd_ocropy                 | -         | -        | ☑         |
 | ocrd_pc_segmentation        | -         | -        | ☑         |
 | ocrd_typegroups_classifier  | -         | -        | ☑         |
 | sbb_textline_detector       | -         | -        | ☑         |
-| cor-asv-fst                 | -         | -        | -         |
-| clstm                       | -         | -        | -         |
-| ocrd_kraken                 | -         | -        | -         |
-| ocrd_ocropy                 | -         | -        | -         |
+| cor-asv-fst                 | -         | -        | ☑         |
 
 **Note**: The following modules have been disabled by default and can only be
 enabled by explicitly setting `OCRD_MODULES` or `DISABLED_MODULES`:
