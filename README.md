@@ -355,16 +355,21 @@ Modules may require mutually exclusive sets of dependent packages.
 `pip` does not even stop or resolve conflicts – it merely warns!
 
 - Tensorflow:
-   * `tensorflow-gpu==1.14.0` (required by ocrd_calamari and ocrd_anybaseocr)
-   * `tensorflow` (required by cor-asv-ann and ocrd_keraslm)
+   * version 2 (required by ocrd_anybaseocr for dewarping and page segmentation)
+   * version 1 (required by cor-asv-ann, ocrd_keraslm, ocrd_calamari and sbb_textline_detector)
    
-   Both can be installed in parallel in different versions, but may depend on a mutually exclusive set of `tensorboard` and `tensorflow_estimator`.
+   The temporary solution is to require different package names:
+   - `tensorflow>=2`
+   - `tensorflow-gpu==1.15.*`
    
-   Moreover, in the future, some modules (but not others) may depend on `tensorflow>=2.0`, which again is incompatible.
+   Both can be installed in parallel in different versions, but may depend on a mutually exclusive set of `tensorboard` and `tensorflow_estimator`. (However, these latter conflicts are only cosmetic, as they are only needed for development.)
+   
 - OpenCV:
    * `opencv-python-headlesss` (required by core and others, avoids pulling in X11 libraries)
-   * `opencv-python` (required by ocrd_anybaseocr)
-   * custom build on ARM...
+   * `opencv-python` (probably dragged in by third party packages)
+   
+   As long as we keep reinstalling the headless variant and no such package attempts GUI, we should be fine. 
+   Custom build (as needed for ARM) under the _module_ `opencv-python` already creates the headless variant.
 
 - ...
 
