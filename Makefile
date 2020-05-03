@@ -4,9 +4,11 @@
 -include local.mk
 
 # Python version (python3 required).
-PYTHON := python3
+PYTHON ?= python3
 # Python packaging
 PIP ?= pip3
+export PYTHON
+export PIP
 # PIP_OPTIONS ?= # empty
 # Derived variable to allow filtering -e, or inserting other options
 # (the option --editable must always be last and only applies to src install)
