@@ -75,4 +75,4 @@
 	url = https://github.com/OCR-D/ocrd_fileformat.git
 [submodule "ocrd_pagetopdf"]
 	path = ocrd_pagetopdf
-	url = https://github.com/JKamlah/ocrd_pagetopdf.git
+	url = https://github.com/UB-Mannheim/ocrd_pagetopdf.git
