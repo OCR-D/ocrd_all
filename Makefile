@@ -27,7 +27,11 @@ define WGET
 $(if $(shell which wget),wget -nv -O $(1) $(2),$(if $(shell which curl),curl -L -o $(1) $(2),$(error "found no cmdline downloader (wget/curl)")))
 endef
 
+ifeq ($(PKG_CONFIG_PATH),)
 PKG_CONFIG_PATH := $(VIRTUAL_ENV)/lib/pkgconfig
+else
+PKG_CONFIG_PATH := $(VIRTUAL_ENV)/lib/pkgconfig:$(PKG_CONFIG_PATH)
+endif
 export PKG_CONFIG_PATH
 
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
