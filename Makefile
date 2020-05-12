@@ -69,6 +69,7 @@ Targets:
 	modules: download all submodules to the managed revision
 	all: installs all executables of all modules
 	install-tesseract: download, build and install Tesseract (with required models)
+	install-tesseract-training: build and install Tesseract training tools
 	fix-pip: try to repair conflicting requirements
 	clean: removes the virtual environment directory, and clean-*
 	clean-tesseract: remove the build directory for tesseract
@@ -476,7 +477,7 @@ TESSTRAIN_EXECUTABLES += $(BIN)/wordlist2dawg
 .PHONY: install-tesseract-training
 install-tesseract-training: $(TESSTRAIN_EXECUTABLES)
 
-$(TESSTRAIN_EXECUTABLES): tesseract/configure
+$(call multirule,$(TESSTRAIN_EXECUTABLES)): tesseract/configure
 	mkdir -p $(VIRTUAL_ENV)/build/tesseract
 	$(MAKE) -C $(VIRTUAL_ENV)/build/tesseract training-install
 
