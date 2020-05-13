@@ -69,6 +69,7 @@ Targets:
 	modules: download all submodules to the managed revision
 	all: installs all executables of all modules
 	install-tesseract: download, build and install Tesseract (with required models)
+	install-tesseract-training: build and install Tesseract training tools
 	fix-pip: try to repair conflicting requirements
 	clean: removes the virtual environment directory, and clean-*
 	clean-tesseract: remove the build directory for tesseract
@@ -453,6 +454,37 @@ $(BIN)/tesseract: tesseract/configure
 	mkdir -p $(VIRTUAL_ENV)/build/tesseract
 	cd $(VIRTUAL_ENV)/build/tesseract && $(CURDIR)/tesseract/configure --disable-openmp --disable-shared --prefix="$(VIRTUAL_ENV)" CXXFLAGS="-g -O2 -fPIC"
 	cd $(VIRTUAL_ENV)/build/tesseract && $(MAKE) install
+
+# Build and install Tesseract training tools.
+
+TESSTRAIN_EXECUTABLES =
+TESSTRAIN_EXECUTABLES += $(BIN)/ambiguous_words
+TESSTRAIN_EXECUTABLES += $(BIN)/classifier_tester
+TESSTRAIN_EXECUTABLES += $(BIN)/cntraining
+TESSTRAIN_EXECUTABLES += $(BIN)/combine_lang_model
+TESSTRAIN_EXECUTABLES += $(BIN)/combine_tessdata
+TESSTRAIN_EXECUTABLES += $(BIN)/dawg2wordlist
+TESSTRAIN_EXECUTABLES += $(BIN)/lstmeval
+TESSTRAIN_EXECUTABLES += $(BIN)/lstmtraining
+TESSTRAIN_EXECUTABLES += $(BIN)/merge_unicharsets
+TESSTRAIN_EXECUTABLES += $(BIN)/mftraining
+TESSTRAIN_EXECUTABLES += $(BIN)/set_unicharset_properties
+TESSTRAIN_EXECUTABLES += $(BIN)/shapeclustering
+TESSTRAIN_EXECUTABLES += $(BIN)/text2image
+TESSTRAIN_EXECUTABLES += $(BIN)/unicharset_extractor
+TESSTRAIN_EXECUTABLES += $(BIN)/wordlist2dawg
+
+.PHONY: install-tesseract-training
+install-tesseract-training: $(TESSTRAIN_EXECUTABLES)
+
+$(call multirule,$(TESSTRAIN_EXECUTABLES)): tesseract/configure
+	mkdir -p $(VIRTUAL_ENV)/build/tesseract
+	$(MAKE) -C $(VIRTUAL_ENV)/build/tesseract training-install
+
+# offer abbreviated forms (just the CLI name in the PATH,
+# without its directory):
+.PHONY: $(TESSTRAIN_EXECUTABLES:$(BIN)/%=%)
+$(TESSTRAIN_EXECUTABLES:$(BIN)/%=%): %: $(BIN)/%
 
 clean: clean-tesseract
 .PHONY: clean-tesseract
