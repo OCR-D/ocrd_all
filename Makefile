@@ -297,6 +297,7 @@ $(call multirule,$(OCRD_CIS)): ocrd_cis
 endif
 
 ifneq ($(findstring ocrd_pagetopdf, $(OCRD_MODULES)),)
+deps-ubuntu: ocrd_pagetopdf
 OCRD_EXECUTABLES += $(OCRD_PAGETOPDF)
 OCRD_PAGETOPDF := $(BIN)/ocrd-pagetopdf
 $(OCRD_PAGETOPDF): ocrd_pagetopdf
