@@ -315,7 +315,8 @@ ifneq ($(findstring ocrd_pc_segmentation, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
 $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
-	. $(ACTIVATE_VENV) && cd $< && $(MAKE) install
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
+	$(pip_install)
 endif
 
 ifneq ($(findstring ocrd_anybaseocr, $(OCRD_MODULES)),)
