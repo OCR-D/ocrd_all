@@ -70,6 +70,7 @@ Targets:
 	all: installs all executables of all modules
 	install-tesseract: download, build and install Tesseract (with required models)
 	install-tesseract-training: build and install Tesseract training tools
+	install-models: Downloads commonly used models to appropriate locations
 	fix-pip: try to repair conflicting requirements
 	clean: removes the virtual environment directory, and clean-*
 	clean-tesseract: remove the build directory for tesseract
@@ -423,6 +424,53 @@ TESSERACT_TRAINEDDATA = $(ALL_TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
 
 stripdir = $(patsubst %/,%,$(dir $(1)))
 
+# {{{ Install commonly used models
+.PHONY: install-tesseract
+install-models: \
+	install-models-tesseract \
+	install-models-ocropus \
+	install-models-calamari \
+
+UB_MANNHEIM_BACKUP_URL = https://ub-backup.bib.uni-mannheim.de/~stweil/ocrd-train/data/Fraktur_5000000
+.PHONY: install-models-tesseract
+install-models-tesseract: \
+	$(TESSDATA)/Fraktur_50000000.334_450937-fast.traineddata \
+	$(TESSDATA)/Fraktur_50000000.334_450937-best.traineddata
+
+$(TESSDATA)/Fraktur_50000000.334_450937-fast.traineddata:
+	$(call WGET,$@,$(UB_MANNHEIM_BACKUP_URL)/tessdata_fast/Fraktur_50000000.334_450937.traineddata)
+
+$(TESSDATA)/Fraktur_50000000.334_450937-best.traineddata:
+	$(call WGET,$@,$(UB_MANNHEIM_BACKUP_URL)/tessdata_best/Fraktur_50000000.334_450937.traineddata)
+
+OCROPUS_DATA_PATH := $(VIRTUAL_ENV)/share/ocropus
+.PHONY: install-models-ocropus
+install-models-ocropus: \
+	$(OCROPUS_DATA_PATH)/en-default.pyrnn.gz \
+	$(OCROPUS_DATA_PATH)/fraktur.pyrnn.gz \
+	$(OCROPUS_DATA_PATH)/fraktur-jze.pyrnn.gz \
+	$(OCROPUS_DATA_PATH)/LatinHist-98000.pyrnn.gz
+
+$(OCROPUS_DATA_PATH)/en-default.pyrnn.gz:
+	$(call WGET,https://github.com/zuphilip/ocropy-models/raw/master/$(notdir $@))
+$(OCROPUS_DATA_PATH)/fraktur.pyrnn.gz:
+	$(call WGET,https://github.com/zuphilip/ocropy-models/raw/master/$(notdir $@))
+$(OCROPUS_DATA_PATH)/fraktur-jze.pyrnn.gz:
+	$(call WGET,https://github.com/jze/ocropus-model_fraktur/blob/master/fraktur.pyrnn.gz)
+$(OCROPUS_DATA_PATH)/LatinHist-98000.pyrnn.gz:
+	$(call WGET,$@,https://github.com/chreul/OCR_Testdata_EarlyPrintedBooks/raw/master/LatinHist-98000.pyrnn.gz)
+
+CALAMARI_DATA_PATH := $(VIRTUAL_ENV)/share/calamari
+.PHONY: install-models-calamari
+install-models-calamari: \
+	$(CALAMARI_DATA_PATH)/gt4histocr-qurator/checkpoint
+
+$(CALAMARI_DATA_PATH)/gt4histocr-qurator/checkpoint:
+	mkdir -p $(dir $@)
+	$(call WGET,/tmp/gt4histocr-qurator.tar.xz,https://qurator-data.de/calamari-models/GT4HistOCR/model.tar.xz)
+	cd $(dir $@) && tar xf /tmp/gt4histocr-qurator.tar.xz
+# }}}
+
 # Install Tesseract with models.
 .PHONY: install-tesseract
 install-tesseract: $(BIN)/tesseract $(TESSERACT_TRAINEDDATA)
@@ -542,7 +590,6 @@ docker%: Dockerfile $(DOCKER_MODULES)
 	--build-arg OCRD_MODULES="$(DOCKER_MODULES)" \
 	--build-arg PIP_OPTIONS="$(PIP_OPTIONS)" \
 	-t $(DOCKER_TAG):$(or $(*:-%=%),latest) .
-
 
 # do not search for implicit rules here:
 Makefile: ;
