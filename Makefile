@@ -425,7 +425,7 @@ TESSERACT_TRAINEDDATA = $(ALL_TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
 stripdir = $(patsubst %/,%,$(dir $(1)))
 
 # {{{ Install commonly used models
-.PHONY: install-tesseract
+.PHONY: install-models
 install-models: \
 	install-models-tesseract \
 	install-models-ocropus \
