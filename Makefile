@@ -429,19 +429,19 @@ stripdir = $(patsubst %/,%,$(dir $(1)))
 install-models: \
 	install-models-tesseract \
 	install-models-ocropus \
-	install-models-calamari \
+	install-models-calamari
 
 UB_MANNHEIM_BACKUP_URL = https://ub-backup.bib.uni-mannheim.de/~stweil/ocrd-train/data/Fraktur_5000000
 .PHONY: install-models-tesseract
 install-models-tesseract: \
-	$(TESSDATA)/Fraktur_50000000.334_450937-fast.traineddata \
-	$(TESSDATA)/Fraktur_50000000.334_450937-best.traineddata
+	$(TESSDATA)/fast/Fraktur_50000000.334_450937.traineddata \
+	$(TESSDATA)/best/Fraktur_50000000.334_450937.traineddata
 
-$(TESSDATA)/Fraktur_50000000.334_450937-fast.traineddata:
-	$(call WGET,$@,$(UB_MANNHEIM_BACKUP_URL)/tessdata_fast/Fraktur_50000000.334_450937.traineddata)
+$(TESSDATA)/fast/Fraktur_50000000.334_450937.traineddata:
+	mkdir -p $(dir $@); $(call WGET,$@,$(UB_MANNHEIM_BACKUP_URL)/tessdata_fast/Fraktur_50000000.334_450937.traineddata)
 
-$(TESSDATA)/Fraktur_50000000.334_450937-best.traineddata:
-	$(call WGET,$@,$(UB_MANNHEIM_BACKUP_URL)/tessdata_best/Fraktur_50000000.334_450937.traineddata)
+$(TESSDATA)/best/Fraktur_50000000.334_450937.traineddata:
+	mkdir -p $(dir $@); $(call WGET,$@,$(UB_MANNHEIM_BACKUP_URL)/tessdata_best/Fraktur_50000000.334_450937.traineddata)
 
 OCROPUS_DATA_PATH := $(VIRTUAL_ENV)/share/ocropus
 .PHONY: install-models-ocropus
