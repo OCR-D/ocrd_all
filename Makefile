@@ -503,9 +503,9 @@ $(OCROPUS_DATA_PATH)/LatinHist-98000.pyrnn.gz:
 CALAMARI_DATA_PATH := $(VIRTUAL_ENV)/share/calamari
 .PHONY: install-models-calamari
 install-models-calamari: \
-	$(CALAMARI_DATA_PATH)/gt4histocr-qurator/checkpoint
+	$(CALAMARI_DATA_PATH)/GT4HistOCR/checkpoint
 
-$(CALAMARI_DATA_PATH)/gt4histocr-qurator/checkpoint:
+$(CALAMARI_DATA_PATH)/GT4HistOCR/checkpoint:
 	mkdir -p $(dir $@)
 	$(call WGET,/tmp/gt4histocr-qurator.tar.xz,https://qurator-data.de/calamari-models/GT4HistOCR/model.tar.xz)
 	cd $(dir $@) && tar xf /tmp/gt4histocr-qurator.tar.xz
