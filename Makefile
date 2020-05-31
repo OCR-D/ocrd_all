@@ -450,14 +450,27 @@ install-models-ocropus: \
 	$(OCROPUS_DATA_PATH)/fraktur.pyrnn.gz \
 	$(OCROPUS_DATA_PATH)/fraktur-jze.pyrnn.gz \
 	$(OCROPUS_DATA_PATH)/LatinHist-98000.pyrnn.gz
+	@if test -z "$(OCROPUS_DATA)";then \
+		echo "Update your shell startup file to set the 'OCROPUS_DATA' environment variable:" ;\
+		echo "bash: Add to $$HOME/.bashrc:" ;\
+		echo "      export OCROPUS_DATA='$(OCROPUS_DATA_PATH)'" ;\
+		echo "zsh: Add to $$HOME/.zshrc:" ;\
+		echo "      export OCROPUS_DATA='$(OCROPUS_DATA_PATH)'" ;\
+		echo "fish: Add to $$HOME/.config/fish/fish.config:" ;\
+		echo "      setenv OCROPUS_DATA '$(OCROPUS_DATA_PATH)'" ;\
+	fi
 
 $(OCROPUS_DATA_PATH)/en-default.pyrnn.gz:
-	$(call WGET,https://github.com/zuphilip/ocropy-models/raw/master/$(notdir $@))
+	mkdir -p $(dir $@)
+	$(call WGET,$@,https://github.com/zuphilip/ocropy-models/raw/master/$(notdir $@))
 $(OCROPUS_DATA_PATH)/fraktur.pyrnn.gz:
-	$(call WGET,https://github.com/zuphilip/ocropy-models/raw/master/$(notdir $@))
+	mkdir -p $(dir $@)
+	$(call WGET,$@,https://github.com/zuphilip/ocropy-models/raw/master/$(notdir $@))
 $(OCROPUS_DATA_PATH)/fraktur-jze.pyrnn.gz:
-	$(call WGET,https://github.com/jze/ocropus-model_fraktur/blob/master/fraktur.pyrnn.gz)
+	mkdir -p $(dir $@)
+	$(call WGET,$@,https://github.com/jze/ocropus-model_fraktur/blob/master/fraktur.pyrnn.gz)
 $(OCROPUS_DATA_PATH)/LatinHist-98000.pyrnn.gz:
+	mkdir -p $(dir $@)
 	$(call WGET,$@,https://github.com/chreul/OCR_Testdata_EarlyPrintedBooks/raw/master/LatinHist-98000.pyrnn.gz)
 
 CALAMARI_DATA_PATH := $(VIRTUAL_ENV)/share/calamari
