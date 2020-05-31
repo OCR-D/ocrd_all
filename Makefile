@@ -468,7 +468,7 @@ $(OCROPUS_DATA_PATH)/fraktur.pyrnn.gz:
 	$(call WGET,$@,https://github.com/zuphilip/ocropy-models/raw/master/$(notdir $@))
 $(OCROPUS_DATA_PATH)/fraktur-jze.pyrnn.gz:
 	mkdir -p $(dir $@)
-	$(call WGET,$@,https://github.com/jze/ocropus-model_fraktur/blob/master/fraktur.pyrnn.gz)
+	$(call WGET,$@,https://github.com/jze/ocropus-model_fraktur/raw/master/fraktur.pyrnn.gz)
 $(OCROPUS_DATA_PATH)/LatinHist-98000.pyrnn.gz:
 	mkdir -p $(dir $@)
 	$(call WGET,$@,https://github.com/chreul/OCR_Testdata_EarlyPrintedBooks/raw/master/LatinHist-98000.pyrnn.gz)
