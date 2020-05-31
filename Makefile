@@ -418,8 +418,7 @@ CUSTOM_DEPS += g++ make automake libleptonica-dev
 # but since we are building statically, we need more (static) libs at build time
 CUSTOM_DEPS += libarchive-dev libcurl4-nss-dev libgif-dev libjpeg-dev libpng-dev libtiff-dev
 
-TESSDATA_PREFIX ?= $(VIRTUAL_ENV)/share
-TESSDATA := $(TESSDATA_PREFIX)/tessdata
+TESSDATA := $(VIRTUAL_ENV)/share/tessdata
 TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast
 TESSERACT_TRAINEDDATA = $(ALL_TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
 
@@ -445,15 +444,6 @@ install-models-tesseract: \
 	$(TESSDATA)/GT4HistOCR_2000000.traineddata \
 	$(TESSDATA)/fast/Fraktur_50000000.334_450937.traineddata \
 	$(TESSDATA)/best/Fraktur_50000000.334_450937.traineddata
-	@if test -z "$(TESSDATA_PREFIX)";then \
-		echo "Update your shell startup file to set the 'TESSDATA_PREFIX' environment variable:" ;\
-		echo "bash: Add to $$HOME/.bashrc:" ;\
-		echo "      export TESSDATA_PREFIX='$(TESSDATA_PREFIX)'" ;\
-		echo "zsh: Add to $$HOME/.zshrc:" ;\
-		echo "      export TESSDATA_PREFIX='$(TESSDATA_PREFIX)'" ;\
-		echo "fish: Add to $$HOME/.config/fish/fish.config:" ;\
-		echo "      setenv TESSDATA_PREFIX '$(TESSDATA_PREFIX)'" ;\
-	fi
 
 $(TESSDATA)/GT4HistOCR_100000.traineddata:
 	mkdir -p $(dir $@); $(call WGET,$@,$(UB_MANNHEIM_BACKUP_URL)/$(notdir $@))
