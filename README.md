@@ -355,7 +355,7 @@ Modules may require mutually exclusive sets of dependent packages.
 `pip` does not even stop or resolve conflicts – it merely warns!
 
 - Tensorflow:
-   * version 2 (required by ocrd_anybaseocr for dewarping and page segmentation)
+   * version 2 (required by ocrd_anybaseocr and ocrd_pc_segmentation)
    * version 1 (required by cor-asv-ann, ocrd_keraslm, ocrd_calamari and sbb_textline_detector)
    
    The temporary solution is to require different package names:
