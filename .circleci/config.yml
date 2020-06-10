@@ -38,6 +38,9 @@ jobs:
             docker push ocrd/all:maximum-git &
             jobs+=($!)
             while sleep 60; ps -p "${jobs[*]}"; do :; done
+      - run:
+          name: Create a date-versioned mirror of ocrd/all:maximum
+          command: bash release.sh release-dockerhub
       - run: curl -X POST "$MICROBADGER_WEBHOOK" || true
 workflows:
   version: 2
