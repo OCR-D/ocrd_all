@@ -97,7 +97,7 @@ submodule_changelog () {
         smtag="\\n> Release: [$smtag]($smurl/releases/$smtag)\\n"
     fi
     git diff --submodule=log "$sm"| sed \
-        -e "s,^Submodule \\([^ ]\\+\\) \\([^\.]\\+\\)..\\([^\.]\\+\\):,### [\1]($smurl) [\2]($smurl/commits\2)..(\3)[$smurl/commits/\3)\\n$smtag," \
+        -e "s,^Submodule \\([^ ]\\+\\) \\([^\.]\\+\\)..\\([^\.]\\+\\):,### [\1]($smurl) [\2]($smurl/commits\2)..[\3]($smurl/commits/\3)\\n$smtag," \
         -e 's,^\s*>,  > *,'
 }
 
@@ -105,7 +105,7 @@ update_changelog () {
     (
         echo "# Changelog"
         echo ""
-        echo "## [$version](https://github.com/OCR-D/ocrd_all/releases/$version"
+        echo "## [$version](https://github.com/OCR-D/ocrd_all/releases/$version)"
         echo ""
         for sm in $(list_changed_submodules);do
             submodule_changelog $sm
