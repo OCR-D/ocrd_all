@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2020-06-10
+
+Added:
+
+  * `ocrd_wrap`
+
 ## 2020-05-31
 
 Update:

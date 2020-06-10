@@ -307,6 +307,7 @@ This table lists which tag contains which module:
 | ocrd_im6convert             | ☑         | ☑        | ☑         |
 | ocrd_repair_inconsistencies | ☑         | ☑        | ☑         |
 | ocrd_tesserocr              | ☑         | ☑        | ☑         |
+| ocrd_wrap                   | ☑         | ☑        | ☑         |
 | tesserocr                   | ☑         | ☑        | ☑         |
 | workflow-configuration      | ☑         | ☑        | ☑         |
 | cor-asv-ann                 | -         | ☑        | ☑         |
