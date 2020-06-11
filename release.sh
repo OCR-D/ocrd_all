@@ -127,11 +127,22 @@ release_github () {
     git tag $version
     git push
     git push --tags
-    wget \
-        --method=PATCH \
-        --header="Accept: application/vnd.github.v3+json" \
-        --body-data "{ \"body\": \"$changelog\" }" \
-        "https://api.github.com/repos/OCR-D/ocrd_all/releases/$version"
+    echo -n "(p)rint changelog, (c)opy changelog to clipboard, (i)gnore? > "
+    read resp;
+    if [[ $resp = p* || $resp = P* ]];then
+        echo "$changelog"
+    elif [[ $resp = c* || $resp = C* ]];then
+        if command -v pbcopy 2>/dev/null;then
+            echo "$changelog" | pbcopy
+            echo "Copied to clipboard"
+        elif command -v xclip 2>/dev/null;then
+            echo "$changelog" | xclip -i
+            echo "Copied to clipboard"
+        else
+            echo "!! Neither xclip nor pbcopy available. Install xclip or pbcopy or copy by hand:"
+            echo "$changelog"
+        fi
+    fi
 }
 
 release_dockerhub () {
