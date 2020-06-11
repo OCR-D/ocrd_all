@@ -85,7 +85,7 @@ update_all_submodules () {
         sms=($(list_all_submodules))
     fi
     for sm in "${sms[@]}";do
-        echo "$sm"
+        update_one_submodule "$sm"
     done
 }
 
@@ -111,7 +111,7 @@ update_changelog () {
             submodule_changelog $sm
             echo ""
         done
-        sed -n "2,$ p" CHANGELOG.md
+        sed "/^[#] Changelog/d" CHANGELOG.md
     ) > CHANGELOG.md.tmp
     mv CHANGELOG.md.tmp CHANGELOG.md
 }
@@ -121,11 +121,11 @@ release_github () {
         echo "CHANGELOG.md is unmodified. Did you update it?"
         exit 1
     fi
-    echo git add .
-    echo git commit -m ":package: v$version"
-    echo git tag $version
-    echo git push
-    echo git push --tags
+    git add CHANGELOG.md
+    git commit -m ":package: v$version"
+    git tag $version
+    git push
+    git push --tags
     echo "Go to https://github.com/OCR-D/ocrd_all/releases/$version and paste"
     echo "the CHANGELOG.md section as release notes"
 }
