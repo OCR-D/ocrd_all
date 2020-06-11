@@ -121,13 +121,17 @@ release_github () {
         echo "CHANGELOG.md is unmodified. Did you update it?"
         exit 1
     fi
+    changelog=$(git diff CHANGELOG.md|grep '^+'|sed -e 's,^.,,' -e 's,",\",g' )
     git add CHANGELOG.md
-    git commit -m ":package: v$version"
+    git commit -m ":package: $version"
     git tag $version
     git push
     git push --tags
-    echo "Go to https://github.com/OCR-D/ocrd_all/releases/$version and paste"
-    echo "the CHANGELOG.md section as release notes"
+    wget \
+        --method=PATCH \
+        --header="Accept: application/vnd.github.v3+json" \
+        --body-data "{ \"body\": \"$changelog\" }" \
+        "https://api.github.com/repos/OCR-D/ocrd_all/releases/$version"
 }
 
 release_dockerhub () {
