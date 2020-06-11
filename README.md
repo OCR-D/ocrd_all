@@ -44,6 +44,7 @@ in the current shell environment via PATH and PYTHONHOME.)
     * [No published/recent version on PyPI](#no-publishedrecent-version-on-pypi)
     * [Conflicting requirements](#conflicting-requirements)
     * [System requirements](#system-requirements)
+  * [Contributing](#contributing)
 
 ## Preconditions
 
@@ -387,3 +388,9 @@ Not all modules advertise their system package requirements via `make deps-ubunt
 - `tesseract` (when installing from source not PPA): depends on `libleptonica-dev` etc
 
 _(Solved by maintaining these requirements under `deps-ubuntu` here.)_
+
+## Contributing
+
+Please see our [contributing
+guide](https://github.com/OCR-D/ocrd_all/blob/master/.github/contributing.md)
+to learn how you can support the project.
