@@ -26,9 +26,10 @@ You need to be a "Maintainer" or "Admin" to merge pull requests.
 
 1. Wait for CI to successfully finish (ensuring that the `maximum` image can be built)
 2. **Do not merge on GitHub**. Do the following locally:
-3. Check out the `master` branch locally, `git pull` to make sure it's up-to-date.
-4. Merge the PR branch with the `--no-commit` flag so the merge commit doesn't hide the changes: `git merge --no-commit pr-branch`
+3. Check out the `master` branch locally, `git pull` to make sure it's up-to-date and `git submodule update --init --recursive` to reset the submodules to the state in master.
+4. Merge the PR branch: `git merge pr-branch`
+6. Update the submodules to the new state: `git submodule update --recursive --init`
 5. Generate the changelog: `./release.sh changelog`.
-6. Inspect the CHANGELOG.md and remove superfluous information like merge commits or spurious newlines. Copy the new section to the clipboard (see step 8)
-7. Release to GitHub with `./release.sh release-github`. This will take care of comitting, tagging and pushing the release.
-8. Create a new release on GitHub, paste the new changelog section as the release notes.
+7. Inspect the CHANGELOG.md and remove superfluous information like merge commits or spurious newlines. Copy the new section to the clipboard (see step 9)
+8. Release to GitHub with `./release.sh release-github`. This will take care of comitting, tagging and pushing the release.
+9. Create a new release on GitHub, paste the new changelog section as the release notes.

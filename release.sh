@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
-# set -ex
+ #set -x
 
 # SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 # PATH="$SCRIPTDIR:$PATH"
 SCRIPTNAME=$(basename $0)
 
-version=$(git describe --abbrev=0 --tags --exact-match 2>/dev/null||date +'v%Y-%m-%d')
+version=$(date +'v%Y-%m-%d')
+previous_version=$(git describe --tags $(git rev-list --tags --max-count=1))
+if [[ -z "$previous_version" ]];then
+    echo "Could not detect previous version :("
+    exit 1
+fi
 
 usage () {
     echo "$SCRIPTNAME [options] <command>"
@@ -51,6 +56,10 @@ main () {
     esac
 }
 
+loginfo () {
+    echo >&2 $(date) "$@"
+}
+
 submodule_url () {
     local sm="$1"
     git config --file .gitmodules --get-regexp "$sm.url" |cut -d' ' -f 2|sed 's,\.git$,,'
@@ -61,7 +70,7 @@ list_all_submodules () {
 }
 
 list_changed_submodules () {
-    git submodule status |grep '^+'|cut -d ' ' -f 2|sort -n
+    git diff --stat $previous_version $(list_all_submodules)|grep -F '|'|cut -d ' ' -f 2
 }
 
 update_one_submodule () {
@@ -96,7 +105,8 @@ submodule_changelog () {
     if [[ -n "$smtag" ]];then
         smtag="\\n> Release: [$smtag]($smurl/releases/$smtag)\\n"
     fi
-    git diff --submodule=log "$sm"| sed \
+    loginfo "Generating changelog for $sm"
+    git diff --submodule=log "$previous_version".. "$sm" | sed \
         -e "s,^Submodule \\([^ ]\\+\\) \\([^\.]\\+\\)..\\([^\.]\\+\\):,### [\1]($smurl) [\2]($smurl/commits\2)..[\3]($smurl/commits/\3)\\n$smtag," \
         -e 's,^\s*>,  > *,'
 }
