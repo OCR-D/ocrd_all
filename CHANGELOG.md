@@ -1,5 +1,30 @@
 # Changelog
 
+## [v2020-06-13](https://github.com/OCR-D/ocrd_all/releases/v2020-06-13)
+
+### [core](https://github.com/OCR-D/core) [cd7be4e8](https://github.com/OCR-D/core/commitscd7be4e8)..[2e4c16e5](https://github.com/OCR-D/core/commits/2e4c16e5)
+
+> Release: [v2.10.1](https://github.com/OCR-D/core/releases/v2.10.1)
+
+  > * Makefile: Fix location of PAGE XSD
+  > * :package: v2.10.1
+  > * :memo: changelog
+  > * XSD: move schema files to package root
+  > * bashlib: add an ocrd__minversion check to check core
+  > * bashlib: input/output grp must be set, logging regression, fix #511
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [32848eb](https://github.com/qurator-spk/dinglehopper/commits32848eb)..[cdfd4d3](https://github.com/qurator-spk/dinglehopper/commits/cdfd4d3)
+
+  > * 🐛 dinglehopper: Add missing requirement MarkupSafe
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [5698cd7](https://github.com/OCR-D/ocrd_fileformat/commits5698cd7)..[7b8671c](https://github.com/OCR-D/ocrd_fileformat/commits/7b8671c)
+
+> Release: [v0.0.2](https://github.com/OCR-D/ocrd_fileformat/releases/v0.0.2)
+
+  > * :package: v0.0.2
+  > * Use ocrd/core 2.10.1+, logging
+
+
 ## [v2020-06-12](https://github.com/OCR-D/ocrd_all/releases/v2020-06-12)
 
 ### [core](https://github.com/OCR-D/core) [377ed159](https://github.com/OCR-D/core/commits377ed159)..[cd7be4e8](https://github.com/OCR-D/core/commits/cd7be4e8)
