@@ -1,5 +1,30 @@
 # Changelog
 
+## [v2020-06-14](https://github.com/OCR-D/ocrd_all/releases/v2020-06-14)
+
+### [core](https://github.com/OCR-D/core) [2e4c16e](https://github.com/OCR-D/core/commits2e4c16e)..[86f788a](https://github.com/OCR-D/core/commits/86f788a)
+
+> Release: [v2.10.2](https://github.com/OCR-D/core/releases/v2.10.2)
+
+  > * :package: v2.10.2
+  > * Merge pull request #516 from OCR-D/fix-515
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [7b8671c](https://github.com/OCR-D/ocrd_fileformat/commits7b8671c)..[06b27d4](https://github.com/OCR-D/ocrd_fileformat/commits/06b27d4)
+
+> Release: [v0.0.3](https://github.com/OCR-D/ocrd_fileformat/releases/v0.0.3)
+
+  > * :package: v0.0.3
+  > * require ocrd/core >= 2.10.2
+  > * properly pass on script-args, #4
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [62eae84f](https://github.com/tesseract-ocr/tesseract/commits62eae84f)..[6ee36989](https://github.com/tesseract-ocr/tesseract/commits/6ee36989)
+
+> Release: [5.0.0-alpha](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha)
+
+  > * Remove old unused code from imagedata.h
+  > * Fix crash caused by missing thread synchronization (issues #757, #1168 and #2191)
+
+
 ## [v2020-06-13](https://github.com/OCR-D/ocrd_all/releases/v2020-06-13)
 
 ### [core](https://github.com/OCR-D/core) [cd7be4e8](https://github.com/OCR-D/core/commitscd7be4e8)..[2e4c16e5](https://github.com/OCR-D/core/commits/2e4c16e5)
