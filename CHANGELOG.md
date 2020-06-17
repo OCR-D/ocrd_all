@@ -1,5 +1,46 @@
 # Changelog
 
+## [v2020-06-17.1](https://github.com/OCR-D/ocrd_all/releases/v2020-06-17.1)
+
+### [core](https://github.com/OCR-D/core) [574bbad](https://github.com/OCR-D/core/commits574bbad)..[f708420](https://github.com/OCR-D/core/commits/f708420)
+
+> Release: [v2.10.4](https://github.com/OCR-D/core/releases/v2.10.4)
+
+  > * :package: v2.10.4
+  > * :memo: changelog
+  > * bashlib: --overwrite, #476
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [f2b42d4](https://github.com/cisocrgroup/ocrd_cis/commitsf2b42d4)..[fa40e7e](https://github.com/cisocrgroup/ocrd_cis/commits/fa40e7e)
+
+  > * Merge pull request #48 from bertsky/segment-fixes
+
+### [ocrd_im6convert](https://github.com/OCR-D/ocrd_im6convert) [31eb2ae](https://github.com/OCR-D/ocrd_im6convert/commits31eb2ae)..[11bfea3](https://github.com/OCR-D/ocrd_im6convert/commits/11bfea3)
+
+> Release: [v0.0.4](https://github.com/OCR-D/ocrd_im6convert/releases/v0.0.4)
+
+  > * :package: v0.0.4
+  > * :memo: changelog
+  > * Merge pull request #15 from OCR-D/overwrite
+
+### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [6adee3d](https://github.com/OCR-D/ocrd_olena/commits6adee3d)..[f9bd786](https://github.com/OCR-D/ocrd_olena/commits/f9bd786)
+
+> Release: [v1.1.10](https://github.com/OCR-D/ocrd_olena/releases/v1.1.10)
+
+  > * :package: v1.1.10
+  > * :memo: changelog
+  > * Merge pull request #58 from OCR-D/overwrite
+
+### [ocrd_pagetopdf](https://github.com/UB-Mannheim/ocrd_pagetopdf) [a606632](https://github.com/UB-Mannheim/ocrd_pagetopdf/commitsa606632)..[88faa74](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/88faa74)
+
+  > * Merge pull request #13 from bertsky/patch-1
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [ee5f36d](https://github.com/OCR-D/ocrd_segment/commitsee5f36d)..[f8a8daa](https://github.com/OCR-D/ocrd_segment/commits/f8a8daa)
+
+> Release: [v0.0.2](https://github.com/OCR-D/ocrd_segment/releases/v0.0.2)
+
+  > * replace-original: new...
+
+
 ## [v2020-06-17](https://github.com/OCR-D/ocrd_all/releases/v2020-06-17)
 
 ### [core](https://github.com/OCR-D/core) [2e4c16e](https://github.com/OCR-D/core/commits2e4c16e)..[574bbad](https://github.com/OCR-D/core/commits/574bbad)
