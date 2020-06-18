@@ -1,5 +1,12 @@
 # Changelog
 
+## [v2020-06-17.2](https://github.com/OCR-D/ocrd_all/releases/v2020-06-17.2)
+
+Fixed:
+
+  * `make fix-pip` correct the tensorflow logic, #115
+
+
 ## [v2020-06-17.1](https://github.com/OCR-D/ocrd_all/releases/v2020-06-17.1)
 
 ### [core](https://github.com/OCR-D/core) [574bbad](https://github.com/OCR-D/core/commits574bbad)..[f708420](https://github.com/OCR-D/core/commits/f708420)
