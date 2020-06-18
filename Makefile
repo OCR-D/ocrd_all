@@ -218,6 +218,17 @@ $(BIN)/ocrd-im6convert: ocrd_im6convert
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
 endif
 
+ifneq ($(findstring ocrd_wrap, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(OCRD_WRAP)
+OCRD_WRAP := $(BIN)/ocrd-preprocess-image
+OCRD_WRAP += $(BIN)/ocrd-skimage-normalize
+OCRD_WRAP += $(BIN)/ocrd-skimage-denoise-raw
+OCRD_WRAP += $(BIN)/ocrd-skimage-binarize
+OCRD_WRAP += $(BIN)/ocrd-skimage-denoise
+$(call multirule,$(OCRD_WRAP)): ocrd_wrap
+	$(pip_install)
+endif
+
 ifneq ($(findstring ocrd_fileformat, $(OCRD_MODULES)),)
 ocrd_fileformat: GIT_RECURSIVE = --recursive
 OCRD_EXECUTABLES += $(BIN)/ocrd-fileformat
@@ -316,7 +327,8 @@ ifneq ($(findstring ocrd_pc_segmentation, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
 $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
-	. $(ACTIVATE_VENV) && cd $< && $(MAKE) install
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
+	$(pip_install)
 endif
 
 ifneq ($(findstring ocrd_anybaseocr, $(OCRD_MODULES)),)
@@ -605,9 +617,9 @@ endif
 docker-minimum-git docker-medium-git docker-maximum-git: PIP_OPTIONS = -e
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from PPA
-docker-minimum docker-minimum-git: DOCKER_MODULES = core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr tesserocr workflow-configuration
+docker-minimum docker-minimum-git: DOCKER_MODULES = core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap tesserocr workflow-configuration
 # Medium-size selection: add Olena binarization and Calamari, use Tesseract from git, add evaluation
-docker-medium docker-medium-git: DOCKER_MODULES = core cor-asv-ann dinglehopper format-converters ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr tesseract tesserocr workflow-configuration
+docker-medium docker-medium-git: DOCKER_MODULES = core cor-asv-ann dinglehopper format-converters ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap tesseract tesserocr workflow-configuration
 # Maximum-size selection: use all modules
 docker-maximum docker-maximum-git: DOCKER_MODULES = $(OCRD_MODULES)
 
