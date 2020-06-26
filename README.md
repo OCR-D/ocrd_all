@@ -21,7 +21,6 @@ in the current shell environment via PATH and PYTHONHOME.)
        * [<em>modules</em>](#modules)
        * [<em>ocrd</em>](#ocrd)
        * [<em>all</em>](#all)
-       * [<em>fix-pip</em>](#fix-pip)
        * [<em>docker</em>](#docker)
        * [<em>clean</em>](#clean)
        * [<em>show</em>](#show)
@@ -133,10 +132,6 @@ Install only OCR-D/core and its CLI `ocrd` into the venv.
 #### _all_
 
 Install executables from all modules into the venv. (Depends on [_modules_](#modules) and [_ocrd_](#ocrd).)
-
-#### _fix-pip_
-
-Fix incompatible/inconsistent pip requirements between all modules
 
 #### _docker_
 
@@ -377,9 +372,13 @@ Modules may require mutually exclusive sets of dependent packages.
    As long as we keep reinstalling the headless variant and no such package attempts GUI, we should be fine. 
    Custom build (as needed for ARM) under the _module_ `opencv-python` already creates the headless variant.
 
+- PyTorch:
+   * `torch<1.0`
+   * `torch>=1.0`
+   
 - ...
 
-_(Solved temporarily by post-installation `fix-pip`.)_
+_(Solved by managing and delegating to different subsets of venvs.)_
 
 ### System requirements
 
