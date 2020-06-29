@@ -619,6 +619,8 @@ docker%: Dockerfile $(DOCKER_MODULES)
 	--build-arg PIP_OPTIONS="$(PIP_OPTIONS)" \
 	-t $(DOCKER_TAG):$(or $(*:-%=%),latest) .
 
+docker: DOCKER_MODULES ?= $(OCRD_MODULES)
+docker: docker-latest
 
 # do not search for implicit rules here:
 Makefile: ;
