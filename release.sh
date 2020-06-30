@@ -76,9 +76,6 @@ list_changed_submodules () {
 update_one_submodule () {
     local sm="$1"
     local branch="master"
-    if test $sm = 'ocrd_cis';then
-        branch="dev"
-    fi
     (
         cd $sm
         git pull origin "$branch"
