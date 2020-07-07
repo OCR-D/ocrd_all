@@ -1,5 +1,92 @@
 # Changelog
 
+## [v2020-07-07](https://github.com/OCR-D/ocrd_all/releases/v2020-07-07)
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [cdfd4d3](https://github.com/qurator-spk/dinglehopper/commitscdfd4d3)..[c3709e2](https://github.com/qurator-spk/dinglehopper/commits/c3709e2)
+
+  > * 🧹 dinglehopper: Remove .vimrc again (security)
+  > * 💄 Set maximum line length to 90
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [fa40e7e](https://github.com/cisocrgroup/ocrd_cis/commitsfa40e7e)..[fdd7345](https://github.com/cisocrgroup/ocrd_cis/commits/fdd7345)
+
+> Release: [v0.0.10](https://github.com/cisocrgroup/ocrd_cis/releases/v0.0.10)
+
+  > * Remove old internal files
+  > * README: add PyPI badge
+  > * fix setup (needs json)
+  > * Merge branch 'dev'
+  > * add empty travis ci file
+
+### [ocrd_keraslm](https://github.com/OCR-D/ocrd_keraslm) [7bfffef](https://github.com/OCR-D/ocrd_keraslm/commits7bfffef)..[be69c97](https://github.com/OCR-D/ocrd_keraslm/commits/be69c97)
+
+> Release: [0.3.1](https://github.com/OCR-D/ocrd_keraslm/releases/0.3.1)
+
+  > * Update requirements.txt
+
+### [ocrd_repair_inconsistencies](https://github.com/qurator-spk/ocrd_repair_inconsistencies) [6897996](https://github.com/qurator-spk/ocrd_repair_inconsistencies/commits6897996)..[ba27aba](https://github.com/qurator-spk/ocrd_repair_inconsistencies/commits/ba27aba)
+
+  > * 🧹 examples/fix-ocr-d-gt-page.sh: rmdir after ocrd workspace remove-group is not necessary anymore
+  > * 🧹 examples/fix-ocr-d-gt-page.sh: rmdir after ocrd workspace remove-group is not necessary anymore
+  > * ✨ Support TextRegions nested in Table/GraphicRegions
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [f8a8daa](https://github.com/OCR-D/ocrd_segment/commitsf8a8daa)..[06fb5ba](https://github.com/OCR-D/ocrd_segment/commits/06fb5ba)
+
+> Release: [v0.0.2](https://github.com/OCR-D/ocrd_segment/releases/v0.0.2)
+
+  > * replace-original: use OCR-D-IMG-SUBST instead of -CROP
+  > * replace-original: add parameters for image feature filtering…
+
+### [ocrd_wrap](https://github.com/bertsky/ocrd_wrap) [7a0c136](https://github.com/bertsky/ocrd_wrap/commits7a0c136)..[f5347ff](https://github.com/bertsky/ocrd_wrap/commits/f5347ff)
+
+> Release: [v0.0.4](https://github.com/bertsky/ocrd_wrap/releases/v0.0.4)
+
+  > * skimage-denoise-raw: skip images with too little noise
+  > * skimage_\*: preserve depth
+
+### [opencv-python](https://github.com/skvark/opencv-python) [3073e9e](https://github.com/skvark/opencv-python/commits3073e9e)..[11e478c](https://github.com/skvark/opencv-python/commits/11e478c)
+
+> Release: [36](https://github.com/skvark/opencv-python/releases/36)
+
+  > * resolve merge conflicts
+  > * merge manylinux2014 support
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [380466e0](https://github.com/tesseract-ocr/tesseract/commits380466e0)..[d01b2e43](https://github.com/tesseract-ocr/tesseract/commits/d01b2e43)
+
+> Release: [5.0.0-alpha](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha)
+
+  > * unittest: Update comments in normstrngs_test.cc
+  > * Merge branch 'master' of https://github.com/tesseract-ocr/tesseract
+  > * cmake: add NEON compile support
+  > * cmake: remove custom CheckCCompilerFlag/CheckCXXCompilerFlag
+  > * cmake: fix policy setting for newer cmake (CheckIPOSupported)
+  > * Fix runtime error with null pointer argument
+  > * Fix unsigned integer overflow
+  > * unittest: Remove unused local variables
+  > * Fix out of bounds array access
+  > * Update README.md
+  > * README.md: Show only open issues of oss-fuzz
+  > * Merge branch 'master' of https://github.com/tesseract-ocr/tesseract
+  > * cmake: allow to enable LTO
+  > * Update imagedata.cpp
+  > * Improve debug message in ColPartition::ComputeLimits
+  > * Remove obsolescent macro AC_HEADER_STDC
+  > * Remove obsolescent macro AC_HEADER_TIME
+  > * Remove checks for unused types off_t, mbstate_t, \_Bool
+  > * Fix conversion of images with 16 bpp or 24 bpp to grey
+  > * Classify: Run sort only for more than one element
+  > * Fix CMake build with DISABLED_LEGACY_ENGINE
+  > * ScrollView: Fix typo in comment
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [33d8786](https://github.com/bertsky/workflow-configuration/commits33d8786)..[8469b0a](https://github.com/bertsky/workflow-configuration/commits/8469b0a)
+
+  > * make larex: new target for LAREX export on top of default target
+  > * ocrd-export-larex: fix for fallback of 'TextRegion/@type' to 'other'
+  > * make view: protect against running this in-place inside workspaces
+  > * fix workflow templating skeleton
+  > * ocrd-export-larex: fix regression in PAGE post-processing
+  > * ocrd-export-larex: fix loglevel retval
+
+
 ## [v2020-06-17.2](https://github.com/OCR-D/ocrd_all/releases/v2020-06-17.2)
 
 Fixed:
@@ -19,7 +106,6 @@ Fixed:
 
 ### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [f2b42d4](https://github.com/cisocrgroup/ocrd_cis/commitsf2b42d4)..[fa40e7e](https://github.com/cisocrgroup/ocrd_cis/commits/fa40e7e)
 
-  > * Merge pull request #48 from bertsky/segment-fixes
 
 ### [ocrd_im6convert](https://github.com/OCR-D/ocrd_im6convert) [31eb2ae](https://github.com/OCR-D/ocrd_im6convert/commits31eb2ae)..[11bfea3](https://github.com/OCR-D/ocrd_im6convert/commits/11bfea3)
 
@@ -27,7 +113,6 @@ Fixed:
 
   > * :package: v0.0.4
   > * :memo: changelog
-  > * Merge pull request #15 from OCR-D/overwrite
 
 ### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [6adee3d](https://github.com/OCR-D/ocrd_olena/commits6adee3d)..[f9bd786](https://github.com/OCR-D/ocrd_olena/commits/f9bd786)
 
@@ -35,11 +120,9 @@ Fixed:
 
   > * :package: v1.1.10
   > * :memo: changelog
-  > * Merge pull request #58 from OCR-D/overwrite
 
 ### [ocrd_pagetopdf](https://github.com/UB-Mannheim/ocrd_pagetopdf) [a606632](https://github.com/UB-Mannheim/ocrd_pagetopdf/commitsa606632)..[88faa74](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/88faa74)
 
-  > * Merge pull request #13 from bertsky/patch-1
 
 ### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [ee5f36d](https://github.com/OCR-D/ocrd_segment/commitsee5f36d)..[f8a8daa](https://github.com/OCR-D/ocrd_segment/commits/f8a8daa)
 
@@ -59,7 +142,6 @@ Fixed:
   > * workspace add: check whether filename is absolute
   > * workspace add: os.path.join behavior led to faulty existence check, fix #519
   > * :package: v2.10.2
-  > * Merge pull request #516 from OCR-D/fix-515
 
 ### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [7b8671c](https://github.com/OCR-D/ocrd_fileformat/commits7b8671c)..[06b27d4](https://github.com/OCR-D/ocrd_fileformat/commits/06b27d4)
 
@@ -79,8 +161,6 @@ Submodule ocrd_wrap c47a9dd...7a0c136 (not checked out)
   > * Remove unused argument from function TruncateParam
   > * Remove assertion which is triggered by tests
   > * StrokeWidth: Remove unused local variable (fixes compiler warning)
-  > * Merge pull request #3023 from stweil/inline
-  > * Merge pull request #3022 from stweil/fix
   > * Remove old unused code from imagedata.h
   > * Fix crash caused by missing thread synchronization (issues #757, #1168 and #2191)
 
@@ -92,7 +172,6 @@ Submodule ocrd_wrap c47a9dd...7a0c136 (not checked out)
 > Release: [v2.10.2](https://github.com/OCR-D/core/releases/v2.10.2)
 
   > * :package: v2.10.2
-  > * Merge pull request #516 from OCR-D/fix-515
 
 ### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [7b8671c](https://github.com/OCR-D/ocrd_fileformat/commits7b8671c)..[06b27d4](https://github.com/OCR-D/ocrd_fileformat/commits/06b27d4)
 
@@ -142,9 +221,7 @@ Submodule ocrd_wrap c47a9dd...7a0c136 (not checked out)
 > Release: [v2.10.0](https://github.com/OCR-D/core/releases/v2.10.0)
 
   > * :package: v2.10.0
-  > * Merge pull request #428 from kba/bulk-add
   > * :memo: changelog
-  > * Merge pull request #1 from bertsky/pr-471
   > * Merge branch 'master' into fix-434
   > * Merge branch 'master' into fix-434
   > * Merge branch 'fix-434' of https://github.com/kba/ocrd-core into fix-434
@@ -188,13 +265,11 @@ Submodule ocrd_wrap c47a9dd...7a0c136 (not checked out)
 
 > Release: [v0.0.6](https://github.com/OCR-D/ocrd_calamari/releases/v0.0.6)
 
-  > * Merge pull request #39 from OCR-D/dont-install-test
 
 ### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [a6a2ecd](https://github.com/cisocrgroup/ocrd_cis/commitsa6a2ecd)..[f2b42d4](https://github.com/cisocrgroup/ocrd_cis/commits/f2b42d4)
 
   > * Update to latest jar
   > * only override log level if it is actually set
-  > * Merge pull request #52 from cisocrgroup/revert-49-load-gz
   > * load gzipped models
 
 ### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [de5b532](https://github.com/OCR-D/ocrd_fileformat/commitsde5b532)..[5698cd7](https://github.com/OCR-D/ocrd_fileformat/commits/5698cd7)
@@ -204,17 +279,13 @@ Submodule ocrd_wrap c47a9dd...7a0c136 (not checked out)
   > * :package: v0.0.1
   > * readme: combine native CLI and workflow-configuration calls
   > * ocrd-tool: add steps/categories, #3
-  > * Merge pull request #5 from OCR-D/script-args
-  > * Merge pull request #6 from ulb-sachsen-anhalt/master
 
 ### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [e000f24](https://github.com/OCR-D/ocrd_olena/commitse000f24)..[6adee3d](https://github.com/OCR-D/ocrd_olena/commits/6adee3d)
 
 > Release: [v1.1.9](https://github.com/OCR-D/ocrd_olena/releases/v1.1.9)
 
   > * :package: v1.1.9
-  > * Merge pull request #53 from OCR-D/check-pkg-config
   > * :package: v1.1.8
-  > * Merge pull request #57 from j23d/master
 
 ### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [9d2253e](https://github.com/OCR-D/ocrd_tesserocr/commits9d2253e)..[1159fbf](https://github.com/OCR-D/ocrd_tesserocr/commits/1159fbf)
 
@@ -230,7 +301,6 @@ Submodule ocrd_wrap 0000000...c47a9dd (new submodule)
 
 > Release: [34](https://github.com/skvark/opencv-python/releases/34)
 
-  > * Merge pull request #315 from uSpike/patch-1
   > * OpenCV 4.3.0
   > * update README
   > * disable MSMF in headless builds #263
@@ -243,7 +313,6 @@ Submodule ocrd_wrap 0000000...c47a9dd (new submodule)
   > * add missing language
   > * matrix -> jobs, disable global default build by moving params to the matrix
   > * remove Python 2.7 from appveyor.yml
-  > * Merge pull request #293 from dlech/master
   > * fix variable name typo
   > * drop Python 2.7, experimental Azure Storage artifact upload support
 
@@ -252,8 +321,6 @@ Submodule ocrd_wrap 0000000...c47a9dd (new submodule)
   > * ocrd-export-larex: support more OCR-D CLI options…
   > * adapt to --overwrite and --page-id support in core 2.10…
   > * alias 'clean' for 'cleanup', documentation
-  > * Merge pull request #15 from kba/loglevel
-  > * Merge pull request #13 from kba/cleanup-cmd
   > * ocrd-export-larex: replace original image in result...
 
 # CHANGELOG
