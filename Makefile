@@ -648,12 +648,12 @@ $(TESSDATA)/%.traineddata:
 	$(call WGET,$@,$(TESSDATA_URL)/raw/master/$(notdir $(call stripdir,$@))/$(notdir $@)) || \
 		{ $(RM) $@; false; }
 
-tesseract/configure: tesseract
+tesseract/Makefile.in: tesseract
 	cd tesseract && ./autogen.sh
 
 # Build and install Tesseract.
 TESSERACT_CONFIG ?= --disable-openmp --disable-shared CXXFLAGS="-g -O2 -fPIC"
-$(BIN)/tesseract: tesseract/configure
+$(BIN)/tesseract: tesseract/Makefile.in
 	mkdir -p $(VIRTUAL_ENV)/build/tesseract
 	cd $(VIRTUAL_ENV)/build/tesseract && $(CURDIR)/tesseract/configure --prefix="$(VIRTUAL_ENV)" $(TESSERACT_CONFIG)
 	cd $(VIRTUAL_ENV)/build/tesseract && $(MAKE) install
@@ -680,7 +680,7 @@ TESSTRAIN_EXECUTABLES += $(BIN)/wordlist2dawg
 .PHONY: install-tesseract-training
 install-tesseract-training: $(TESSTRAIN_EXECUTABLES)
 
-$(call multirule,$(TESSTRAIN_EXECUTABLES)): tesseract/configure
+$(call multirule,$(TESSTRAIN_EXECUTABLES)): tesseract/Makefile.in
 	mkdir -p $(VIRTUAL_ENV)/build/tesseract
 	$(MAKE) -C $(VIRTUAL_ENV)/build/tesseract training-install
 
