@@ -50,7 +50,7 @@ endif
 
 .DEFAULT_GOAL = help # all is too much for a default, and ocrd is too little
 
-.PHONY: all modules clean help show always-update
+.PHONY: all modules clean help show
 
 all: modules # add OCRD_EXECUTABLES at the end
 
@@ -93,20 +93,22 @@ export HELP
 help: ;	@eval "$$HELP"
 
 # update subrepos to the committed revisions:
-# - depends on phony always-update,
+# - is phony,
 #   so this will not only work on first checkout
-# - updates the module to the revision registered here,
-#   unless it is already up-to-date
-# - then updates the time stamp of the module directory
-#   so the directory can be used as a dependency
-modules: $(OCRD_MODULES)
+# - updates the submodules to the revision registered here,
+#   unless they are already up-to-date
+# - then updates the time stamps of the module directories
+#   so each directory can be used as a dependency
+modules:
 # but bypass updates if we have no repo here (e.g. Docker build)
 ifneq (,$(wildcard .git))
-$(OCRD_MODULES): always-update
-	git submodule sync $(GIT_RECURSIVE) $@
-	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
-		git submodule update --init $(GIT_RECURSIVE) $@ && \
-		touch $@; fi
+	git submodule sync $(GIT_RECURSIVE)
+	for module in $(OCRD_MODULES); do \
+	    if git submodule status $(GIT_RECURSIVE) $$module | grep -qv '^ '; then \
+		git submodule update --init $(GIT_RECURSIVE) $$module && \
+		touch $$module; \
+	    fi; \
+	done
 endif
 
 # Get Python modules.
