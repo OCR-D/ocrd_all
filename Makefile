@@ -99,6 +99,7 @@ help: ;	@eval "$$HELP"
 #   unless they are already up-to-date
 # - then updates the time stamps of the module directories
 #   so each directory can be used as a dependency
+$(OCRD_MODULES): modules
 modules:
 # but bypass updates if we have no repo here (e.g. Docker build)
 ifneq (,$(wildcard .git))
