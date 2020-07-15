@@ -37,7 +37,7 @@ endif
 export PKG_CONFIG_PATH
 
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
-CUSTOM_DEPS = unzip wget python3-venv parallel # add more packages for deps-ubuntu below (or modules as preqrequisites)
+CUSTOM_DEPS = unzip wget python3-venv parallel git # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
 DISABLED_MODULES ?= cor-asv-fst opencv-python ocrd_kraken clstm ocrd_ocropy
 # Default to all submodules, but allow overriding by user
@@ -514,10 +514,15 @@ endif
 # (mainly intended for docker, not recommended to use directly for live systems)
 # reset ownership of submodules to that of ocrd_all
 # (in case deps-ubuntu has been used with sudo and some modules were updated)
-deps-ubuntu:
+# install CUSTOM_DEPS first (which is required for the module updates)
+deps-ubuntu: | custom-deps-ubuntu
 	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu; done
 	chown -R --reference=$(CURDIR) .git $^
+
+custom-deps-ubuntu:
 	apt-get -y install $(CUSTOM_DEPS)
+
+.PHONY: deps-ubuntu custom-deps-ubuntu
 
 # Docker builds.
 DOCKER_TAG ?= ocrd/all

@@ -110,7 +110,7 @@ Other modules will have additional system dependencies.
 System dependencies **for all modules** on Ubuntu 18.04 (or similar) can also be installed **automatically** by running:
 
     # on Debian / Ubuntu:
-    sudo apt install make git
+    sudo apt install make
     sudo make deps-ubuntu
 
 (And you can define the scope of _all modules_ by setting the `OCRD_MODULES` [variable](#Variables).)
