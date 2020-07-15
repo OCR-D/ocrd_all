@@ -100,13 +100,20 @@ help: ;	@eval "$$HELP"
 # - then updates the time stamps of the module directories
 #   so each directory can be used as a dependency
 $(OCRD_MODULES): modules
+RECURSIVE_MODULES = ocrd_fileformat ocrd_olena opencv-python
 modules:
 # but bypass updates if we have no repo here (e.g. Docker build)
 ifneq (,$(wildcard .git))
-	git submodule sync $(GIT_RECURSIVE)
-	for module in $(OCRD_MODULES); do \
+	git submodule sync --recursive
+	for module in $(filter-out $(RECURSIVE_MODULES),$(OCRD_MODULES)); do \
 	    if git submodule status $(GIT_RECURSIVE) $$module | grep -qv '^ '; then \
 		git submodule update --init $(GIT_RECURSIVE) $$module && \
+		touch $$module; \
+	    fi; \
+	done
+	for module in $(filter $(RECURSIVE_MODULES),$(OCRD_MODULES)); do \
+	    if git submodule status --recursive $$module | grep -qv '^ '; then \
+		git submodule update --init --recursive $$module && \
 		touch $$module; \
 	    fi; \
 	done
@@ -157,7 +164,6 @@ ifneq ($(findstring opencv-python, $(OCRD_MODULES)),)
 CUSTOM_DEPS += cmake gcc g++
 # libavcodec-dev libavformat-dev libswscale-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev
 # libpng-dev libjpeg-dev libopenexr-dev libtiff-dev libwebp-dev libjasper-dev
-opencv-python: GIT_RECURSIVE = --recursive
 opencv-python/setup.py: opencv-python
 $(SHARE)/opencv-python: opencv-python/setup.py | $(ACTIVATE_VENV) $(SHARE) $(SHARE)/numpy
 	. $(ACTIVATE_VENV) && ENABLE_HEADLESS=1 $(PYTHON) $< bdist_wheel
@@ -232,14 +238,12 @@ $(call multirule,$(OCRD_WRAP)): ocrd_wrap
 endif
 
 ifneq ($(findstring ocrd_fileformat, $(OCRD_MODULES)),)
-ocrd_fileformat: GIT_RECURSIVE = --recursive
 OCRD_EXECUTABLES += $(BIN)/ocrd-fileformat
 $(BIN)/ocrd-fileformat: ocrd_fileformat
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install-fileformat install
 endif
 
 ifneq ($(findstring ocrd_olena, $(OCRD_MODULES)),)
-ocrd_olena: GIT_RECURSIVE = --recursive
 deps-ubuntu: ocrd_olena
 OCRD_EXECUTABLES += $(BIN)/ocrd-olena-binarize
 $(BIN)/ocrd-olena-binarize: ocrd_olena
