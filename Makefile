@@ -87,6 +87,7 @@ Variables:
 	OCRD_MODULES: list of submodules to include (defaults to all git submodules, see `show`)
 	DISABLED_MODULES: list of disabled modules. Default: $(DISABLED_MODULES)
 	TESSERACT_MODELS: list of additional models/languages to download for Tesseract
+	TESSERACT_CONFIG: command line options for Tesseract `configure`. Default: $(TESSERACT_CONFIG)
 EOF
 endef
 export HELP
@@ -463,9 +464,10 @@ tesseract/configure: tesseract
 	cd tesseract && ./autogen.sh
 
 # Build and install Tesseract.
+TESSERACT_CONFIG ?= --disable-openmp --disable-shared CXXFLAGS="-g -O2 -fPIC"
 $(BIN)/tesseract: tesseract/configure
 	mkdir -p $(VIRTUAL_ENV)/build/tesseract
-	cd $(VIRTUAL_ENV)/build/tesseract && $(CURDIR)/tesseract/configure --disable-openmp --disable-shared --prefix="$(VIRTUAL_ENV)" CXXFLAGS="-g -O2 -fPIC"
+	cd $(VIRTUAL_ENV)/build/tesseract && $(CURDIR)/tesseract/configure --prefix="$(VIRTUAL_ENV)" $(TESSERACT_CONFIG)
 	cd $(VIRTUAL_ENV)/build/tesseract && $(MAKE) install
 
 # Build and install Tesseract training tools.
