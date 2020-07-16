@@ -37,7 +37,7 @@ endif
 export PKG_CONFIG_PATH
 
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
-CUSTOM_DEPS = unzip wget python3-venv parallel git # add more packages for deps-ubuntu below (or modules as preqrequisites)
+CUSTOM_DEPS = unzip wget python3-venv parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
 DISABLED_MODULES ?= cor-asv-fst opencv-python ocrd_kraken clstm ocrd_ocropy
 # Default to all submodules, but allow overriding by user
