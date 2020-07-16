@@ -36,6 +36,7 @@ in the current shell environment via PATH and PYTHONHOME.)
        * [<em>PIP_OPTIONS</em>](#pip_options)
        * [<em>GIT_RECURSIVE</em>](#git_recursive)
        * [<em>TESSERACT_MODELS</em>](#tesseract_models)
+       * [<em>TESSERACT_CONFIG</em>](#tesseract_config)
     * [Examples](#examples)
     * [Results](#results)
     * [Persistent configuration](#persistent-configuration)
@@ -203,6 +204,10 @@ Set to `--recursive` to checkout/update all modules recursively. (This usually i
 #### _TESSERACT_MODELS_
 
 Add more models to the minimum required list of languages (`eng equ osd`) to install along with Tesseract.
+
+#### _TESSERACT_CONFIG_
+
+Set `configure` options for building Tesseract from source (`--disable-openmp --disable-shared CXXFLAGS="-g -O2 -fPIC"`).
 
 ### Examples
 
