@@ -18,7 +18,9 @@ GIT_RECURSIVE = # --recursive
 ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
 
 # directory for virtual Python environment
-# (but re-use if already active):
+# (but re-use if already active); overriden
+# to nested venv in recursive calls for modules
+# that have known dependency clashes with others
 VIRTUAL_ENV ?= $(CURDIR)/venv
 
 BIN = $(VIRTUAL_ENV)/bin
@@ -189,7 +191,7 @@ OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-eval
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
 $(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) $(notdir $(OCRD_COR_ASV_ANN))
+	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN))
 	$(call delegate_venv,$(OCRD_COR_ASV_ANN))
 $(OCRD_COR_ASV_ANN): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf1
 else
@@ -204,7 +206,7 @@ OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
 OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
 $(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) $(notdir $(OCRD_COR_ASV_FST))
+	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST))
 	$(call delegate_venv,$(OCRD_COR_ASV_FST))
 $(OCRD_COR_ASV_FST): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf1
 else
@@ -219,7 +221,7 @@ OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
 OCRD_KERASLM += $(BIN)/keraslm-rate
 $(call multirule,$(OCRD_KERASLM)): ocrd_keraslm
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) $(notdir $(OCRD_KERASLM))
+	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM))
 	$(call delegate_venv,$(OCRD_KERASLM))
 $(OCRD_KERASLM): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf1
 else
@@ -284,7 +286,7 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-original
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 $(call multirule,$(OCRD_SEGMENT)): ocrd_segment
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) $(notdir $(OCRD_SEGMENT))
+	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT))
 	$(call delegate_venv,$(OCRD_SEGMENT))
 $(OCRD_SEGMENT): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf1
 else
@@ -347,7 +349,7 @@ OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
 $(OCRD_CALAMARI): ocrd_calamari
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) $(notdir $(OCRD_CALAMARI))
+	$(MAKE) -B -o $< $(notdir $(OCRD_CALAMARI))
 	$(call delegate_venv,$(OCRD_CALAMARI))
 $(OCRD_CALAMARI): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf1
 else
@@ -360,7 +362,7 @@ OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
 $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) $(notdir $(OCRD_PC_SEGMENTATION))
+	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION))
 	$(call delegate_venv,$(OCRD_PC_SEGMENTATION))
 $(OCRD_PC_SEGMENTATION): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf2
 else
@@ -381,7 +383,7 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-block-segmentation
 $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) $(notdir $(OCRD_ANYBASEOCR))
+	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR))
 	$(call delegate_venv,$(OCRD_ANYBASEOCR))
 $(OCRD_ANYBASEOCR): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf2
 else
@@ -395,7 +397,7 @@ OCRD_TYPECLASS := $(BIN)/ocrd-typegroups-classifier
 OCRD_TYPECLASS += $(BIN)/typegroups-classifier
 $(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) $(notdir $(OCRD_TYPECLASS))
+	$(MAKE) -B -o $< $(notdir $(OCRD_TYPECLASS))
 	$(call delegate_venv,$(OCRD_TYPECLASS))
 $(OCRD_TYPECLASS): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf2
 else
@@ -408,7 +410,7 @@ OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
 SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-textline-detector
 $(SBB_LINE_DETECTOR): sbb_textline_detector
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) $(notdir $(SBB_LINE_DETECTOR))
+	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR))
 	$(call delegate_venv,$(SBB_LINE_DETECTOR))
 $(SBB_LINE_DETECTOR): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf1
 else
@@ -441,6 +443,22 @@ define pip_install
 . $(ACTIVATE_VENV) && cd $< && $(PIP) install --no-deps --force-reinstall $(PIP_OPTIONS) .
 endef
 
+# pattern for recursive make:
+# $(executables...): module...
+# ifeq (0,$(MAKELEVEL))
+# 	$(MAKE) -B -o $< $(notdir $(executables...))
+# 	$(call delegate_venv,$(executables...))
+# $(executables...): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-name
+# else
+# 	actual recipe...
+# fi
+# -- calls make with -B to ensure the nested recipe is run as well,
+#    but also with -o $< to avoid updating the submodule twice);
+#    overrides the venv path for nested make via target-specific var
+
+# canned recipes after recursive make for
+# modules in nested venvs:
+
 # echo a shell script that relays to
 # the (currently active) sub-venv
 # (replacing the outer by the inner
@@ -459,6 +477,9 @@ define delegate_venv
 $(foreach executable,$(1),$(file >$(executable),$(call delegator,$(executable))))
 chmod +x $(1)
 endef
+
+# export VIRTUAL_ENV etc to recursive make
+.EXPORT_ALL_VARIABLES:
 
 # avoid making these .PHONY so they do not have to be repeated:
 # clstm tesserocr
