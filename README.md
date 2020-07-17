@@ -363,7 +363,10 @@ Modules may require mutually exclusive sets of dependent packages.
    - `tensorflow>=2`
    - `tensorflow-gpu==1.15.*`
    
-   Both can be installed in parallel in different versions, but may depend on a mutually exclusive set of `tensorboard` and `tensorflow_estimator`. (However, these latter conflicts are only cosmetic, as they are only needed for development.)
+   Both can be installed in parallel in different versions (avoiding overt conflict), 
+   but only the last one installed is actually available to processors
+   (because these different package names are merely for distribution, 
+   while module names for import are still clashing).
    
 - OpenCV:
    * `opencv-python-headlesss` (required by core and others, avoids pulling in X11 libraries)
@@ -371,10 +374,12 @@ Modules may require mutually exclusive sets of dependent packages.
    
    As long as we keep reinstalling the headless variant and no such package attempts GUI, we should be fine. 
    Custom build (as needed for ARM) under the _module_ `opencv-python` already creates the headless variant.
+   Some packages have GUI-related features/options (like interactive plotting) though.
 
 - PyTorch:
    * `torch<1.0`
-   * `torch>=1.0`
+   * `torch>=1.0,<1.5`
+   * `torch>=1.5`
    
 - ...
 
