@@ -449,7 +449,6 @@ endif
 define pip_install
 . $(ACTIVATE_VENV) && cd $< && $(PIP) install $(PIP_OPTIONS_E) .
 . $(ACTIVATE_VENV) && cd $< && $(PIP) install --no-deps --force-reinstall $(PIP_OPTIONS) .
-. $(ACTIVATE_VENV) && $(PIP) check
 endef
 
 # pattern for recursive make:
