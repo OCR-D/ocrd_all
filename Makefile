@@ -114,7 +114,7 @@ endif
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
 	$(PYTHON) -m venv $(VIRTUAL_ENV)
-	. $(ACTIVATE_VENV) && $(PIP) install --upgrade $(PIP_OPTIONS_E) pip
+	. $(ACTIVATE_VENV) && $(PIP) install --upgrade $(PIP_OPTIONS_E) pip setuptools
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
@@ -364,7 +364,7 @@ $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION))
 	$(call delegate_venv,$(OCRD_PC_SEGMENTATION))
-$(OCRD_PC_SEGMENTATION): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf2
+$(OCRD_PC_SEGMENTATION): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf21
 else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
@@ -385,7 +385,7 @@ $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR))
 	$(call delegate_venv,$(OCRD_ANYBASEOCR))
-$(OCRD_ANYBASEOCR): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf2
+$(OCRD_ANYBASEOCR): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf22
 else
 	$(pip_install)
 endif
@@ -399,7 +399,7 @@ $(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_TYPECLASS))
 	$(call delegate_venv,$(OCRD_TYPECLASS))
-$(OCRD_TYPECLASS): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf2
+$(OCRD_TYPECLASS): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-torch14
 else
 	$(pip_install)
 endif
