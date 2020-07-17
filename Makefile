@@ -57,7 +57,8 @@ endif
 all: modules # add OCRD_EXECUTABLES at the end
 
 clean: # add more prerequisites for clean below
-	$(RM) -r $(CURDIR)/venv
+	$(RM) -r $(VIRTUAL_ENV)/share/venv-*
+	$(RM) -r $(CURDIR)/venv # deliberately not using VIRTUAL_ENV here
 
 define HELP
 cat <<"EOF"
@@ -75,6 +76,7 @@ Targets:
 	clean: removes the virtual environment directory, and clean-*
 	clean-tesseract: remove the build directory for tesseract
 	clean-olena: remove the build directory for ocrd_olena
+	deinit: clean, then deinit and rmdir all submodules
 	docker: (re)build a docker image including all executables
 	dockers: (re)build docker images for some pre-selected subsets of modules
 
@@ -109,6 +111,12 @@ $(OCRD_MODULES): always-update
 		git submodule update --init $(GIT_RECURSIVE) $@ && \
 		touch $@; fi
 endif
+
+deinit: clean
+.PHONY: deinit
+deinit:
+	git submodule deinit --all # --force
+	git submodule status | while read stat dir ver; do rmdir $$dir; done
 
 # Get Python modules.
 
