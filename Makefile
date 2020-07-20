@@ -22,6 +22,7 @@ ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
 # to nested venv in recursive calls for modules
 # that have known dependency clashes with others
 VIRTUAL_ENV ?= $(CURDIR)/venv
+SUB_VENV = $(VIRTUAL_ENV)/local/sub-venv
 
 BIN = $(VIRTUAL_ENV)/bin
 SHARE = $(VIRTUAL_ENV)/share
@@ -57,7 +58,7 @@ endif
 all: modules # add OCRD_EXECUTABLES at the end
 
 clean: # add more prerequisites for clean below
-	$(RM) -r $(VIRTUAL_ENV)/share/venv-*
+	$(RM) -r $(SUB_VENV)/*
 	$(RM) -r $(CURDIR)/venv # deliberately not using VIRTUAL_ENV here
 
 define HELP
@@ -201,7 +202,7 @@ $(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN))
 	$(call delegate_venv,$(OCRD_COR_ASV_ANN))
-$(OCRD_COR_ASV_ANN): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf1
+$(OCRD_COR_ASV_ANN): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
 endif
@@ -216,7 +217,7 @@ $(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST))
 	$(call delegate_venv,$(OCRD_COR_ASV_FST))
-$(OCRD_COR_ASV_FST): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf1
+$(OCRD_COR_ASV_FST): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
 	$(MAKE) -C $< deps
 	$(pip_install)
@@ -231,7 +232,7 @@ $(call multirule,$(OCRD_KERASLM)): ocrd_keraslm
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM))
 	$(call delegate_venv,$(OCRD_KERASLM))
-$(OCRD_KERASLM): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf1
+$(OCRD_KERASLM): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
 endif
@@ -296,7 +297,7 @@ $(call multirule,$(OCRD_SEGMENT)): ocrd_segment
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT))
 	$(call delegate_venv,$(OCRD_SEGMENT))
-$(OCRD_SEGMENT): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf1
+$(OCRD_SEGMENT): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
 endif
@@ -359,7 +360,7 @@ $(OCRD_CALAMARI): ocrd_calamari
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_CALAMARI))
 	$(call delegate_venv,$(OCRD_CALAMARI))
-$(OCRD_CALAMARI): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf1
+$(OCRD_CALAMARI): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
 endif
@@ -372,7 +373,7 @@ $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION))
 	$(call delegate_venv,$(OCRD_PC_SEGMENTATION))
-$(OCRD_PC_SEGMENTATION): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf21
+$(OCRD_PC_SEGMENTATION): VIRTUAL_ENV := $(SUB_VENV)/headless-tf21
 else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
@@ -393,7 +394,7 @@ $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR))
 	$(call delegate_venv,$(OCRD_ANYBASEOCR))
-$(OCRD_ANYBASEOCR): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf22
+$(OCRD_ANYBASEOCR): VIRTUAL_ENV := $(SUB_VENV)/headless-tf22
 else
 	$(pip_install)
 endif
@@ -407,7 +408,7 @@ $(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_TYPECLASS))
 	$(call delegate_venv,$(OCRD_TYPECLASS))
-$(OCRD_TYPECLASS): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-torch14
+$(OCRD_TYPECLASS): VIRTUAL_ENV := $(SUB_VENV)/headless-torch14
 else
 	$(pip_install)
 endif
@@ -420,7 +421,7 @@ $(SBB_LINE_DETECTOR): sbb_textline_detector
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR))
 	$(call delegate_venv,$(SBB_LINE_DETECTOR))
-$(SBB_LINE_DETECTOR): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-headless-tf1
+$(SBB_LINE_DETECTOR): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
 endif
@@ -456,7 +457,7 @@ endef
 # ifeq (0,$(MAKELEVEL))
 # 	$(MAKE) -B -o $< $(notdir $(executables...))
 # 	$(call delegate_venv,$(executables...))
-# $(executables...): VIRTUAL_ENV := $(VIRTUAL_ENV)/share/venv-name
+# $(executables...): VIRTUAL_ENV := $(SUB_VENV)/name
 # else
 # 	actual recipe...
 # fi
