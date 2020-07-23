@@ -1,5 +1,77 @@
 # Changelog
 
+## [v2020-07-23](https://github.com/OCR-D/ocrd_all/releases/v2020-07-23)
+
+### [core](https://github.com/OCR-D/core) [f708420d](https://github.com/OCR-D/core/commitsf708420d)..[044cdad2](https://github.com/OCR-D/core/commits/044cdad2)
+
+> Release: [v2.12.2](https://github.com/OCR-D/core/releases/v2.12.2)
+
+  > * :package: v2.12.2
+  > * ocrd_validators: adapt ocrd-tool schema to include OCR-D/spec#152
+  > * :package: v2.12.1
+  > * ocrd process: don't skip first task, fix #529
+  > * unit test to trigger #540/#529
+  > * :package: v2.12.0
+  > * Merge pull request #503 from OCR-D/processors-wo-args
+  > * Merge pull request #535 from OCR-D/patch-bashlib-minversion-set-x
+  > * Merge pull request #536 from OCR-D/refactor-utils-tests
+  > * :package: v2.11.0
+  > * parse_json_string_or_file: handle FNFE and OSError in one clause
+  > * more robust test for param output
+  > * allow #-prefixed line comments in JSON parameter files
+  > * processors CLI: support  repeatable parameters, OCR-D/spec#158
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [287adce](https://github.com/OCR-D/ocrd_anybaseocr/commits287adce)..[958a998](https://github.com/OCR-D/ocrd_anybaseocr/commits/958a998)
+
+> Release: [v0.0.4](https://github.com/OCR-D/ocrd_anybaseocr/releases/v0.0.4)
+
+  > * :package: v0.0.4
+  > * keras should be >= 2.3.0 but < 2.4.0
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [c6ced9b](https://github.com/OCR-D/ocrd_calamari/commitsc6ced9b)..[027fcd7](https://github.com/OCR-D/ocrd_calamari/commits/027fcd7)
+
+> Release: [v0.0.6](https://github.com/OCR-D/ocrd_calamari/releases/v0.0.6)
+
+  > * 🐛 Fix test file path
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [06b27d4](https://github.com/OCR-D/ocrd_fileformat/commits06b27d4)..[8fc5313](https://github.com/OCR-D/ocrd_fileformat/commits/8fc5313)
+
+> Release: [v0.0.3](https://github.com/OCR-D/ocrd_fileformat/releases/v0.0.3)
+
+  > * Merge pull request #9 from bertsky/page-id
+
+
+### [ocrd_wrap](https://github.com/bertsky/ocrd_wrap) [f5347ff](https://github.com/bertsky/ocrd_wrap/commitsf5347ff)..[2cfffed](https://github.com/bertsky/ocrd_wrap/commits/2cfffed)
+
+> Release: [v0.0.5](https://github.com/bertsky/ocrd_wrap/releases/v0.0.5)
+
+  > * fix badge URL
+  > * :package: 0.0.5
+  > * update requirements
+  > * all: fix region level, raise pylint happiness
+
+Submodule opencv-python 11e478c...914404d (commits not present)
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [d01b2e43](https://github.com/tesseract-ocr/tesseract/commitsd01b2e43)..[d33edbc4](https://github.com/tesseract-ocr/tesseract/commits/d33edbc4)
+
+> Release: [5.0.0-alpha](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha)
+
+  > * Merge pull request #3066 from robinwatts/pushback14
+  > * Merge pull request #3065 from robinwatts/pushback13
+  > * Merge pull request #3064 from robinwatts/pushback12
+  > * Merge pull request #3061 from stweil/neon
+  > * Merge pull request #3058 from stweil/scrollview
+  > * Use strtok_s for MSVC in class SVNetwork
+  > * Merge pull request #3060 from edwinnyawoli/patch-1
+  > * Fix division by 0.0 in BaselineRow::PerpDistanceFromBaseline
+  > * Merge pull request #3055 from stweil/string
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [8469b0a](https://github.com/bertsky/workflow-configuration/commits8469b0a)..[7f2766c](https://github.com/bertsky/workflow-configuration/commits/7f2766c)
+
+  > * ocrd-import: annotate correct DPI after downsampling PDFs
+  > * Merge pull request #17 from stweil/master
+
+
 ## [v2020-07-07](https://github.com/OCR-D/ocrd_all/releases/v2020-07-07)
 
 ### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [cdfd4d3](https://github.com/qurator-spk/dinglehopper/commitscdfd4d3)..[c3709e2](https://github.com/qurator-spk/dinglehopper/commits/c3709e2)
@@ -14,7 +86,6 @@
   > * Remove old internal files
   > * README: add PyPI badge
   > * fix setup (needs json)
-  > * Merge branch 'dev'
   > * add empty travis ci file
 
 ### [ocrd_keraslm](https://github.com/OCR-D/ocrd_keraslm) [7bfffef](https://github.com/OCR-D/ocrd_keraslm/commits7bfffef)..[be69c97](https://github.com/OCR-D/ocrd_keraslm/commits/be69c97)
@@ -55,7 +126,6 @@
 > Release: [5.0.0-alpha](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha)
 
   > * unittest: Update comments in normstrngs_test.cc
-  > * Merge branch 'master' of https://github.com/tesseract-ocr/tesseract
   > * cmake: add NEON compile support
   > * cmake: remove custom CheckCCompilerFlag/CheckCXXCompilerFlag
   > * cmake: fix policy setting for newer cmake (CheckIPOSupported)
@@ -65,7 +135,6 @@
   > * Fix out of bounds array access
   > * Update README.md
   > * README.md: Show only open issues of oss-fuzz
-  > * Merge branch 'master' of https://github.com/tesseract-ocr/tesseract
   > * cmake: allow to enable LTO
   > * Update imagedata.cpp
   > * Improve debug message in ColPartition::ComputeLimits
@@ -101,7 +170,6 @@ Fixed:
 > Release: [v2.10.4](https://github.com/OCR-D/core/releases/v2.10.4)
 
   > * :package: v2.10.4
-  > * :memo: changelog
   > * bashlib: --overwrite, #476
 
 ### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [f2b42d4](https://github.com/cisocrgroup/ocrd_cis/commitsf2b42d4)..[fa40e7e](https://github.com/cisocrgroup/ocrd_cis/commits/fa40e7e)
@@ -112,14 +180,12 @@ Fixed:
 > Release: [v0.0.4](https://github.com/OCR-D/ocrd_im6convert/releases/v0.0.4)
 
   > * :package: v0.0.4
-  > * :memo: changelog
 
 ### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [6adee3d](https://github.com/OCR-D/ocrd_olena/commits6adee3d)..[f9bd786](https://github.com/OCR-D/ocrd_olena/commits/f9bd786)
 
 > Release: [v1.1.10](https://github.com/OCR-D/ocrd_olena/releases/v1.1.10)
 
   > * :package: v1.1.10
-  > * :memo: changelog
 
 ### [ocrd_pagetopdf](https://github.com/UB-Mannheim/ocrd_pagetopdf) [a606632](https://github.com/UB-Mannheim/ocrd_pagetopdf/commitsa606632)..[88faa74](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/88faa74)
 
@@ -138,7 +204,6 @@ Fixed:
 > Release: [v2.10.3](https://github.com/OCR-D/core/releases/v2.10.3)
 
   > * :package: v2.10.3
-  > * :memo: changelog
   > * workspace add: check whether filename is absolute
   > * workspace add: os.path.join behavior led to faulty existence check, fix #519
   > * :package: v2.10.2
@@ -197,7 +262,6 @@ Submodule ocrd_wrap c47a9dd...7a0c136 (not checked out)
 
   > * Makefile: Fix location of PAGE XSD
   > * :package: v2.10.1
-  > * :memo: changelog
   > * XSD: move schema files to package root
   > * bashlib: add an ocrd__minversion check to check core
   > * bashlib: input/output grp must be set, logging regression, fix #511
@@ -221,13 +285,8 @@ Submodule ocrd_wrap c47a9dd...7a0c136 (not checked out)
 > Release: [v2.10.0](https://github.com/OCR-D/core/releases/v2.10.0)
 
   > * :package: v2.10.0
-  > * :memo: changelog
-  > * Merge branch 'master' into fix-434
-  > * Merge branch 'master' into fix-434
-  > * Merge branch 'fix-434' of https://github.com/kba/ocrd-core into fix-434
   > * Implement --overwrite with "overwrite_mode" on workspace
   > * get_All{,Alternative}ImagePaths: only return Alternative Image paths
-  > * Merge branch 'master' into fix-434
   > * bundle PAGE XSD in ocrd_validators
   > * Workspace.save_image_file: force should now default to False b/c --overwrite
   > * TaskSequencec.validate_tasks: Check output file groups are not in METS unless overwrite for every task
@@ -240,14 +299,9 @@ Submodule ocrd_wrap c47a9dd...7a0c136 (not checked out)
   > * ocrd_cli_wrap_processor: take page_id into account when checking file groups, #471
   > * WorkspaceValidator: Allow non-destructive reuse of output group
   > * TaskSequence.Task can have a `-g`/`--page-id` attr
-  > * :memo: changelog
   > * Workspace.remove_file: remove images linked in PAGE-XML if page_recursive==True
   > * generateDS PAGE API: `get_AllImagePaths` to list all images
   > * generateDS PAGE API: Move PAGE_REGION_TYPES to ocrd_models.constants
-  > * Merge branch 'master' into fix-434
-  > * Merge branch 'master' into fix-434
-  > * Merge branch 'master' into fix-434
-  > * Merge branch 'master' into fix-434
   > * Add --overwrite parameter to processor base, #434, OCR-D/spec#151
 
 ### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [745095e](https://github.com/qurator-spk/dinglehopper/commits745095e)..[32848eb](https://github.com/qurator-spk/dinglehopper/commits/32848eb)
@@ -292,7 +346,6 @@ Submodule ocrd_wrap c47a9dd...7a0c136 (not checked out)
 > Release: [v0.8.5](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.8.5)
 
   > * :package: v0.8.5
-  > * Merge branch 'master' into fix-polygon-for-parent
   > * segment-region: clip polygons to parent...
 
 Submodule ocrd_wrap 0000000...c47a9dd (new submodule)
