@@ -1,5 +1,17 @@
 # Changelog
 
+## [v2020-07-24](https://github.com/OCR-D/ocrd_all/releases/v2020-07-24)
+
+### [core](https://github.com/OCR-D/core) [044cdad2](https://github.com/OCR-D/core/commits044cdad2)..[14e30a2e](https://github.com/OCR-D/core/commits/14e30a2e)
+
+> Release: [v2.12.4](https://github.com/OCR-D/core/releases/v2.12.4)
+
+  > * :package: v2.12.4
+  > * Merge pull request #546 from OCR-D/logging-interference
+  > * :package: v2.12.3
+  > * Merge pull request #543 from OCR-D/workspace-validator-logspam
+
+
 ## [v2020-07-23](https://github.com/OCR-D/ocrd_all/releases/v2020-07-23)
 
 ### [core](https://github.com/OCR-D/core) [f708420d](https://github.com/OCR-D/core/commitsf708420d)..[044cdad2](https://github.com/OCR-D/core/commits/044cdad2)
