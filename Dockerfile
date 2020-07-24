@@ -70,8 +70,6 @@ RUN echo "> $PREFIX/bin/activate" >> docker.sh
 RUN echo "make deps-ubuntu" >> docker.sh
 # build/install all tools of the requested modules:
 RUN echo "make all" >> docker.sh
-# post-install fixup against conflicting requirements
-RUN echo "make fix-pip" >> docker.sh
 # remove unneeded automatic deps and clear pkg cache
 RUN echo "apt-get -y autoremove && apt-get clean" >> docker.sh
 # remove source directories from image, unless using editable mode
