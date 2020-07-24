@@ -78,10 +78,15 @@ This should show several `LC_*` variables. Otherwise, either select another loca
 
 ### System packages
 
-Install GNU make and git, and wget if you want to download Tesseract models.
+Install GNU make, git and GNU parallel.
 
     # on Debian / Ubuntu:
-    sudo apt install make git wget
+    sudo apt install make git parallel
+
+Install wget or curl if you want to download Tesseract models.
+
+    # on Debian / Ubuntu:
+    sudo apt install wget
 
 Install the packages for Python3 development and for Python3 virtual environments
 for your operating system / distribution.
@@ -105,7 +110,7 @@ Other modules will have additional system dependencies.
 System dependencies **for all modules** on Ubuntu 18.04 (or similar) can also be installed **automatically** by running:
 
     # on Debian / Ubuntu:
-    sudo apt install make git
+    sudo apt install make
     sudo make deps-ubuntu
 
 (And you can define the scope of _all modules_ by setting the `OCRD_MODULES` [variable](#Variables).)

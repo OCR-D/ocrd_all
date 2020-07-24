@@ -40,7 +40,7 @@ endif
 export PKG_CONFIG_PATH
 
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
-CUSTOM_DEPS = unzip wget python3-venv # add more packages for deps-ubuntu below (or modules as preqrequisites)
+CUSTOM_DEPS = unzip wget python3-venv parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
 DISABLED_MODULES ?= cor-asv-fst opencv-python ocrd_kraken clstm ocrd_ocropy
 # Default to all submodules, but allow overriding by user
@@ -54,8 +54,6 @@ endif
 .DEFAULT_GOAL = help # all is too much for a default, and ocrd is too little
 
 .PHONY: all modules clean help show always-update
-
-all: modules # add OCRD_EXECUTABLES at the end
 
 clean: # add more prerequisites for clean below
 	$(RM) -r $(SUB_VENV)/*
@@ -104,13 +102,14 @@ help: ;	@eval "$$HELP"
 #   unless it is already up-to-date
 # - then updates the time stamp of the module directory
 #   so the directory can be used as a dependency
+# - synchronize via mutex to avoid race for git lock file
 modules: $(OCRD_MODULES)
 # but bypass updates if we have no repo here (e.g. Docker build)
 ifneq (,$(wildcard .git))
 $(OCRD_MODULES): always-update
-	git submodule sync $(GIT_RECURSIVE) $@
+	sem --fg --id ocrd_all_git git submodule sync $(GIT_RECURSIVE) $@
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
-		git submodule update --init $(GIT_RECURSIVE) $@ && \
+		sem --fg --id ocrd_all_git git submodule update --init $(GIT_RECURSIVE) $@ && \
 		touch $@; fi
 endif
 
@@ -505,7 +504,7 @@ $(OCRD_EXECUTABLES) $(BIN)/wheel: | $(ACTIVATE_VENV)
 $(OCRD_EXECUTABLES): | $(BIN)/wheel
 
 # At last, we know what all OCRD_EXECUTABLES are:
-all: $(OCRD_EXECUTABLES)
+all: $(OCRD_MODULES) $(OCRD_EXECUTABLES)
 show:
 	@echo VIRTUAL_ENV = $(VIRTUAL_ENV)
 	@echo OCRD_MODULES = $(OCRD_MODULES)
@@ -611,10 +610,15 @@ endif
 # (mainly intended for docker, not recommended to use directly for live systems)
 # reset ownership of submodules to that of ocrd_all
 # (in case deps-ubuntu has been used with sudo and some modules were updated)
-deps-ubuntu:
+# install CUSTOM_DEPS first (which is required for the module updates)
+deps-ubuntu: | custom-deps-ubuntu
 	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu; done
 	chown -R --reference=$(CURDIR) .git $^
+
+custom-deps-ubuntu:
 	apt-get -y install $(CUSTOM_DEPS)
+
+.PHONY: deps-ubuntu custom-deps-ubuntu
 
 # Docker builds.
 DOCKER_TAG ?= ocrd/all
