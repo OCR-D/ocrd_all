@@ -1,5 +1,27 @@
 # Changelog
 
+## [v2020-07-28](https://github.com/OCR-D/ocrd_all/releases/v2020-07-28)
+
+### [core](https://github.com/OCR-D/core) [14e30a2](https://github.com/OCR-D/core/commits14e30a2)..[320a2fd](https://github.com/OCR-D/core/commits/320a2fd)
+
+> Release: [v2.12.6](https://github.com/OCR-D/core/releases/v2.12.6)
+
+  > * :package: v2.12.6
+  > * Merge pull request #550 from OCR-D/pillow-security-fixes
+  > * Merge pull request #547 from OCR-D/refactor-dummy
+  > * :package: v2.12.5
+  > * Merge pull request #548 from OCR-D/fix-540-again
+  > * Merge pull request #549 from OCR-D/maninfest-in
+
+### [sbb_textline_detector](https://github.com/qurator-spk/sbb_textline_detector) [3593506](https://github.com/qurator-spk/sbb_textline_detector/commits3593506)..[4036e2a](https://github.com/qurator-spk/sbb_textline_detector/commits/4036e2a)
+
+  > * Merge pull request #34 from stweil/master
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [7f2766c](https://github.com/bertsky/workflow-configuration/commits7f2766c)..[7edcb90](https://github.com/bertsky/workflow-configuration/commits/7edcb90)
+
+  > * workflow examples: replace + with - in fileGrp names
+
+
 ## [v2020-07-24](https://github.com/OCR-D/ocrd_all/releases/v2020-07-24)
 
 ### [core](https://github.com/OCR-D/core) [044cdad2](https://github.com/OCR-D/core/commits044cdad2)..[14e30a2e](https://github.com/OCR-D/core/commits/14e30a2e)
