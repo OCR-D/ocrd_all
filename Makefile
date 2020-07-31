@@ -18,12 +18,15 @@ GIT_RECURSIVE = # --recursive
 ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
 
 # directory for virtual Python environment
-# (but re-use if already active):
+# (but re-use if already active); overriden
+# to nested venv in recursive calls for modules
+# that have known dependency clashes with others
 VIRTUAL_ENV ?= $(CURDIR)/venv
+SUB_VENV = $(VIRTUAL_ENV)/local/sub-venv
 
-BIN := $(VIRTUAL_ENV)/bin
-SHARE := $(VIRTUAL_ENV)/share
-ACTIVATE_VENV := $(VIRTUAL_ENV)/bin/activate
+BIN = $(VIRTUAL_ENV)/bin
+SHARE = $(VIRTUAL_ENV)/share
+ACTIVATE_VENV = $(VIRTUAL_ENV)/bin/activate
 
 define WGET
 $(if $(shell which wget),wget -nv -O $(1) $(2),$(if $(shell which curl),curl -L -o $(1) $(2),$(error "found no cmdline downloader (wget/curl)")))
@@ -37,7 +40,7 @@ endif
 export PKG_CONFIG_PATH
 
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
-CUSTOM_DEPS = unzip wget python3-venv # add more packages for deps-ubuntu below (or modules as preqrequisites)
+CUSTOM_DEPS = unzip wget python3-venv parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
 DISABLED_MODULES ?= cor-asv-fst opencv-python ocrd_kraken clstm ocrd_ocropy
 # Default to all submodules, but allow overriding by user
@@ -52,10 +55,9 @@ endif
 
 .PHONY: all modules clean help show always-update
 
-all: modules # add OCRD_EXECUTABLES at the end
-
 clean: # add more prerequisites for clean below
-	$(RM) -r $(CURDIR)/venv
+	$(RM) -r $(SUB_VENV)/*
+	$(RM) -r $(CURDIR)/venv # deliberately not using VIRTUAL_ENV here
 
 define HELP
 cat <<"EOF"
@@ -71,10 +73,10 @@ Targets:
 	install-tesseract: download, build and install Tesseract (with required models)
 	install-tesseract-training: build and install Tesseract training tools
 	install-models: Downloads commonly used models to appropriate locations
-	fix-pip: try to repair conflicting requirements
 	clean: removes the virtual environment directory, and clean-*
 	clean-tesseract: remove the build directory for tesseract
 	clean-olena: remove the build directory for ocrd_olena
+	deinit: clean, then deinit and rmdir all submodules
 	docker: (re)build a docker image including all executables
 	dockers: (re)build docker images for some pre-selected subsets of modules
 
@@ -88,6 +90,7 @@ Variables:
 	OCRD_MODULES: list of submodules to include (defaults to all git submodules, see `show`)
 	DISABLED_MODULES: list of disabled modules. Default: $(DISABLED_MODULES)
 	TESSERACT_MODELS: list of additional models/languages to download for Tesseract
+	TESSERACT_CONFIG: command line options for Tesseract `configure`. Default: $(TESSERACT_CONFIG)
 EOF
 endef
 export HELP
@@ -100,21 +103,28 @@ help: ;	@eval "$$HELP"
 #   unless it is already up-to-date
 # - then updates the time stamp of the module directory
 #   so the directory can be used as a dependency
+# - synchronize via mutex to avoid race for git lock file
 modules: $(OCRD_MODULES)
 # but bypass updates if we have no repo here (e.g. Docker build)
 ifneq (,$(wildcard .git))
 $(OCRD_MODULES): always-update
-	git submodule sync $(GIT_RECURSIVE) $@
+	sem --fg --id ocrd_all_git git submodule sync $(GIT_RECURSIVE) $@
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
-		git submodule update --init $(GIT_RECURSIVE) $@ && \
+		sem --fg --id ocrd_all_git git submodule update --init $(GIT_RECURSIVE) $@ && \
 		touch $@; fi
 endif
+
+deinit: clean
+.PHONY: deinit
+deinit:
+	git submodule deinit --all # --force
+	git submodule status | while read stat dir ver; do rmdir $$dir; done
 
 # Get Python modules.
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
 	$(PYTHON) -m venv $(VIRTUAL_ENV)
-	. $(ACTIVATE_VENV) && $(PIP) install --upgrade $(PIP_OPTIONS_E) pip
+	. $(ACTIVATE_VENV) && $(PIP) install --upgrade $(PIP_OPTIONS_E) pip setuptools
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
@@ -190,7 +200,13 @@ OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-train
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-eval
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
 $(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN))
+	$(call delegate_venv,$(OCRD_COR_ASV_ANN))
+$(OCRD_COR_ASV_ANN): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
+else
 	$(pip_install)
+endif
 endif
 
 ifneq ($(findstring cor-asv-fst, $(OCRD_MODULES)),)
@@ -199,8 +215,14 @@ OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
 OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
 OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
 $(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST))
+	$(call delegate_venv,$(OCRD_COR_ASV_FST))
+$(OCRD_COR_ASV_FST): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
+else
 	$(MAKE) -C $< deps
 	$(pip_install)
+endif
 endif
 
 ifneq ($(findstring ocrd_keraslm, $(OCRD_MODULES)),)
@@ -208,7 +230,13 @@ OCRD_EXECUTABLES += $(OCRD_KERASLM)
 OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
 OCRD_KERASLM += $(BIN)/keraslm-rate
 $(call multirule,$(OCRD_KERASLM)): ocrd_keraslm
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM))
+	$(call delegate_venv,$(OCRD_KERASLM))
+$(OCRD_KERASLM): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
+else
 	$(pip_install)
+endif
 endif
 
 ifneq ($(findstring ocrd_im6convert, $(OCRD_MODULES)),)
@@ -259,11 +287,21 @@ endif
 ifneq ($(findstring ocrd_segment, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_SEGMENT)
 OCRD_SEGMENT := $(BIN)/ocrd-segment-evaluate
+OCRD_SEGMENT += $(BIN)/ocrd-segment-from-masks
+OCRD_SEGMENT += $(BIN)/ocrd-segment-from-coco
 OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-lines
 OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-regions
+OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-pages
+OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-original
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 $(call multirule,$(OCRD_SEGMENT)): ocrd_segment
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT))
+	$(call delegate_venv,$(OCRD_SEGMENT))
+$(OCRD_SEGMENT): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
+else
 	$(pip_install)
+endif
 endif
 
 ifneq ($(findstring ocrd_tesserocr, $(OCRD_MODULES)),)
@@ -320,15 +358,27 @@ ifneq ($(findstring ocrd_calamari, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
 $(OCRD_CALAMARI): ocrd_calamari
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(OCRD_CALAMARI))
+	$(call delegate_venv,$(OCRD_CALAMARI))
+$(OCRD_CALAMARI): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
+else
 	$(pip_install)
+endif
 endif
 
 ifneq ($(findstring ocrd_pc_segmentation, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
 $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION))
+	$(call delegate_venv,$(OCRD_PC_SEGMENTATION))
+$(OCRD_PC_SEGMENTATION): VIRTUAL_ENV := $(SUB_VENV)/headless-tf21
+else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
+endif
 endif
 
 ifneq ($(findstring ocrd_anybaseocr, $(OCRD_MODULES)),)
@@ -342,7 +392,13 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-block-segmentation
 $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR))
+	$(call delegate_venv,$(OCRD_ANYBASEOCR))
+$(OCRD_ANYBASEOCR): VIRTUAL_ENV := $(SUB_VENV)/headless-tf22
+else
 	$(pip_install)
+endif
 endif
 
 ifneq ($(findstring ocrd_typegroups_classifier, $(OCRD_MODULES)),)
@@ -350,14 +406,26 @@ OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
 OCRD_TYPECLASS := $(BIN)/ocrd-typegroups-classifier
 OCRD_TYPECLASS += $(BIN)/typegroups-classifier
 $(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(OCRD_TYPECLASS))
+	$(call delegate_venv,$(OCRD_TYPECLASS))
+$(OCRD_TYPECLASS): VIRTUAL_ENV := $(SUB_VENV)/headless-torch14
+else
 	$(pip_install)
+endif
 endif
 
 ifneq ($(findstring sbb_textline_detector, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
-SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-line-detector
+SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-textline-detector
 $(SBB_LINE_DETECTOR): sbb_textline_detector
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR))
+	$(call delegate_venv,$(SBB_LINE_DETECTOR))
+$(SBB_LINE_DETECTOR): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
+else
 	$(pip_install)
+endif
 endif
 
 ifneq ($(findstring ocrd_repair_inconsistencies, $(OCRD_MODULES)),)
@@ -385,6 +453,44 @@ define pip_install
 . $(ACTIVATE_VENV) && cd $< && $(PIP) install --no-deps --force-reinstall $(PIP_OPTIONS) .
 endef
 
+# pattern for recursive make:
+# $(executables...): module...
+# ifeq (0,$(MAKELEVEL))
+# 	$(MAKE) -B -o $< $(notdir $(executables...))
+# 	$(call delegate_venv,$(executables...))
+# $(executables...): VIRTUAL_ENV := $(SUB_VENV)/name
+# else
+# 	actual recipe...
+# fi
+# -- calls make with -B to ensure the nested recipe is run as well,
+#    but also with -o $< to avoid updating the submodule twice);
+#    overrides the venv path for nested make via target-specific var
+
+# canned recipes after recursive make for
+# modules in nested venvs:
+
+# echo a shell script that relays to
+# the (currently active) sub-venv
+# (replacing the outer by the inner
+#  venv directory to ensure there
+#  is no infinite recursion when
+#  the sub-venv does not have the
+#  executable)
+# TODO: variant for relay to Docker
+define delegator
+#!/bin/bash
+. $(ACTIVATE_VENV) && $(BIN)/$(notdir $(1)) "$$@"
+endef
+# create shell scripts that relay to
+# the (currently active) sub-venv
+define delegate_venv
+$(foreach executable,$(1),$(file >$(executable),$(call delegator,$(executable))))
+chmod +x $(1)
+endef
+
+# export VIRTUAL_ENV etc to recursive make
+.EXPORT_ALL_VARIABLES:
+
 # avoid making these .PHONY so they do not have to be repeated:
 # clstm tesserocr
 $(SHARE)/%: % | $(ACTIVATE_VENV) $(SHARE)
@@ -398,20 +504,8 @@ $(SHARE):
 $(OCRD_EXECUTABLES) $(BIN)/wheel: | $(ACTIVATE_VENV)
 $(OCRD_EXECUTABLES): | $(BIN)/wheel
 
-.PHONY: fix-pip
-# temporary workaround for conflicting requirements between modules:
-# - opencv-python instead of opencv-python-headless (which needs X11 libs)
-#   (pulled by ocrd_anybaseocr and segmentation-runner)
-# - tensorflow>=2.0, tensorflow_gpu in another version
-# - pillow==5.4.1 instead of >=6.2
-fix-pip:
-	. $(ACTIVATE_VENV) && $(PIP) install --force-reinstall $(PIP_OPTIONS_E) \
-		opencv-python-headless \
-		"pillow>=6.2.0" \
-		$$($(PIP) list | grep tensorflow-gpu | sed -E 's/-gpu +/==/')
-
 # At last, we know what all OCRD_EXECUTABLES are:
-all: $(OCRD_EXECUTABLES)
+all: $(OCRD_MODULES) $(OCRD_EXECUTABLES)
 show:
 	@echo VIRTUAL_ENV = $(VIRTUAL_ENV)
 	@echo OCRD_MODULES = $(OCRD_MODULES)
@@ -541,9 +635,10 @@ tesseract/configure: tesseract
 	cd tesseract && ./autogen.sh
 
 # Build and install Tesseract.
+TESSERACT_CONFIG ?= --disable-openmp --disable-shared CXXFLAGS="-g -O2 -fPIC"
 $(BIN)/tesseract: tesseract/configure
 	mkdir -p $(VIRTUAL_ENV)/build/tesseract
-	cd $(VIRTUAL_ENV)/build/tesseract && $(CURDIR)/tesseract/configure --disable-openmp --disable-shared --prefix="$(VIRTUAL_ENV)" CXXFLAGS="-g -O2 -fPIC"
+	cd $(VIRTUAL_ENV)/build/tesseract && $(CURDIR)/tesseract/configure --prefix="$(VIRTUAL_ENV)" $(TESSERACT_CONFIG)
 	cd $(VIRTUAL_ENV)/build/tesseract && $(MAKE) install
 
 # Build and install Tesseract training tools.
@@ -593,10 +688,15 @@ endif
 # (mainly intended for docker, not recommended to use directly for live systems)
 # reset ownership of submodules to that of ocrd_all
 # (in case deps-ubuntu has been used with sudo and some modules were updated)
-deps-ubuntu:
+# install CUSTOM_DEPS first (which is required for the module updates)
+deps-ubuntu: | custom-deps-ubuntu
 	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu; done
 	chown -R --reference=$(CURDIR) .git $^
+
+custom-deps-ubuntu:
 	apt-get -y install $(CUSTOM_DEPS)
+
+.PHONY: deps-ubuntu custom-deps-ubuntu
 
 # Docker builds.
 DOCKER_TAG ?= ocrd/all
@@ -632,6 +732,10 @@ docker%: Dockerfile $(DOCKER_MODULES)
 	--build-arg OCRD_MODULES="$(DOCKER_MODULES)" \
 	--build-arg PIP_OPTIONS="$(PIP_OPTIONS)" \
 	-t $(DOCKER_TAG):$(or $(*:-%=%),latest) .
+
+
+docker: DOCKER_MODULES ?= $(OCRD_MODULES)
+docker: docker-latest
 
 # do not search for implicit rules here:
 Makefile: ;

@@ -21,7 +21,6 @@ in the current shell environment via PATH and PYTHONHOME.)
        * [<em>modules</em>](#modules)
        * [<em>ocrd</em>](#ocrd)
        * [<em>all</em>](#all)
-       * [<em>fix-pip</em>](#fix-pip)
        * [<em>docker</em>](#docker)
        * [<em>clean</em>](#clean)
        * [<em>show</em>](#show)
@@ -36,6 +35,7 @@ in the current shell environment via PATH and PYTHONHOME.)
        * [<em>PIP_OPTIONS</em>](#pip_options)
        * [<em>GIT_RECURSIVE</em>](#git_recursive)
        * [<em>TESSERACT_MODELS</em>](#tesseract_models)
+       * [<em>TESSERACT_CONFIG</em>](#tesseract_config)
     * [Examples](#examples)
     * [Results](#results)
     * [Persistent configuration](#persistent-configuration)
@@ -78,10 +78,15 @@ This should show several `LC_*` variables. Otherwise, either select another loca
 
 ### System packages
 
-Install GNU make and git, and wget if you want to download Tesseract models.
+Install GNU make, git and GNU parallel.
 
     # on Debian / Ubuntu:
-    sudo apt install make git wget
+    sudo apt install make git parallel
+
+Install wget or curl if you want to download Tesseract models.
+
+    # on Debian / Ubuntu:
+    sudo apt install wget
 
 Install the packages for Python3 development and for Python3 virtual environments
 for your operating system / distribution.
@@ -105,7 +110,7 @@ Other modules will have additional system dependencies.
 System dependencies **for all modules** on Ubuntu 18.04 (or similar) can also be installed **automatically** by running:
 
     # on Debian / Ubuntu:
-    sudo apt install make git
+    sudo apt install make
     sudo make deps-ubuntu
 
 (And you can define the scope of _all modules_ by setting the `OCRD_MODULES` [variable](#Variables).)
@@ -133,10 +138,6 @@ Install only OCR-D/core and its CLI `ocrd` into the venv.
 #### _all_
 
 Install executables from all modules into the venv. (Depends on [_modules_](#modules) and [_ocrd_](#ocrd).)
-
-#### _fix-pip_
-
-Fix incompatible/inconsistent pip requirements between all modules
 
 #### _docker_
 
@@ -203,6 +204,10 @@ Set to `--recursive` to checkout/update all modules recursively. (This usually i
 #### _TESSERACT_MODELS_
 
 Add more models to the minimum required list of languages (`eng equ osd`) to install along with Tesseract.
+
+#### _TESSERACT_CONFIG_
+
+Set `configure` options for building Tesseract from source (`--disable-openmp --disable-shared CXXFLAGS="-g -O2 -fPIC"`).
 
 ### Examples
 
@@ -377,9 +382,13 @@ Modules may require mutually exclusive sets of dependent packages.
    As long as we keep reinstalling the headless variant and no such package attempts GUI, we should be fine. 
    Custom build (as needed for ARM) under the _module_ `opencv-python` already creates the headless variant.
 
+- PyTorch:
+   * `torch<1.0`
+   * `torch>=1.0`
+   
 - ...
 
-_(Solved temporarily by post-installation `fix-pip`.)_
+_(Solved by managing and delegating to different subsets of venvs.)_
 
 ### System requirements
 
