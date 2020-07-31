@@ -616,6 +616,7 @@ deps-ubuntu: | custom-deps-ubuntu
 	chown -R --reference=$(CURDIR) .git $^
 
 custom-deps-ubuntu:
+	apt-get -y update
 	apt-get -y install $(CUSTOM_DEPS)
 
 .PHONY: deps-ubuntu custom-deps-ubuntu
