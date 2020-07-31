@@ -72,6 +72,7 @@ Targets:
 	all: installs all executables of all modules
 	install-tesseract: download, build and install Tesseract (with required models)
 	install-tesseract-training: build and install Tesseract training tools
+	install-models: Downloads commonly used models to appropriate locations
 	clean: removes the virtual environment directory, and clean-*
 	clean-tesseract: remove the build directory for tesseract
 	clean-olena: remove the build directory for ocrd_olena
@@ -529,6 +530,83 @@ TESSERACT_TRAINEDDATA = $(ALL_TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
 
 stripdir = $(patsubst %/,%,$(dir $(1)))
 
+# {{{ Install commonly used models
+.PHONY: install-models
+install-models: \
+	install-models-tesseract \
+	install-models-ocropus \
+	install-models-calamari
+
+UB_MANNHEIM_BACKUP_URL = https://ub-backup.bib.uni-mannheim.de/~stweil/ocrd-train/data
+.PHONY: install-models-tesseract
+install-models-tesseract: \
+	$(ALL_TESSERACT_MODELS:%=%.traineddata) \
+	frk.traineddata \
+	deu.traineddata \
+	script/Fraktur.traineddata \
+	script/Latin.traineddata \
+	$(TESSDATA)/GT4HistOCR_100000.traineddata \
+	$(TESSDATA)/GT4HistOCR_300000.traineddata \
+	$(TESSDATA)/GT4HistOCR_2000000.traineddata \
+	$(TESSDATA)/fast/Fraktur_50000000.334_450937.traineddata \
+	$(TESSDATA)/best/Fraktur_50000000.334_450937.traineddata
+
+$(TESSDATA)/GT4HistOCR_100000.traineddata:
+	mkdir -p $(dir $@); $(call WGET,$@,$(UB_MANNHEIM_BACKUP_URL)/$(notdir $@))
+
+$(TESSDATA)/GT4HistOCR_300000.traineddata:
+	mkdir -p $(dir $@); $(call WGET,$@,$(UB_MANNHEIM_BACKUP_URL)/$(notdir $@))
+
+$(TESSDATA)/GT4HistOCR_2000000.traineddata:
+	mkdir -p $(dir $@); $(call WGET,$@,$(UB_MANNHEIM_BACKUP_URL)/$(notdir $@))
+
+$(TESSDATA)/fast/Fraktur_50000000.334_450937.traineddata:
+	mkdir -p $(dir $@); $(call WGET,$@,$(UB_MANNHEIM_BACKUP_URL)/Fraktur_5000000/tessdata_fast/Fraktur_50000000.334_450937.traineddata)
+
+$(TESSDATA)/best/Fraktur_50000000.334_450937.traineddata:
+	mkdir -p $(dir $@); $(call WGET,$@,$(UB_MANNHEIM_BACKUP_URL)/Fraktur_5000000/tessdata_best/Fraktur_50000000.334_450937.traineddata)
+
+OCROPUS_DATA_PATH := $(VIRTUAL_ENV)/share/ocropus
+.PHONY: install-models-ocropus
+install-models-ocropus: \
+	$(OCROPUS_DATA_PATH)/en-default.pyrnn.gz \
+	$(OCROPUS_DATA_PATH)/fraktur.pyrnn.gz \
+	$(OCROPUS_DATA_PATH)/fraktur-jze.pyrnn.gz \
+	$(OCROPUS_DATA_PATH)/LatinHist-98000.pyrnn.gz
+	@if test -z "$(OCROPUS_DATA)";then \
+		echo "Update your shell startup file to set the 'OCROPUS_DATA' environment variable:" ;\
+		echo "bash: Add to $$HOME/.bashrc:" ;\
+		echo "      export OCROPUS_DATA='$(OCROPUS_DATA_PATH)'" ;\
+		echo "zsh: Add to $$HOME/.zshrc:" ;\
+		echo "      export OCROPUS_DATA='$(OCROPUS_DATA_PATH)'" ;\
+		echo "fish: Add to $$HOME/.config/fish/fish.config:" ;\
+		echo "      setenv OCROPUS_DATA '$(OCROPUS_DATA_PATH)'" ;\
+	fi
+
+$(OCROPUS_DATA_PATH)/en-default.pyrnn.gz:
+	mkdir -p $(dir $@)
+	$(call WGET,$@,https://github.com/zuphilip/ocropy-models/raw/master/$(notdir $@))
+$(OCROPUS_DATA_PATH)/fraktur.pyrnn.gz:
+	mkdir -p $(dir $@)
+	$(call WGET,$@,https://github.com/zuphilip/ocropy-models/raw/master/$(notdir $@))
+$(OCROPUS_DATA_PATH)/fraktur-jze.pyrnn.gz:
+	mkdir -p $(dir $@)
+	$(call WGET,$@,https://github.com/jze/ocropus-model_fraktur/raw/master/fraktur.pyrnn.gz)
+$(OCROPUS_DATA_PATH)/LatinHist-98000.pyrnn.gz:
+	mkdir -p $(dir $@)
+	$(call WGET,$@,https://github.com/chreul/OCR_Testdata_EarlyPrintedBooks/raw/master/LatinHist-98000.pyrnn.gz)
+
+CALAMARI_DATA_PATH := $(VIRTUAL_ENV)/share/calamari
+.PHONY: install-models-calamari
+install-models-calamari: \
+	$(CALAMARI_DATA_PATH)/GT4HistOCR/checkpoint
+
+$(CALAMARI_DATA_PATH)/GT4HistOCR/checkpoint:
+	mkdir -p $(dir $@)
+	$(call WGET,/tmp/gt4histocr-qurator.tar.xz,https://qurator-data.de/calamari-models/GT4HistOCR/model.tar.xz)
+	cd $(dir $@) && tar xf /tmp/gt4histocr-qurator.tar.xz
+# }}}
+
 # Install Tesseract with models.
 .PHONY: install-tesseract
 install-tesseract: $(BIN)/tesseract $(TESSERACT_TRAINEDDATA)
@@ -654,6 +732,7 @@ docker%: Dockerfile $(DOCKER_MODULES)
 	--build-arg OCRD_MODULES="$(DOCKER_MODULES)" \
 	--build-arg PIP_OPTIONS="$(PIP_OPTIONS)" \
 	-t $(DOCKER_TAG):$(or $(*:-%=%),latest) .
+
 
 docker: DOCKER_MODULES ?= $(OCRD_MODULES)
 docker: docker-latest
