@@ -1,5 +1,98 @@
 # Changelog
 
+## [v2020-08-04](https://github.com/OCR-D/ocrd_all/releases/v2020-08-04)
+
+### [core](https://github.com/OCR-D/core) [320a2fd](https://github.com/OCR-D/core/commits320a2fd)..[a07568e](https://github.com/OCR-D/core/commits/a07568e)
+
+> Release: [v2.13.0](https://github.com/OCR-D/core/releases/v2.13.0)
+
+  > * :package: v2.13.0
+  > * fix test_exif
+  > * update tests
+  > * BaseProcessor.input_files: Implement logic for PAGEXML/image in same folder
+  > * :package: v2.12.7
+  > * Support -P in ocrd process, fix #551
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [958a998](https://github.com/OCR-D/ocrd_anybaseocr/commits958a998)..[962617d](https://github.com/OCR-D/ocrd_anybaseocr/commits/962617d)
+
+> Release: [v0.0.5](https://github.com/OCR-D/ocrd_anybaseocr/releases/v0.0.5)
+
+  > * :package: v0.0.5
+  > * .
+  > * circleci: patch pix2pixhd and install pytest
+  > * circleci: fix setup and badge
+  > * Merge remote-tracking branch 'origin/master' into fix-installation
+  > * Merge branch 'fix-installation' of https://github.com/OCR-D/ocrd_anybaseocr into fix-installation
+  > * remove "force" parameter
+  > * dewarp: use assert_file_grp_cardinality
+  > * document prepare_options hack in dewarp
+  > * layout analysis: allow CPU processing
+  > * makefile: executables will always be ocrd-anybaseocr-*
+  > * circleci: run make test and cli-test
+  > * fix setup.py cli paths
+  > * smoke test all CLI for --help and --dump-json
+  > * make test: overrideable test set
+  > * layout-analysis: use tensorflow_importer
+  > * deccouple CLIs (not all need tensorflow)
+  > * ocrd-tool: fix --help breaking typos, fix #57
+  > * :art: fix imports ocrd_anybaseocr_block_segmentation
+  > * :art: autopep8 ocrd_anybaseocr_block_segmentation
+  > * Update Makefile
+  > * prepare_data is a function, not a method
+  > * prepare_data is a function, not a method
+  > * Merge branch 'fix-installation' of https://github.com/mjenckel/ocrd_anybaseocr into fix-installation
+  > * make assets: copy models as before
+  > * :memo: update CLI test comments
+  > * Merge branch 'fix-installation' of https://github.com/mjenckel/ocrd_anybaseocr into fix-installation
+  > * MANIFEST.in: drop "graft pix2pixHD"
+  > * :memo: update install instructions
+  > * dewarp: modify prepare_options so they are actually picked up ...
+  > * make patch-pix2pixhd: fix string exceptions regex
+  > * torchvision is requird
+  > * more pix2pix sed-i-patching
+  > * minimal unittest for dewarp
+  > * tool-json: dewarp: Add download URL to description
+  > * make patch-pix2pixhd: typo
+  > * dewarp: eliminate multiple output groups, OCR-D/spec#164
+  > * dewarp: factor pix2pixhd option setup out of class
+  > * ocrd-tool: dewarp: drop checkpoint_dir param
+  > * ocrd-tool: dewarp: set cacheable=true and content-type for 'model_path'
+  > * dewarp: ocrd-tool:
+  > * :art: dewarp: clean up code (wip)
+  > * dewarp: properly import pix2pixhd
+  > * make {patch-,}pix2pixhd: Patch pix2pixhd to work alongside like a subpackage
+  > * massage requirements.txt to avoid VersionConflictError
+  > * move pix2pixhd to package root
+  > * Merge remote-tracking branch 'bertsky/fix-crop-reshape' into fix-installation
+  > * Merge remote-tracking branch 'bertsky/fix-dewarp' into fix-installation
+  > * :art: autopep8 dewarp
+  > * add pix2pixHD as a submodule, bundle using MANIFEST.in
+
+### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [f9bd786](https://github.com/OCR-D/ocrd_olena/commitsf9bd786)..[ed7720d](https://github.com/OCR-D/ocrd_olena/commits/ed7720d)
+
+> Release: [v1.2.0](https://github.com/OCR-D/ocrd_olena/releases/v1.2.0)
+
+  > * Merge pull request #66 from mikegerber/fix/travis-install
+  > * :package: v1.2.0
+  > * Merge branch 'default-impl'
+  > * make install: more robust check whether ocrd CLI installed, fix #61
+
+### [opencv-python](https://github.com/skvark/opencv-python) [914404d](https://github.com/skvark/opencv-python/commits914404d)..[83acfc9](https://github.com/skvark/opencv-python/commits/83acfc9)
+
+> Release: [36](https://github.com/skvark/opencv-python/releases/36)
+
+  > * Merge pull request #368 from tedski/master
+
+### [sbb_textline_detector](https://github.com/qurator-spk/sbb_textline_detector) [4036e2a](https://github.com/qurator-spk/sbb_textline_detector/commits4036e2a)..[eba5f54](https://github.com/qurator-spk/sbb_textline_detector/commits/eba5f54)
+
+  > * Update README.md
+  > * Update README.md
+  > * Update README.md
+  > * Update README.md
+  > * Update README.md
+  > * Update README.md
+
+
 ## [v2020-07-28](https://github.com/OCR-D/ocrd_all/releases/v2020-07-28)
 
 ### [core](https://github.com/OCR-D/core) [14e30a2](https://github.com/OCR-D/core/commits14e30a2)..[320a2fd](https://github.com/OCR-D/core/commits/320a2fd)
