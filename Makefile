@@ -17,6 +17,7 @@ GIT_RECURSIVE = # --recursive
 # Required and optional Tesseract models.
 ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
 
+
 # directory for virtual Python environment
 # (but re-use if already active); overriden
 # to nested venv in recursive calls for modules
@@ -107,11 +108,20 @@ help: ;	@eval "$$HELP"
 modules: $(OCRD_MODULES)
 # but bypass updates if we have no repo here (e.g. Docker build)
 ifneq (,$(wildcard .git))
+# XXX not working
+# modules: MAKE_IS_MULTI_JOB ?= $(findstring -j,$(MAKEFLAGS))
 $(OCRD_MODULES): always-update
-	sem --fg --id ocrd_all_git git submodule sync $(GIT_RECURSIVE) $@
+	if echo "$$MAKEFLAGS" | grep -q -- -j;then \
+	sem --fg --id ocrd_all_git git submodule sync $(GIT_RECURSIVE) $@; \
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
 		sem --fg --id ocrd_all_git git submodule update --init $(GIT_RECURSIVE) $@ && \
-		touch $@; fi
+		touch $@; fi \
+	else \
+	git submodule sync $(GIT_RECURSIVE) $@; \
+	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
+		git submodule update --init $(GIT_RECURSIVE) $@ && \
+		touch $@; fi \
+	fi
 endif
 
 deinit: clean
@@ -738,6 +748,8 @@ docker%: Dockerfile $(DOCKER_MODULES)
 
 docker: DOCKER_MODULES ?= $(OCRD_MODULES)
 docker: docker-latest
+
+
 
 # do not search for implicit rules here:
 Makefile: ;
