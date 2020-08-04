@@ -13,6 +13,8 @@ export PIP
 # Derived variable to allow filtering -e, or inserting other options
 # (the option --editable must always be last and only applies to src install)
 PIP_OPTIONS_E = $(filter-out -e,$(PIP_OPTIONS))
+# Set to 1 to skip all submodule updates. For development.
+SKIP_MODULES = 0
 GIT_RECURSIVE = # --recursive
 # Required and optional Tesseract models.
 ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
@@ -108,10 +110,12 @@ modules: $(OCRD_MODULES)
 # but bypass updates if we have no repo here (e.g. Docker build)
 ifneq (,$(wildcard .git))
 $(OCRD_MODULES): always-update
+ifneq ($(SKIP_MODULES),1)
 	sem --fg --id ocrd_all_git git submodule sync $(GIT_RECURSIVE) $@
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
 		sem --fg --id ocrd_all_git git submodule update --init $(GIT_RECURSIVE) $@ && \
 		touch $@; fi
+endif
 endif
 
 deinit: clean
