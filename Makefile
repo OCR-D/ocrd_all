@@ -397,6 +397,7 @@ ifeq (0,$(MAKELEVEL))
 	$(call delegate_venv,$(OCRD_ANYBASEOCR))
 $(OCRD_ANYBASEOCR): VIRTUAL_ENV := $(SUB_VENV)/headless-tf22
 else
+	cd $< ; $(MAKE) patch-pix2pixhd
 	$(pip_install)
 endif
 endif
