@@ -106,8 +106,12 @@ help: ;	@eval "$$HELP"
 # - synchronize via mutex to avoid race for git lock file
 modules: $(OCRD_MODULES)
 # but bypass updates if we have no repo here (e.g. Docker build)
+# XXX update-sync-update in that order because https://github.com/OCR-D/ocrd_all/issues/136
 ifneq (,$(wildcard .git))
 $(OCRD_MODULES): always-update
+	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
+		sem --fg --id ocrd_all_git git submodule update --init $(GIT_RECURSIVE) $@ && \
+		touch $@; fi
 	sem --fg --id ocrd_all_git git submodule sync $(GIT_RECURSIVE) $@
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
 		sem --fg --id ocrd_all_git git submodule update --init $(GIT_RECURSIVE) $@ && \
