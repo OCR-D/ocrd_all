@@ -24,6 +24,12 @@ ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
 VIRTUAL_ENV ?= $(CURDIR)/venv
 SUB_VENV = $(VIRTUAL_ENV)/local/sub-venv
 
+ifeq ($(shell echo | parallel --citation 2>/dev/null|sort|uniq|grep -F "Type: 'will cite' and press enter."),Type: 'will cite' and press enter.)
+SEM = @echo "Please run 'parallel' --citation and type 'will cite'!"; exit 1;
+else
+SEM = sem --fg --id ocrd_all_git
+endif
+
 BIN = $(VIRTUAL_ENV)/bin
 SHARE = $(VIRTUAL_ENV)/share
 ACTIVATE_VENV = $(VIRTUAL_ENV)/bin/activate
@@ -108,9 +114,9 @@ modules: $(OCRD_MODULES)
 # but bypass updates if we have no repo here (e.g. Docker build)
 ifneq (,$(wildcard .git))
 $(OCRD_MODULES): always-update
-	sem --fg --id ocrd_all_git git submodule sync $(GIT_RECURSIVE) $@
+	$(SEM) git submodule sync $(GIT_RECURSIVE) $@
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
-		sem --fg --id ocrd_all_git git submodule update --init $(GIT_RECURSIVE) $@ && \
+		$(SEM) git submodule update --init $(GIT_RECURSIVE) $@ && \
 		touch $@; fi
 endif
 

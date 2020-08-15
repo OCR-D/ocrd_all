@@ -83,6 +83,11 @@ Install GNU make, git and GNU parallel.
     # on Debian / Ubuntu:
     sudo apt install make git parallel
 
+Agree to [GNU parallel's ransom request for citations](https://savannah.gnu.org/bugs/?func=detailitem&item_id=47076)
+
+    # enter 'will cite' when prompted
+    parallel --citatation
+
 Install wget or curl if you want to download Tesseract models.
 
     # on Debian / Ubuntu:
