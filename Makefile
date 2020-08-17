@@ -30,6 +30,10 @@ BIN = $(VIRTUAL_ENV)/bin
 SHARE = $(VIRTUAL_ENV)/share
 ACTIVATE_VENV = $(VIRTUAL_ENV)/bin/activate
 
+define SEM
+$(if $(shell which sem),sem --fg --id ocrd_all_git ,$(error "Please install GNU parallel"))
+endef
+
 define WGET
 $(if $(shell which wget),wget -nv -O $(1) $(2),$(if $(shell which curl),curl -L -o $(1) $(2),$(error "found no cmdline downloader (wget/curl)")))
 endef
@@ -117,9 +121,9 @@ modules: $(OCRD_MODULES)
 ifneq (,$(wildcard .git))
 $(OCRD_MODULES): always-update
 ifneq ($(NO_UPDATE),1)
-	sem --fg --id ocrd_all_git git submodule sync $(GIT_RECURSIVE) $@
+	$(SEM) git submodule sync $(GIT_RECURSIVE) $@
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
-		sem --fg --id ocrd_all_git git submodule update --init $(GIT_RECURSIVE) $@ && \
+		$(SEM) git submodule update --init $(GIT_RECURSIVE) $@ && \
 		touch $@; fi
 endif
 endif
