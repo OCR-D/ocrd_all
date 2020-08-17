@@ -53,7 +53,12 @@ ifeq ($(strip $(OCRD_MODULES)),)
 override OCRD_MODULES := $(filter-out $(DISABLED_MODULES),$(shell git submodule status | while read commit dir ref; do echo $$dir; done))
 endif
 
-.DEFAULT_GOAL = help # all is too much for a default, and ocrd is too little
+# `all` is too much for a default, and `ocrd` is too little
+.DEFAULT_GOAL = help
+
+# delete file targets (e.g. executables / venvs) when recipes fail
+# to ensure they are re-built (not considered up-to-date) when re-entering
+.DELETE_ON_ERROR:
 
 .PHONY: all modules clean help show always-update
 
