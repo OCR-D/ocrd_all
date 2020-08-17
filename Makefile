@@ -286,7 +286,7 @@ $(BIN)/ocrd-olena-binarize: ocrd_olena
 clean: clean-olena
 .PHONY: clean-olena
 clean-olena:
-	$(MAKE) -C ocrd_olena clean-olena BUILD_DIR=$(VIRTUAL_ENV)/build/ocrd_olena
+	-$(MAKE) -C ocrd_olena clean-olena BUILD_DIR=$(VIRTUAL_ENV)/build/ocrd_olena
 endif
 
 ifneq ($(findstring dinglehopper, $(OCRD_MODULES)),)
