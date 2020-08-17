@@ -67,6 +67,7 @@ endif
 clean: # add more prerequisites for clean below
 	$(RM) -r $(SUB_VENV)/*
 	$(RM) -r $(CURDIR)/venv # deliberately not using VIRTUAL_ENV here
+	$(RM) -r $(HOME)/.parallel/semaphores/id-ocrd_all_git/
 
 define HELP
 cat <<"EOF"
