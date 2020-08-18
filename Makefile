@@ -117,9 +117,9 @@ modules: $(OCRD_MODULES)
 ifneq (,$(wildcard .git))
 $(OCRD_MODULES): always-update
 ifneq ($(NO_UPDATE),1)
-	sem --fg --id ocrd_all_git git submodule sync $(GIT_RECURSIVE) $@
+	sem --fg --id ocrd_all_git git submodule sync $(GIT_RECURSIVE) $@ 2>/dev/null
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
-		sem --fg --id ocrd_all_git git submodule update --init $(GIT_RECURSIVE) $@ && \
+		sem --fg --id ocrd_all_git git submodule update --init $(GIT_RECURSIVE) $@ 2>/dev/null && \
 		touch $@; fi
 endif
 endif
