@@ -30,9 +30,15 @@ BIN = $(VIRTUAL_ENV)/bin
 SHARE = $(VIRTUAL_ENV)/share
 ACTIVATE_VENV = $(VIRTUAL_ENV)/bin/activate
 
+ifneq ($(MAKECMDGOALS),)
+ifneq ($(MAKECMDGOALS),deps-ubuntu)
+ifneq ($(MAKECMDGOALS),help)
 define SEM
-$(if $(shell which sem),sem --fg --id ocrd_all_git ,$(error "Please install GNU parallel"))
+$(if $(shell which sem),sem --fg --id ocrd_all_git --nn,$(error "Please install GNU parallel"))
 endef
+endif
+endif
+endif
 
 define WGET
 $(if $(shell which wget),wget -nv -O $(1) $(2),$(if $(shell which curl),curl -L -o $(1) $(2),$(error "found no cmdline downloader (wget/curl)")))
