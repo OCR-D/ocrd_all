@@ -305,13 +305,7 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-pages
 OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-original
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 $(call multirule,$(OCRD_SEGMENT)): ocrd_segment
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT))
-	$(call delegate_venv,$(OCRD_SEGMENT))
-$(OCRD_SEGMENT): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
-else
 	$(pip_install)
-endif
 endif
 
 ifneq ($(findstring ocrd_tesserocr, $(OCRD_MODULES)),)
