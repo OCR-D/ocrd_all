@@ -706,9 +706,9 @@ endif
 # install CUSTOM_DEPS first (which is required for the module updates)
 deps-ubuntu: | custom-deps-ubuntu
 	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu; done
-	@chown -R --reference=$(CURDIR) .git $^
+	chown -R --reference=$(CURDIR) .git $^
 # prevent the sem commands during above module updates from imposing sudo perms on HOME:
-	@chown -R --reference=$(HOME) $(HOME)/.parallel
+	chown -R --reference=$(HOME) $(HOME)/.parallel
 
 custom-deps-ubuntu:
 	apt-get -y update
