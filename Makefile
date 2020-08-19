@@ -118,9 +118,9 @@ help: ;	@eval "$$HELP"
 modules: $(OCRD_MODULES)
 # but bypass updates if we have no repo here (e.g. Docker build)
 ifneq (,$(wildcard .git))
-$(OCRD_MODULES): always-update
 ifneq ($(NO_UPDATE),1)
-	sem --version >/dev/null 2>&1 || { echo "cannot find package GNU parallel" >&2; false; }
+$(OCRD_MODULES): always-update
+	$(SEM) --version >/dev/null 2>&1 || { echo "cannot find package GNU parallel" >&2; false; }
 	$(SEM) git submodule sync $(GIT_RECURSIVE) $@
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
 		$(SEM) git submodule update --init $(GIT_RECURSIVE) $@ && \
