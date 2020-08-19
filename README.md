@@ -413,4 +413,4 @@ programs in parallel without changing them.
 
 ### Reference
 
-Tange, Ole: GNU Parallel 20200722 ('Privacy Shield'). July 2020. https://doi.org/10.5281/zenodo.3956817
+Tange, Ole. (2020). _GNU Parallel 20200722 ('Privacy Shield')_. Zenodo. https://doi.org/10.5281/zenodo.3956817
