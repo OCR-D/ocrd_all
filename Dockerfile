@@ -34,7 +34,7 @@ ENV VIRTUAL_ENV $PREFIX
 ENV DEBIAN_FRONTEND noninteractive
 
 # make apt system functional
-RUN apt-get update \
+RUN apt-get -y update \
  && apt-get install -y apt-utils
 
 # allow passing build-time parameter for list of tools to be installed
