@@ -404,3 +404,13 @@ _(Solved by maintaining these requirements under `deps-ubuntu` here.)_
 Please see our [contributing
 guide](https://github.com/OCR-D/ocrd_all/blob/master/.github/contributing.md)
 to learn how you can support the project.
+
+## Acknowledgments
+
+This software uses GNU parallel.
+GNU Parallel is a general parallelizer to run multiple serial command line
+programs in parallel without changing them.
+
+### Reference
+
+Tange, Ole. (2020). _GNU Parallel 20200722 ('Privacy Shield')_. Zenodo. https://doi.org/10.5281/zenodo.3956817
