@@ -4,11 +4,9 @@
 -include local.mk
 
 # Python version (python3 required).
-PYTHON ?= python3
+export PYTHON ?= python3
 # Python packaging
-PIP ?= pip3
-export PYTHON
-export PIP
+export PIP ?= pip3
 # PIP_OPTIONS ?= # empty
 # Derived variable to allow filtering -e, or inserting other options
 # (the option --editable must always be last and only applies to src install)
@@ -23,15 +21,19 @@ ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
 # (but re-use if already active); overriden
 # to nested venv in recursive calls for modules
 # that have known dependency clashes with others
-VIRTUAL_ENV ?= $(CURDIR)/venv
+export VIRTUAL_ENV ?= $(CURDIR)/venv
 SUB_VENV = $(VIRTUAL_ENV)/local/sub-venv
 
 BIN = $(VIRTUAL_ENV)/bin
 SHARE = $(VIRTUAL_ENV)/share
 ACTIVATE_VENV = $(VIRTUAL_ENV)/bin/activate
 
+define SEM
+$(if $(shell sem --version),sem --nn --fg --id ocrd_all_git,$(error cannot find package GNU parallel))
+endef
+
 define WGET
-$(if $(shell which wget),wget -nv -O $(1) $(2),$(if $(shell which curl),curl -L -o $(1) $(2),$(error "found no cmdline downloader (wget/curl)")))
+$(if $(shell wget --version),wget -nv -O $(1) $(2),$(if $(shell curl --version),curl -L -o $(1) $(2),$(error found no cmdline downloader (wget/curl))))
 endef
 
 ifeq ($(PKG_CONFIG_PATH),)
@@ -53,13 +55,19 @@ ifeq ($(strip $(OCRD_MODULES)),)
 override OCRD_MODULES := $(filter-out $(DISABLED_MODULES),$(shell git submodule status | while read commit dir ref; do echo $$dir; done))
 endif
 
-.DEFAULT_GOAL = help # all is too much for a default, and ocrd is too little
+# `all` is too much for a default, and `ocrd` is too little
+.DEFAULT_GOAL = help
+
+# delete file targets (e.g. executables / venvs) when recipes fail
+# to ensure they are re-built (not considered up-to-date) when re-entering
+.DELETE_ON_ERROR:
 
 .PHONY: all modules clean help show always-update
 
 clean: # add more prerequisites for clean below
 	$(RM) -r $(SUB_VENV)/*
 	$(RM) -r $(CURDIR)/venv # deliberately not using VIRTUAL_ENV here
+	$(RM) -r $(HOME)/.parallel/semaphores/id-ocrd_all_git/
 
 define HELP
 cat <<"EOF"
@@ -111,14 +119,14 @@ modules: $(OCRD_MODULES)
 # but bypass updates if we have no repo here (e.g. Docker build)
 # XXX update-sync-update in that order because https://github.com/OCR-D/ocrd_all/issues/136
 ifneq (,$(wildcard .git))
-$(OCRD_MODULES): always-update
 ifneq ($(NO_UPDATE),1)
+$(OCRD_MODULES): always-update
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
-		sem --fg --id ocrd_all_git git submodule update --init $(GIT_RECURSIVE) $@ && \
+		$(SEM) git submodule update --init $(GIT_RECURSIVE) $@ && \
 		touch $@; fi
-	sem --fg --id ocrd_all_git git submodule sync $(GIT_RECURSIVE) $@
+	$(SEM) git submodule sync $(GIT_RECURSIVE) $@
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
-		sem --fg --id ocrd_all_git git submodule update --init $(GIT_RECURSIVE) $@ && \
+		$(SEM) git submodule update --init $(GIT_RECURSIVE) $@ && \
 		touch $@; fi
 endif
 endif
@@ -149,7 +157,7 @@ $(SHARE)/numpy: | $(ACTIVATE_VENV) $(SHARE)
 
 .PHONY: ocrd
 ocrd: $(BIN)/ocrd
-deps-ubuntu: core
+deps-ubuntu-modules: core
 $(BIN)/ocrd: core
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install --force-reinstall $(PIP_OPTIONS)"
 	# workaround for core#351:
@@ -219,7 +227,7 @@ endif
 endif
 
 ifneq ($(findstring cor-asv-fst, $(OCRD_MODULES)),)
-deps-ubuntu: cor-asv-fst
+deps-ubuntu-modules: cor-asv-fst
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
 OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
 OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
@@ -249,7 +257,7 @@ endif
 endif
 
 ifneq ($(findstring ocrd_im6convert, $(OCRD_MODULES)),)
-deps-ubuntu: ocrd_im6convert
+deps-ubuntu-modules: ocrd_im6convert
 OCRD_EXECUTABLES += $(BIN)/ocrd-im6convert
 $(BIN)/ocrd-im6convert: ocrd_im6convert
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
@@ -275,13 +283,14 @@ endif
 
 ifneq ($(findstring ocrd_olena, $(OCRD_MODULES)),)
 ocrd_olena: GIT_RECURSIVE = --recursive
-deps-ubuntu: ocrd_olena
+deps-ubuntu-modules: ocrd_olena
 OCRD_EXECUTABLES += $(BIN)/ocrd-olena-binarize
 $(BIN)/ocrd-olena-binarize: ocrd_olena
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install BUILD_DIR=$(VIRTUAL_ENV)/build/ocrd_olena
 clean: clean-olena
 .PHONY: clean-olena
 clean-olena:
+	test ! -f ocrd_olena/Makefile || \
 	$(MAKE) -C ocrd_olena clean-olena BUILD_DIR=$(VIRTUAL_ENV)/build/ocrd_olena
 endif
 
@@ -317,7 +326,7 @@ ifneq ($(findstring ocrd_tesserocr, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_TESSEROCR)
 # only add custom PPA when not building tesseract from source
 ifeq ($(findstring tesseract, $(OCRD_MODULES)),)
-deps-ubuntu: ocrd_tesserocr
+deps-ubuntu-modules: ocrd_tesserocr
 # convert Tesseract model names into Ubuntu/Debian pkg names
 # (does not work with names under script/ though)
 CUSTOM_DEPS += $(filter-out tesseract-ocr-equ,$(subst _,-,$(ALL_TESSERACT_MODELS:%=tesseract-ocr-%)))
@@ -356,7 +365,7 @@ $(call multirule,$(OCRD_CIS)): ocrd_cis
 endif
 
 ifneq ($(findstring ocrd_pagetopdf, $(OCRD_MODULES)),)
-deps-ubuntu: ocrd_pagetopdf
+deps-ubuntu-modules: ocrd_pagetopdf
 OCRD_EXECUTABLES += $(OCRD_PAGETOPDF)
 OCRD_PAGETOPDF := $(BIN)/ocrd-pagetopdf
 $(OCRD_PAGETOPDF): ocrd_pagetopdf
@@ -446,7 +455,7 @@ $(OCRD_REPAIR_INCONSISTENCIES): ocrd_repair_inconsistencies
 endif
 
 ifneq ($(findstring workflow-configuration, $(OCRD_MODULES)),)
-deps-ubuntu: workflow-configuration
+deps-ubuntu-modules: workflow-configuration
 OCRD_EXECUTABLES += $(WORKFLOW_CONFIGURATION)
 WORKFLOW_CONFIGURATION := $(BIN)/ocrd-make
 WORKFLOW_CONFIGURATION += $(BIN)/ocrd-import
@@ -498,9 +507,6 @@ $(foreach executable,$(1),$(file >$(executable),$(call delegator,$(executable)))
 chmod +x $(1)
 endef
 
-# export VIRTUAL_ENV etc to recursive make
-.EXPORT_ALL_VARIABLES:
-
 # avoid making these .PHONY so they do not have to be repeated:
 # clstm tesserocr
 $(SHARE)/%: % | $(ACTIVATE_VENV) $(SHARE)
@@ -529,7 +535,7 @@ $(OCRD_EXECUTABLES:$(BIN)/%=%): %: $(BIN)/%
 ifneq ($(findstring tesseract, $(OCRD_MODULES)),)
 # Tesseract.
 
-# when not installing via PPA, we must cope without ocrd_tesserocr's deps-ubuntu
+# when not installing via PPA, we must cope without ocrd_tesserocr's deps-ubuntu-modules
 CUSTOM_DEPS += g++ make automake libleptonica-dev
 # but since we are building statically, we need more (static) libs at build time
 CUSTOM_DEPS += libarchive-dev libcurl4-nss-dev libgif-dev libjpeg-dev libpng-dev libtiff-dev
@@ -698,16 +704,19 @@ endif
 # (mainly intended for docker, not recommended to use directly for live systems)
 # reset ownership of submodules to that of ocrd_all
 # (in case deps-ubuntu has been used with sudo and some modules were updated)
-# install CUSTOM_DEPS first (which is required for the module updates)
-deps-ubuntu: | custom-deps-ubuntu
-	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu; done
+# install git and parallel first (which is required for the module updates)
+deps-ubuntu:
+	apt-get -y install git parallel
+	$(MAKE) deps-ubuntu-modules
 	chown -R --reference=$(CURDIR) .git $^
+# prevent the sem commands during above module updates from imposing sudo perms on HOME:
+	chown -R --reference=$(HOME) $(HOME)/.parallel
 
-custom-deps-ubuntu:
-	apt-get -y update
+deps-ubuntu-modules:
+	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu; done
 	apt-get -y install $(CUSTOM_DEPS)
 
-.PHONY: deps-ubuntu custom-deps-ubuntu
+.PHONY: deps-ubuntu deps-ubuntu-modules
 
 # Docker builds.
 DOCKER_TAG ?= ocrd/all

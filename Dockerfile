@@ -34,7 +34,7 @@ ENV VIRTUAL_ENV $PREFIX
 ENV DEBIAN_FRONTEND noninteractive
 
 # make apt system functional
-RUN apt-get update \
+RUN apt-get -y update \
  && apt-get install -y apt-utils
 
 # allow passing build-time parameter for list of tools to be installed
@@ -84,9 +84,9 @@ RUN ldconfig
 
 # remove (dated) security workaround preventing use of
 # ImageMagick's convert on PDF/PS/EPS/XPS:
-RUN sed -i 's/rights="none"/rights="read|write"/g' /etc/ImageMagick-6/policy.xml
+RUN sed -i 's/rights="none"/rights="read|write"/g' /etc/ImageMagick-6/policy.xml || true
 # prevent cache resources exhausted errors
-RUN sed -i 's/name="disk" value="1GiB"/name="disk" value="4GiB"/g' /etc/ImageMagick-6/policy.xml
+RUN sed -i 's/name="disk" value="1GiB"/name="disk" value="8GiB"/g' /etc/ImageMagick-6/policy.xml || true
 
 # reset to interactive
 ENV DEBIAN_FRONTEND teletype
