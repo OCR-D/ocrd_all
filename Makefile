@@ -338,6 +338,12 @@ OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-region
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-word
 $(call multirule,$(OCRD_TESSEROCR)): ocrd_tesserocr $(SHARE)/tesserocr
 	$(pip_install)
+
+# tesserocr must wait for tesseract in parallel builds.
+ifneq ($(findstring tesseract, $(OCRD_MODULES)),)
+$(SHARE)/tesserocr: $(BIN)/tesseract
+endif
+
 endif
 
 ifneq ($(findstring ocrd_cis, $(OCRD_MODULES)),)
