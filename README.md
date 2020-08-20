@@ -250,7 +250,7 @@ To use the built executables, simply activate the virtual environment:
 
 For the Docker image, run it with your data path mounted as a user:
 
-    docker run -it -u $(id -u):$(id -g) $PWD:/data ocrd/all
+    docker run -it -u $(id -u):$(id -g) -v $PWD:/data ocrd/all
     ocrd --help
     ocrd-...
 

@@ -13,6 +13,8 @@ export PIP
 # Derived variable to allow filtering -e, or inserting other options
 # (the option --editable must always be last and only applies to src install)
 PIP_OPTIONS_E = $(filter-out -e,$(PIP_OPTIONS))
+# Set to 1 to skip all submodule updates. For development.
+NO_UPDATE = 0
 GIT_RECURSIVE = # --recursive
 # Required and optional Tesseract models.
 ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
@@ -87,6 +89,7 @@ Variables:
 	PIP: name of the Python packaging binary
 	PIP_OPTIONS: extra options for the `pip install` command like `-q` or `-v` or `-e`
 	GIT_RECURSIVE: set to `--recursive` to checkout/update all submodules recursively
+	NO_UPDATE: set to `1` to omit git submodule sync and update
 	OCRD_MODULES: list of submodules to include (defaults to all git submodules, see `show`)
 	DISABLED_MODULES: list of disabled modules. Default: $(DISABLED_MODULES)
 	TESSERACT_MODELS: list of additional models/languages to download for Tesseract
@@ -109,6 +112,7 @@ modules: $(OCRD_MODULES)
 # XXX update-sync-update in that order because https://github.com/OCR-D/ocrd_all/issues/136
 ifneq (,$(wildcard .git))
 $(OCRD_MODULES): always-update
+ifneq ($(NO_UPDATE),1)
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
 		sem --fg --id ocrd_all_git git submodule update --init $(GIT_RECURSIVE) $@ && \
 		touch $@; fi
@@ -116,6 +120,7 @@ $(OCRD_MODULES): always-update
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
 		sem --fg --id ocrd_all_git git submodule update --init $(GIT_RECURSIVE) $@ && \
 		touch $@; fi
+endif
 endif
 
 deinit: clean
