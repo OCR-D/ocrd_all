@@ -272,8 +272,8 @@ endif
 
 ifneq ($(findstring ocrd_fileformat, $(OCRD_MODULES)),)
 ocrd_fileformat: GIT_RECURSIVE = --recursive
-OCRD_EXECUTABLES += $(BIN)/ocrd-fileformat
-$(BIN)/ocrd-fileformat: ocrd_fileformat
+OCRD_EXECUTABLES += $(BIN)/ocrd-fileformat-transform
+$(BIN)/ocrd-fileformat-transform: ocrd_fileformat
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install-fileformat install
 endif
 
@@ -360,8 +360,7 @@ OCRD_CIS += $(BIN)/ocrd-cis-ocropy-recognize
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-resegment
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-segment
 #OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
-OCRD_CIS += $(BIN)/ocrd-cis-profile
-OCRD_CIS += $(BIN)/ocrd-cis-wer
+OCRD_CIS += $(BIN)/ocrd-cis-postcorrect
 $(call multirule,$(OCRD_CIS)): ocrd_cis
 	$(pip_install)
 endif
