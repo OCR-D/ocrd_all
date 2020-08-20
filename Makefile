@@ -62,7 +62,12 @@ endif
 # to ensure they are re-built (not considered up-to-date) when re-entering
 .DELETE_ON_ERROR:
 
-.PHONY: all modules clean help show always-update
+.PHONY: all modules check clean help show always-update
+
+check:
+	@sem --version >/dev/null && echo "ok - parallel installed"
+	@{ wget --version || curl --version; } > /dev/null && echo "ok - wget/curl installed"
+
 
 clean: # add more prerequisites for clean below
 	$(RM) -r $(SUB_VENV)/*
@@ -517,7 +522,7 @@ $(OCRD_EXECUTABLES) $(BIN)/wheel: | $(ACTIVATE_VENV)
 $(OCRD_EXECUTABLES): | $(BIN)/wheel
 
 # At last, we know what all OCRD_EXECUTABLES are:
-all: $(OCRD_MODULES) $(OCRD_EXECUTABLES)
+all: check $(OCRD_MODULES) $(OCRD_EXECUTABLES)
 show:
 	@echo VIRTUAL_ENV = $(VIRTUAL_ENV)
 	@echo OCRD_MODULES = $(OCRD_MODULES)
