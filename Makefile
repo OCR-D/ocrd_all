@@ -136,8 +136,8 @@ deinit:
 # Get Python modules.
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
-	$(PYTHON) -m venv $(VIRTUAL_ENV)
-	. $(ACTIVATE_VENV) && $(PIP) install --upgrade $(PIP_OPTIONS_E) pip setuptools
+	$(SEM) $(PYTHON) -m venv $(VIRTUAL_ENV)
+	. $(ACTIVATE_VENV) && $(SEM) $(PIP) install --upgrade $(PIP_OPTIONS_E) pip setuptools
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
