@@ -29,11 +29,11 @@ SHARE = $(VIRTUAL_ENV)/share
 ACTIVATE_VENV = $(VIRTUAL_ENV)/bin/activate
 
 define SEM
-$(if $(shell sem --version),sem --nn --fg --id ocrd_all_git,$(error cannot find package GNU parallel))
+$(if $(shell sem --version 2>/dev/null),sem --nn --fg --id ocrd_all_git,$(error cannot find package GNU parallel))
 endef
 
 define WGET
-$(if $(shell wget --version),wget -nv -O $(1) $(2),$(if $(shell curl --version),curl -L -o $(1) $(2),$(error found no cmdline downloader (wget/curl))))
+$(if $(shell wget --version 2>/dev/null),wget -nv -O $(1) $(2),$(if $(shell curl --version 2>/dev/null),curl -L -o $(1) $(2),$(error found no cmdline downloader (wget/curl))))
 endef
 
 ifeq ($(PKG_CONFIG_PATH),)
