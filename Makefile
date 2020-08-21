@@ -355,7 +355,6 @@ OCRD_CIS += $(BIN)/ocrd-cis-ocropy-clip
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-denoise
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-deskew
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-dewarp
-OCRD_CIS += $(BIN)/ocrd-cis-ocropy-rec
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-recognize
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-resegment
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-segment
