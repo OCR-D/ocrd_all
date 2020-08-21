@@ -98,7 +98,7 @@
 
 ### [ocrd_typegroups_classifier](https://github.com/OCR-D/ocrd_typegroups_classifier) [94a3630](https://github.com/OCR-D/ocrd_typegroups_classifier/commits94a3630)..[3dddd94](https://github.com/OCR-D/ocrd_typegroups_classifier/commits/3dddd94)
 
-> Release: [v0.1.0](https://github.com/OCR-D/ocrd_typegroups_classifier/releases/v0.1.0)
+> Release: [v0.1.1](https://github.com/OCR-D/ocrd_typegroups_classifier/releases/v0.1.1)
 
   > * :package: v0.1.0
   > * use make_file_id/assert_file_grp_cardinality
