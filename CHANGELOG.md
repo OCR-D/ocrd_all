@@ -1,5 +1,188 @@
 # Changelog
 
+## [v2020-08-21](https://github.com/OCR-D/ocrd_all/releases/v2020-08-21)
+
+### [core](https://github.com/OCR-D/core) [a07568e](https://github.com/OCR-D/core/commitsa07568e)..[dc3ffe4](https://github.com/OCR-D/core/commits/dc3ffe4)
+
+> Release: [v2.13.2](https://github.com/OCR-D/core/releases/v2.13.2)
+
+  > * :package: v2.13.2
+  > * workspace: ensure PIL.Image.open FD gets closed
+  > * :package: v2.13.1
+  > * assert_file_grp_cardinality: allow optional "msg" keyword param
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [c3709e2](https://github.com/qurator-spk/dinglehopper/commitsc3709e2)..[7930ecd](https://github.com/qurator-spk/dinglehopper/commits/7930ecd)
+
+  > * 🔧 dinglehopper: Add PyCharm code style config
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [962617d](https://github.com/OCR-D/ocrd_anybaseocr/commits962617d)..[9abe7bf](https://github.com/OCR-D/ocrd_anybaseocr/commits/9abe7bf)
+
+> Release: [v1.0.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.0.0)
+
+  > * :package: v1.0.0
+  > * Merge pull request #66 from OCR-D/file-ids-and-such
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [027fcd7](https://github.com/OCR-D/ocrd_calamari/commits027fcd7)..[210c126](https://github.com/OCR-D/ocrd_calamari/commits/210c126)
+
+> Release: [v0.0.7](https://github.com/OCR-D/ocrd_calamari/releases/v0.0.7)
+
+  > * Merge pull request #42 from OCR-D/file-ids-and-such
+  > * 🗒️ README-DEV: Also release on GitHub
+  > * 📦 v0.0.7
+  > * Merge pull request #41 from OCR-D/fix/set-pcgtsid
+  > * 🚧 Tests: Add some TODOs re data + namespace version changes
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [fdd7345](https://github.com/cisocrgroup/ocrd_cis/commitsfdd7345)..[5bb73c3](https://github.com/cisocrgroup/ocrd_cis/commits/5bb73c3)
+
+> Release: [v0.0.10](https://github.com/cisocrgroup/ocrd_cis/releases/v0.0.10)
+
+  > * Trainining -> Training
+  > * typos
+  > * Fix lgtm alert
+  > * fix 4a1d2e39d32
+  > * set pcGtsId to METS file ID everywhere
+  > * remove old entry point for ocropy recognition
+  > * ocrolib: ensure closing FDs after mkstemp and PIL.Image.open
+  > * binarize: zoom wrt. DPI to avoid inverse edges (and gain speed) at high DPI
+  > * processors: use make_file_id and assert_file_grp_cardinality
+  > * ocropy processors: put derived images under output fileGrp…
+
+### [ocrd_keraslm](https://github.com/OCR-D/ocrd_keraslm) [be69c97](https://github.com/OCR-D/ocrd_keraslm/commitsbe69c97)..[52cb4ce](https://github.com/OCR-D/ocrd_keraslm/commits/52cb4ce)
+
+> Release: [v0.4.0](https://github.com/OCR-D/ocrd_keraslm/releases/v0.4.0)
+
+  > * :package: v0.4.0
+  > * wrapper: set pcGtsId to METS file ID
+  > * ocrd cli: use make_file_id and assert_file_grp_cardinality
+
+### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [50ecb0b](https://github.com/OCR-D/ocrd_olena/commits50ecb0b)..[54792be](https://github.com/OCR-D/ocrd_olena/commits/54792be)
+
+> Release: [v1.2.1](https://github.com/OCR-D/ocrd_olena/releases/v1.2.1)
+
+  > * :package: 1.2.1
+  > * fix handling input fileGrps where PAGE is mixed with derived images: (#68)
+
+### [ocrd_pc_segmentation](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation) [db0128f](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commitsdb0128f)..[5e433e3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/5e433e3)
+
+> Release: [v0.1.3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/releases/v0.1.3)
+
+  > * use make_file_id and assert_file_grp_cardinality
+
+### [ocrd_repair_inconsistencies](https://github.com/qurator-spk/ocrd_repair_inconsistencies) [ba27aba](https://github.com/qurator-spk/ocrd_repair_inconsistencies/commitsba27aba)..[8182063](https://github.com/qurator-spk/ocrd_repair_inconsistencies/commits/8182063)
+
+  > * Merge pull request #10 from kba/file-ids-and-such
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [06fb5ba](https://github.com/OCR-D/ocrd_segment/commits06fb5ba)..[7596e9c](https://github.com/OCR-D/ocrd_segment/commits/7596e9c)
+
+> Release: [v0.1.0](https://github.com/OCR-D/ocrd_segment/releases/v0.1.0)
+
+  > * :package: v0.1.0
+  > * Merge remote-tracking branch 'origin/typo_conent_content'
+  > * replace_original: update docstring
+  > * extract_pages: no pageId for COCO, input_file.pageId for json
+  > * revert to old 3-output-file-grp logic in extract_pages.py
+  > * extract_regions, extract_pages: pass pageId
+  > * Use 'make_file_id' and 'assert_file_grp_cardinality' throughout
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [1159fbf](https://github.com/OCR-D/ocrd_tesserocr/commits1159fbf)..[49e93b9](https://github.com/OCR-D/ocrd_tesserocr/commits/49e93b9)
+
+> Release: [v0.9.1](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.9.1)
+
+  > * :package: v0.9.1
+  > * changelog
+  > * Merge pull request #143 from OCR-D/fix-142
+  > * pip install -U pip before pip install (#138)
+  > * Merge pull request #132 from bertsky/crop-relative
+  > * :package: v0.9.0
+  > * Merge pull request #133 from bertsky/alternativeimage-same-filegrp
+
+### [ocrd_typegroups_classifier](https://github.com/OCR-D/ocrd_typegroups_classifier) [94a3630](https://github.com/OCR-D/ocrd_typegroups_classifier/commits94a3630)..[3dddd94](https://github.com/OCR-D/ocrd_typegroups_classifier/commits/3dddd94)
+
+> Release: [v0.1.0](https://github.com/OCR-D/ocrd_typegroups_classifier/releases/v0.1.0)
+
+  > * :package: v0.1.0
+  > * use make_file_id/assert_file_grp_cardinality
+  > * fix test
+  > * heatmap.py --help: grad_cam -> heatmap
+  > * Merge remote-tracking branch 'seuretm/master' into HEAD
+
+### [ocrd_wrap](https://github.com/bertsky/ocrd_wrap) [2cfffed](https://github.com/bertsky/ocrd_wrap/commits2cfffed)..[6d92c02](https://github.com/bertsky/ocrd_wrap/commits/6d92c02)
+
+> Release: [v0.1.0](https://github.com/bertsky/ocrd_wrap/releases/v0.1.0)
+
+  > * ocrd-preprocess-image: avoid passing commas from parameter value to image file IDs
+  > * fix spaces in makefile (ht @kba)
+  > * set pcGtsId to METS file ID everywhere
+  > * put derived images under output fileGrp…
+  > * ensure mkstemp fd gets closed afterwards
+  > * ensure PIL.Image gets closed afterwards
+
+### [opencv-python](https://github.com/skvark/opencv-python) [83acfc9](https://github.com/skvark/opencv-python/commits83acfc9)..[e4893f2](https://github.com/skvark/opencv-python/commits/e4893f2)
+
+> Release: [42](https://github.com/skvark/opencv-python/releases/42)
+
+  > * update README [skip ci]
+  > * add ccache and cmake to aarch64 Dockerfile (requires rebuild)
+  > * aarch64 needs to be rebuilt with cmake
+  > * test aarch64 build
+  > * drop Python 3.5 support
+  > * use switch instead
+  > * force qt uninstall
+  > * unlink and reinstall
+  > * just use the raw url directly
+  > * no auto update, use extract
+  > * direct link
+  > * 5.13.2
+  > * force Qt 5.13
+  > * add aarch64 Dockerfile
+  > * another typo
+  > * fix typo in version
+  > * Add note about manylinux2014
+  > * OpenCV 4.4.0
+  > * add minimum supported Python version
+  > * fix the travis USER issue
+  > * fix twine upload command
+  > * fix sdist upload
+  > * fix min numpy version for 3.6
+  > * reduce verbosity
+  > * patch only on linux
+  > * fix windows builds
+  > * update licenses
+  > * update license info
+  > * wrong dir
+  > * update patch
+  > * update patch
+  > * update patch
+  > * copy fonts
+  > * set QT_QPA_FONTDIR
+  > * add fonts to the package
+  > * azure-cli should work now
+  > * use py27 compatible version
+  > * use pip
+  > * Install azure-cli from Ubuntu repo because latest update broke batch upload
+  > * fix patch location
+  > * auditwheel is installed under py37
+  > * try to whitelist libxcb.so.1
+  > * fix patch
+  > * change path
+  > * qt5.15 again
+  > * fix typo, try without xcb helpers
+  > * add ld lib path
+  > * qt 5.13 test
+
+### [sbb_textline_detector](https://github.com/qurator-spk/sbb_textline_detector) [eba5f54](https://github.com/qurator-spk/sbb_textline_detector/commitseba5f54)..[a7c92c9](https://github.com/qurator-spk/sbb_textline_detector/commits/a7c92c9)
+
+  > * Merge pull request #38 from qurator-spk/printspace-vs-border
+  > * Merge pull request #37 from qurator-spk/update-readme
+  > * add travis CI badge
+  > * Merge pull request #13 from stweil/travis
+  > * Merge pull request #36 from kba/file-ids-and-such
+  > * 🐛 sbb_textline_detection: Set pcGtsId
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [7edcb90](https://github.com/bertsky/workflow-configuration/commits7edcb90)..[7c89037](https://github.com/bertsky/workflow-configuration/commits/7c89037)
+
+  > * avoid citation notice for GNU parallel
+
 ## [v2020-08-04](https://github.com/OCR-D/ocrd_all/releases/v2020-08-04)
 
 ### [core](https://github.com/OCR-D/core) [320a2fd](https://github.com/OCR-D/core/commits320a2fd)..[a07568e](https://github.com/OCR-D/core/commits/a07568e)
@@ -22,7 +205,6 @@
   > * circleci: patch pix2pixhd and install pytest
   > * circleci: fix setup and badge
   > * Merge remote-tracking branch 'origin/master' into fix-installation
-  > * Merge branch 'fix-installation' of https://github.com/OCR-D/ocrd_anybaseocr into fix-installation
   > * remove "force" parameter
   > * dewarp: use assert_file_grp_cardinality
   > * document prepare_options hack in dewarp
@@ -40,10 +222,8 @@
   > * Update Makefile
   > * prepare_data is a function, not a method
   > * prepare_data is a function, not a method
-  > * Merge branch 'fix-installation' of https://github.com/mjenckel/ocrd_anybaseocr into fix-installation
   > * make assets: copy models as before
   > * :memo: update CLI test comments
-  > * Merge branch 'fix-installation' of https://github.com/mjenckel/ocrd_anybaseocr into fix-installation
   > * MANIFEST.in: drop "graft pix2pixHD"
   > * :memo: update install instructions
   > * dewarp: modify prepare_options so they are actually picked up ...
@@ -74,7 +254,6 @@
 
   > * Merge pull request #66 from mikegerber/fix/travis-install
   > * :package: v1.2.0
-  > * Merge branch 'default-impl'
   > * make install: more robust check whether ocrd CLI installed, fix #61
 
 ### [opencv-python](https://github.com/skvark/opencv-python) [914404d](https://github.com/skvark/opencv-python/commits914404d)..[83acfc9](https://github.com/skvark/opencv-python/commits/83acfc9)

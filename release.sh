@@ -103,7 +103,7 @@ submodule_changelog () {
         smtag="\\n> Release: [$smtag]($smurl/releases/$smtag)\\n"
     fi
     loginfo "Generating changelog for $sm"
-    git diff --submodule=log "$previous_version".. "$sm" | sed \
+    git diff --submodule=log "$sm" | sed \
         -e "s,^Submodule \\([^ ]\\+\\) \\([^\.]\\+\\)..\\([^\.]\\+\\):,### [\1]($smurl) [\2]($smurl/commits\2)..[\3]($smurl/commits/\3)\\n$smtag," \
         -e 's,^\s*>,  > *,'
 }
