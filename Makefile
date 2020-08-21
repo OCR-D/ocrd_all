@@ -283,12 +283,12 @@ deps-ubuntu-modules: ocrd_olena
 OCRD_EXECUTABLES += $(BIN)/ocrd-olena-binarize
 $(BIN)/ocrd-olena-binarize: ocrd_olena
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install BUILD_DIR=$(VIRTUAL_ENV)/build/ocrd_olena
+endif
 clean: clean-olena
 .PHONY: clean-olena
 clean-olena:
 	test ! -f ocrd_olena/Makefile || \
 	$(MAKE) -C ocrd_olena clean-olena BUILD_DIR=$(VIRTUAL_ENV)/build/ocrd_olena
-endif
 
 ifneq ($(findstring dinglehopper, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(BIN)/ocrd-dinglehopper
@@ -689,11 +689,12 @@ $(call multirule,$(TESSTRAIN_EXECUTABLES)): tesseract/Makefile.in
 .PHONY: $(TESSTRAIN_EXECUTABLES:$(BIN)/%=%)
 $(TESSTRAIN_EXECUTABLES:$(BIN)/%=%): %: $(BIN)/%
 
+endif
+
 clean: clean-tesseract
 .PHONY: clean-tesseract
 clean-tesseract:
 	$(RM) -r $(VIRTUAL_ENV)/build/tesseract
-endif
 
 # do not delete intermediate targets:
 .SECONDARY:
