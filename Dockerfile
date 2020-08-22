@@ -15,11 +15,12 @@
 # - danger of running into inconsistent dependencies
 #   between modules (just as ocrd_all for local installation)
 
-# use OCR-D base container (from ubuntu:18.04)
-FROM ocrd/core
-
 ARG VCS_REF
 ARG BUILD_DATE
+ARG BASE_IMAGE
+
+# use OCR-D base container (from ubuntu:18.04)
+FROM $BASE_IMAGE
 LABEL \
     maintainer="https://ocr-d.de/kontakt" \
     org.label-schema.vcs-ref=$VCS_REF \
