@@ -1,5 +1,11 @@
 # Changelog
 
+## [v2020-08-22](https://github.com/OCR-D/ocrd_all/releases/v2020-08-22)
+
+Fixed:
+
+  * Obsolete executable for ocrd_tesserocr caused unnecessary rebuilds, #177
+
 ## [v2020-08-21](https://github.com/OCR-D/ocrd_all/releases/v2020-08-21)
 
 ### [core](https://github.com/OCR-D/core) [a07568e](https://github.com/OCR-D/core/commitsa07568e)..[dc3ffe4](https://github.com/OCR-D/core/commits/dc3ffe4)
