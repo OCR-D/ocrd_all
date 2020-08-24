@@ -1,5 +1,50 @@
 # Changelog
 
+## [v2020-08-24](https://github.com/OCR-D/ocrd_all/releases/v2020-08-24)
+
+Fixed:
+
+  * Permission issue with `make modules`, #179, #180
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [479564a](https://github.com/ASVLeipzig/cor-asv-ann/commits479564a)..[69bae66](https://github.com/ASVLeipzig/cor-asv-ann/commits/69bae66)
+
+> Release: [v0.1.3](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.3)
+
+  > * delegate adding MetadataItem to core
+  > * fix get_AllRegions (PcGts→Page)
+  > * Merge pull request #4 from kba/fileids-and-such
+
+### [cor-asv-fst](https://github.com/ASVLeipzig/cor-asv-fst) [bc6d84c](https://github.com/ASVLeipzig/cor-asv-fst/commitsbc6d84c)..[2428cca](https://github.com/ASVLeipzig/cor-asv-fst/commits/2428cca)
+
+  > * :package: 0.2.1
+  > * Merge pull request #5 from kba/fileids-and-such
+
+### [core](https://github.com/OCR-D/core) [dc3ffe4](https://github.com/OCR-D/core/commitsdc3ffe4)..[e41ba75](https://github.com/OCR-D/core/commits/e41ba75)
+
+> Release: [v2.14.0](https://github.com/OCR-D/core/releases/v2.14.0)
+
+  > * Merge pull request #575 from OCR-D/ci-38
+  > * :package: v2.14.0
+  > * :memo: changelog
+  > * test ocrd-dummy respects self.input_files
+  > * run_cli: capture and return stdout/stderr
+  > * ocrd-dummy: use add_metadata, create PAGE-XML for copied image files
+  > * Processor.add_metadata to log processingStep in PAGE-XML, fix #561
+  > * :memo: changelog
+  > * Merge branch 'refactor-ocrdwf'
+  > * :memo: changelog
+  > * ocrd_utils.make_file_id: fix str conversion… (#570)
+  > * Merge pull request #572 from stweil/typos
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [9abe7bf](https://github.com/OCR-D/ocrd_anybaseocr/commits9abe7bf)..[85f2387](https://github.com/OCR-D/ocrd_anybaseocr/commits/85f2387)
+
+> Release: [v1.0.1](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.0.1)
+
+  > * :package: v1.0.1
+  > * :memo: changelog
+  > * Merge pull request #67 from OCR-D/add-metadata
+
+
 ## [v2020-08-22](https://github.com/OCR-D/ocrd_all/releases/v2020-08-22)
 
 Fixed:
