@@ -122,11 +122,11 @@ ifneq (,$(wildcard .git))
 ifneq ($(NO_UPDATE),1)
 $(OCRD_MODULES): always-update
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
-		$(SEM) git submodule update --init $(GIT_RECURSIVE) $@ && \
+		git submodule update --init $(GIT_RECURSIVE) $@ && \
 		touch $@; fi
 	$(SEM) git submodule sync $(GIT_RECURSIVE) $@
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
-		$(SEM) git submodule update --init $(GIT_RECURSIVE) $@ && \
+		git submodule update --init $(GIT_RECURSIVE) $@ && \
 		touch $@; fi
 endif
 endif
