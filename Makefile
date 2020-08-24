@@ -709,7 +709,7 @@ clean-tesseract:
 deps-ubuntu:
 	apt-get -y install git parallel
 	$(MAKE) deps-ubuntu-modules
-	chown -R --reference=$(CURDIR) .git $^
+	chown -R --reference=$(CURDIR) .git $(OCRD_MODULES)
 # prevent the sem commands during above module updates from imposing sudo perms on HOME:
 	chown -R --reference=$(HOME) $(HOME)/.parallel
 
