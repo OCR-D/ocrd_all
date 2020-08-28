@@ -1,5 +1,45 @@
 # Changelog
 
+## [v2020-08-28](https://github.com/OCR-D/ocrd_all/releases/v2020-08-28)
+
+### [core](https://github.com/OCR-D/core) [e41ba75](https://github.com/OCR-D/core/commitse41ba75)..[8dafbac](https://github.com/OCR-D/core/commits/8dafbac)
+
+> Release: [v2.15.0](https://github.com/OCR-D/core/releases/v2.15.0)
+
+  > * :package: v2.15.0
+  > * :memo: changelog
+  > * test: for command_with_replaced_help
+  > * CLI: subclass command with regex replacements in help
+  > * test_utils: tempdir-respecting pushd_popd test
+  > * make test: enable logging tests with `HOME=$(CURDIR)`
+  > * test: WorkspaceCtx mets/directory/mets_basename logic
+  > * `ocrd_utils.pushd_popd`: support tempdir creation
+  > * make test: skip logging test in main pytest run
+  > * workspace CLI: drop mets_basename from WorkspaceCtx
+  > * ocrd workspace CLI: Document --mets/--directory defaults
+  > * ocrd workspace CLI: reintroduce and deprecate --mets-basename
+  > * ocrd workspace CLI: handle inconsistent --mets/--directory
+  > * ocrd workspace: remove --mets-basename option
+  > * ocrd workspace validate: deprecate METS_URL for --directory/--mets-basename
+  > * ocrd workspace clone/init: deprecate workspace dir argument, #517
+  > * ocrd workspace clone: deprecate argument
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [5bb73c3](https://github.com/cisocrgroup/ocrd_cis/commits5bb73c3)..[f09ae58](https://github.com/cisocrgroup/ocrd_cis/commits/f09ae58)
+
+> Release: [v0.0.10](https://github.com/cisocrgroup/ocrd_cis/releases/v0.0.10)
+
+  > * replace deprecated ocrd workspace CLI constructs
+
+### [opencv-python](https://github.com/skvark/opencv-python) [e4893f2](https://github.com/skvark/opencv-python/commitse4893f2)..[099ed15](https://github.com/skvark/opencv-python/commits/099ed15)
+
+> Release: [42](https://github.com/skvark/opencv-python/releases/42)
+
+  > * Make the README more clear
+
+### [sbb_textline_detector](https://github.com/qurator-spk/sbb_textline_detector) [a7c92c9](https://github.com/qurator-spk/sbb_textline_detector/commitsa7c92c9)..[0f09f4a](https://github.com/qurator-spk/sbb_textline_detector/commits/0f09f4a)
+
+  > * Update main.py
+
 ## [v2020-08-24](https://github.com/OCR-D/ocrd_all/releases/v2020-08-24)
 
 Fixed:
