@@ -19,6 +19,12 @@ jobs:
       - run: make docker-minimum-git
       - run: make docker-medium-git
       - run: make docker-maximum-git
+      - run: make docker-minimum-cuda
+      - run: make docker-medium-cuda
+      - run: make docker-maximum-cuda
+      - run: make docker-minimum-cuda-git
+      - run: make docker-medium-cuda-git
+      - run: make docker-maximum-cuda-git
       - run:
           name: Login to Docker Hub
           command: echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
@@ -36,6 +42,18 @@ jobs:
             docker push ocrd/all:maximum &
             jobs+=($!)
             docker push ocrd/all:maximum-git &
+            jobs+=($!)
+            docker push ocrd/all:minimum-cuda &
+            jobs=($!)
+            docker push ocrd/all:minimum-cuda-git &
+            jobs+=($!)
+            docker push ocrd/all:medium-cuda &
+            jobs+=($!)
+            docker push ocrd/all:medium-cuda-git &
+            jobs+=($!)
+            docker push ocrd/all:maximum-cuda &
+            jobs+=($!)
+            docker push ocrd/all:maximum-cuda-git &
             jobs+=($!)
             while sleep 60; ps -p "${jobs[*]}"; do :; done
       - run:

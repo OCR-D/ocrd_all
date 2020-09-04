@@ -728,26 +728,32 @@ DOCKER_TAG ?= ocrd/all
 #  so build-time and bandwidth are n-fold)
 .PHONY: dockers
 ifdef DOCKERS_WITHOUT_REPOS
-dockers: docker-minimum docker-medium docker-maximum
+dockers: docker-minimum docker-minimum-cuda docker-medium docker-medium-cuda docker-maximum docker-maximum-cuda
 else
-dockers: docker-minimum-git docker-medium-git docker-maximum-git
+dockers: docker-minimum-git docker-minimum-cuda-git docker-medium-git docker-medium-cuda-git docker-maximum-git docker-maximum-cuda-git
 endif
 
 # Selections which keep git repos and reference them for install
 # (so components can be updated via git from the container alone)
-docker-minimum-git docker-medium-git docker-maximum-git: PIP_OPTIONS = -e
+docker-%-git: PIP_OPTIONS = -e
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from PPA
-docker-minimum docker-minimum-git: DOCKER_MODULES = core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap tesserocr workflow-configuration
+docker-mini%: DOCKER_MODULES = core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap tesserocr workflow-configuration
 # Medium-size selection: add Olena binarization and Calamari, use Tesseract from git, add evaluation
-docker-medium docker-medium-git: DOCKER_MODULES = core cor-asv-ann dinglehopper format-converters ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap tesseract tesserocr workflow-configuration
+docker-medi%: DOCKER_MODULES = core cor-asv-ann dinglehopper format-converters ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap tesseract tesserocr workflow-configuration
 # Maximum-size selection: use all modules
-docker-maximum docker-maximum-git: DOCKER_MODULES = $(OCRD_MODULES)
+docker-maxi%: DOCKER_MODULES = $(OCRD_MODULES)
+
+# DOCKER_BASE_IMAGE
+docker%um docke%um-git: DOCKER_BASE_IMAGE = ocrd/core
+# CUDA variants
+docker%-cuda docker%-cuda-git: DOCKER_BASE_IMAGE = ocrd/core-cuda
 
 # Build rule for all selections
 # (maybe we should add --network=host here for smoother build-time?)
 docker%: Dockerfile $(DOCKER_MODULES)
 	docker build \
+	--build-arg BASE_IMAGE=$(DOCKER_BASE_IMAGE) \
 	--build-arg VCS_REF=$$(git rev-parse --short HEAD) \
 	--build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
 	--build-arg OCRD_MODULES="$(DOCKER_MODULES)" \
