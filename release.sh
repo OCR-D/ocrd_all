@@ -78,8 +78,8 @@ update_one_submodule () {
     local branch="master"
     (
         cd $sm
-        git pull origin "$branch"
-        git pull origin "$branch" --tags
+        git pull --rebase origin "$branch"
+        git pull --rebase origin "$branch" --tags
         git submodule update --init
      )
 }
