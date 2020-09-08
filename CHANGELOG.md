@@ -1,5 +1,86 @@
 # Changelog
 
+## [v2020-09-07](https://github.com/OCR-D/ocrd_all/releases/v2020-09-07)
+
+### [core](https://github.com/OCR-D/core) [8dafbac](https://github.com/OCR-D/core/commits8dafbac)..[938a907](https://github.com/OCR-D/core/commits/938a907)
+
+> Release: [v2.16.0](https://github.com/OCR-D/core/releases/v2.16.0)
+
+  > * circle ci: typos
+  > * :package: v2.16.0
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/docker-gpu'
+  > * Merge remote-tracking branch 'ulb/bugfix/workspace-remove-groups'
+  > * ocrd log info: Fix for non-patterned args
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/better-task-fail-output'
+  > * :memo: changelog
+  > * [app][doc] Document that ocrd workspace clone supports OAI-PMH GetRecord now
+  > * [app][rfct] move OAI functions to ocrd_models.utils
+  > * [test][rfct] move oai tests into a dedicated test_resolver_oai.py
+  > * [app][fix] document OAI methods in resolver, exit early if METS
+  > * [test][fix] python 3.5 compliance
+  > * Merge branch 'master' into develop
+  > * [app][fix] handle non-xml downloads
+  > * [app][rfct] replace generic exception
+  > * [app][test] introduce mock requests
+  > * [app][feat] extract mets from oai response
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [7930ecd](https://github.com/qurator-spk/dinglehopper/commits7930ecd)..[717801b](https://github.com/qurator-spk/dinglehopper/commits/717801b)
+
+  > * Merge commit '7930ecd42868cb6785a58f8ee95b05882704621d'
+  > * ✨ dinglehopper: Include number of characters and words in JSON report
+  > * 🔧 dinglehopper: Add PyCharm config
+  > * Revert "Merge branch 'master' of https://github.com/qurator-spk/sbb_textline_detector"
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [210c126](https://github.com/OCR-D/ocrd_calamari/commits210c126)..[bb9b1ab](https://github.com/OCR-D/ocrd_calamari/commits/bb9b1ab)
+
+> Release: [v0.0.7](https://github.com/OCR-D/ocrd_calamari/releases/v0.0.7)
+
+  > * 🐛 CircleCI: Ignore screenshots branch (second try)
+  > * 🐛 CircleCI: Ignore screenshots branch
+  > * 📝 README: Add a screenshot of example output
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [8fc5313](https://github.com/OCR-D/ocrd_fileformat/commits8fc5313)..[4608377](https://github.com/OCR-D/ocrd_fileformat/commits/4608377)
+
+> Release: [v0.0.5](https://github.com/OCR-D/ocrd_fileformat/releases/v0.0.5)
+
+  > * :package: v0.0.5
+  > * :memo: changelog
+  > * Merge pull request #14 from OCR-D/better-error-reporting
+
+### [ocrd_pc_segmentation](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation) [5e433e3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits5e433e3)..[80ede8f](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/80ede8f)
+
+> Release: [v0.1.3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/releases/v0.1.3)
+
+  > * Bump version: 0.2.0 → 0.2.1
+  > * Fix bump2version replacing dependency versions
+  > * Handle images with alpha channel
+  > * Update ocr4all-pixel-classifier
+  > * Remove obsolete model
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [49e93b9](https://github.com/OCR-D/ocrd_tesserocr/commits49e93b9)..[5761661](https://github.com/OCR-D/ocrd_tesserocr/commits/5761661)
+
+> Release: [v0.9.2](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.9.2)
+
+  > * :package: 0.9.2
+  > * Merge pull request #148 from OCR-D/fix-deskew-image-file-id
+  > * Merge pull request #145 from bertsky/segment-clip-border
+
+### [opencv-python](https://github.com/skvark/opencv-python) [099ed15](https://github.com/skvark/opencv-python/commits099ed15)..[893430f](https://github.com/skvark/opencv-python/commits/893430f)
+
+> Release: [42](https://github.com/skvark/opencv-python/releases/42)
+
+  > * add more guidance, fix typos, drop Python 3.5
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [d33edbc](https://github.com/tesseract-ocr/tesseract/commitsd33edbc)..[f5561c4](https://github.com/tesseract-ocr/tesseract/commits/f5561c4)
+
+> Release: [5.0.0-alpha](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha)
+
+  > * Merge pull request #3090 from nam-leduc/correct-debug-find-images
+  > * Merge pull request #3082 from bertsky/fix-line-detector
+
+
 ## [v2020-08-28](https://github.com/OCR-D/ocrd_all/releases/v2020-08-28)
 
 ### [core](https://github.com/OCR-D/core) [e41ba75](https://github.com/OCR-D/core/commitse41ba75)..[8dafbac](https://github.com/OCR-D/core/commits/8dafbac)
@@ -772,8 +853,6 @@ Submodule ocrd_wrap 0000000...c47a9dd (new submodule)
   > * adapt to --overwrite and --page-id support in core 2.10…
   > * alias 'clean' for 'cleanup', documentation
   > * ocrd-export-larex: replace original image in result...
-
-# CHANGELOG
 
 ## 2020-06-10
 
