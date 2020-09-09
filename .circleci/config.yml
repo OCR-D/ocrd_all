@@ -10,26 +10,25 @@ jobs:
   deploy:
     docker:
       - image: circleci/buildpack-deps:stretch
+    environment:
+      GIT_DEPTH: "--depth 1"
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
-      - run: make docker-minimum
-      - run: make docker-medium
-      - run: make docker-maximum
       - run: make docker-minimum-git
+      - run: docker tag ocrd/all:minimum-git ocrd/all:minimum
       - run: make docker-medium-git
+      - run: docker tag ocrd/all:medium-git ocrd/all:medium
       - run: make docker-maximum-git
-      - run: make docker-minimum-cuda
-      - run: make docker-medium-cuda
-      - run: make docker-maximum-cuda
-      - run: make docker-minimum-cuda-git
-      - run: make docker-medium-cuda-git
+      - run: docker tag ocrd/all:maximum-git ocrd/all:maximum
       - run: make docker-maximum-cuda-git
+      - run: docker tag ocrd/all:maximum-cuda-git ocrd/all:maximum-cuda
       - run:
           name: Login to Docker Hub
           command: echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
       - run:
           name: Push images to Docker Hub in parallel
+          no_output_timeout: 120m
           command: |
             docker push ocrd/all:minimum &
             docker push ocrd/all:minimum-git &
@@ -37,13 +36,9 @@ jobs:
             docker push ocrd/all:medium-git &
             docker push ocrd/all:maximum &
             docker push ocrd/all:maximum-git &
-            docker push ocrd/all:minimum-cuda &
-            docker push ocrd/all:minimum-cuda-git &
-            docker push ocrd/all:medium-cuda &
-            docker push ocrd/all:medium-cuda-git &
             docker push ocrd/all:maximum-cuda &
             docker push ocrd/all:maximum-cuda-git &
-            while jobs -pr | { read PIDS && echo $PIDS; }; do sleep 60; done
+            wait -f
       - run:
           name: Create a date-versioned mirror of ocrd/all:maximum
           command: bash release.sh release-dockerhub
