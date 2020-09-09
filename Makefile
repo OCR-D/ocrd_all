@@ -14,6 +14,7 @@ PIP_OPTIONS_E = $(filter-out -e,$(PIP_OPTIONS))
 # Set to 1 to skip all submodule updates. For development.
 NO_UPDATE = 0
 GIT_RECURSIVE = # --recursive
+GIT_DEPTH = # --depth 1
 # Required and optional Tesseract models.
 ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
 
@@ -97,6 +98,7 @@ Variables:
 	PIP: name of the Python packaging binary
 	PIP_OPTIONS: extra options for the `pip install` command like `-q` or `-v` or `-e`
 	GIT_RECURSIVE: set to `--recursive` to checkout/update all submodules recursively
+	GIT_DEPTH: set to `--depth 1` to truncate all history when cloning subrepos
 	NO_UPDATE: set to `1` to omit git submodule sync and update
 	OCRD_MODULES: list of submodules to include (defaults to all git submodules, see `show`)
 	DISABLED_MODULES: list of disabled modules. Default: $(DISABLED_MODULES)
@@ -122,7 +124,7 @@ ifneq ($(NO_UPDATE),1)
 $(OCRD_MODULES): always-update
 	$(SEM) git submodule sync $(GIT_RECURSIVE) $@
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
-		$(SEM) git submodule update --init $(GIT_RECURSIVE) $@ && \
+		$(SEM) git submodule update --init $(GIT_RECURSIVE) $(GIT_DEPTH) $@ && \
 		touch $@; fi
 endif
 endif
