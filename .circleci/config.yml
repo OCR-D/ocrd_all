@@ -38,7 +38,7 @@ jobs:
             docker push ocrd/all:maximum-git &
             docker push ocrd/all:maximum-cuda &
             docker push ocrd/all:maximum-cuda-git &
-            wait -f
+            wait
       - run:
           name: Create a date-versioned mirror of ocrd/all:maximum
           command: bash release.sh release-dockerhub
