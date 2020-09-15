@@ -70,7 +70,7 @@ list_all_submodules () {
 }
 
 list_changed_submodules () {
-    git diff --stat $previous_version $(list_all_submodules)|grep -F '|'|cut -d ' ' -f 2
+    git diff --stat $previous_version -- $(list_all_submodules)|grep -F '|'|cut -d ' ' -f 2
 }
 
 update_one_submodule () {
@@ -103,10 +103,10 @@ submodule_changelog () {
         smtag="\\n> Release: [$smtag]($smurl/releases/$smtag)\\n"
     fi
     loginfo "Generating changelog for $sm"
-    if [ -z "$(git diff --submodule=log "$sm")" ];then
+    if [ -z "$(git diff --submodule=log -- "$sm")" ];then
         return
     fi
-    git diff --submodule=log "$sm" | sed \
+    git diff --submodule=log -- "$sm" | sed \
         -e "s,^Submodule \\([^ ]\\+\\) \\([^\.]\\+\\)..\\([^\.]\\+\\):,### [\1]($smurl) [\2]($smurl/commits/\2)..[\3]($smurl/commits/\3)\\n$smtag," \
         -e 's,^\s*>,  > *,'
 }
