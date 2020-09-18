@@ -498,6 +498,8 @@ endef
 #  the sub-venv does not have the
 #  executable)
 # TODO: variant for relay to Docker
+ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),4)
+# make >=4 has file function
 define delegator
 #!/bin/bash
 . $(ACTIVATE_VENV) && $(BIN)/$(notdir $(1)) "$$@"
@@ -508,6 +510,18 @@ define delegate_venv
 $(foreach executable,$(1),$(file >$(executable),$(call delegator,$(executable))))
 chmod +x $(1)
 endef
+else
+# make <4 needs to echo (third recipe line must be empty!)
+define delegator
+@echo '#!/bin/bash' > $(1)
+@echo '. $(ACTIVATE_VENV) && $(BIN)/$(notdir $(1)) "$$@"' >> $(1)
+
+endef
+define delegate_venv
+$(foreach executable,$(1),$(call delegator,$(executable)))
+chmod +x $(1)
+endef
+endif
 
 # avoid making these .PHONY so they do not have to be repeated:
 # clstm tesserocr
