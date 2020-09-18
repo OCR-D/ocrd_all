@@ -376,7 +376,7 @@ Modules may require mutually exclusive sets of dependent packages.
    Both can be installed in parallel in different versions, but may depend on a mutually exclusive set of `tensorboard` and `tensorflow_estimator`. (However, these latter conflicts are only cosmetic, as they are only needed for development.)
    
 - OpenCV:
-   * `opencv-python-headlesss` (required by core and others, avoids pulling in X11 libraries)
+   * `opencv-python-headless` (required by core and others, avoids pulling in X11 libraries)
    * `opencv-python` (probably dragged in by third party packages)
    
    As long as we keep reinstalling the headless variant and no such package attempts GUI, we should be fine. 
