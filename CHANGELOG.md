@@ -1,5 +1,66 @@
 # Changelog
 
+## [v2020-09-23](https://github.com/OCR-D/ocrd_all/releases/v2020-09-23)
+
+### [core](https://github.com/OCR-D/core) [d9fb6e51](https://github.com/OCR-D/core/commits/d9fb6e51)..[cb0f94bc](https://github.com/OCR-D/core/commits/cb0f94bc)
+
+> Release: [v2.17.0](https://github.com/OCR-D/core/releases/v2.17.0)
+
+  > * :package: v2.17.0
+  > * :memo: changelog
+  > * Merge branch 'make-file-id-syntax'
+  > * :memo: changelog
+  > * Merge branch 'master' into fix-logging-yet-again
+  > * logging disable: CRITICAL->ERROR
+  > * logging config_file: info->debug, after loading, specific logger
+  > * logging: drop "reinit" initLogging arg
+  > * logging: multiple initLogging should log not raise
+  > * logging: simplify log message if getLogger before initLogging
+  > * logging: disableLogging should actually call logging.disable
+  > * logging: builtin config: tensorflow ERROR
+  > * logging: if logger is called before initLogging, issue a stern notice about it
+  > * Merge branch 'master' into fix-logging-yet-again
+  > * Merge branch 'master' into fix-logging-yet-again
+  > * logging: fix tests
+  > * logging: use method-specific loggers throughout
+  > * logging: initLogging on non-module level for all CLI
+  > * logging: do not set the root logger to NOTSET, fix #597
+  > * logging: handle either config file or builtin config, not both
+  > * logging: forbid getLogger before initLogging
+  > * logging: forbid multiple non-forced initLogging calls
+  > * [rfct] split decorators into topical modules
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [f1fd61e](https://github.com/OCR-D/ocrd_fileformat/commits/f1fd61e)..[ed932e1](https://github.com/OCR-D/ocrd_fileformat/commits/ed932e1)
+
+> Release: [v0.1.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.1.0)
+
+  > * :package: v0.1.0
+  > * Merge pull request #19 from OCR-D/smarter-ext
+  > * :package: v0.0.7
+  > * Merge pull request #18 from OCR-D/update-fileformat
+
+### [ocrd_pc_segmentation](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation) [80ede8f](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/80ede8f)..[38b0325](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/38b0325)
+
+> Release: [v0.1.3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/releases/v0.1.3)
+
+  > * Bump version: 0.2.1 → 0.2.2
+  > * Update setup.py to reflect requirements.txt changes
+  > * Migrate to ocr4all-pixel-classifier 0.5.1
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [b32ae0c](https://github.com/OCR-D/ocrd_tesserocr/commits/b32ae0c)..[15b18d2](https://github.com/OCR-D/ocrd_tesserocr/commits/15b18d2)
+
+> Release: [v0.9.3](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.9.3)
+
+  > * Merge pull request #154 from bertsky/fix-image-new
+
+### [opencv-python](https://github.com/skvark/opencv-python) [893430f](https://github.com/skvark/opencv-python/commits/893430f)..[c001042](https://github.com/skvark/opencv-python/commits/c001042)
+
+> Release: [44](https://github.com/skvark/opencv-python/releases/44)
+
+  > * update openssl, no-pinshared, see #381
+  > * disable nodelete, see #381
+
+
 ## [v2020-09-08.1](https://github.com/OCR-D/ocrd_all/releases/v2020-09-08.1)
 
 ### [core](https://github.com/OCR-D/core) [3d4e7f2](https://github.com/OCR-D/core/commits/3d4e7f2)..[8dafbac](https://github.com/OCR-D/core/commits/938a907)
