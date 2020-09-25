@@ -1,5 +1,141 @@
 # Changelog
 
+## [v2020-09-25](https://github.com/OCR-D/ocrd_all/releases/v2020-09-25)
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [69bae66](https://github.com/ASVLeipzig/cor-asv-ann/commits/69bae66)..[f48b0e2](https://github.com/ASVLeipzig/cor-asv-ann/commits/f48b0e2)
+
+> Release: [v0.1.3](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.3)
+
+  > * Merge pull request #5 from kba/getlogger
+
+### [cor-asv-fst](https://github.com/ASVLeipzig/cor-asv-fst) [2428cca](https://github.com/ASVLeipzig/cor-asv-fst/commits/2428cca)..[076e04e](https://github.com/ASVLeipzig/cor-asv-fst/commits/076e04e)
+
+  > * Merge pull request #6 from kba/getlogger
+
+### [core](https://github.com/OCR-D/core) [d9fb6e51](https://github.com/OCR-D/core/commits/d9fb6e51)..[cb0f94bc](https://github.com/OCR-D/core/commits/cb0f94bc)
+
+> Release: [v2.17.0](https://github.com/OCR-D/core/releases/v2.17.0)
+
+  > * :package: v2.17.0
+  > * :memo: changelog
+  > * Merge branch 'make-file-id-syntax'
+  > * :memo: changelog
+  > * Merge branch 'master' into fix-logging-yet-again
+  > * logging disable: CRITICAL->ERROR
+  > * logging config_file: info->debug, after loading, specific logger
+  > * logging: drop "reinit" initLogging arg
+  > * logging: multiple initLogging should log not raise
+  > * logging: simplify log message if getLogger before initLogging
+  > * logging: disableLogging should actually call logging.disable
+  > * logging: builtin config: tensorflow ERROR
+  > * logging: if logger is called before initLogging, issue a stern notice about it
+  > * Merge branch 'master' into fix-logging-yet-again
+  > * Merge branch 'master' into fix-logging-yet-again
+  > * logging: fix tests
+  > * logging: use method-specific loggers throughout
+  > * logging: initLogging on non-module level for all CLI
+  > * logging: do not set the root logger to NOTSET, fix #597
+  > * logging: handle either config file or builtin config, not both
+  > * logging: forbid getLogger before initLogging
+  > * logging: forbid multiple non-forced initLogging calls
+  > * [rfct] split decorators into topical modules
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [717801b](https://github.com/qurator-spk/dinglehopper/commits/717801b)..[7085ee0](https://github.com/qurator-spk/dinglehopper/commits/7085ee0)
+
+  > * Merge pull request #29 from kba/getlogger
+  > * 📝 dinglehopper: Document REPORT_PREFIX (Closes GH-27.)
+  > * ⚙️ dinglehopper: Add PyCharm's vcs.xml to git
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [85f2387](https://github.com/OCR-D/ocrd_anybaseocr/commits/85f2387)..[a0999ec](https://github.com/OCR-D/ocrd_anybaseocr/commits/a0999ec)
+
+> Release: [v1.0.2](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.0.2)
+
+  > * :package: v1.0.2
+  > * Merge pull request #69 from OCR-D/getlogger
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [c361dbb](https://github.com/cisocrgroup/ocrd_cis/commits/c361dbb)..[fb6cb47](https://github.com/cisocrgroup/ocrd_cis/commits/fb6cb47)
+
+> Release: [v0.1.3](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.3)
+
+  > * Merge pull request #69 from kba/getlogger
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [f1fd61e](https://github.com/OCR-D/ocrd_fileformat/commits/f1fd61e)..[584240b](https://github.com/OCR-D/ocrd_fileformat/commits/584240b)
+
+> Release: [v0.1.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.1.0)
+
+  > * respect --overwrite, fix #16
+  > * :package: v0.1.0
+  > * Merge pull request #19 from OCR-D/smarter-ext
+  > * :package: v0.0.7
+  > * Merge pull request #18 from OCR-D/update-fileformat
+
+### [ocrd_keraslm](https://github.com/OCR-D/ocrd_keraslm) [52cb4ce](https://github.com/OCR-D/ocrd_keraslm/commits/52cb4ce)..[b11b51d](https://github.com/OCR-D/ocrd_keraslm/commits/b11b51d)
+
+> Release: [v0.4.1](https://github.com/OCR-D/ocrd_keraslm/releases/v0.4.1)
+
+  > * :package: v0.4.1
+  > * Update CHANGELOG.md
+  > * getLogger per method
+
+### [ocrd_kraken](https://github.com/OCR-D/ocrd_kraken) [cea90bd](https://github.com/OCR-D/ocrd_kraken/commits/cea90bd)..[0a839ad](https://github.com/OCR-D/ocrd_kraken/commits/0a839ad)
+
+> Release: [v0.1.2](https://github.com/OCR-D/ocrd_kraken/releases/v0.1.2)
+
+  > * :package: v0.1.2
+  > * Merge pull request #32 from OCR-D/getlogger
+
+### [ocrd_pagetopdf](https://github.com/UB-Mannheim/ocrd_pagetopdf) [88faa74](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/88faa74)..[58df37a](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/58df37a)
+
+  > * respect --overwrite in multipagepdf.py
+
+### [ocrd_pc_segmentation](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation) [80ede8f](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/80ede8f)..[3e69bff](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/3e69bff)
+
+> Release: [v0.1.3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/releases/v0.1.3)
+
+  > * getLogger per method
+  > * Bump version: 0.2.1 → 0.2.2
+  > * Update setup.py to reflect requirements.txt changes
+  > * Migrate to ocr4all-pixel-classifier 0.5.1
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [a71cbaa](https://github.com/OCR-D/ocrd_segment/commits/a71cbaa)..[aadbc7b](https://github.com/OCR-D/ocrd_segment/commits/aadbc7b)
+
+> Release: [v0.1.3](https://github.com/OCR-D/ocrd_segment/releases/v0.1.3)
+
+  > * Update CHANGELOG.md
+  > * Merge pull request #46 from OCR-D/getlogger
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [b32ae0c](https://github.com/OCR-D/ocrd_tesserocr/commits/b32ae0c)..[27fe2be](https://github.com/OCR-D/ocrd_tesserocr/commits/27fe2be)
+
+> Release: [v0.9.4](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.9.4)
+
+  > * Update CHANGELOG.md
+  > * :package: v0.9.4
+  > * getLogger per method
+  > * Merge pull request #154 from bertsky/fix-image-new
+
+### [ocrd_wrap](https://github.com/bertsky/ocrd_wrap) [6d92c02](https://github.com/bertsky/ocrd_wrap/commits/6d92c02)..[a79cd7d](https://github.com/bertsky/ocrd_wrap/commits/a79cd7d)
+
+> Release: [v0.1.1](https://github.com/bertsky/ocrd_wrap/releases/v0.1.1)
+
+  > * Update CHANGELOG.md
+  > * :package: 0.1.1
+  > * Merge pull request #5 from kba/getlogger
+
+### [opencv-python](https://github.com/skvark/opencv-python) [893430f](https://github.com/skvark/opencv-python/commits/893430f)..[c001042](https://github.com/skvark/opencv-python/commits/c001042)
+
+> Release: [44](https://github.com/skvark/opencv-python/releases/44)
+
+  > * update openssl, no-pinshared, see #381
+  > * disable nodelete, see #381
+
+### [sbb_textline_detector](https://github.com/qurator-spk/sbb_textline_detector) [0f09f4a](https://github.com/qurator-spk/sbb_textline_detector/commits/0f09f4a)..[cbc9838](https://github.com/qurator-spk/sbb_textline_detector/commits/cbc9838)
+
+  > * Merge pull request #41 from kba/getlogger
+
+
+
+
+
 ## [v2020-09-08.1](https://github.com/OCR-D/ocrd_all/releases/v2020-09-08.1)
 
 ### [core](https://github.com/OCR-D/core) [3d4e7f2](https://github.com/OCR-D/core/commits/3d4e7f2)..[8dafbac](https://github.com/OCR-D/core/commits/938a907)
