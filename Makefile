@@ -160,6 +160,13 @@ $(BIN)/ocrd: core
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install --force-reinstall $(PIP_OPTIONS)"
 	# workaround for core#351:
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install --no-deps $(PIP_OPTIONS)"
+ifeq (0,$(MAKELEVEL))
+	# Build core in all sub venvs, too.
+	$(MAKE) all NO_UPDATE=1 OCRD_MODULES=core VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) all NO_UPDATE=1 OCRD_MODULES=core VIRTUAL_ENV=$(SUB_VENV)/headless-tf21
+	$(MAKE) all NO_UPDATE=1 OCRD_MODULES=core VIRTUAL_ENV=$(SUB_VENV)/headless-tf22
+	$(MAKE) all NO_UPDATE=1 OCRD_MODULES=core VIRTUAL_ENV=$(SUB_VENV)/headless-torch14
+endif
 
 # Convert the executable names (1) to a pattern rule,
 # so that the recipe will be used with single-recipe-
