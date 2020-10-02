@@ -196,14 +196,14 @@ CUSTOM_DEPS += scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev 
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
 OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
-$(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(SHARE)/clstm
+$(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(SHARE)/clstm $(BIN)/ocrd
 	$(pip_install)
 endif
 
 ifneq ($(findstring ocrd_ocropy, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_OCROPY)
 OCRD_OCROPY := $(BIN)/ocrd-ocropy-segment
-$(OCRD_OCROPY): ocrd_ocropy
+$(OCRD_OCROPY): ocrd_ocropy $(BIN)/ocrd
 	$(pip_install)
 endif
 
@@ -214,7 +214,7 @@ OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-process
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-train
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-eval
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
-$(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann
+$(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN))
 	$(call delegate_venv,$(OCRD_COR_ASV_ANN))
@@ -229,7 +229,7 @@ deps-ubuntu-modules: cor-asv-fst
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
 OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
 OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
-$(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst
+$(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST))
 	$(call delegate_venv,$(OCRD_COR_ASV_FST))
@@ -244,7 +244,7 @@ ifneq ($(findstring ocrd_keraslm, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KERASLM)
 OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
 OCRD_KERASLM += $(BIN)/keraslm-rate
-$(call multirule,$(OCRD_KERASLM)): ocrd_keraslm
+$(call multirule,$(OCRD_KERASLM)): ocrd_keraslm $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM))
 	$(call delegate_venv,$(OCRD_KERASLM))
@@ -257,7 +257,7 @@ endif
 ifneq ($(findstring ocrd_im6convert, $(OCRD_MODULES)),)
 deps-ubuntu-modules: ocrd_im6convert
 OCRD_EXECUTABLES += $(BIN)/ocrd-im6convert
-$(BIN)/ocrd-im6convert: ocrd_im6convert
+$(BIN)/ocrd-im6convert: ocrd_im6convert $(BIN)/ocrd
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
 endif
 
@@ -268,14 +268,14 @@ OCRD_WRAP += $(BIN)/ocrd-skimage-normalize
 OCRD_WRAP += $(BIN)/ocrd-skimage-denoise-raw
 OCRD_WRAP += $(BIN)/ocrd-skimage-binarize
 OCRD_WRAP += $(BIN)/ocrd-skimage-denoise
-$(call multirule,$(OCRD_WRAP)): ocrd_wrap
+$(call multirule,$(OCRD_WRAP)): ocrd_wrap $(BIN)/ocrd
 	$(pip_install)
 endif
 
 ifneq ($(findstring ocrd_fileformat, $(OCRD_MODULES)),)
 ocrd_fileformat: GIT_RECURSIVE = --recursive
 OCRD_EXECUTABLES += $(BIN)/ocrd-fileformat-transform
-$(BIN)/ocrd-fileformat-transform: ocrd_fileformat
+$(BIN)/ocrd-fileformat-transform: ocrd_fileformat $(BIN)/ocrd
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install-fileformat install
 endif
 
@@ -283,7 +283,7 @@ ifneq ($(findstring ocrd_olena, $(OCRD_MODULES)),)
 ocrd_olena: GIT_RECURSIVE = --recursive
 deps-ubuntu-modules: ocrd_olena
 OCRD_EXECUTABLES += $(BIN)/ocrd-olena-binarize
-$(BIN)/ocrd-olena-binarize: ocrd_olena
+$(BIN)/ocrd-olena-binarize: ocrd_olena $(BIN)/ocrd
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install BUILD_DIR=$(VIRTUAL_ENV)/build/ocrd_olena
 endif
 clean: clean-olena
@@ -296,7 +296,7 @@ ifneq ($(findstring dinglehopper, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(BIN)/ocrd-dinglehopper
 .PHONY: ocrd-dinglehopper
 ocrd-dinglehopper: $(BIN)/ocrd-dinglehopper
-$(BIN)/ocrd-dinglehopper: dinglehopper
+$(BIN)/ocrd-dinglehopper: dinglehopper $(BIN)/ocrd
 	$(pip_install)
 endif
 
@@ -310,7 +310,7 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-regions
 OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-pages
 OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-original
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
-$(call multirule,$(OCRD_SEGMENT)): ocrd_segment
+$(call multirule,$(OCRD_SEGMENT)): ocrd_segment $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT))
 	$(call delegate_venv,$(OCRD_SEGMENT))
@@ -338,7 +338,7 @@ OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-recognize
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-line
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-region
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-word
-$(call multirule,$(OCRD_TESSEROCR)): ocrd_tesserocr $(SHARE)/tesserocr
+$(call multirule,$(OCRD_TESSEROCR)): ocrd_tesserocr $(SHARE)/tesserocr $(BIN)/ocrd
 	$(pip_install)
 
 # tesserocr must wait for tesseract in parallel builds.
@@ -362,7 +362,7 @@ OCRD_CIS += $(BIN)/ocrd-cis-ocropy-resegment
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-segment
 #OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
 OCRD_CIS += $(BIN)/ocrd-cis-postcorrect
-$(call multirule,$(OCRD_CIS)): ocrd_cis
+$(call multirule,$(OCRD_CIS)): ocrd_cis $(BIN)/ocrd
 	$(pip_install)
 endif
 
@@ -370,14 +370,14 @@ ifneq ($(findstring ocrd_pagetopdf, $(OCRD_MODULES)),)
 deps-ubuntu-modules: ocrd_pagetopdf
 OCRD_EXECUTABLES += $(OCRD_PAGETOPDF)
 OCRD_PAGETOPDF := $(BIN)/ocrd-pagetopdf
-$(OCRD_PAGETOPDF): ocrd_pagetopdf
+$(OCRD_PAGETOPDF): ocrd_pagetopdf $(BIN)/ocrd
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
 endif
 
 ifneq ($(findstring ocrd_calamari, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
-$(OCRD_CALAMARI): ocrd_calamari
+$(OCRD_CALAMARI): ocrd_calamari $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_CALAMARI))
 	$(call delegate_venv,$(OCRD_CALAMARI))
@@ -390,7 +390,7 @@ endif
 ifneq ($(findstring ocrd_pc_segmentation, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
-$(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
+$(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION))
 	$(call delegate_venv,$(OCRD_PC_SEGMENTATION))
@@ -411,7 +411,7 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-tiseg
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-block-segmentation
-$(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
+$(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR))
 	$(call delegate_venv,$(OCRD_ANYBASEOCR))
@@ -426,7 +426,7 @@ ifneq ($(findstring ocrd_typegroups_classifier, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
 OCRD_TYPECLASS := $(BIN)/ocrd-typegroups-classifier
 OCRD_TYPECLASS += $(BIN)/typegroups-classifier
-$(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier
+$(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_TYPECLASS))
 	$(call delegate_venv,$(OCRD_TYPECLASS))
@@ -439,7 +439,7 @@ endif
 ifneq ($(findstring sbb_textline_detector, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
 SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-textline-detector
-$(SBB_LINE_DETECTOR): sbb_textline_detector
+$(SBB_LINE_DETECTOR): sbb_textline_detector $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR))
 	$(call delegate_venv,$(SBB_LINE_DETECTOR))
@@ -452,7 +452,7 @@ endif
 ifneq ($(findstring ocrd_repair_inconsistencies, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_REPAIR_INCONSISTENCIES)
 OCRD_REPAIR_INCONSISTENCIES := $(BIN)/ocrd-repair-inconsistencies
-$(OCRD_REPAIR_INCONSISTENCIES): ocrd_repair_inconsistencies
+$(OCRD_REPAIR_INCONSISTENCIES): ocrd_repair_inconsistencies $(BIN)/ocrd
 	$(pip_install)
 endif
 
@@ -461,7 +461,7 @@ deps-ubuntu-modules: workflow-configuration
 OCRD_EXECUTABLES += $(WORKFLOW_CONFIGURATION)
 WORKFLOW_CONFIGURATION := $(BIN)/ocrd-make
 WORKFLOW_CONFIGURATION += $(BIN)/ocrd-import
-$(call multirule,$(WORKFLOW_CONFIGURATION)): workflow-configuration
+$(call multirule,$(WORKFLOW_CONFIGURATION)): workflow-configuration $(BIN)/ocrd
 	$(MAKE) -C $< install
 endif
 
