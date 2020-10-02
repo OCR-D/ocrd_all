@@ -1,5 +1,76 @@
 # Changelog
 
+## [v2020-10-02](https://github.com/OCR-D/ocrd_all/releases/v2020-10-02)
+
+* Fix "core not updated in sub venv" issue #195
+
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [7085ee0](https://github.com/qurator-spk/dinglehopper/commits/7085ee0)..[d706ef4](https://github.com/qurator-spk/dinglehopper/commits/d706ef4)
+
+  > * 📝 Document CER/WER and the format detection (Fixes GH-26)
+  > * 💩 dinglehopper: Fix OCR-D CLI test by working around ocrd_cli_wrap_processor() check for arguments
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [bb9b1ab](https://github.com/OCR-D/ocrd_calamari/commits/bb9b1ab)..[04e950a](https://github.com/OCR-D/ocrd_calamari/commits/04e950a)
+
+> Release: [v0.0.7](https://github.com/OCR-D/ocrd_calamari/releases/v0.0.7)
+
+  > * Merge pull request #45 from OCR-D/getlogger
+  > * 🚧 README: Mention METS
+  > * 📝 Let intro mention ocrd_calamari + PAGE XML, link to OCR-D
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [fb6cb47](https://github.com/cisocrgroup/ocrd_cis/commits/fb6cb47)..[a6f90ab](https://github.com/cisocrgroup/ocrd_cis/commits/a6f90ab)
+
+> Release: [v0.1.4](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.4)
+
+  > * Merge pull request #71 from bertsky/fix-getlogger-common
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [584240b](https://github.com/OCR-D/ocrd_fileformat/commits/584240b)..[ed932e1 (rewind)](https://github.com/OCR-D/ocrd_fileformat/commits/ed932e1 (rewind))
+
+> Release: [v0.1.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.1.0)
+
+  < respect --overwrite, fix #16
+
+### [ocrd_ocropy](https://github.com/OCR-D/ocrd_ocropy) [573d521](https://github.com/OCR-D/ocrd_ocropy/commits/573d521)..[a6e556e](https://github.com/OCR-D/ocrd_ocropy/commits/a6e556e)
+
+> Release: [v0.0.3](https://github.com/OCR-D/ocrd_ocropy/releases/v0.0.3)
+
+  > * :memo: Stres in README that project is obsolete
+
+### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [54792be](https://github.com/OCR-D/ocrd_olena/commits/54792be)..[cd7a359](https://github.com/OCR-D/ocrd_olena/commits/cd7a359)
+
+> Release: [v1.2.2](https://github.com/OCR-D/ocrd_olena/releases/v1.2.2)
+
+  > * Merge pull request #72 from bertsky/fix-typo-raise
+
+### [ocrd_pagetopdf](https://github.com/UB-Mannheim/ocrd_pagetopdf) [58df37a](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/58df37a)..[6047bd4](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/6047bd4)
+
+> Release: [v1.0.0](https://github.com/UB-Mannheim/ocrd_pagetopdf/releases/v1.0.0)
+
+  > * Fix typos (one found by codespell)
+  > * Merge pull request #16 from kba/overwrite-notset
+  > * ADD Apache-2.0 License
+  > * Merge pull request #15 from kba/overwrite-multipage
+
+### [ocrd_pc_segmentation](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation) [3e69bff](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/3e69bff)..[5e8950f](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/5e8950f)
+
+> Release: [v0.1.3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/releases/v0.1.3)
+
+  > * Update pixel classifier dependency
+  > * .gitignore: Ignore generated requirements.txt
+
+### [ocrd_repair_inconsistencies](https://github.com/qurator-spk/ocrd_repair_inconsistencies) [8182063](https://github.com/qurator-spk/ocrd_repair_inconsistencies/commits/8182063)..[c898d6c](https://github.com/qurator-spk/ocrd_repair_inconsistencies/commits/c898d6c)
+
+  > * Merge pull request #11 from kba/getlo
+  > * Merge pull request #12 from kba/ocrd-tool-root
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [27fe2be](https://github.com/OCR-D/ocrd_tesserocr/commits/27fe2be)..[24b7ced](https://github.com/OCR-D/ocrd_tesserocr/commits/24b7ced)
+
+> Release: [v0.9.5](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.9.5)
+
+  > * Update CHANGELOG.md
+  > * Merge pull request #156 from OCR-D/getlogger
+
+
 ## [v2020-09-25](https://github.com/OCR-D/ocrd_all/releases/v2020-09-25)
 
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [69bae66](https://github.com/ASVLeipzig/cor-asv-ann/commits/69bae66)..[f48b0e2](https://github.com/ASVLeipzig/cor-asv-ann/commits/f48b0e2)
