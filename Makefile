@@ -257,7 +257,7 @@ endif
 ifneq ($(findstring ocrd_im6convert, $(OCRD_MODULES)),)
 deps-ubuntu-modules: ocrd_im6convert
 OCRD_EXECUTABLES += $(BIN)/ocrd-im6convert
-$(BIN)/ocrd-im6convert: ocrd_im6convert
+$(BIN)/ocrd-im6convert: ocrd_im6convert $(BIN)/ocrd
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
 endif
 
@@ -275,7 +275,7 @@ endif
 ifneq ($(findstring ocrd_fileformat, $(OCRD_MODULES)),)
 ocrd_fileformat: GIT_RECURSIVE = --recursive
 OCRD_EXECUTABLES += $(BIN)/ocrd-fileformat-transform
-$(BIN)/ocrd-fileformat-transform: ocrd_fileformat
+$(BIN)/ocrd-fileformat-transform: ocrd_fileformat $(BIN)/ocrd
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install-fileformat install
 endif
 
@@ -283,7 +283,7 @@ ifneq ($(findstring ocrd_olena, $(OCRD_MODULES)),)
 ocrd_olena: GIT_RECURSIVE = --recursive
 deps-ubuntu-modules: ocrd_olena
 OCRD_EXECUTABLES += $(BIN)/ocrd-olena-binarize
-$(BIN)/ocrd-olena-binarize: ocrd_olena
+$(BIN)/ocrd-olena-binarize: ocrd_olena $(BIN)/ocrd
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install BUILD_DIR=$(VIRTUAL_ENV)/build/ocrd_olena
 endif
 clean: clean-olena
@@ -296,7 +296,7 @@ ifneq ($(findstring dinglehopper, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(BIN)/ocrd-dinglehopper
 .PHONY: ocrd-dinglehopper
 ocrd-dinglehopper: $(BIN)/ocrd-dinglehopper
-$(BIN)/ocrd-dinglehopper: dinglehopper
+$(BIN)/ocrd-dinglehopper: dinglehopper $(BIN)/ocrd
 	$(pip_install)
 endif
 
@@ -439,7 +439,7 @@ endif
 ifneq ($(findstring sbb_textline_detector, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
 SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-textline-detector
-$(SBB_LINE_DETECTOR): sbb_textline_detector
+$(SBB_LINE_DETECTOR): sbb_textline_detector $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR))
 	$(call delegate_venv,$(SBB_LINE_DETECTOR))
