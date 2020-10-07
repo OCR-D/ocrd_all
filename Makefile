@@ -157,9 +157,9 @@ $(SHARE)/numpy: | $(ACTIVATE_VENV) $(SHARE)
 ocrd: $(BIN)/ocrd
 deps-ubuntu-modules: core
 $(BIN)/ocrd: core
-	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install --force-reinstall $(PIP_OPTIONS)"
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install $(PIP_OPTIONS)"
 	# workaround for core#351:
-	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install --no-deps $(PIP_OPTIONS)"
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install --no-deps --force-reinstall $(PIP_OPTIONS)"
 
 # Convert the executable names (1) to a pattern rule,
 # so that the recipe will be used with single-recipe-
