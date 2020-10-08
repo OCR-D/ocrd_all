@@ -28,7 +28,9 @@ LABEL \
     org.label-schema.build-date=$BUILD_DATE
 
 
-ENV PREFIX=/usr/local
+# simulate a virtual env for the makefile,
+# coinciding with the Python system prefix
+ENV PREFIX=/usr
 ENV VIRTUAL_ENV $PREFIX
 
 # make apt run non-interactive during build
@@ -65,7 +67,7 @@ RUN echo "Acquire::ftp::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
 RUN echo "set -ex" > docker.sh
 # get packages for build
 RUN echo "apt-get -y install automake autoconf libtool pkg-config g++" >> docker.sh
-# we want to use PREFIX as venv
+# we want to use PREFIX as "venv", so we need activate (as no-op)
 RUN echo "> $PREFIX/bin/activate" >> docker.sh
 # try to fetch all modules system requirements
 RUN echo "make deps-ubuntu" >> docker.sh
