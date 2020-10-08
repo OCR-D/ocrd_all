@@ -30,7 +30,7 @@ SHARE = $(VIRTUAL_ENV)/share
 ACTIVATE_VENV = $(VIRTUAL_ENV)/bin/activate
 
 define SEM
-$(if $(shell sem --version 2>/dev/null),sem --nn --fg --id ocrd_all_git,$(error cannot find package GNU parallel))
+$(if $(shell sem --version 2>/dev/null),sem --will-cite --fg --id ocrd_all_git,$(error cannot find package GNU parallel))
 endef
 
 define WGET
