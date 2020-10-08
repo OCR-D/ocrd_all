@@ -394,7 +394,7 @@ $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION))
 	$(call delegate_venv,$(OCRD_PC_SEGMENTATION))
-$(OCRD_PC_SEGMENTATION): VIRTUAL_ENV := $(SUB_VENV)/headless-tf21
+$(OCRD_PC_SEGMENTATION): VIRTUAL_ENV := $(SUB_VENV)/headless-tf2
 else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
@@ -415,7 +415,7 @@ $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR))
 	$(call delegate_venv,$(OCRD_ANYBASEOCR))
-$(OCRD_ANYBASEOCR): VIRTUAL_ENV := $(SUB_VENV)/headless-tf22
+$(OCRD_ANYBASEOCR): VIRTUAL_ENV := $(SUB_VENV)/headless-tf21
 else
 	cd $< ; $(MAKE) patch-pix2pixhd
 	$(pip_install)
