@@ -183,7 +183,7 @@ CUSTOM_DEPS += cmake gcc g++
 opencv-python: GIT_RECURSIVE = --recursive
 opencv-python/setup.py: opencv-python
 $(SHARE)/opencv-python: opencv-python/setup.py | $(ACTIVATE_VENV) $(SHARE) $(SHARE)/numpy
-	. $(ACTIVATE_VENV) && ENABLE_HEADLESS=1 $(PYTHON) $< bdist_wheel
+	. $(ACTIVATE_VENV) && cd opencv-python && ENABLE_HEADLESS=1 $(PYTHON) setup.py bdist_wheel
 	. $(ACTIVATE_VENV) && $(PIP) install $(<D)/dist/opencv_python_headless-*.whl
 	@touch $@
 $(BIN)/ocrd: $(SHARE)/opencv-python
