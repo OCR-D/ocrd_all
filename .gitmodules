@@ -63,7 +63,7 @@
 	url = https://github.com/skvark/opencv-python.git
 [submodule "workflow-configuration"]
 	path = workflow-configuration
-	url = https://github.com/bertsky/workflow-configuration
+	url = https://github.com/bertsky/workflow-configuration.git
 [submodule "sbb_textline_detector"]
 	path = sbb_textline_detector
 	url = https://github.com/qurator-spk/sbb_textline_detector.git
@@ -81,4 +81,4 @@
 	url = https://github.com/bertsky/ocrd_wrap.git
 [submodule "ocrd_olahd_client"]
 	path = ocrd_olahd_client
-	url = https://github.com/OCR-D/ocrd_olahd_client
+	url = https://github.com/OCR-D/ocrd_olahd_client.git
