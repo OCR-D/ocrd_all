@@ -139,7 +139,7 @@ deinit:
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
 	$(SEM) $(PYTHON) -m venv $(VIRTUAL_ENV)
-	. $(ACTIVATE_VENV) && $(SEM) $(PIP) install --upgrade $(PIP_OPTIONS_E) pip setuptools
+	. $(ACTIVATE_VENV) && $(SEM) $(PIP) install --upgrade pip setuptools
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
