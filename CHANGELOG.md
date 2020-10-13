@@ -1,5 +1,52 @@
 # Changelog
 
+## [v2020-10-13](https://github.com/OCR-D/ocrd_all/releases/v2020-10-13)
+
+### [core](https://github.com/OCR-D/core) [56c4aa6](https://github.com/OCR-D/core/commits/56c4aa6)..[ac86b8e (rewind)](https://github.com/OCR-D/core/commits/ac86b8e (rewind))
+
+> Release: [v2.17.0](https://github.com/OCR-D/core/releases/v2.17.0)
+
+  > :package: v2.18.0
+  > :memo: changelog
+  > update spec to 3.9.1
+  > :memo: changelog
+  > Merge pull request #623 from bertsky/add-processor-help-docstring
+  > :memo: changelog
+  > Merge pull request #614 from OCR-D/find-files-generator
+  > :package: v2.17.2
+  > :memo: changelog
+  > Merge remote-tracking branch 'stweil/numpy'
+  > :package: v2.17.1
+  > :memo: changelog
+  > Merge branch 'master' of https://github.com/OCR-D/core
+  > :memo: changelog
+  > Merge pull request #618 from stweil/master
+
+
+### [ocrd_pc_segmentation](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation) [77aafcb](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/77aafcb)..[5e8950f (rewind)](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/5e8950f (rewind))
+
+> Release: [v0.1.3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/releases/v0.1.3)
+
+  > Bump version: 0.2.2 → 0.2.3
+
+### [opencv-python](https://github.com/skvark/opencv-python) [2ce6d97](https://github.com/skvark/opencv-python/commits/2ce6d97)..[c001042 (rewind)](https://github.com/skvark/opencv-python/commits/c001042 (rewind))
+
+> Release: [44](https://github.com/skvark/opencv-python/releases/44)
+
+  > Merge pull request #402 from stweil/gitignore
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [ec01b51](https://github.com/tesseract-ocr/tesseract/commits/ec01b51)..[b19e3ee (rewind)](https://github.com/tesseract-ocr/tesseract/commits/b19e3ee (rewind))
+
+> Release: [5.0.0-alpha](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha)
+
+  > Merge pull request #3119 from Shatur95/modernize-cmake-config
+  > Merge pull request #3120 from amitdo/legacy
+  > Merge pull request #3116 from Shatur95/older-install-syntax
+  > Merge pull request #3114 from stweil/globaloc
+  > Merge pull request #3113 from stweil/pango
+  > Merge pull request #3112 from Shatur95/fix-cmake-install-configs
+
+
 ## [v2020-10-02](https://github.com/OCR-D/ocrd_all/releases/v2020-10-02)
 
 * Fix "core not updated in sub venv" issue #195
@@ -28,7 +75,7 @@
 
 > Release: [v0.1.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.1.0)
 
-  < respect --overwrite, fix #16
+  > respect --overwrite, fix #16
 
 ### [ocrd_ocropy](https://github.com/OCR-D/ocrd_ocropy) [573d521](https://github.com/OCR-D/ocrd_ocropy/commits/573d521)..[a6e556e](https://github.com/OCR-D/ocrd_ocropy/commits/a6e556e)
 
