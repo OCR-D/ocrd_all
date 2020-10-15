@@ -137,7 +137,7 @@ deinit:
 
 # Get Python modules.
 
-$(VIRTUAL_ENV)/bin/pip3: $(ACTIVATE_VENV)
+$(VIRTUAL_ENV)/bin/$(PIP): $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(SEM) $(PIP) install --upgrade pip setuptools
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
@@ -542,7 +542,7 @@ $(SHARE):
 	@mkdir -p "$@"
 
 # At last, add venv dependency (must not become first):
-$(OCRD_EXECUTABLES) $(BIN)/wheel: | $(VIRTUAL_ENV)/bin/pip3
+$(OCRD_EXECUTABLES) $(BIN)/wheel: | $(VIRTUAL_ENV)/bin/$(PIP)
 $(OCRD_EXECUTABLES): | $(BIN)/wheel
 
 # At last, we know what all OCRD_EXECUTABLES are:
