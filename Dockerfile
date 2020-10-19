@@ -36,6 +36,10 @@ ENV VIRTUAL_ENV $PREFIX
 # make apt run non-interactive during build
 ENV DEBIAN_FRONTEND noninteractive
 
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+ENV TF_FORCE_GPU_ALLOW_GROWTH=true
+
 # make apt system functional
 RUN apt-get -y update \
  && apt-get install -y apt-utils
