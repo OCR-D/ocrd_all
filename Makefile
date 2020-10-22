@@ -438,6 +438,19 @@ else
 endif
 endif
 
+ifneq ($(findstring sbb_binarization, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(SBB_BINARIZATION)
+SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
+$(SBB_BINARIZATION): sbb_binarization $(BIN)/ocrd
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(SBB_BINARIZATION))
+	$(call delegate_venv,$(SBB_BINARIZATION))
+$(SBB_BINARIZATION): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
+else
+	$(pip_install)
+endif
+endif
+
 ifneq ($(findstring sbb_textline_detector, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
 SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-textline-detector
@@ -576,6 +589,7 @@ stripdir = $(patsubst %/,%,$(dir $(1)))
 install-models: \
 	install-models-tesseract \
 	install-models-ocropus \
+	install-models-sbb-binarization \
 	install-models-calamari
 
 UB_MANNHEIM_BACKUP_URL = https://ub-backup.bib.uni-mannheim.de/~stweil/ocrd-train/data
@@ -636,6 +650,13 @@ $(OCROPUS_DATA_PATH)/fraktur-jze.pyrnn.gz:
 $(OCROPUS_DATA_PATH)/LatinHist-98000.pyrnn.gz:
 	mkdir -p $(dir $@)
 	$(call WGET,$@,https://github.com/chreul/OCR_Testdata_EarlyPrintedBooks/raw/master/LatinHist-98000.pyrnn.gz)
+
+SBB_BINARIZATION_DATA_PATH := $(VIRTUAL_ENV)/share/sbb_binarization
+.PHONY: install-models-sbb-binarization
+install-models-sbb-binarization:
+	$(call WGET,/tmp/sbb_binarization_models.tar.gz,https://qurator-data.de/sbb_binarization/models.tar.gz)
+	cd $(SBB_BINARIZATION_DATA_PATH) && tar xf /tmp/sbb_binarization_models.tar.gz
+	rm /tmp/sbb_binarization_models.tar.gz
 
 CALAMARI_DATA_PATH := $(VIRTUAL_ENV)/share/calamari
 .PHONY: install-models-calamari
