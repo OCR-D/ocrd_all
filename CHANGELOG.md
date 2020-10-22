@@ -1,5 +1,130 @@
 # Changelog
 
+## [v2020-10-22](https://github.com/OCR-D/ocrd_all/releases/v2020-10-22)
+
+### [core](https://github.com/OCR-D/core) [ac86b8e](https://github.com/OCR-D/core/commits/ac86b8e)..[6ca42f1](https://github.com/OCR-D/core/commits/6ca42f1)
+
+> Release: [v2.18.1](https://github.com/OCR-D/core/releases/v2.18.1)
+
+  > * :package: v2.18.1
+  > * :memo: changelog
+  > * Merge pull request #631 from OCR-D/fix-logging-conf-override
+  > * :memo: changelog
+  > * [app][log] remove ocrd_workspace logger from default config
+  > * [app][log] ocrd.workspace logger outcommented
+  > * [app]log] all explicite configurations
+  > * [app][doc] integrate loggers into default config
+  > * [app][doc] cleared name
+  > * :memo: changelog
+  > * Merge pull request #628 from ulb-sachsen-anhalt/fix/cli-log-level
+  > * :package: v2.18.0
+  > * :memo: changelog
+  > * update spec to 3.9.1
+  > * :memo: changelog
+  > * Merge pull request #623 from bertsky/add-processor-help-docstring
+  > * :memo: changelog
+  > * Merge pull request #614 from OCR-D/find-files-generator
+  > * :package: v2.17.2
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'stweil/numpy'
+  > * :package: v2.17.1
+  > * :memo: changelog
+  > * Merge branch 'master' of https://github.com/OCR-D/core
+  > * :memo: changelog
+  > * Merge pull request #618 from stweil/master
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [d706ef4](https://github.com/qurator-spk/dinglehopper/commits/d706ef4)..[f2367ac](https://github.com/qurator-spk/dinglehopper/commits/f2367ac)
+
+  > * 🐛 Fix OCR-D CLI for newest OCR-D
+  > * ✨ dinglehopper: Show a progressbar on --progress
+  > * 🧹 dinglehopper: Disable metrics in JSON report, too
+  > * 📝 dinglehopper: Update README to use OCR-D's new and more readable -P option
+  > * 🧹 dinglehopper: Move all normalization code to extracted_text.py
+  > * Merge branch 'master' of https://github.com/qurator-spk/dinglehopper
+  > * 📝 dinglehopper: Update screenshot to include a region id tooltip
+  > * 📝 dinglehopper: Add detail about the text extraction and ExtractedText
+  > * 📝 dinglehopper: Move developer info to README-DEV.md
+  > * Merge branch 'feat/display-segment-id'
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [a0999ec](https://github.com/OCR-D/ocrd_anybaseocr/commits/a0999ec)..[cb82aad](https://github.com/OCR-D/ocrd_anybaseocr/commits/cb82aad)
+
+> Release: [v1.0.2](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.0.2)
+
+  > * wip fix for #74
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [04e950a](https://github.com/OCR-D/ocrd_calamari/commits/04e950a)..[795826f](https://github.com/OCR-D/ocrd_calamari/commits/795826f)
+
+> Release: [v0.0.7](https://github.com/OCR-D/ocrd_calamari/releases/v0.0.7)
+
+  > * Merge branch 'master' of https://github.com/OCR-D/ocrd_calamari
+  > * 🧹 Do not install numpy, let the TF dependency do it
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [a6f90ab](https://github.com/cisocrgroup/ocrd_cis/commits/a6f90ab)..[5ec0e34](https://github.com/cisocrgroup/ocrd_cis/commits/5ec0e34)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * Merge pull request #75 from bertsky/fix-clip-mode-with-alpha
+
+### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [cd7a359](https://github.com/OCR-D/ocrd_olena/commits/cd7a359)..[9db846c](https://github.com/OCR-D/ocrd_olena/commits/9db846c)
+
+> Release: [v1.2.3](https://github.com/OCR-D/ocrd_olena/releases/v1.2.3)
+
+  > * Update CHANGELOG.md
+  > * Merge pull request #74 from bertsky/fix-niblack-k
+  > * Merge pull request #70 from bertsky/needs-im6
+  > * Merge pull request #71 from OCR-D/update-ws-cli
+
+### [ocrd_pc_segmentation](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation) [5e8950f](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/5e8950f)..[7298475](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/7298475)
+
+> Release: [v0.1.3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/releases/v0.1.3)
+
+  > * Really force updating of dependency versions on `make deps`
+  > * Force regeneration of requirements.txt on `make deps`
+  > * Bump version: 0.2.2 → 0.2.3
+
+### [ocrd_typegroups_classifier](https://github.com/OCR-D/ocrd_typegroups_classifier) [f9bc14e](https://github.com/OCR-D/ocrd_typegroups_classifier/commits/f9bc14e)..[3d0004f](https://github.com/OCR-D/ocrd_typegroups_classifier/commits/3d0004f)
+
+> Release: [v0.1.2](https://github.com/OCR-D/ocrd_typegroups_classifier/releases/v0.1.2)
+
+  > * :package: v0.1.2
+  > * Merge pull request #3 from OCR-D/getlogger-in-process
+
+### [ocrd_wrap](https://github.com/bertsky/ocrd_wrap) [a79cd7d](https://github.com/bertsky/ocrd_wrap/commits/a79cd7d)..[1876b65](https://github.com/bertsky/ocrd_wrap/commits/1876b65)
+
+> Release: [v0.1.1](https://github.com/bertsky/ocrd_wrap/releases/v0.1.1)
+
+  > * :package: 0.1.2
+  > * Merge branch 'master' of ssh://github.com/bertsky/ocrd_wrap
+  > * skimage-normalize: expose black-point/white-point params
+
+### [opencv-python](https://github.com/skvark/opencv-python) [c001042](https://github.com/skvark/opencv-python/commits/c001042)..[2ce6d97](https://github.com/skvark/opencv-python/commits/2ce6d97)
+
+> Release: [44](https://github.com/skvark/opencv-python/releases/44)
+
+  > * Merge pull request #402 from stweil/gitignore
+
+### [sbb_textline_detector](https://github.com/qurator-spk/sbb_textline_detector) [cbc9838](https://github.com/qurator-spk/sbb_textline_detector/commits/cbc9838)..[247d5f9](https://github.com/qurator-spk/sbb_textline_detector/commits/247d5f9)
+
+  > * Merge pull request #45 from bertsky/readme-ocr-d-cli
+  > * 🐛 sbb_textline_detector: Re-base Border coords too
+  > * 🐛 sbb_textline_detector: Filter cropped images (OCR-D)
+  > * Merge branch 'fix/image_from_page'
+  > * 🐛 sbb_textline_detector: Work around incompatible numpy version installed by pip
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [b19e3ee](https://github.com/tesseract-ocr/tesseract/commits/b19e3ee)..[11297c9](https://github.com/tesseract-ocr/tesseract/commits/11297c9)
+
+> Release: [5.0.0-alpha](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha)
+
+  > * Merge pull request #3130 from robinwatts/pushback15
+  > * Merge pull request #2994 from robinwatts/pushback11
+  > * Merge pull request #3119 from Shatur95/modernize-cmake-config
+  > * Merge pull request #3120 from amitdo/legacy
+  > * Merge pull request #3116 from Shatur95/older-install-syntax
+  > * Merge pull request #3114 from stweil/globaloc
+  > * Merge pull request #3113 from stweil/pango
+  > * Merge pull request #3112 from Shatur95/fix-cmake-install-configs
+
+
 ## [v2020-10-13](https://github.com/OCR-D/ocrd_all/releases/v2020-10-13)
 
 ### [core](https://github.com/OCR-D/core) [56c4aa6](https://github.com/OCR-D/core/commits/56c4aa6)..[ac86b8e (rewind)](https://github.com/OCR-D/core/commits/ac86b8e (rewind))
