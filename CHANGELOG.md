@@ -1,5 +1,11 @@
 # Changelog
 
+## [v2020-10-22.1](https://github.com/OCR-D/ocrd_all/releases/v2020-10-22.1)
+
+Added:
+
+  * https://github.com/qurator-spk/sbb_binarization
+
 ## [v2020-10-22](https://github.com/OCR-D/ocrd_all/releases/v2020-10-22)
 
 ### [core](https://github.com/OCR-D/core) [ac86b8e](https://github.com/OCR-D/core/commits/ac86b8e)..[6ca42f1](https://github.com/OCR-D/core/commits/6ca42f1)
