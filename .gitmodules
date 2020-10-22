@@ -82,3 +82,6 @@
 [submodule "ocrd_olahd_client"]
 	path = ocrd_olahd_client
 	url = https://github.com/OCR-D/ocrd_olahd_client.git
+[submodule "sbb_binarization"]
+	path = sbb_binarization
+	url = https://github.com/qurator-spk/sbb_binarization

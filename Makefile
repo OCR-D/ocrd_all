@@ -438,6 +438,19 @@ else
 endif
 endif
 
+ifneq ($(findstring sbb_binarization, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(SBB_BINARIZATION)
+SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
+$(SBB_BINARIZATION): sbb_binarization $(BIN)/ocrd
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(SBB_BINARIZATION))
+	$(call delegate_venv,$(SBB_BINARIZATION))
+$(SBB_BINARIZATION): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
+else
+	$(pip_install)
+endif
+endif
+
 ifneq ($(findstring sbb_textline_detector, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
 SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-textline-detector
