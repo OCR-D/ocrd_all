@@ -1,5 +1,41 @@
 # Changelog
 
+## [v2020-10-29](https://github.com/OCR-D/ocrd_all/releases/v2020-10-29)
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [f48b0e2](https://github.com/ASVLeipzig/cor-asv-ann/commits/f48b0e2)..[0ae6867](https://github.com/ASVLeipzig/cor-asv-ann/commits/0ae6867)
+
+> Release: [v0.1.6](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.6)
+
+  > * evaluate: use output file group with JSON reports per page and totals
+  > * lib.alignment: fix dist (use largest length as denominator)
+  > * Merge branch 'fix-zip-input-files' into 'master'
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [f2367ac](https://github.com/qurator-spk/dinglehopper/commits/f2367ac)..[6e47acd](https://github.com/qurator-spk/dinglehopper/commits/6e47acd)
+
+  > * 📝 dinglehopper: Move screenshot higher
+  > * 🐛 dinglehopper: Skip pages if there is no GT nor OCR (Fixes GH-34)
+  > * 🐛 dinglehopper: Do try to get text when no TextEquivs exist
+  > * Merge branch 'feat/text-extraction-levels'
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [ed932e1](https://github.com/OCR-D/ocrd_fileformat/commits/ed932e1)..[ded152d](https://github.com/OCR-D/ocrd_fileformat/commits/ded152d)
+
+> Release: [v0.1.1](https://github.com/OCR-D/ocrd_fileformat/releases/v0.1.1)
+
+  > * :package: v0.1.1
+  > * Merge pull request #20 from OCR-D/fix-overwrite
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [11297c9](https://github.com/tesseract-ocr/tesseract/commits/11297c9)..[5761880](https://github.com/tesseract-ocr/tesseract/commits/5761880)
+
+> Release: [5.0.0-alpha](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha)
+
+  > * Merge pull request #3141 from stweil/invert
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [1476350](https://github.com/bertsky/workflow-configuration/commits/1476350)..[aa4fe96](https://github.com/bertsky/workflow-configuration/commits/aa4fe96)
+
+  > * prevent running pattern recipe without prereqs
+  > * fix stop for implicit rule search for makefiles
+
+
 ## [v2020-10-22.1](https://github.com/OCR-D/ocrd_all/releases/v2020-10-22.1)
 
 Added:
