@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+Fixed:
+
+  * sub-venv rules: move core dependency to inner make exclusivel, #217
+
+
 ## [v2020-10-29](https://github.com/OCR-D/ocrd_all/releases/v2020-10-29)
 
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [f48b0e2](https://github.com/ASVLeipzig/cor-asv-ann/commits/f48b0e2)..[0ae6867](https://github.com/ASVLeipzig/cor-asv-ann/commits/0ae6867)
