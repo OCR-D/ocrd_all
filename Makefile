@@ -12,7 +12,7 @@ export PIP ?= pip3
 # (the option --editable must always be last and only applies to src install)
 PIP_OPTIONS_E = $(filter-out -e,$(PIP_OPTIONS))
 # Set to 1 to skip all submodule updates. For development.
-NO_UPDATE = 0
+NO_UPDATE ?= 0
 GIT_RECURSIVE = # --recursive
 GIT_DEPTH = # --depth 1
 # Required and optional Tesseract models.
@@ -216,13 +216,14 @@ OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-process
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-train
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-eval
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
-$(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann $(BIN)/ocrd
+$(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN))
 	$(call delegate_venv,$(OCRD_COR_ASV_ANN))
 $(OCRD_COR_ASV_ANN): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
+$(OCRD_COR_ASV_ANN): $(BIN)/ocrd
 endif
 endif
 
@@ -231,7 +232,7 @@ deps-ubuntu-modules: cor-asv-fst
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
 OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
 OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
-$(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst $(BIN)/ocrd
+$(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST))
 	$(call delegate_venv,$(OCRD_COR_ASV_FST))
@@ -239,6 +240,7 @@ $(OCRD_COR_ASV_FST): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
 	$(MAKE) -C $< deps
 	$(pip_install)
+$(OCRD_COR_ASV_FST): $(BIN)/ocrd
 endif
 endif
 
@@ -246,13 +248,14 @@ ifneq ($(findstring ocrd_keraslm, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KERASLM)
 OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
 OCRD_KERASLM += $(BIN)/keraslm-rate
-$(call multirule,$(OCRD_KERASLM)): ocrd_keraslm $(BIN)/ocrd
+$(call multirule,$(OCRD_KERASLM)): ocrd_keraslm
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM))
 	$(call delegate_venv,$(OCRD_KERASLM))
 $(OCRD_KERASLM): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
+$(OCRD_KERASLM): $(BIN)/ocrd
 endif
 endif
 
@@ -312,13 +315,14 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-regions
 OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-pages
 OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-original
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
-$(call multirule,$(OCRD_SEGMENT)): ocrd_segment $(BIN)/ocrd
+$(call multirule,$(OCRD_SEGMENT)): ocrd_segment
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT))
 	$(call delegate_venv,$(OCRD_SEGMENT))
 $(OCRD_SEGMENT): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
+$(OCRD_SEGMENT): $(BIN)/ocrd
 endif
 endif
 
@@ -379,20 +383,21 @@ endif
 ifneq ($(findstring ocrd_calamari, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
-$(OCRD_CALAMARI): ocrd_calamari $(BIN)/ocrd
+$(OCRD_CALAMARI): ocrd_calamari
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_CALAMARI))
 	$(call delegate_venv,$(OCRD_CALAMARI))
 $(OCRD_CALAMARI): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
+$(OCRD_CALAMARI): $(BIN)/ocrd
 endif
 endif
 
 ifneq ($(findstring ocrd_pc_segmentation, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
-$(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation $(BIN)/ocrd
+$(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION))
 	$(call delegate_venv,$(OCRD_PC_SEGMENTATION))
@@ -400,6 +405,7 @@ $(OCRD_PC_SEGMENTATION): VIRTUAL_ENV := $(SUB_VENV)/headless-tf2
 else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
+$(OCRD_PC_SEGMENTATION): $(BIN)/ocrd
 endif
 endif
 
@@ -413,7 +419,7 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-tiseg
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-block-segmentation
-$(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr $(BIN)/ocrd
+$(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR))
 	$(call delegate_venv,$(OCRD_ANYBASEOCR))
@@ -421,6 +427,7 @@ $(OCRD_ANYBASEOCR): VIRTUAL_ENV := $(SUB_VENV)/headless-tf21
 else
 	cd $< ; $(MAKE) patch-pix2pixhd
 	$(pip_install)
+$(OCRD_ANYBASEOCR): $(BIN)/ocrd
 endif
 endif
 
@@ -428,39 +435,42 @@ ifneq ($(findstring ocrd_typegroups_classifier, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
 OCRD_TYPECLASS := $(BIN)/ocrd-typegroups-classifier
 OCRD_TYPECLASS += $(BIN)/typegroups-classifier
-$(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier $(BIN)/ocrd
+$(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_TYPECLASS))
 	$(call delegate_venv,$(OCRD_TYPECLASS))
 $(OCRD_TYPECLASS): VIRTUAL_ENV := $(SUB_VENV)/headless-torch14
 else
 	$(pip_install)
+$(OCRD_TYPECLASS): $(BIN)/ocrd
 endif
 endif
 
 ifneq ($(findstring sbb_binarization, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(SBB_BINARIZATION)
 SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
-$(SBB_BINARIZATION): sbb_binarization $(BIN)/ocrd
+$(SBB_BINARIZATION): sbb_binarization
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(SBB_BINARIZATION))
 	$(call delegate_venv,$(SBB_BINARIZATION))
 $(SBB_BINARIZATION): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
+$(SBB_BINARIZATION): $(BIN)/ocrd
 endif
 endif
 
 ifneq ($(findstring sbb_textline_detector, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
 SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-textline-detector
-$(SBB_LINE_DETECTOR): sbb_textline_detector $(BIN)/ocrd
+$(SBB_LINE_DETECTOR): sbb_textline_detector
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR))
 	$(call delegate_venv,$(SBB_LINE_DETECTOR))
 $(SBB_LINE_DETECTOR): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
+$(SBB_LINE_DETECTOR): $(BIN)/ocrd
 endif
 endif
 
@@ -812,5 +822,6 @@ docker: docker-latest
 
 # do not search for implicit rules here:
 Makefile: ;
+local.mk: ;
 
 # eof
