@@ -2,10 +2,174 @@
 
 ## Unreleased
 
+
+## [v2020-11-17](https://github.com/OCR-D/ocrd_all/releases/v2020-11-17)
+
 Fixed:
 
   * sub-venv rules: move core dependency to inner make exclusivel, #217
 
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [0ae6867](https://github.com/ASVLeipzig/cor-asv-ann/commits/0ae6867)..[be73c96](https://github.com/ASVLeipzig/cor-asv-ann/commits/be73c96)
+
+> Release: [v0.1.6](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.6)
+
+  > * evaluate: delegate to new zip_input_files in core
+
+### [core](https://github.com/OCR-D/core) [6ca42f1](https://github.com/OCR-D/core/commits/6ca42f1)..[079aace](https://github.com/OCR-D/core/commits/079aace)
+
+> Release: [v2.20.1](https://github.com/OCR-D/core/releases/v2.20.1)
+
+  > * :package: v2.20.1
+  > * :memo: changelog
+  > * ocrd_mets.find: ignore mets:file without mets:FLocat
+  > * workspace.image_from_{page,segment}: warn of duplicate features in AlternativeImages
+  > * processor.base: improve debug log msg
+  > * workspace.image_from_{page,segment}: no Region/@orientation means inherit…
+  > * workspace.image_from_{page,segment}: re-crop after rotation…
+  > * workspace.image_from_{page,segment}: refactor, less redundant warnings…
+  > * :package: v2.20.0
+  > * :memo: changelog
+  > * Merge pull request #639 from bertsky/fix-page-invalidate-alternativeimages
+  > * :memo: changelog
+  > * Merge pull request #635 from bertsky/processor.zip_input_files
+  > * :memo: changelog
+  > * run_cli: do not capute STDOUT/STDERR
+  > * :memo: changelog
+  > * Merge pull request #637 from bertsky/add-metadata-version
+  > * :memo: changelog
+  > * Merge pull request #636 from b2m/fix-ocrd-utils-on-windows
+  > * :package: v2.19.0
+  > * :memo: changelog
+  > * Merge pull request #627 from bertsky/fix-pillow-high-depth-images
+  > * :memo: changelog
+  > * Merge pull request #625 from OCR-D/reset-mets-permissions
+  > * Merge pull request #633 from OCR-D/altimage-wo-comment
+  > * :memo: changelog
+  > * Merge pull request #629 from Witiko/master
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [6e47acd](https://github.com/qurator-spk/dinglehopper/commits/6e47acd)..[389e253](https://github.com/qurator-spk/dinglehopper/commits/389e253)
+
+  > * 🐛 dinglehopper: Fix alto_extract_lines()'s type annotation
+  > * 🐛 dinglehopper: Fix alto_extract()'s type annotation
+  > * ✔️ dinglehopper: Add missing integration test markers
+  > * 📝 dinglehopper: README-DEV: Massage markdown a bit
+  > * Merge pull request #46 from b2m/tool-changes
+  > * 🐛 dinglehopper: Normalize in plain_extract()
+  > * 🎨 dinglehopper: Reformat using black
+  > * 🎨 dinglehopper: s/LOG/log
+  > * Merge pull request #43 from bertsky/patch-1
+  > * Merge pull request #42 from b2m/test-python-cache-for-travis
+  > * Merge pull request #37 from b2m/fix-sort-with-none
+  > * Merge pull request #39 from b2m/test-python-3.9
+  > * Merge pull request #38 from b2m/add-editorconfig
+
+Submodule ocrd_anybaseocr cb82aad...de27915:
+  > * :package: v1.1.0
+  > * :memo: changelog
+  > * Merge pull request #75 from bertsky/fix-padding
+  > * :memo: fix broken links in models/README.md, fix #76
+  < wip fix for #74
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [5ec0e34](https://github.com/cisocrgroup/ocrd_cis/commits/5ec0e34)..[1c01978](https://github.com/cisocrgroup/ocrd_cis/commits/1c01978)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * Merge remote-tracking branch 'upstream/master' into fix-resegment
+  > * segment (region level): ignore separators and other existing regions
+  > * resegment: set correct pageId (not pcGtsId or input file ID)
+  > * dewarp: skip zero size (avoid running into numpy conversion problems)
+  > * segment: set pageId for derived images, too
+  > * segment: fix reference before assignment when partitioning
+  > * resegment: skip empty line polygons
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [ded152d](https://github.com/OCR-D/ocrd_fileformat/commits/ded152d)..[04e4663](https://github.com/OCR-D/ocrd_fileformat/commits/04e4663)
+
+> Release: [v0.1.1](https://github.com/OCR-D/ocrd_fileformat/releases/v0.1.1)
+
+  > * :memo: README: fix 2nd workflow-configuration example, fix #22
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [aadbc7b](https://github.com/OCR-D/ocrd_segment/commits/aadbc7b)..[8b6591e](https://github.com/OCR-D/ocrd_segment/commits/8b6591e)
+
+> Release: [v0.1.5](https://github.com/OCR-D/ocrd_segment/releases/v0.1.5)
+
+  > * :package: 0.1.5
+  > * evaluate: delegate to zip_input_files now in core
+  > * replace_original: delegate to repair.ensure_consistent
+  > * replace_page: delegate to zip_input_files now in core
+  > * replace_page: delegate to repair.ensure_consistent
+  > * replace_page: catch invalid coords and skip page
+  > * replace_page: new OCR-D CLI (inverse of replace_original)
+  > * :package: 0.1.4
+  > * repair: fix coordinate consistency/validity errors if possible
+  > * extract-regions: set pageId for derived images, too
+
+### [ocrd_wrap](https://github.com/bertsky/ocrd_wrap) [1876b65](https://github.com/bertsky/ocrd_wrap/commits/1876b65)..[9dfbdb3](https://github.com/bertsky/ocrd_wrap/commits/9dfbdb3)
+
+> Release: [v0.1.3](https://github.com/bertsky/ocrd_wrap/releases/v0.1.3)
+
+  > * :package: 0.1.4
+  > * skimage-normalize: fix typo in 0aca581e
+  > * :package: 0.1.3
+  > * all: fix pageId for sub-page derived images…
+
+### [opencv-python](https://github.com/skvark/opencv-python) [2ce6d97](https://github.com/skvark/opencv-python/commits/2ce6d97)..[a5fc295](https://github.com/skvark/opencv-python/commits/a5fc295)
+
+> Release: [46](https://github.com/skvark/opencv-python/releases/46)
+
+  > * fix min supported numpy
+  > * use numpy 1.19.3
+  > * fix py version
+  > * add arm64 matrix entries and update Dockerfile
+  > * add test image
+  > * test depends, more specific pyproject.toml
+  > * add numpy version to setup.py
+  > * add env markers for aarch64
+  > * try with new images
+  > * update README
+  > * another fix for slashes
+  > * fix slashes
+  > * download Python 3.9 manually
+  > * fix min numpy version
+  > * fix py39 entry
+  > * fix auditwheel patching
+  > * fix line endings
+  > * Merge branch 'feat/python39' of https://github.com/skvark/opencv-python into feat/python39
+  > * fix pyproject.toml
+  > * fix typo
+  > * Python 3.9 preparations
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [f0e0a75](https://github.com/qurator-spk/sbb_binarization/commits/f0e0a75)..[30a3c98](https://github.com/qurator-spk/sbb_binarization/commits/30a3c98)
+
+> Release: [v0.0.5](https://github.com/qurator-spk/sbb_binarization/releases/v0.0.5)
+
+  > * require h5py < 3, qurator-spk/sbb_textline_detection#50, tensorflow/tensorflow#44467
+  > * :package: v0.0.5
+  > * Merge pull request #17 from sulzbals/ram-consumption
+  > * Update README.md
+  > * Update README.md
+  > * Update README.md
+  > * Update README.md
+  > * Update README.md
+  > * Update README.md
+
+### [sbb_textline_detector](https://github.com/qurator-spk/sbb_textline_detector) [247d5f9](https://github.com/qurator-spk/sbb_textline_detector/commits/247d5f9)..[5d7c090](https://github.com/qurator-spk/sbb_textline_detector/commits/5d7c090)
+
+  > * require h5py < 3, #50
+  > * Merge pull request #49 from qurator-spk/readme-upd
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [5761880](https://github.com/tesseract-ocr/tesseract/commits/5761880)..[e20ffdd](https://github.com/tesseract-ocr/tesseract/commits/e20ffdd)
+
+> Release: [5.0.0-alpha](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha)
+
+  > * Merge pull request #3153 from stweil/scale
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [aa4fe96](https://github.com/bertsky/workflow-configuration/commits/aa4fe96)..[a9a797e](https://github.com/bertsky/workflow-configuration/commits/a9a797e)
+
+  > * fix errexit in subshell
+  > * add util fix-page-coords
+  > * Merge branch 'master' of https://github.com/bertsky/workflow-configuration
+  > * append to workspace.workflow log files (don't truncate)
 
 ## [v2020-10-29](https://github.com/OCR-D/ocrd_all/releases/v2020-10-29)
 
