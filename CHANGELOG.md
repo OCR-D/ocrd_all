@@ -3,7 +3,7 @@
 ## Unreleased
 
 
-## [v2020-11-17](https://github.com/OCR-D/ocrd_all/releases/v2020-11-17)
+## [v2020-11-18](https://github.com/OCR-D/ocrd_all/releases/v2020-11-18)
 
 Fixed:
 
