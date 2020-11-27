@@ -387,7 +387,7 @@ $(OCRD_CALAMARI): ocrd_calamari
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_CALAMARI))
 	$(call delegate_venv,$(OCRD_CALAMARI))
-$(OCRD_CALAMARI): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
+$(OCRD_CALAMARI): VIRTUAL_ENV := $(SUB_VENV)/headless-tf2
 else
 	$(pip_install)
 $(OCRD_CALAMARI): $(BIN)/ocrd

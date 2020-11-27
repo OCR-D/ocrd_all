@@ -1,5 +1,105 @@
 # Changelog
 
+## [v2020-11-27](https://github.com/OCR-D/ocrd_all/releases/v2020-11-27)
+
+### [core](https://github.com/OCR-D/core) [079aace](https://github.com/OCR-D/core/commits/079aace)..[2298662](https://github.com/OCR-D/core/commits/2298662)
+
+> Release: [v2.21.0](https://github.com/OCR-D/core/releases/v2.21.0)
+
+  > * :package: v2.21.0
+  > * :memo: changelog
+  > * Merge branch 'profile-cpu-time'
+  > * Merge branch 'numpy-any-version'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/bertsky-patch-task-sequence'
+  > * :memo: changelog
+  > * regenerate PAGE API
+  > * prune_ReadingOrder: also check empty groups
+  > * :package: v2.20.2
+  > * Merge pull request #645 from OCR-D/fix-644
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [389e253](https://github.com/qurator-spk/dinglehopper/commits/389e253)..[8cd8314](https://github.com/qurator-spk/dinglehopper/commits/8cd8314)
+
+  > * 🐛 dinglehopper: Bump up ocrd req for zip_input_files
+  > * Merge pull request #49 from kba/zip_input_files
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [795826f](https://github.com/OCR-D/ocrd_calamari/commits/795826f)..[1c7fcda](https://github.com/OCR-D/ocrd_calamari/commits/1c7fcda)
+
+> Release: [v1.0.0](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.0)
+
+  > * 📝 README: Link to model download
+  > * 📦 v1.0.0
+  > * 🐛 Pin h5py to < 3 because pip
+  > * Merge branch 'feat/update-calamari1'
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [1c01978](https://github.com/cisocrgroup/ocrd_cis/commits/1c01978)..[36f4a95](https://github.com/cisocrgroup/ocrd_cis/commits/36f4a95)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * segment (page/table level): fix significance criterion for partitions' line labels
+  > * segment (page/table level): continue more gracefully when XY-cut fails
+  > * segment: prevent empty ReadingOrder group
+  > * ensure valid polygons for new coords
+  > * polygon_for_parent: ensure path validity before checking consistency
+  > * segment/common/ocrolib: use better reconstruction…
+  > * segment: fix hmerge transitivity rules
+  > * segment (page level): hmerge line labels (within each region) here, too
+  > * :fire: morph.label: fix ncomps (+1)
+  > * dewarp: expose smoothness parameter
+  > * deskew: delegate to core for reflection and rotation
+  > * segment: fix pageid
+  > * segment: upgrade segmentation failures from warning to error
+  > * segment (region level): fix and speed up horizontal merging
+  > * segment (page/table level): improve incremental annotation…
+  > * recognize: fix regression in 4f3947d28c
+  > * clip: require independence instead of min_fraction threshold
+  > * clip: avoid suppressing overlapping components from both sides
+  > * segment (region level): annotate clipped region images, too
+  > * segment (region level): do not ignore seps/neighbours after clipping
+  > * resegment: fix against overflow in numpy slices due to rounding errors when cropping
+  > * resegment: use set_points to ensure invalidating existing line images
+  > * ocrolib.spread_labels: fix when no labels exist
+  > * segment: do not suppress neighbours encompassing the full image
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [8b6591e](https://github.com/OCR-D/ocrd_segment/commits/8b6591e)..[907ba7d](https://github.com/OCR-D/ocrd_segment/commits/907ba7d)
+
+> Release: [v0.1.6](https://github.com/OCR-D/ocrd_segment/releases/v0.1.6)
+
+  > * :package: 0.1.6
+  > * replace-original: only ensure coord validity, not consistency
+  > * replace-original: also replace @width/height for clarity
+  > * replace-original: invalidate Border/orientation, add new original as derived image too
+  > * update changelog
+  > * repair: also fix negative coords, also on page level
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [30a3c98](https://github.com/qurator-spk/sbb_binarization/commits/30a3c98)..[ea69494](https://github.com/qurator-spk/sbb_binarization/commits/ea69494)
+
+> Release: [v0.0.6](https://github.com/qurator-spk/sbb_binarization/releases/v0.0.6)
+
+  > * :package: v0.0.6
+  > * Merge pull request #20 from bertsky/patch-1
+  > * Merge pull request #18 from qurator-spk/h5py3
+
+### [sbb_textline_detector](https://github.com/qurator-spk/sbb_textline_detector) [5d7c090](https://github.com/qurator-spk/sbb_textline_detector/commits/5d7c090)..[17069f7](https://github.com/qurator-spk/sbb_textline_detector/commits/17069f7)
+
+  > * Merge pull request #51 from qurator-spk/h5py3
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [e20ffdd](https://github.com/tesseract-ocr/tesseract/commits/e20ffdd)..[4c35f51](https://github.com/tesseract-ocr/tesseract/commits/4c35f51)
+
+> Release: [5.0.0-alpha](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha)
+
+  > * Merge pull request #3158 from Shreeshrii/master
+  > * Merge pull request #3155 from Shatur95/fix-cmake-targets-path
+
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [a9a797e](https://github.com/bertsky/workflow-configuration/commits/a9a797e)..[2336cbb](https://github.com/bertsky/workflow-configuration/commits/2336cbb)
+
+  > * ocrd-import: fix mkdir in workspace dir
+  > * when in a GPU semaphore, don't buffer (log) output
+  > * ocrd-import: ensure OCR-D-IMG exists before convert
+  > * ocrd-import: prefix PAGE-XML file ID by fileGrp in -P mode, too
+
+
 ## Unreleased
 
 
