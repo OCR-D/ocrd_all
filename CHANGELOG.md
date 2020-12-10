@@ -1,5 +1,72 @@
 # Changelog
 
+## [v2020-12-10](https://github.com/OCR-D/ocrd_all/releases/v2020-12-10)
+
+### [core](https://github.com/OCR-D/core) [2298662](https://github.com/OCR-D/core/commits/2298662)..[135acb6](https://github.com/OCR-D/core/commits/135acb6)
+
+> Release: [v2.21.0](https://github.com/OCR-D/core/releases/v2.21.0)
+
+  > * :memo: changelog
+  > * Merge pull request #651 from OCR-D/bertsky-fix-task-sequence
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [36f4a95](https://github.com/cisocrgroup/ocrd_cis/commits/36f4a95)..[c4d0fae](https://github.com/cisocrgroup/ocrd_cis/commits/c4d0fae)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * resegment: improve over new polygonal/global algorithm…
+  > * resegment: complete rewrite (polygonal and global)…
+  > * common: in hmerge_line_seeds, find and fill shortest gap…
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [907ba7d](https://github.com/OCR-D/ocrd_segment/commits/907ba7d)..[a26a3c3](https://github.com/OCR-D/ocrd_segment/commits/a26a3c3)
+
+> Release: [v0.1.6](https://github.com/OCR-D/ocrd_segment/releases/v0.1.6)
+
+  > * repair: also ensure >2 points
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [24b7ced](https://github.com/OCR-D/ocrd_tesserocr/commits/24b7ced)..[6ab6167](https://github.com/OCR-D/ocrd_tesserocr/commits/6ab6167)
+
+> Release: [v0.10.1](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.10.1)
+
+  > * :package: 0.10.1
+  > * Merge pull request #162 from bertsky/polygonalize
+  > * Merge pull request #158 from bertsky/add-word-font-attributes
+
+### [ocrd_typegroups_classifier](https://github.com/OCR-D/ocrd_typegroups_classifier) [3d0004f](https://github.com/OCR-D/ocrd_typegroups_classifier/commits/3d0004f)..[dc2f685](https://github.com/OCR-D/ocrd_typegroups_classifier/commits/dc2f685)
+
+> Release: [v0.1.3](https://github.com/OCR-D/ocrd_typegroups_classifier/releases/v0.1.3)
+
+  > * :package: v0.1.3
+  > * :memo: changelog
+  > * ocrd-tool: add output_file_grp
+  > * Merge branch 'pr/4'
+
+### [opencv-python](https://github.com/skvark/opencv-python) [a5fc295](https://github.com/skvark/opencv-python/commits/a5fc295)..[f33e65d](https://github.com/skvark/opencv-python/commits/f33e65d)
+
+> Release: [46](https://github.com/skvark/opencv-python/releases/46)
+
+  > * OpenCV 4.5.0
+  > * update OpenCV licensing
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [4c35f51](https://github.com/tesseract-ocr/tesseract/commits/4c35f51)..[66175f9](https://github.com/tesseract-ocr/tesseract/commits/66175f9)
+
+> Release: [5.0.0-alpha](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha)
+
+  > * Merge pull request #3172 from MerlijnWajer/master
+  > * Merge pull request #3171 from stweil/lsan
+  > * Fix build with enabled TensorFlow
+  > * Fix regression in Network::Serialize (fix issue #3167)
+  > * Merge pull request #3165 from MerlijnWajer/master
+  > * Merge pull request #3128 from acoder77/patch-1
+  > * Merge pull request #3160 from stweil/string2
+  > * Merge pull request #3159 from stweil/pack
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [2336cbb](https://github.com/bertsky/workflow-configuration/commits/2336cbb)..[3909b7b](https://github.com/bertsky/workflow-configuration/commits/3909b7b)
+
+  > * add `make server` bridge for `ocrd workflow server`
+  > * make `make show` work independent of workspaces
+  > * add show pseudo-target, improve documentation
+
+
 ## [v2020-11-27](https://github.com/OCR-D/ocrd_all/releases/v2020-11-27)
 
 ### [core](https://github.com/OCR-D/core) [079aace](https://github.com/OCR-D/core/commits/079aace)..[2298662](https://github.com/OCR-D/core/commits/2298662)
