@@ -675,7 +675,7 @@ install-models-calamari: \
 
 $(CALAMARI_DATA_PATH)/GT4HistOCR/checkpoint:
 	mkdir -p $(dir $@)
-	$(call WGET,/tmp/gt4histocr-qurator.tar.xz,https://qurator-data.de/calamari-models/GT4HistOCR/model.tar.xz)
+	$(call WGET,/tmp/gt4histocr-qurator.tar.xz,https://qurator-data.de/calamari-models/GT4HistOCR/2019-12-11T11_10+0100/model.tar.xz)
 	cd $(dir $@) && tar xf /tmp/gt4histocr-qurator.tar.xz
 # }}}
 
