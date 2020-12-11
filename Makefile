@@ -665,6 +665,7 @@ SBB_BINARIZATION_DATA_PATH := $(VIRTUAL_ENV)/share/sbb_binarization
 .PHONY: install-models-sbb-binarization
 install-models-sbb-binarization:
 	$(call WGET,/tmp/sbb_binarization_models.tar.gz,https://qurator-data.de/sbb_binarization/models.tar.gz)
+	mkdir -p $(SBB_BINARIZATION_DATA_PATH)
 	cd $(SBB_BINARIZATION_DATA_PATH) && tar xf /tmp/sbb_binarization_models.tar.gz
 	rm /tmp/sbb_binarization_models.tar.gz
 
