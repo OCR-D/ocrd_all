@@ -219,11 +219,9 @@ OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
 $(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
-	$(call delegate_venv,$(OCRD_COR_ASV_ANN))
-$(OCRD_COR_ASV_ANN): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
+	$(call delegate_venv,$(OCRD_COR_ASV_ANN),$(SUB_VENV)/headless-tf1)
 else
 	$(pip_install)
-$(OCRD_COR_ASV_ANN): $(BIN)/ocrd
 endif
 endif
 
@@ -235,12 +233,10 @@ OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
 $(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
-	$(call delegate_venv,$(OCRD_COR_ASV_FST))
-$(OCRD_COR_ASV_FST): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
+	$(call delegate_venv,$(OCRD_COR_ASV_FST),$(SUB_VENV)/headless-tf1)
 else
-	$(MAKE) -C $< deps
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
-$(OCRD_COR_ASV_FST): $(BIN)/ocrd
 endif
 endif
 
@@ -251,11 +247,9 @@ OCRD_KERASLM += $(BIN)/keraslm-rate
 $(call multirule,$(OCRD_KERASLM)): ocrd_keraslm
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
-	$(call delegate_venv,$(OCRD_KERASLM))
-$(OCRD_KERASLM): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
+	$(call delegate_venv,$(OCRD_KERASLM),$(SUB_VENV)/headless-tf1)
 else
 	$(pip_install)
-$(OCRD_KERASLM): $(BIN)/ocrd
 endif
 endif
 
@@ -318,11 +312,9 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 $(call multirule,$(OCRD_SEGMENT)): ocrd_segment
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
-	$(call delegate_venv,$(OCRD_SEGMENT))
-$(OCRD_SEGMENT): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
+	$(call delegate_venv,$(OCRD_SEGMENT),$(SUB_VENV)/headless-tf1)
 else
 	$(pip_install)
-$(OCRD_SEGMENT): $(BIN)/ocrd
 endif
 endif
 
@@ -386,11 +378,9 @@ OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
 $(OCRD_CALAMARI): ocrd_calamari
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_CALAMARI)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
-	$(call delegate_venv,$(OCRD_CALAMARI))
-$(OCRD_CALAMARI): VIRTUAL_ENV := $(SUB_VENV)/headless-tf2
+	$(call delegate_venv,$(OCRD_CALAMARI),$(SUB_VENV)/headless-tf2)
 else
 	$(pip_install)
-$(OCRD_CALAMARI): $(BIN)/ocrd
 endif
 endif
 
@@ -400,12 +390,10 @@ OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
 $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
-	$(call delegate_venv,$(OCRD_PC_SEGMENTATION))
-$(OCRD_PC_SEGMENTATION): VIRTUAL_ENV := $(SUB_VENV)/headless-tf2
+	$(call delegate_venv,$(OCRD_PC_SEGMENTATION),$(SUB_VENV)/headless-tf2)
 else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
-$(OCRD_PC_SEGMENTATION): $(BIN)/ocrd
 endif
 endif
 
@@ -422,12 +410,10 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-block-segmentation
 $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf21
-	$(call delegate_venv,$(OCRD_ANYBASEOCR))
-$(OCRD_ANYBASEOCR): VIRTUAL_ENV := $(SUB_VENV)/headless-tf21
+	$(call delegate_venv,$(OCRD_ANYBASEOCR),$(SUB_VENV)/headless-tf21)
 else
 	cd $< ; $(MAKE) patch-pix2pixhd
 	$(pip_install)
-$(OCRD_ANYBASEOCR): $(BIN)/ocrd
 endif
 endif
 
@@ -438,11 +424,9 @@ OCRD_TYPECLASS += $(BIN)/typegroups-classifier
 $(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_TYPECLASS)) VIRTUAL_ENV=$(SUB_VENV)/headless-torch14
-	$(call delegate_venv,$(OCRD_TYPECLASS))
-$(OCRD_TYPECLASS): VIRTUAL_ENV := $(SUB_VENV)/headless-torch14
+	$(call delegate_venv,$(OCRD_TYPECLASS),$(SUB_VENV)/headless-torch14)
 else
 	$(pip_install)
-$(OCRD_TYPECLASS): $(BIN)/ocrd
 endif
 endif
 
@@ -452,11 +436,9 @@ SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
 $(SBB_BINARIZATION): sbb_binarization
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(SBB_BINARIZATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
-	$(call delegate_venv,$(SBB_BINARIZATION))
-$(SBB_BINARIZATION): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
+	$(call delegate_venv,$(SBB_BINARIZATION),$(SUB_VENV)/headless-tf1)
 else
 	$(pip_install)
-$(SBB_BINARIZATION): $(BIN)/ocrd
 endif
 endif
 
@@ -466,11 +448,9 @@ SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-textline-detector
 $(SBB_LINE_DETECTOR): sbb_textline_detector
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
-	$(call delegate_venv,$(SBB_LINE_DETECTOR))
-$(SBB_LINE_DETECTOR): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
+	$(call delegate_venv,$(SBB_LINE_DETECTOR),$(SUB_VENV)/headless-tf1)
 else
 	$(pip_install)
-$(SBB_LINE_DETECTOR): $(BIN)/ocrd
 endif
 endif
 
@@ -510,8 +490,7 @@ endef
 # $(executables...): module...
 # ifeq (0,$(MAKELEVEL))
 # 	$(MAKE) -B -o $< $(notdir $(executables...)) VIRTUAL_ENV=$(SUB_VENV)/name
-# 	$(call delegate_venv,$(executables...))
-# $(executables...): VIRTUAL_ENV := $(SUB_VENV)/name
+# 	$(call delegate_venv,$(executables...),$(SUB_VENV)/name)
 # else
 # 	actual recipe...
 # fi
@@ -534,23 +513,23 @@ ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),4)
 # make >=4 has file function
 define delegator
 #!/bin/bash
-. $(ACTIVATE_VENV) && $(BIN)/$(notdir $(1)) "$$@"
+. $(2)/bin/activate && $(2)/bin/$(notdir $(1)) "$$@"
 endef
 # create shell scripts that relay to
 # the (currently active) sub-venv
 define delegate_venv
-$(foreach executable,$(1),$(file >$(executable),$(call delegator,$(executable))))
+$(foreach executable,$(1),$(file >$(executable),$(call delegator,$(executable),$(2))))
 chmod +x $(1)
 endef
 else
 # make <4 needs to echo (third recipe line must be empty!)
 define delegator
 @echo '#!/bin/bash' > $(1)
-@echo '. $(ACTIVATE_VENV) && $(BIN)/$(notdir $(1)) "$$@"' >> $(1)
+@echo '. $(2)/bin/activate && $(2)/bin/$(notdir $(1)) "$$@"' >> $(1)
 
 endef
 define delegate_venv
-$(foreach executable,$(1),$(call delegator,$(executable)))
+$(foreach executable,$(1),$(call delegator,$(executable),$(2)))
 chmod +x $(1)
 endef
 endif
@@ -567,6 +546,8 @@ $(SHARE):
 # At last, add venv dependency (must not become first):
 $(OCRD_EXECUTABLES) $(BIN)/wheel: | $(VIRTUAL_ENV)/bin/$(PIP)
 $(OCRD_EXECUTABLES): | $(BIN)/wheel
+# Also, add core dependency (but in a non-circular way):
+$(filter-out $(BIN)/ocrd,$(OCRD_EXECUTABLES)): $(BIN)/ocrd
 
 # At last, we know what all OCRD_EXECUTABLES are:
 all: $(OCRD_MODULES) $(OCRD_EXECUTABLES)
