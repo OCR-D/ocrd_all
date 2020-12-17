@@ -63,7 +63,7 @@ endif
 # to ensure they are re-built (not considered up-to-date) when re-entering
 .DELETE_ON_ERROR:
 
-.PHONY: all modules clean help show always-update
+.PHONY: all modules clean help show check always-update
 
 clean: # add more prerequisites for clean below
 	$(RM) -r $(SUB_VENV)/*
@@ -78,6 +78,7 @@ from their source repositories into a single virtualenv.
 Targets:
 	help: this message
 	show: lists the venv path and all executables (to be) installed
+	check: verify that all executables are runnable and the venv is consistent
 	ocrd: installs only the virtual environment and OCR-D/core packages
 	modules: download all submodules to the managed revision
 	all: installs all executables of all modules
@@ -555,6 +556,16 @@ show:
 	@echo VIRTUAL_ENV = $(VIRTUAL_ENV)
 	@echo OCRD_MODULES = $(OCRD_MODULES)
 	@echo OCRD_EXECUTABLES = $(OCRD_EXECUTABLES:$(BIN)/%=%)
+
+check: $(OCRD_EXECUTABLES:%=%-check)
+	. $(ACTIVATE_VENV) && $(PIP) check
+
+.PHONY: $(OCRD_EXECUTABLES:%=%-check)
+$(OCRD_EXECUTABLES:%=%-check):
+	. $(ACTIVATE_VENV) \
+	&& test -x ${@:%-check=%} \
+	&& command -v $(notdir ${@:%-check=%}) >/dev/null \
+	&& { ${@:%-check=%} --help >/dev/null 2>&1 || ${@:%-check=%} -h >/dev/null; }
 
 # offer abbreviated forms (just the CLI name in the PATH,
 # without its directory):

@@ -151,6 +151,10 @@ Remove the venv and the modules' build directories.
 
 Print the venv directory, the module directories, and the executable names.
 
+#### _check_
+
+Verify that all executables are runnable and the venv is consistent.
+
 #### _help_ (default goal)
 
 Print available targets and variables.
