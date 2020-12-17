@@ -218,7 +218,7 @@ OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-eval
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
 $(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN))
+	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_COR_ASV_ANN))
 $(OCRD_COR_ASV_ANN): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
@@ -234,7 +234,7 @@ OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
 OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
 $(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST))
+	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_COR_ASV_FST))
 $(OCRD_COR_ASV_FST): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
@@ -250,7 +250,7 @@ OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
 OCRD_KERASLM += $(BIN)/keraslm-rate
 $(call multirule,$(OCRD_KERASLM)): ocrd_keraslm
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM))
+	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_KERASLM))
 $(OCRD_KERASLM): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
@@ -317,7 +317,7 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-original
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 $(call multirule,$(OCRD_SEGMENT)): ocrd_segment
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT))
+	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_SEGMENT))
 $(OCRD_SEGMENT): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
@@ -385,7 +385,7 @@ OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
 $(OCRD_CALAMARI): ocrd_calamari
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_CALAMARI))
+	$(MAKE) -B -o $< $(notdir $(OCRD_CALAMARI)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
 	$(call delegate_venv,$(OCRD_CALAMARI))
 $(OCRD_CALAMARI): VIRTUAL_ENV := $(SUB_VENV)/headless-tf2
 else
@@ -399,7 +399,7 @@ OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
 $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION))
+	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
 	$(call delegate_venv,$(OCRD_PC_SEGMENTATION))
 $(OCRD_PC_SEGMENTATION): VIRTUAL_ENV := $(SUB_VENV)/headless-tf2
 else
@@ -421,7 +421,7 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-block-segmentation
 $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR))
+	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf21
 	$(call delegate_venv,$(OCRD_ANYBASEOCR))
 $(OCRD_ANYBASEOCR): VIRTUAL_ENV := $(SUB_VENV)/headless-tf21
 else
@@ -437,7 +437,7 @@ OCRD_TYPECLASS := $(BIN)/ocrd-typegroups-classifier
 OCRD_TYPECLASS += $(BIN)/typegroups-classifier
 $(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_TYPECLASS))
+	$(MAKE) -B -o $< $(notdir $(OCRD_TYPECLASS)) VIRTUAL_ENV=$(SUB_VENV)/headless-torch14
 	$(call delegate_venv,$(OCRD_TYPECLASS))
 $(OCRD_TYPECLASS): VIRTUAL_ENV := $(SUB_VENV)/headless-torch14
 else
@@ -451,7 +451,7 @@ OCRD_EXECUTABLES += $(SBB_BINARIZATION)
 SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
 $(SBB_BINARIZATION): sbb_binarization
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(SBB_BINARIZATION))
+	$(MAKE) -B -o $< $(notdir $(SBB_BINARIZATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(SBB_BINARIZATION))
 $(SBB_BINARIZATION): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
@@ -465,7 +465,7 @@ OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
 SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-textline-detector
 $(SBB_LINE_DETECTOR): sbb_textline_detector
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR))
+	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(SBB_LINE_DETECTOR))
 $(SBB_LINE_DETECTOR): VIRTUAL_ENV := $(SUB_VENV)/headless-tf1
 else
@@ -509,7 +509,7 @@ endef
 # pattern for recursive make:
 # $(executables...): module...
 # ifeq (0,$(MAKELEVEL))
-# 	$(MAKE) -B -o $< $(notdir $(executables...))
+# 	$(MAKE) -B -o $< $(notdir $(executables...)) VIRTUAL_ENV=$(SUB_VENV)/name
 # 	$(call delegate_venv,$(executables...))
 # $(executables...): VIRTUAL_ENV := $(SUB_VENV)/name
 # else
