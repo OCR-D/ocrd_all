@@ -13,6 +13,8 @@ export PIP ?= pip3
 PIP_OPTIONS_E = $(filter-out -e,$(PIP_OPTIONS))
 # Set to 1 to skip all submodule updates. For development.
 NO_UPDATE ?= 0
+# Set to non-empty to try running all executables with --help / -h during make check
+CHECK_HELP ?=
 GIT_RECURSIVE = # --recursive
 GIT_DEPTH = # --depth 1
 # Required and optional Tesseract models.
@@ -221,6 +223,8 @@ $(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_COR_ASV_ANN),$(SUB_VENV)/headless-tf1)
+cor-asv-ann-check:
+	$(MAKE) check OCRD_MODULES=cor-asv-ann VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
 endif
@@ -235,6 +239,8 @@ $(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_COR_ASV_FST),$(SUB_VENV)/headless-tf1)
+cor-asv-fst-check:
+	$(MAKE) check OCRD_MODULES=cor-asv-fst VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
@@ -249,6 +255,8 @@ $(call multirule,$(OCRD_KERASLM)): ocrd_keraslm
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_KERASLM),$(SUB_VENV)/headless-tf1)
+ocrd_keraslm-check:
+	$(MAKE) check OCRD_MODULES=ocrd_keraslm VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
 endif
@@ -314,6 +322,8 @@ $(call multirule,$(OCRD_SEGMENT)): ocrd_segment
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_SEGMENT),$(SUB_VENV)/headless-tf1)
+ocrd_segment-check:
+	$(MAKE) check OCRD_MODULES=ocrd_segment VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
 endif
@@ -380,6 +390,8 @@ $(OCRD_CALAMARI): ocrd_calamari
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_CALAMARI)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
 	$(call delegate_venv,$(OCRD_CALAMARI),$(SUB_VENV)/headless-tf2)
+ocrd_calamari-check:
+	$(MAKE) check OCRD_EXECUTABLES=$(OCRD_CALAMARI) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
 else
 	$(pip_install)
 endif
@@ -392,6 +404,8 @@ $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
 	$(call delegate_venv,$(OCRD_PC_SEGMENTATION),$(SUB_VENV)/headless-tf2)
+ocrd_pc_segmentation-check:
+	$(MAKE) check OCRD_MODULES=ocrd_pc_segmentation VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
 else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
@@ -412,6 +426,8 @@ $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf21
 	$(call delegate_venv,$(OCRD_ANYBASEOCR),$(SUB_VENV)/headless-tf21)
+ocrd_anybaseocr-check:
+	$(MAKE) check OCRD_MODULES=ocrd_anybaseocr VIRTUAL_ENV=$(SUB_VENV)/headless-tf21
 else
 	cd $< ; $(MAKE) patch-pix2pixhd
 	$(pip_install)
@@ -426,6 +442,8 @@ $(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_TYPECLASS)) VIRTUAL_ENV=$(SUB_VENV)/headless-torch14
 	$(call delegate_venv,$(OCRD_TYPECLASS),$(SUB_VENV)/headless-torch14)
+ocrd_typegroups_classifier-check:
+	$(MAKE) check OCRD_MODULES=ocrd_typegroups_classifier VIRTUAL_ENV=$(SUB_VENV)/headless-torch14
 else
 	$(pip_install)
 endif
@@ -438,6 +456,8 @@ $(SBB_BINARIZATION): sbb_binarization
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(SBB_BINARIZATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(SBB_BINARIZATION),$(SUB_VENV)/headless-tf1)
+sbb_binarization-check:
+	$(MAKE) check OCRD_MODULES=sbb_binarization VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
 endif
@@ -450,6 +470,8 @@ $(SBB_LINE_DETECTOR): sbb_textline_detector
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(SBB_LINE_DETECTOR),$(SUB_VENV)/headless-tf1)
+sbb_textline_detector-check:
+	$(MAKE) check OCRD_MODULES=sbb_textline_detector VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
 	$(pip_install)
 endif
@@ -557,15 +579,17 @@ show:
 	@echo OCRD_MODULES = $(OCRD_MODULES)
 	@echo OCRD_EXECUTABLES = $(OCRD_EXECUTABLES:$(BIN)/%=%)
 
-check: $(OCRD_EXECUTABLES:%=%-check)
+check: $(OCRD_EXECUTABLES:%=%-check) $(OCRD_MODULES:%=%-check)
 	. $(ACTIVATE_VENV) && $(PIP) check
+%-check: ;
 
 .PHONY: $(OCRD_EXECUTABLES:%=%-check)
 $(OCRD_EXECUTABLES:%=%-check):
 	. $(ACTIVATE_VENV) \
 	&& test -x ${@:%-check=%} \
 	&& command -v $(notdir ${@:%-check=%}) >/dev/null \
-	&& { ${@:%-check=%} --help >/dev/null 2>&1 || ${@:%-check=%} -h >/dev/null; }
+	&& $(if $(CHECK_HELP), { ${@:%-check=%} --help >/dev/null 2>&1 \
+	|| ${@:%-check=%} -h >/dev/null; }, true)
 
 # offer abbreviated forms (just the CLI name in the PATH,
 # without its directory):
