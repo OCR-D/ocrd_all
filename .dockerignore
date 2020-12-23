@@ -1,5 +1,6 @@
 # only for host-local installation
 venv
+local.mk
 # not needed:
 # .git
 # .gitmodules
