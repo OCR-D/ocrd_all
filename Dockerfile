@@ -88,6 +88,8 @@ RUN echo "if [[ '${PIP_OPTIONS}' =~ -e|--editable ]]; then make -i clean-olena c
 RUN set -a; bash docker.sh
 # update ld.so cache for new libs in /usr/local
 RUN ldconfig
+# check installation
+RUN make -j check CHECK_HELP=1
 
 # remove (dated) security workaround preventing use of
 # ImageMagick's convert on PDF/PS/EPS/XPS:
