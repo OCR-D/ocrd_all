@@ -1,5 +1,123 @@
 # Changelog
 
+## [v2020-12-28](https://github.com/OCR-D/ocrd_all/releases/v2020-12-28)
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [c4d0fae](https://github.com/cisocrgroup/ocrd_cis/commits/c4d0fae)..[925d744](https://github.com/cisocrgroup/ocrd_cis/commits/925d744)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * traverse regions in reading-order (so derived images are, too)
+  > * resegment: more robust concave hull (really)
+  > * resegment: more robust concave hull
+  > * segment: skip segments with zero height or width
+  > * deskew/binarize/denoise: skip segments with zero height or width
+  > * segment: don't hmerge across separators
+  > * fix logging typo in 75f185bb1
+  > * segment: improve over 62a96f91e by re-ordering, not only grouping ignored and new regions
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [04e4663](https://github.com/OCR-D/ocrd_fileformat/commits/04e4663)..[ae52a2e](https://github.com/OCR-D/ocrd_fileformat/commits/ae52a2e)
+
+> Release: [v0.1.2](https://github.com/OCR-D/ocrd_fileformat/releases/v0.1.2)
+
+  > * :package: v0.1.2
+  > * Merge pull request #24 from OCR-D/exit-gracefully
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [6ab6167](https://github.com/OCR-D/ocrd_tesserocr/commits/6ab6167)..[89b73ff](https://github.com/OCR-D/ocrd_tesserocr/commits/89b73ff)
+
+> Release: [v0.10.1](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.10.1)
+
+  > * Fix typos and improve log messages (#165)
+  > * adjust output fileGrp name (#163)
+
+### [ocrd_typegroups_classifier](https://github.com/OCR-D/ocrd_typegroups_classifier) [dc2f685](https://github.com/OCR-D/ocrd_typegroups_classifier/commits/dc2f685)..[54c8a78](https://github.com/OCR-D/ocrd_typegroups_classifier/commits/54c8a78)
+
+> Release: [v0.2.0](https://github.com/OCR-D/ocrd_typegroups_classifier/releases/v0.2.0)
+
+  > * :package: v0.2.0
+  > * Merge pull request #7 from OCR-D/bundle_network
+  > * :package: v0.1.4
+  > * Merge pull request #6 from OCR-D/simple-cli-help
+  > * Merge pull request #5 from bertsky/patch-2
+
+### [opencv-python](https://github.com/skvark/opencv-python) [f33e65d](https://github.com/skvark/opencv-python/commits/f33e65d)..[bbaa777](https://github.com/skvark/opencv-python/commits/bbaa777)
+
+> Release: [46](https://github.com/skvark/opencv-python/releases/46)
+
+  > * Merge pull request #428 from ApproximateIdentity/debug-build-documentation
+
+### [sbb_textline_detector](https://github.com/qurator-spk/sbb_textline_detector) [17069f7](https://github.com/qurator-spk/sbb_textline_detector/commits/17069f7)..[4c498fc](https://github.com/qurator-spk/sbb_textline_detector/commits/4c498fc)
+
+  > * resolving issue https://github.com/qurator-spk/sbb_textline_detection/issues/53
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [66175f97](https://github.com/tesseract-ocr/tesseract/commits/66175f97)..[190be30a](https://github.com/tesseract-ocr/tesseract/commits/190be30a)
+
+> Release: [5.0.0-alpha-20201224](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha-20201224)
+
+  > * Remove src/ccutil/doubleptr.h from Makefile.am (fix build regression)
+  > * Export symbol for unit test.
+  > * Better symbol visibility fix for unit test.
+  > * Move training tools into their own dir.
+  > * Make symbol visible to fix unit test.
+  > * [test] Correctly use assert instead of expect.
+  > * [sw] Add unit tests.
+  > * Move doubleptr.h to unittests as it is used only there.
+  > * Revert kdpair, genericheap changes.
+  > * Improve some unit tests.
+  > * Allow to construct STRING from nullptr.
+  > * Use resize() instead of reserve() in resize_no_init() to match std::vector behavior. Using memory after reserve() is UB.
+  > * [sw] Misc.
+  > * Fix some compiler errors for heap_test (more remaining)
+  > * Add / fix namespace tesseract for unittest
+  > * Fix gitignore pattern.
+  > * Merge pull request #3195 from stweil/pdf
+  > * More fixes for namespace tesseract
+  > * Fix build with --disable-graphics
+  > * Restore C++17.
+  > * [cmake] Try to disable C++17.
+  > * Merge pull request #3176 from softana/master
+  > * Add missing merge_unicharsets training tool to cmake and sw build.
+  > * Add missing namespace prefix for GlobalParams() (fix build for some unit tests)
+  > * Update .travis.yml
+  > * Add missing namespace prefix (fix build for merge_unicharsets)
+  > * Another msvc/macos fix attempt.
+  > * Fix macos build. Add missing header.
+  > * Try to fix macos build.
+  > * [travis] Update macos image.
+  > * [cmake] Enable C++17 temporarily.
+  > * [travis] Upgrade to Ubuntu 18.04.
+  > * Fix some of vector<bool> cases for msvc.
+  > * Fix linux build.
+  > * [sw] Bump minimal C++ standard to C++17.
+  > * Inherit STRING from std::string.
+  > * Call base vector::insert() explicitly.
+  > * Inherit GenericVector from std::vector. Inherit kdpairs from std::pair. Rewrite some move ctors to modern C++ style.
+  > * Merge branch 'master' of github.com-egorpugin:tesseract-ocr/tesseract
+  > * Move all tesseract symbols into tesseract namespace. Fix include order in many places.
+  > * Delete .rc from tesseractmain.
+  > * Reorder includes.
+  > * [cmake] Move include dirs into target include dirs.
+  > * Remove .rc files. No need to add them into dll/exe.
+  > * [cmake] Use source groups for libtess sources.
+  > * Create new pre-release 5.0.0-alpha-20201224
+  > * Fix dependency on tmp directory for unittest programs
+  > * Fix tar command for variants which require -j or -z
+  > * Simplify code for equationdetect_test
+  > * Simplify code for cleanapi_test
+  > * Remove unwanted # at EOL
+  > * Merge pull request #3191 from stweil/unittest
+  > * Merge pull request #3190 from stweil/pango_font_info_test
+  > * Merge pull request #3189 from stweil/pango_font_info_test
+  > * Fix configure for flat training build without asciidoc
+  > * Fix installation of training tools for flat training build
+  > * Add XML_CATALOG_FILES for MacOS with Homebrew (#3188)
+  > * Fix unittest for flag training build
+  > * Merge branch 'master' of github.com-egorpugin:tesseract-ocr/tesseract
+  > * Add include headers to cmake target.
+  > * Fix git submodule 'test'
+  > * Merge pull request #3179 from Shatur95/fix-cmake-issues
+  > * Merge pull request #3181 from stweil/m1
+
+
 ## [v2020-12-10](https://github.com/OCR-D/ocrd_all/releases/v2020-12-10)
 
 ### [core](https://github.com/OCR-D/core) [2298662](https://github.com/OCR-D/core/commits/2298662)..[135acb6](https://github.com/OCR-D/core/commits/135acb6)
