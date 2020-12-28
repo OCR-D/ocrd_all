@@ -53,51 +53,6 @@
 
 > Release: [5.0.0-alpha-20201224](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha-20201224)
 
-  > * Remove src/ccutil/doubleptr.h from Makefile.am (fix build regression)
-  > * Export symbol for unit test.
-  > * Better symbol visibility fix for unit test.
-  > * Move training tools into their own dir.
-  > * Make symbol visible to fix unit test.
-  > * [test] Correctly use assert instead of expect.
-  > * [sw] Add unit tests.
-  > * Move doubleptr.h to unittests as it is used only there.
-  > * Revert kdpair, genericheap changes.
-  > * Improve some unit tests.
-  > * Allow to construct STRING from nullptr.
-  > * Use resize() instead of reserve() in resize_no_init() to match std::vector behavior. Using memory after reserve() is UB.
-  > * [sw] Misc.
-  > * Fix some compiler errors for heap_test (more remaining)
-  > * Add / fix namespace tesseract for unittest
-  > * Fix gitignore pattern.
-  > * Merge pull request #3195 from stweil/pdf
-  > * More fixes for namespace tesseract
-  > * Fix build with --disable-graphics
-  > * Restore C++17.
-  > * [cmake] Try to disable C++17.
-  > * Merge pull request #3176 from softana/master
-  > * Add missing merge_unicharsets training tool to cmake and sw build.
-  > * Add missing namespace prefix for GlobalParams() (fix build for some unit tests)
-  > * Update .travis.yml
-  > * Add missing namespace prefix (fix build for merge_unicharsets)
-  > * Another msvc/macos fix attempt.
-  > * Fix macos build. Add missing header.
-  > * Try to fix macos build.
-  > * [travis] Update macos image.
-  > * [cmake] Enable C++17 temporarily.
-  > * [travis] Upgrade to Ubuntu 18.04.
-  > * Fix some of vector<bool> cases for msvc.
-  > * Fix linux build.
-  > * [sw] Bump minimal C++ standard to C++17.
-  > * Inherit STRING from std::string.
-  > * Call base vector::insert() explicitly.
-  > * Inherit GenericVector from std::vector. Inherit kdpairs from std::pair. Rewrite some move ctors to modern C++ style.
-  > * Merge branch 'master' of github.com-egorpugin:tesseract-ocr/tesseract
-  > * Move all tesseract symbols into tesseract namespace. Fix include order in many places.
-  > * Delete .rc from tesseractmain.
-  > * Reorder includes.
-  > * [cmake] Move include dirs into target include dirs.
-  > * Remove .rc files. No need to add them into dll/exe.
-  > * [cmake] Use source groups for libtess sources.
   > * Create new pre-release 5.0.0-alpha-20201224
   > * Fix dependency on tmp directory for unittest programs
   > * Fix tar command for variants which require -j or -z
