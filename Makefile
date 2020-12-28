@@ -402,10 +402,10 @@ OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
 $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
-	$(call delegate_venv,$(OCRD_PC_SEGMENTATION),$(SUB_VENV)/headless-tf2)
+	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf21
+	$(call delegate_venv,$(OCRD_PC_SEGMENTATION),$(SUB_VENV)/headless-tf21)
 ocrd_pc_segmentation-check:
-	$(MAKE) check OCRD_MODULES=ocrd_pc_segmentation VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
+	$(MAKE) check OCRD_MODULES=ocrd_pc_segmentation VIRTUAL_ENV=$(SUB_VENV)/headless-tf21
 else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
