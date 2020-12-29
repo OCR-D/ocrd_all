@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* `make check` ensures executables are runnable and produce `--help` output
+
 ## [v2020-12-28](https://github.com/OCR-D/ocrd_all/releases/v2020-12-28)
 
 ### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [c4d0fae](https://github.com/cisocrgroup/ocrd_cis/commits/c4d0fae)..[925d744](https://github.com/cisocrgroup/ocrd_cis/commits/925d744)
