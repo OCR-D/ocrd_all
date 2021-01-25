@@ -330,6 +330,11 @@ endif
 endif
 
 ifneq ($(findstring ocrd_tesserocr, $(OCRD_MODULES)),)
+install-models: install-models-tesseract
+.PHONY: install-models-tesseract
+install-models-tesseract:
+	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-tesserocr-recognize '*'
+
 OCRD_EXECUTABLES += $(OCRD_TESSEROCR)
 # only add custom PPA when not building tesseract from source
 ifeq ($(findstring tesseract, $(OCRD_MODULES)),)
@@ -358,6 +363,11 @@ endif
 endif
 
 ifneq ($(findstring ocrd_cis, $(OCRD_MODULES)),)
+install-models: install-models-ocropus
+.PHONY: install-models-ocropus
+install-models-ocropus:
+	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-cis-ocropy-recognize '*'
+
 OCRD_EXECUTABLES += $(OCRD_CIS)
 OCRD_CIS := $(BIN)/ocrd-cis-align
 OCRD_CIS += $(BIN)/ocrd-cis-data
@@ -384,6 +394,10 @@ $(OCRD_PAGETOPDF): ocrd_pagetopdf $(BIN)/ocrd
 endif
 
 ifneq ($(findstring ocrd_calamari, $(OCRD_MODULES)),)
+install-models: install-models-calamari
+.PHONY: install-models-calamari
+install-models-calamari: $(BIN)/ocrd
+	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-calamari-binarize '*'
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
 $(OCRD_CALAMARI): ocrd_calamari
@@ -450,6 +464,11 @@ endif
 endif
 
 ifneq ($(findstring sbb_binarization, $(OCRD_MODULES)),)
+install-models: install-models-sbb-binarization
+.PHONY: install-models-sbb-binarization
+install-models-sbb-binarization:
+	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-sbb-binarize '*'
+
 OCRD_EXECUTABLES += $(SBB_BINARIZATION)
 SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
 $(SBB_BINARIZATION): sbb_binarization
@@ -610,31 +629,9 @@ TESSERACT_TRAINEDDATA = $(ALL_TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
 
 stripdir = $(patsubst %/,%,$(dir $(1)))
 
-# {{{ Install commonly used models
 .PHONY: install-models
-install-models: \
-	install-models-tesseract \
-	install-models-ocropus \
-	install-models-sbb-binarization \
-	install-models-calamari
+install-models:
 	$(warning "Deprecated: Use 'ocrd resmgr' instead of install-* ocrd_all targets")
-
-.PHONY: install-models-tesseract
-install-models-tesseract:
-	ocrd resmgr download ocrd-tesserocr-recognize '*'
-
-.PHONY: install-models-ocropus
-install-models-ocropus:
-	ocrd resmgr download ocrd-cis-ocropy-recognize '*'
-
-.PHONY: install-models-sbb-binarization
-install-models-sbb-binarization:
-	ocrd resmgr download ocrd-sbb-binarize '*'
-
-.PHONY: install-models-calamari
-install-models-calamari: $(BIN)/ocrd
-	ocrd resmgr download ocrd-calamari-binarize '*'
-# }}}
 
 # Install Tesseract with models.
 .PHONY: install-tesseract
