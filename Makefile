@@ -199,6 +199,11 @@ $(SHARE)/clstm: | $(SHARE)/numpy $(SHARE)
 CUSTOM_DEPS += scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig
 
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
+install-models: install-models-kraken
+.PHONY: install-models-kraken
+install-models-kraken:
+	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-kraken-segment '*'
+	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-kraken-recognize '*'
 OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
 $(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(SHARE)/clstm $(BIN)/ocrd
@@ -427,6 +432,14 @@ endif
 endif
 
 ifneq ($(findstring ocrd_anybaseocr, $(OCRD_MODULES)),)
+install-models: install-models-anybaseocr
+.PHONY: install-models-anybaseocr
+install-models-anybaseocr:
+	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-dewarp '*'
+	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-block-segmentation '*'
+	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-layout-analysis '*'
+	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-tiseg '*'
+
 OCRD_EXECUTABLES += $(OCRD_ANYBASEOCR)
 OCRD_ANYBASEOCR := $(BIN)/ocrd-anybaseocr-crop
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-binarize
@@ -483,6 +496,10 @@ endif
 endif
 
 ifneq ($(findstring sbb_textline_detector, $(OCRD_MODULES)),)
+install-models: install-models-sbb-textline
+.PHONY: install-models-sbb-textline
+install-models-sbb-textline:
+	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-sbb-textline-detector '*'
 OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
 SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-textline-detector
 $(SBB_LINE_DETECTOR): sbb_textline_detector
