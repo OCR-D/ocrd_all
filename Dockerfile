@@ -32,6 +32,9 @@ LABEL \
 # coinciding with the Python system prefix
 ENV PREFIX=/usr
 ENV VIRTUAL_ENV $PREFIX
+ENV XDG_DATA_HOME /usr/local/share
+VOLUME $XDG_DATA_HOME/ocrd-resources
+ENV HOME /
 
 # make apt run non-interactive during build
 ENV DEBIAN_FRONTEND noninteractive
