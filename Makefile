@@ -397,7 +397,7 @@ ifneq ($(findstring ocrd_calamari, $(OCRD_MODULES)),)
 install-models: install-models-calamari
 .PHONY: install-models-calamari
 install-models-calamari: $(BIN)/ocrd
-	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-calamari-binarize '*'
+	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-calamari-recognize '*'
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
 $(OCRD_CALAMARI): ocrd_calamari
