@@ -317,6 +317,7 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-lines
 OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-regions
 OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-pages
 OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-original
+OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-page
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 $(call multirule,$(OCRD_SEGMENT)): ocrd_segment
 ifeq (0,$(MAKELEVEL))
