@@ -322,6 +322,7 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-lines
 OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-regions
 OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-pages
 OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-original
+OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-page
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 $(call multirule,$(OCRD_SEGMENT)): ocrd_segment
 ifeq (0,$(MAKELEVEL))
@@ -532,6 +533,7 @@ deps-ubuntu-modules: workflow-configuration
 OCRD_EXECUTABLES += $(WORKFLOW_CONFIGURATION)
 WORKFLOW_CONFIGURATION := $(BIN)/ocrd-make
 WORKFLOW_CONFIGURATION += $(BIN)/ocrd-import
+$(BIN)/ocrd-make-check: override CHECK_HELP=
 $(call multirule,$(WORKFLOW_CONFIGURATION)): workflow-configuration $(BIN)/ocrd
 	$(MAKE) -C $< install
 endif
