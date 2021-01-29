@@ -1,5 +1,87 @@
 # Changelog
 
+## [v2021-01-29](https://github.com/OCR-D/ocrd_all/releases/v2021-01-29)
+
+* Use `ocrd resmgr` instead of wget for `make install-models*`
+
+### [core](https://github.com/OCR-D/core) [135acb67](https://github.com/OCR-D/core/commits/135acb67)..[fe119e4d](https://github.com/OCR-D/core/commits/fe119e4d)
+
+> Release: [v2.22.3](https://github.com/OCR-D/core/releases/v2.22.3)
+
+  > * :package: v2.22.3
+  > * :bug: resmgr: equivalent cwd bug for list_resource_candidated :/
+  > * :bug: resmgr: --location cwd should still include "ocrd-resources"
+  > * Processor.__init__: remember old cwd before chdir
+  > * Proceessor.resolve_resource: log/exit 1 instead of raise
+  > * Proceessor.resolve_resource: No more downloading on-demand
+  > * update assets
+  > * :package: v2.22.2
+  > * resource list: disable < 1.0 calamari models, rename resource
+  > * :package: v2.22.1
+  > * :bug: mkdir -p $HOME/.config/ocrd
+  > * :package: v2.22.0
+  > * update specs
+  > * Merge pull request #559 from OCR-D/resolve-files
+  > * update assets and spec to 3.11.0
+  > * :memo: changelog
+  > * Merge branch 'warn-unless-pageid'
+  > * Merge pull request #660 from OCR-D/add-guess-mimetype
+  > * Merge pull request #655 from OCR-D/rename-group
+
+Submodule ocrd_anybaseocr contains untracked content
+Submodule ocrd_anybaseocr contains modified content
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [de27915](https://github.com/OCR-D/ocrd_anybaseocr/commits/de27915)..[e63f555](https://github.com/OCR-D/ocrd_anybaseocr/commits/e63f555)
+
+> Release: [v1.3.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.3.0)
+
+  > * :package: v1.3.0
+  > * Merge pull request #78 from OCR-D/processor-resources
+  > * :package: v1.2.0
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [1c7fcda](https://github.com/OCR-D/ocrd_calamari/commits/1c7fcda)..[f00df75](https://github.com/OCR-D/ocrd_calamari/commits/f00df75)
+
+> Release: [v1.0.1](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.1)
+
+  > * Merge pull request #55 from OCR-D/ocrd-tool-version
+  > * 📦 v1.0.1
+  > * Merge pull request #53 from OCR-D/resolve-resources
+  > * 📝 README: Use new-style OCR-D parameter syntax and new-style mixed output file groups
+  > * Merge pull request #49 from OCR-D/fix-48
+  > * Merge pull request #52 from OCR-D/checkpoint_dir
+  > * Merge pull request #50 from OCR-D/add-calamari-version
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [925d744](https://github.com/cisocrgroup/ocrd_cis/commits/925d744)..[1abf38b](https://github.com/cisocrgroup/ocrd_cis/commits/1abf38b)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * re/segment: before spreading lines, assign diacritics to seeds below
+  > * segment: ensure run-time hierarchy refs when modifying reading order elements
+  > * segment: fix typo
+  > * ocrd-cis-align: fix invalid TextEquiv/dataType use
+  > * ocrd-cis-align: fix log level override
+  > * ocrd-cis-align: fix getLogger context
+
+### [ocrd_im6convert](https://github.com/OCR-D/ocrd_im6convert) [11bfea3](https://github.com/OCR-D/ocrd_im6convert/commits/11bfea3)..[105697f](https://github.com/OCR-D/ocrd_im6convert/commits/105697f)
+
+> Release: [v0.0.5](https://github.com/OCR-D/ocrd_im6convert/releases/v0.0.5)
+
+  > * :package: v0.0.5
+  > * Merge pull request #16 from OCR-D/sharedir
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [89b73ff](https://github.com/OCR-D/ocrd_tesserocr/commits/89b73ff)..[fd17386](https://github.com/OCR-D/ocrd_tesserocr/commits/fd17386)
+
+> Release: [v0.11.0](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.11.0)
+
+  > * :package: v0.11.0
+  > * Merge pull request #166 from OCR-D/processor-resource
+
+### [ocrd_typegroups_classifier](https://github.com/OCR-D/ocrd_typegroups_classifier) [54c8a78](https://github.com/OCR-D/ocrd_typegroups_classifier/commits/54c8a78)..[1ed0cb1](https://github.com/OCR-D/ocrd_typegroups_classifier/commits/1ed0cb1)
+
+> Release: [v0.3.0](https://github.com/OCR-D/ocrd_typegroups_classifier/releases/v0.3.0)
+
+  > * :package: v0.3.0
+  > * Merge pull request #8 from OCR-D/resolve-resources
+
 ## Unreleased
 
 * `make check` ensures executables are runnable and produce `--help` output
