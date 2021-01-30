@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2021-01-29](https://github.com/OCR-D/ocrd_all/releases/v2021-01-29)
+## [v2021-01-30](https://github.com/OCR-D/ocrd_all/releases/v2021-01-30)
 
 * Use `ocrd resmgr` instead of wget for `make install-models*`
 
