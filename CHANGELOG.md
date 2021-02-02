@@ -1,5 +1,32 @@
 # Changelog
 
+## Unreleased
+
+## [v2021-02-03](https://github.com/OCR-D/ocrd_all/releases/v2021-02-03)
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [ae52a2e](https://github.com/OCR-D/ocrd_fileformat/commits/ae52a2e)..[df95fd7](https://github.com/OCR-D/ocrd_fileformat/commits/df95fd7)
+
+> Release: [v0.2.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.2.0)
+
+  > * changelog
+  > * :package: v0.2.0
+  > * Merge branch 'handle-false-positive-page-alto'
+  > * update ocr-fileformat
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [ea69494](https://github.com/qurator-spk/sbb_binarization/commits/ea69494)..[4a5544d](https://github.com/qurator-spk/sbb_binarization/commits/4a5544d)
+
+> Release: [v0.0.7](https://github.com/qurator-spk/sbb_binarization/releases/v0.0.7)
+
+  > * :package: v0.0.7
+  > * Merge pull request #25 from OCR-D/resolve-resources
+  > * Merge pull request #23 from mikegerber/fix/readme-ocrd
+
+### [sbb_textline_detector](https://github.com/qurator-spk/sbb_textline_detector) [4c498fc](https://github.com/qurator-spk/sbb_textline_detector/commits/4c498fc)..[95d8f70](https://github.com/qurator-spk/sbb_textline_detector/commits/95d8f70)
+
+  > * Merge pull request #55 from qurator-spk/resolve-resources
+  > * Merge pull request #54 from qurator-spk/tf-1.15
+  > * Merge pull request #48 from bertsky/fix-coords
+
 ## [v2021-01-30](https://github.com/OCR-D/ocrd_all/releases/v2021-01-30)
 
 * Use `ocrd resmgr` instead of wget for `make install-models*`
@@ -82,11 +109,9 @@ Submodule ocrd_anybaseocr contains modified content
   > * :package: v0.3.0
   > * Merge pull request #8 from OCR-D/resolve-resources
 
-## Unreleased
+## [v2020-12-28](https://github.com/OCR-D/ocrd_all/releases/v2020-12-28)
 
 * `make check` ensures executables are runnable and produce `--help` output
-
-## [v2020-12-28](https://github.com/OCR-D/ocrd_all/releases/v2020-12-28)
 
 ### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [c4d0fae](https://github.com/cisocrgroup/ocrd_cis/commits/c4d0fae)..[925d744](https://github.com/cisocrgroup/ocrd_cis/commits/925d744)
 
