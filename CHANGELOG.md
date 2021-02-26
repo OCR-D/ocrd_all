@@ -1,6 +1,8 @@
 # Changelog
 
-## [v2021-02-26](https://github.com/OCR-D/ocrd_all/releases/v2021-02-26)
+## Unreleased
+
+## [v2021-02-27](https://github.com/OCR-D/ocrd_all/releases/v2021-02-27)
 
 ### [core](https://github.com/OCR-D/core) [fe119e4](https://github.com/OCR-D/core/commits/fe119e4)..[0ca5aab](https://github.com/OCR-D/core/commits/0ca5aab)
 
@@ -94,7 +96,318 @@
   > * Merge branch 'master' of https://github.com/skvark/opencv-python
   > * merge 3.4 changes
 
-## Unreleased
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [5ca4e006](https://github.com/tesseract-ocr/tesseract/commits/5ca4e006)..[1ab6b0fb](https://github.com/tesseract-ocr/tesseract/commits/1ab6b0fb)
+
+> Release: [5.0.0-alpha-20201231](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha-20201231)
+
+  > * Merge pull request #3311 from stweil/master
+  > * Don't compile OpenCL code when OpenCL is disabled
+  > * Format code
+  > * Remove blanks at line endings
+  > * Replace GenericVector by std::vector in class WERD_CHOICE
+  > * Update configure.ac
+  > * Merge pull request #3309 from stweil/std
+  > * Merge pull request #3162 from xloem/android
+  > * Merge pull request #3305 from Shreeshrii/vcpkg-cmake-win
+  > * Merge pull request #3302 from Shreeshrii/PR1
+  > * Merge pull request #3300 from Shreeshrii/autocmake
+  > * Handle file list without terminating LF (fix issue #3298)
+  > * Update test submodule
+  > * Update include statements for external header file allheaders.h
+  > * Fix default value for --enable-doc
+  > * Merge pull request #3297 from Shreeshrii/autotools
+  > * Fix default value for --with-archive and --with-curl
+  > * Merge pull request #3292 from stweil/master
+  > * Remove Python training scripts which were moved to tesstrain
+  > * Change LATIN_FONTS to use replacement fonts from TeX Gyre collection
+  > * Merge pull request #3276 from Shreeshrii/travis
+  > * Merge pull request #3279 from Shreeshrii/master
+  > * Merge pull request #3275 from Shreeshrii/ci
+  > * cmake: Use pkg_config to find required libraries
+  > * cmake: Don't try to set compile flags for NEON support for ARM64
+  > * cmake: Activate NEON support for ARM64
+  > * Merge pull request #3270 from Shatur95/fix-set-and-check
+  > * Merge pull request #3268 from Shreeshrii/ci
+  > * Fix path for test-suite.log with flat unittest build in GitHub actions
+  > * Fix build for flat unittest (CPPFLAGS for abseil and gtest)
+  > * Merge pull request #3265 from Shreeshrii/master
+  > * Merge pull request #3264 from stweil/unittest
+  > * Replace GenericVector<float> by std::vector<float> for class SimpleStats
+  > * Fix Memory leak in ligature_table_test
+  > * Merge pull request #3259 from Shreeshrii/ci
+  > * Merge pull request #3257 from tesseract-ocr/ci
+  > * Replace STRING by std::string for function read_unlv_file
+  > * Remove unneeded include statement for genericvector.h
+  > * Remove unneeded include statement for strngs.h
+  > * Wordrec: Modernize code
+  > * Merge pull request #3256 from stweil/mastertrainer_test
+  > * lstmtrainer: Modernize code
+  > * lstmtrainer: Remove unused local variable
+  > * Replace GenericVector by std::vector in LoadFileLinesToStrings
+  > * Reduce number of INFO messages from lstm_test (#3250)
+  > * Merge pull request #3252 from Shreeshrii/legacy
+  > * Remove unused conditional OSX
+  > * Merge pull request #3251 from stweil/master
+  > * Merge pull request #3249 from Shreeshrii/ciupdate
+  > * Merge pull request #3247 from Shreeshrii/ci
+  > * Merge pull request #3244 from Shreeshrii/ci
+  > * Update dailycmake.yml
+  > * Merge pull request #3243 from Shreeshrii/ci
+  > * Merge pull request #3242 from Shreeshrii/ci
+  > * Merge pull request #3241 from Shreeshrii/ci
+  > * Merge pull request #3239 from Shreeshrii/legacy
+  > * Add more information shown by combine_tessdata -l
+  > * Add new option -l for combine_tessdata to list the network string
+  > * Replace STRING by std::string for LSTMRecognizer::network_str_
+  > * Replace STRING by char* in LSTMRecognizer
+  > * Merge pull request #3236 from stweil/max_iterations
+  > * Merge pull request #3235 from Shreeshrii/ci
+  > * Add TESS_API to instantiation of template functions
+  > * Use explicit int32_t for serialized data type
+  > * Replace GenericVector<BlobData> by std::vector<BlobData>
+  > * Remove unnecessary subtest with missing input image
+  > * Remove ANDROID_BUILD macro
+  > * Fix memory allocation in TFile::DeSerialize(std::vector<T>& data)
+  > * Merge pull request #3231 from Shreeshrii/ci
+  > * automake: Fix flat build for doc
+  > * Don't use local CP_RESULT_STRUCT variable to initialize elements of std::vector
+  > * Fix serialization of std::vector (fix issue #3220)
+  > * Replace resize(0) by clear() for std::vector
+  > * Remove --psm 6 for lstm.train in tesstrain.py
+  > * No --psm 6 for lstm.train
+  > * automake: Flat build for doc
+  > * Fix NEON also tesseractmain.cpp
+  > * Fix use of NEON on ARMv8
+  > * Revert "Try to fix aarch64 build on macos."
+  > * Try to fix cmake build.
+  > * Try to fix aarch64 build on macos.
+  > * Fix stringrenderer_test
+  > * Fix ligature_table_test
+  > * Fix pango_font_info_test
+  > * Add assertion for IntCastRounded
+  > * Update sw.yml
+  > * Delete TESSDATA_BEST_DIR macro
+  > * Replace snprintf by strncpy (fix compiler warning)
+  > * Fix some format strings
+  > * Add include path for leptonica for fuzzer build
+  > * Merge pull request #3217 from 1480c1/unicode
+  > * More std::vector.
+  > * Misc.
+  > * Move unicodes into files where they are used.
+  > * Misc.
+  > * Use std::bitset<16> instead of custom BITS16.
+  > * More std::vector.
+  > * Update sw.yml
+  > * Update sw.yml
+  > * Update sw.yml
+  > * Fix brew check for GitHub actions
+  > * Update sw.yml
+  > * Update sw.yml
+  > * Update sw.yml
+  > * Remove remaining parts of emalloc (fix autotools build)
+  > * Fix include statement for allheaders.h
+  > * Sort entries in Makefile.am
+  > * Remove remaining parts of tessopt (fix autotools build)
+  > * [test] Init FC early.
+  > * Remove emalloc. Replace it with malloc. To be replaced with new later.
+  > * Update sw.yml
+  > * Update sw.yml
+  > * [ci] Copy fonts to testdir.
+  > * [test] Init fontconfig early.
+  > * [sw] Add pthread to tests.
+  > * [sw] Add pthread dependency.
+  > * Alloc on stack.
+  > * Rmove unused members.
+  > * Remove unused var.
+  > * More std::vector.
+  > * Misc.
+  > * [training] More unique ptrs.
+  > * Remove tessopt. This fixes mastertrainer test in shared build.
+  > * Reorder headers.
+  > * Remove unused header.
+  > * Remove unused var.
+  > * Misc.
+  > * Use unique_ptr.
+  > * More std::vector.
+  > * More std::vector. Simplify.
+  > * [test] Return early on error.
+  > * Merge branch 'master' of github.com-egorpugin:tesseract-ocr/tesseract
+  > * More std::vector.
+  > * A better fix to read unichars. Imbue C locale always since on different systems, default locale will give different results.
+  > * Correctly read cutoff classes.
+  > * Do not swap endian elements with size == 1.
+  > * Use templates for serialize/deserialize.
+  > * Use std::vector.
+  > * Reorder includes.
+  > * Remove noisy message.
+  > * Remove functions which are only used locally from scanedg.h
+  > * Update sw.yml
+  > * Update sw.yml
+  > * Update sw.yml
+  > * Update sw.yml
+  > * Update sw.yml
+  > * [sw] Add list test.
+  > * Add some basic tests for ELIST
+  > * Add Leptonica library for ligature_table_test
+  > * Remove functions which are only used locally from fpchop.h
+  > * Fix autotoools build with --disable-legacy
+  > * [ci][github] Split build and test jobs.
+  > * Add missing OpenMP flags for fuzzer-api
+  > * Update sw.yml
+  > * Update sw.yml
+  > * Update sw.yml
+  > * Update sw.yml
+  > * Update sw.yml
+  > * Update appveyor.yml
+  > * Update sw.yml
+  > * Update sw.yml
+  > * Update appveyor.yml
+  > * Update sw.yml
+  > * Update sw.yml
+  > * Update appveyor.yml
+  > * Update appveyor.yml
+  > * Update appveyor.yml
+  > * Update sw.yml
+  > * [ci][github] Run tests on linux and macos.
+  > * [ci][appveyor] Gather tests.
+  > * [sw] Better skip tests.
+  > * Update appveyor.yml
+  > * [ci][appveyor] Initial tests.
+  > * [gitignore] Ignore some local dirs.
+  > * [sw] Allow to skip tests.
+  > * Improve C API. Add tests.
+  > * [capi] Reorder headers in capi.h. Put our header before standard ones.
+  > * [capi] Remove unused functions.
+  > * Restore building of C API. Simplify.
+  > * Update .travis.yml
+  > * [ci] Try (c)make install to check for possible errors during installation process.
+  > * Rename platform.h -> export.h in more places.
+  > * Rename platform.h to export.h.
+  > * [ci][appveyor] Revert debug builds.
+  > * Create new pre-release 5.0.0-alpha-20201231
+  > * [ci][appveyor] Also build debug config.
+  > * [cmake] Make pango include dirs public.
+  > * Merge branch 'master' of github.com-egorpugin:tesseract-ocr/tesseract
+  > * [cmake] Make pango deps public.
+  > * Remove deleted util.h header.
+  > * [cmake] Fix build.
+  > * Fix broken autotools build for unittest
+  > * Fix broken autotools build
+  > * Merge branch 'master' of github.com-egorpugin:tesseract-ocr/tesseract
+  > * [cmake] Implement shared builds.
+  > * [sw] Remove deleted file.
+  > * Move training lib sources into their own dirs.
+  > * [cmake] tessopt is a static library.
+  > * [cmake] Set hidden visibility by default.
+  > * Add missing includes.
+  > * Fix linux build.
+  > * Merge branch 'master' of github.com-egorpugin:tesseract-ocr/tesseract
+  > * Remove GenericVector::compare_callback. This fixes several tests after previous commit.
+  > * Use TESS_API for every public symbol. Public symbol is exported from the library. This also applies to unit test and training symbols. Users will be limited to public api, but set of exported symbols will be wider still. Remove TESS_LOCAL. Fix several symbol issues that made visible with these changes.
+  > * Remove custom string hasher.
+  > * Misc.
+  > * Remove GOOGLE_TESSERACT ifdefs.
+  > * Misc.
+  > * Use template instead of overloads.
+  > * Make automake builds less noisy by default
+  > * Replace more GenericVector by std::vector
+  > * Remove helpers.h from public API
+  > * [test] Fix intsimdmatrix test. Update result value based on updated TRand engine.
+  > * Export all simd matrices.
+  > * Fix linux build.
+  > * Correctly use DEBUG macro. C++ compilers do not define it. Instead they define NDEBUG in optimized compilations.
+  > * Removed unused fwd decl.
+  > * Remove unused fwd decls.
+  > * Remove unused typedefs.
+  > * Remove unused fwd decl.
+  > * Remove comment.
+  > * Move MAX_PATH def out from public header.
+  > * Use linear congruential random number generator from C++11.
+  > * Use std::swap instead of manual function.
+  > * Remove empty DLLSYM macro.
+  > * Remove public empty header.
+  > * [sw] Add new unit tests.
+  > * Merge pull request #3208 from stweil/unittest
+  > * Fix TFile::DeSerialize, TFile::Serialize for empty vectors
+  > * Add missing dependencies for dawg_test
+  > * Merge pull request #3206 from stweil/api
+  > * Merge pull request #3205 from stweil/api
+  > * [test] Create tmp dir in more tests.
+  > * Merge branch 'master' of github.com-egorpugin:tesseract-ocr/tesseract
+  > * [test] Remove set locale as it causes errors on some systems. It includes grouping for numbers, then pid and some other numbers in gtest are formatted incorrectly.
+  > * Fix more lstm tests. 6 failing tests left.
+  > * [test] Fix params model test.
+  > * Merge branch 'master' of github.com-egorpugin:tesseract-ocr/tesseract
+  > * [test] Fix shapetable test.
+  > * [test] Disable loading equ.traineddata in equationsdetect test until IdentifySpecialText is turned back on.
+  > * [test] Reorder includes.
+  > * Fix declaration for C_BLOB
+  > * avx2: Remove unused local variables
+  > * Fix dependency for fuzzer-api
+  > * Remove unused function CompareSTRING
+  > * Merge pull request #3203 from stweil/std-vector
+  > * Merge pull request #3202 from stweil/fix2
+  > * [test] Fix bitvector test by creating tmp dir. 15 failing tests left.
+  > * [test] Reorder includes.
+  > * [test] Fix mkdir on unix in dawg test.
+  > * [sw] Test updates. 18->17 failed tests left.
+  > * [test] Fix dawg.
+  > * Fix trie's word sort comparator.
+  > * [test] Fix unicharset. 21->18 failed tests remaining.
+  > * [sw] Build targets with utf-8 flag on msvc.
+  > * Fix baseapi test. Use C++ regex instead of gtest ones.
+  > * Update appveyor.yml
+  > * Merge pull request #3199 from stweil/serialis
+  > * Remove unused DocumentData::SaveToBuffer
+  > * Merge pull request #3198 from stweil/new-api
+  > * Merge branch 'master' of github.com-egorpugin:tesseract-ocr/tesseract
+  > * [ci] Build unit tests on github ci on linux/macos.
+  > * [sw] Do not build unit tests by default.
+  > * [test] Fix include order.
+  > * Export symbol for unit test.
+  > * Better symbol visibility fix for unit test.
+  > * Move training tools into their own dir.
+  > * Make symbol visible to fix unit test.
+  > * [test] Correctly use assert instead of expect.
+  > * [sw] Add unit tests.
+  > * Move doubleptr.h to unittests as it is used only there.
+  > * Revert kdpair, genericheap changes.
+  > * Improve some unit tests.
+  > * Allow to construct STRING from nullptr.
+  > * Use resize() instead of reserve() in resize_no_init() to match std::vector behavior. Using memory after reserve() is UB.
+  > * [sw] Misc.
+  > * Fix some compiler errors for heap_test (more remaining)
+  > * Add / fix namespace tesseract for unittest
+  > * Fix gitignore pattern.
+  > * Merge pull request #3195 from stweil/pdf
+  > * More fixes for namespace tesseract
+  > * Fix build with --disable-graphics
+  > * Restore C++17.
+  > * [cmake] Try to disable C++17.
+  > * Merge pull request #3176 from softana/master
+  > * Add missing merge_unicharsets training tool to cmake and sw build.
+  > * Add missing namespace prefix for GlobalParams() (fix build for some unit tests)
+  > * Update .travis.yml
+  > * Add missing namespace prefix (fix build for merge_unicharsets)
+  > * Another msvc/macos fix attempt.
+  > * Fix macos build. Add missing header.
+  > * Try to fix macos build.
+  > * [travis] Update macos image.
+  > * [cmake] Enable C++17 temporarily.
+  > * [travis] Upgrade to Ubuntu 18.04.
+  > * Fix some of vector<bool> cases for msvc.
+  > * Fix linux build.
+  > * [sw] Bump minimal C++ standard to C++17.
+  > * Inherit STRING from std::string.
+  > * Call base vector::insert() explicitly.
+  > * Inherit GenericVector from std::vector. Inherit kdpairs from std::pair. Rewrite some move ctors to modern C++ style.
+  > * Merge branch 'master' of github.com-egorpugin:tesseract-ocr/tesseract
+  > * Move all tesseract symbols into tesseract namespace. Fix include order in many places.
+  > * Delete .rc from tesseractmain.
+  > * Reorder includes.
+  > * [cmake] Move include dirs into target include dirs.
+  > * Remove .rc files. No need to add them into dll/exe.
+  > * [cmake] Use source groups for libtess sources.
 
 ## [v2021-02-03](https://github.com/OCR-D/ocrd_all/releases/v2021-02-03)
 
