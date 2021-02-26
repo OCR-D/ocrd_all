@@ -1,5 +1,99 @@
 # Changelog
 
+## [v2021-02-26](https://github.com/OCR-D/ocrd_all/releases/v2021-02-26)
+
+### [core](https://github.com/OCR-D/core) [fe119e4](https://github.com/OCR-D/core/commits/fe119e4)..[0ca5aab](https://github.com/OCR-D/core/commits/0ca5aab)
+
+> Release: [v2.23.0](https://github.com/OCR-D/core/releases/v2.23.0)
+
+  > * :package: v2.23.0
+  > * :memo: changelog
+  > * Merge branch 'calamari-models'
+  > * :memo: changelog
+  > * Merge branch 'merge-mets'
+  > * generate_page: raise ValueError if no numeric part in start/end
+  > * document .. range operator
+  > * fix ocrdmets test
+  > * generate_range: include end
+  > * implement value range with .. operator for pageId
+  > * :package: v2.22.4
+  > * :memo: changelog
+  > * Merge pull request #671 from OCR-D/resmgr-cwd-again
+  > * :memo: changelog
+  > * Merge pull request #665 from OCR-D/gds-suppress-stdout
+  > * Merge pull request #664 from OCR-D/fix-docstrings
+  > * Merge pull request #666 from OCR-D/validator-log-debug
+  > * Merge pull request #669 from OCR-D/fix-indentation
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [8cd8314](https://github.com/qurator-spk/dinglehopper/commits/8cd8314)..[bd32433](https://github.com/qurator-spk/dinglehopper/commits/bd32433)
+
+  > * 🚧 dinglehopper: Try out Drone CI
+  > * 🚧 dinglehopper: Try out Drone CI
+  > * 🚧 dinglehopper: Try out Drone CI
+  > * 🚧 dinglehopper: Try out Drone CI
+  > * 🚧 Replace Travis with CircleCI
+  > * 🚧 Replace Travis with CircleCI
+  > * 🚧 Replace Travis with CircleCI
+  > * 🚧 Replace Travis with CircleCI
+  > * 🚧 Replace Travis with CircleCI
+  > * 🚧 Replace Travis with CircleCI
+  > * Merge pull request #50 from b2m/fix-table-extraction
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [f00df75](https://github.com/OCR-D/ocrd_calamari/commits/f00df75)..[da98713](https://github.com/OCR-D/ocrd_calamari/commits/da98713)
+
+> Release: [v1.0.2](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.2)
+
+  > * 📦 v1.0.2
+  > * 🐛 Fix word and glyph coordinates
+  > * ✔️ Explicitly check for None
+  > * Merge pull request #10 from bertsky/image-features
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [1abf38b](https://github.com/cisocrgroup/ocrd_cis/commits/1abf38b)..[426a33d](https://github.com/cisocrgroup/ocrd_cis/commits/426a33d)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * segment: avoid adding existing regions to RO group if they are not immediate children
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [df95fd7](https://github.com/OCR-D/ocrd_fileformat/commits/df95fd7)..[86763d1](https://github.com/OCR-D/ocrd_fileformat/commits/86763d1)
+
+> Release: [v0.2.1](https://github.com/OCR-D/ocrd_fileformat/releases/v0.2.1)
+
+  > * :package: v0.2.1
+  > * Merge pull request #28 from OCR-D/fix-page-schema
+
+### [ocrd_pagetopdf](https://github.com/UB-Mannheim/ocrd_pagetopdf) [6047bd4](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/6047bd4)..[7eb2e4e](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/7eb2e4e)
+
+> Release: [v1.0.0](https://github.com/UB-Mannheim/ocrd_pagetopdf/releases/v1.0.0)
+
+  > * Install default-jre-headless instead of openjdk-8-jre-headless
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [744261f](https://github.com/OCR-D/ocrd_segment/commits/744261f)..[8214d35](https://github.com/OCR-D/ocrd_segment/commits/8214d35)
+
+> Release: [v0.1.10](https://github.com/OCR-D/ocrd_segment/releases/v0.1.10)
+
+  > * :package: 0.1.10
+  > * extract_page: draw reading-order arrows
+  > * extract-pages: add 'feature_filter' param
+  > * extract-regions: apply 'feature_filter'
+  > * :package: 0.1.9 (extract*: expose param `feature_filter`)
+  > * raise pylint karma
+  > * :package: 0.1.8
+  > * replace-page: fix getLogger context
+  > * extract-pages: multi-level mask output via `plot_segmasks`, optional alpha compositing via `plot_overlay`
+  > * from-masks: pick default colordict from parameter, omit initial # sign from colorspecs
+  > * extract-pages: expose colordict as parameter (with PageViewer scheme as default)
+  > * extract_words, extract_glyphs: new
+
+### [opencv-python](https://github.com/skvark/opencv-python) [bbaa777](https://github.com/skvark/opencv-python/commits/bbaa777)..[fd4e604](https://github.com/skvark/opencv-python/commits/fd4e604)
+
+> Release: [48](https://github.com/skvark/opencv-python/releases/48)
+
+  > * disable Qt on macOS for now due to multiple issues
+  > * OpenCV 4.5.1
+  > * fix paths
+  > * Merge branch 'master' of https://github.com/skvark/opencv-python
+  > * merge 3.4 changes
+
 ## Unreleased
 
 ## [v2021-02-03](https://github.com/OCR-D/ocrd_all/releases/v2021-02-03)
