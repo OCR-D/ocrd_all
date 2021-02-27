@@ -30,14 +30,6 @@
 ### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [8cd8314](https://github.com/qurator-spk/dinglehopper/commits/8cd8314)..[bd32433](https://github.com/qurator-spk/dinglehopper/commits/bd32433)
 
   > * 🚧 dinglehopper: Try out Drone CI
-  > * 🚧 dinglehopper: Try out Drone CI
-  > * 🚧 dinglehopper: Try out Drone CI
-  > * 🚧 dinglehopper: Try out Drone CI
-  > * 🚧 Replace Travis with CircleCI
-  > * 🚧 Replace Travis with CircleCI
-  > * 🚧 Replace Travis with CircleCI
-  > * 🚧 Replace Travis with CircleCI
-  > * 🚧 Replace Travis with CircleCI
   > * 🚧 Replace Travis with CircleCI
   > * Merge pull request #50 from b2m/fix-table-extraction
 

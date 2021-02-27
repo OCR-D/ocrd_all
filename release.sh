@@ -108,7 +108,7 @@ submodule_changelog () {
     fi
     git diff --submodule=log -- "$sm" | sed \
         -e "s,^Submodule \\([^ ]\\+\\) \\([^\.]\\+\\)..\\([^\.]\\+\\):,### [\1]($smurl) [\2]($smurl/commits/\2)..[\3]($smurl/commits/\3)\\n$smtag," \
-        -e 's,^\s*>,  > *,'
+        -e 's,^\s*>,  > *,' | uniq
 }
 
 update_changelog () {
