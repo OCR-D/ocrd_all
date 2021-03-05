@@ -65,7 +65,7 @@ endif
 # to ensure they are re-built (not considered up-to-date) when re-entering
 .DELETE_ON_ERROR:
 
-.PHONY: all modules clean help show check always-update
+.PHONY: all modules clean help show check always-update install-models
 
 clean: # add more prerequisites for clean below
 	$(RM) -r $(SUB_VENV)/*
@@ -78,16 +78,16 @@ Rules to download and install all OCR-D module processors
 from their source repositories into a single virtualenv.
 
 Targets:
-	help: this message
-	show: lists the venv path and all executables (to be) installed
+	help: show this message
+	show: list the venv path and all executables (to be) installed
 	check: verify that all executables are runnable and the venv is consistent
-	ocrd: installs only the virtual environment and OCR-D/core packages
 	modules: download all submodules to the managed revision
-	all: installs all executables of all modules
-	install-tesseract: download, build and install Tesseract (with required models)
+	all: install all executables of all modules
+	ocrd: only install the virtual environment and OCR-D/core packages
+	install-tesseract: only build and install Tesseract (with TESSERACT_MODELS)
 	install-tesseract-training: build and install Tesseract training tools
-	install-models: Downloads commonly used models to appropriate locations
-	clean: removes the virtual environment directory, and clean-*
+	install-models: download commonly used models to appropriate locations
+	clean: remove the virtual environment directory, and make clean-*
 	clean-tesseract: remove the build directory for tesseract
 	clean-olena: remove the build directory for ocrd_olena
 	deinit: clean, then deinit and rmdir all submodules
@@ -95,18 +95,19 @@ Targets:
 	dockers: (re)build docker images for some pre-selected subsets of modules
 
 Variables:
+	OCRD_MODULES: selection of submodules to include. Default: all git submodules (see `show`)
+	DISABLED_MODULES: list of disabled modules. Default: "$(DISABLED_MODULES)"
+	GIT_RECURSIVE: set to `--recursive` to checkout/update all submodules recursively
+	GIT_DEPTH: set to `--depth 1` to truncate all history when cloning subrepos
+	NO_UPDATE: set to `1` to omit git submodule sync and update
 	VIRTUAL_ENV: absolute path to (re-)use for the virtual environment
 	TMPDIR: path to use for temporary storage instead of the system default
 	PYTHON: name of the Python binary
 	PIP: name of the Python packaging binary
 	PIP_OPTIONS: extra options for the `pip install` command like `-q` or `-v` or `-e`
-	GIT_RECURSIVE: set to `--recursive` to checkout/update all submodules recursively
-	GIT_DEPTH: set to `--depth 1` to truncate all history when cloning subrepos
-	NO_UPDATE: set to `1` to omit git submodule sync and update
-	OCRD_MODULES: list of submodules to include (defaults to all git submodules, see `show`)
-	DISABLED_MODULES: list of disabled modules. Default: $(DISABLED_MODULES)
-	TESSERACT_MODELS: list of additional models/languages to download for Tesseract
-	TESSERACT_CONFIG: command line options for Tesseract `configure`. Default: $(TESSERACT_CONFIG)
+	TESSERACT_MODELS: list of additional models/languages to download for Tesseract. Default: "$(ALL_TESSERACT_MODELS)"
+	TESSERACT_CONFIG: command line options for Tesseract `configure`. Default: "$(TESSERACT_CONFIG)"
+	TESSDATA: directory path where to install Tesseract models. Default (based on XDG_DATA_HOME): "$(TESSDATA)"
 EOF
 endef
 export HELP
@@ -649,10 +650,6 @@ TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast
 TESSERACT_TRAINEDDATA = $(ALL_TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
 
 stripdir = $(patsubst %/,%,$(dir $(1)))
-
-.PHONY: install-models
-install-models:
-	$(warning "Deprecated: Use 'ocrd resmgr' instead of install-* ocrd_all targets")
 
 # Install Tesseract with models.
 .PHONY: install-tesseract
