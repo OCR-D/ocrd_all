@@ -682,11 +682,16 @@ tesseract/Makefile.in: tesseract
 	cd tesseract && ./autogen.sh
 
 # Build and install Tesseract.
-TESSERACT_CONFIG ?= --disable-openmp --disable-shared CXXFLAGS="-g -O2 -fPIC"
+# We do not want to compile-in TESSDATA_PREFIX here, because our preferred TESSDATA path
+# would still get incorrectly suffixed by "/tessdata" at runtime.
+# Instead, we will rely on TESSDATA_PREFIX=$(TESSDATA) as a shell variable for the standalone CLI.
+TESSERACT_CONFIG ?= --disable-tessdata-prefix --disable-openmp --disable-shared CXXFLAGS="-g -O2 -fPIC"
 $(BIN)/tesseract: tesseract/Makefile.in
 	mkdir -p $(VIRTUAL_ENV)/build/tesseract
-	cd $(VIRTUAL_ENV)/build/tesseract && $(CURDIR)/tesseract/configure --disable-tessdata-prefix $(TESSERACT_CONFIG)
+	cd $(VIRTUAL_ENV)/build/tesseract && $(CURDIR)/tesseract/configure --prefix="$(VIRTUAL_ENV)" $(TESSERACT_CONFIG)
 	cd $(VIRTUAL_ENV)/build/tesseract && $(MAKE) install
+	@mkdir -p $(TESSDATA)
+	cp -pr $(VIRTUAL_ENV)/share/tessdata/* $(TESSDATA)/
 
 # Build and install Tesseract training tools.
 
