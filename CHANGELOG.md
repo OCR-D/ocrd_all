@@ -2,6 +2,9 @@
 
 ## [v2021-03-05](https://github.com/OCR-D/ocrd_all/releases/v2021-03-05)
 
+* Do not set `VOLUME` in Dockerfile, #239
+* Do not bake in `tessdata` path for tesseract, #240
+
 ### [core](https://github.com/OCR-D/core) [0ca5aab](https://github.com/OCR-D/core/commits/0ca5aab)..[a32857d](https://github.com/OCR-D/core/commits/a32857d)
 
 > Release: [v2.23.0](https://github.com/OCR-D/core/releases/v2.23.0)
