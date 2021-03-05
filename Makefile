@@ -642,7 +642,9 @@ CUSTOM_DEPS += g++ make automake libleptonica-dev
 # but since we are building statically, we need more (static) libs at build time
 CUSTOM_DEPS += libarchive-dev libcurl4-nss-dev libgif-dev libjpeg-dev libpng-dev libtiff-dev
 
-TESSDATA := $(VIRTUAL_ENV)/share/tessdata
+XDG_DATA_HOME ?= $(if $(HOME),$(HOME)/.local/share,/usr/local/share)
+DEFAULT_RESLOC ?= $(XDG_DATA_HOME)/ocrd-resources
+TESSDATA ?= $(DEFAULT_RESLOC)/ocrd-tesserocr-recognize
 TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast
 TESSERACT_TRAINEDDATA = $(ALL_TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
 
@@ -683,7 +685,7 @@ tesseract/Makefile.in: tesseract
 TESSERACT_CONFIG ?= --disable-openmp --disable-shared CXXFLAGS="-g -O2 -fPIC"
 $(BIN)/tesseract: tesseract/Makefile.in
 	mkdir -p $(VIRTUAL_ENV)/build/tesseract
-	cd $(VIRTUAL_ENV)/build/tesseract && $(CURDIR)/tesseract/configure --prefix="$(VIRTUAL_ENV)" $(TESSERACT_CONFIG)
+	cd $(VIRTUAL_ENV)/build/tesseract && $(CURDIR)/tesseract/configure --disable-tessdata-prefix $(TESSERACT_CONFIG)
 	cd $(VIRTUAL_ENV)/build/tesseract && $(MAKE) install
 
 # Build and install Tesseract training tools.
