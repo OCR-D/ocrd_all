@@ -9,6 +9,15 @@
   > * :memo: changelog
   > * Merge pull request #677 from OCR-D/python-versions
 
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [fd17386](https://github.com/OCR-D/ocrd_tesserocr/commits/fd17386)..[b755b26](https://github.com/OCR-D/ocrd_tesserocr/commits/b755b26)
+
+> Release: [v0.12.0](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.12.0)
+
+  > * :package: v0.12.0
+  > * :memo: changelog
+  > * Merge pull request #172 from OCR-D/logging-function
+  > * Merge pull request #170 from bertsky/overwrite_text_skip
+
 ### [ocrd_pc_segmentation](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation) [7298475](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/7298475)..[413f5d3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/413f5d3)
 
 > Release: [v0.1.3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/releases/v0.1.3)
