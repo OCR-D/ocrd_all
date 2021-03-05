@@ -1,5 +1,42 @@
 # Changelog
 
+## [v2021-03-05](https://github.com/OCR-D/ocrd_all/releases/v2021-03-05)
+
+### [core](https://github.com/OCR-D/core) [0ca5aab](https://github.com/OCR-D/core/commits/0ca5aab)..[a32857d](https://github.com/OCR-D/core/commits/a32857d)
+
+> Release: [v2.23.0](https://github.com/OCR-D/core/releases/v2.23.0)
+
+  > * :memo: changelog
+  > * Merge pull request #677 from OCR-D/python-versions
+
+### [ocrd_pc_segmentation](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation) [7298475](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/7298475)..[413f5d3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/413f5d3)
+
+> Release: [v0.1.3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/releases/v0.1.3)
+
+  > * pip install -U pip-tools for compat with pip 20.3+, fix #18
+
+### [ocrd_wrap](https://github.com/bertsky/ocrd_wrap) [9dfbdb3](https://github.com/bertsky/ocrd_wrap/commits/9dfbdb3)..[5a501df](https://github.com/bertsky/ocrd_wrap/commits/5a501df)
+
+> Release: [v0.1.6](https://github.com/bertsky/ocrd_wrap/releases/v0.1.6)
+
+  > * :package: 0.1.6
+  > * skimage_denoise: make maxsize in pt instead of pt²
+  > * skimage_denoise: add option `protect`
+  > * :package: 0.1.5
+  > * skimage.remove_small_objects expects boolean array
+  > * update link labels
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [51a214a](https://github.com/tesseract-ocr/tesseract/commits/51a214a)..[fe614c6](https://github.com/tesseract-ocr/tesseract/commits/fe614c6)
+
+> Release: [5.0.0-alpha-20201231](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha-20201231)
+
+  > * Enable less FP exceptions for clang compiler when running tesseract
+  > * GenericVector -> std::vector.
+  > * Allow to serialize std vectors with classes from TFile. Implementation from GenericVector.
+  > * Fix memory leak in DocumentCache
+  > * Avoid fp division by 0 (fix issue #3314)
+  > * Merge pull request #3313 from stweil/learning_rate
+
 ## Unreleased
 
 ## [v2021-02-27](https://github.com/OCR-D/ocrd_all/releases/v2021-02-27)
