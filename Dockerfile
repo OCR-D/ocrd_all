@@ -32,8 +32,15 @@ LABEL \
 # coinciding with the Python system prefix
 ENV PREFIX=/usr
 ENV VIRTUAL_ENV $PREFIX
+# avoid HOME/.local/share (hard to predict USER here)
+# so let XDG_DATA_HOME coincide with fixed system location
+# (can still be overridden by derived stages)
 ENV XDG_DATA_HOME /usr/local/share
-VOLUME $XDG_DATA_HOME/ocrd-resources
+# declaring volumes prevents derived stages
+# from placing data there (cannot be undeclared),
+# preventing the use-case of images bundled with models;
+# also, this adds little value over runtime --mount
+# VOLUME $XDG_DATA_HOME/ocrd-resources
 ENV HOME /
 
 # make apt run non-interactive during build
