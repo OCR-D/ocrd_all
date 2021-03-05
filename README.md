@@ -131,13 +131,13 @@ Install system packages for all modules. (Depends on [_modules_](#modules).)
 
 Download/update all modules, but do not install anything.
 
-#### _ocrd_
-
-Install only OCR-D/core and its CLI `ocrd` into the venv.
-
 #### _all_
 
 Install executables from all modules into the venv. (Depends on [_modules_](#modules) and [_ocrd_](#ocrd).)
+
+#### _ocrd_
+
+Install only OCR-D/core and its CLI `ocrd` into the venv.
 
 #### _docker_
 
@@ -208,6 +208,9 @@ Set to `--recursive` to checkout/update all modules recursively. (This usually i
 #### _TESSERACT_MODELS_
 
 Add more models to the minimum required list of languages (`eng equ osd`) to install along with Tesseract.
+
+Note: this only affects `make install-tesseract` (or `all`), but is independent of the `install-models` step. 
+(The latter delegates to `ocrd resmgr download`, which fetches all registered resources.)
 
 #### _TESSERACT_CONFIG_
 
@@ -306,6 +309,8 @@ docker pull ocrd/all:medium
 docker pull ocrd/all:maximum
 ```
 
+In addition to these base variants, there are `minimum-cuda`, `medium-cuda` and `maximum-cuda` with GPU support. (Also needs [nvidia-docker](https://github.com/NVIDIA/nvidia-docker), which adds the `docker --gpus` option.)
+
 Usage is the same [as if you had built the image yourself](#results).
 
 This table lists which tag contains which module:
@@ -326,16 +331,18 @@ This table lists which tag contains which module:
 | format-converters           | -         | ☑        | ☑         |
 | ocrd_calamari               | -         | ☑        | ☑         |
 | ocrd_keraslm                | -         | ☑        | ☑         |
+| ocrd_olahd_client           | -         | ☑        | ☑         |
 | ocrd_olena                  | -         | ☑        | ☑         |
 | ocrd_segment                | -         | ☑        | ☑         |
 | tesseract                   | -         | ☑        | ☑         |
 | ocrd_anybaseocr             | -         | -        | ☑         |
-| ocrd_kraken                 | -         | -        | ☑         |
-| ocrd_ocropy                 | -         | -        | ☑         |
+| ocrd_kraken                 | -         | -        | -         |
+| ocrd_ocropy                 | -         | -        | -         |
 | ocrd_pc_segmentation        | -         | -        | ☑         |
 | ocrd_typegroups_classifier  | -         | -        | ☑         |
+| sbb_binarization            | -         | -        | ☑         |
 | sbb_textline_detector       | -         | -        | ☑         |
-| cor-asv-fst                 | -         | -        | ☑         |
+| cor-asv-fst                 | -         | -        | -         |
 
 **Note**: The following modules have been disabled by default and can only be
 enabled by explicitly setting `OCRD_MODULES` or `DISABLED_MODULES`:
@@ -370,14 +377,14 @@ Modules may require mutually exclusive sets of dependent packages.
 `pip` does not even stop or resolve conflicts – it merely warns!
 
 - Tensorflow:
-   * version 2 (required by ocrd_anybaseocr and ocrd_pc_segmentation)
-   * version 1 (required by cor-asv-ann, ocrd_keraslm, ocrd_calamari and sbb_textline_detector)
+   * version 2 (required by ocrd_calamari, ocrd_anybaseocr and ocrd_pc_segmentation)
+   * version 1 (required by cor-asv-ann, ocrd_keraslm and sbb_textline_detector)
    
    The temporary solution is to require different package names:
    - `tensorflow>=2`
    - `tensorflow-gpu==1.15.*`
    
-   Both can be installed in parallel in different versions, but may depend on a mutually exclusive set of `tensorboard` and `tensorflow_estimator`. (However, these latter conflicts are only cosmetic, as they are only needed for development.)
+   Both cannot be installed in parallel in different versions, and usually also depend on different versions of CUDA toolkit.)
    
 - OpenCV:
    * `opencv-python-headless` (required by core and others, avoids pulling in X11 libraries)
