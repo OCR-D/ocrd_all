@@ -687,8 +687,6 @@ $(BIN)/tesseract: tesseract/Makefile.in
 	mkdir -p $(VIRTUAL_ENV)/build/tesseract
 	cd $(VIRTUAL_ENV)/build/tesseract && $(CURDIR)/tesseract/configure --prefix="$(VIRTUAL_ENV)" $(TESSERACT_CONFIG)
 	cd $(VIRTUAL_ENV)/build/tesseract && $(MAKE) install
-	@mkdir -p $(TESSDATA)
-	cp -pr $(VIRTUAL_ENV)/share/tessdata/* $(TESSDATA)/
 
 # Build and install Tesseract training tools.
 
