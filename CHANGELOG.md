@@ -7,9 +7,11 @@
 
 ### [core](https://github.com/OCR-D/core) [0ca5aab](https://github.com/OCR-D/core/commits/0ca5aab)..[a32857d](https://github.com/OCR-D/core/commits/a32857d)
 
-> Release: [v2.23.0](https://github.com/OCR-D/core/releases/v2.23.0)
+> Release: [v2.23.1](https://github.com/OCR-D/core/releases/v2.23.1)
 
-  > * :memo: changelog
+  > * :package: v2.23.1
+  > * Merge pull request #679 from OCR-D/logging-test-fix
+  > * Merge pull request #680 from OCR-D/resmgr-tess-config
   > * Merge pull request #677 from OCR-D/python-versions
 
 ### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [fd17386](https://github.com/OCR-D/ocrd_tesserocr/commits/fd17386)..[b755b26](https://github.com/OCR-D/ocrd_tesserocr/commits/b755b26)
