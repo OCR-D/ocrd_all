@@ -43,6 +43,10 @@ ENV XDG_DATA_HOME /usr/local/share
 # VOLUME $XDG_DATA_HOME/ocrd-resources
 ENV HOME /
 
+# Set the TESSDATA_PREFIX in such a way that the standalone
+# tesseract CLI will find the models
+ENV TESSDATA_PREFIX $XDG_DATA_HOME/ocrd-resources/ocrd-tesserocr-recognize
+
 # make apt run non-interactive during build
 ENV DEBIAN_FRONTEND noninteractive
 
