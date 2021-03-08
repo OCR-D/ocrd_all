@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2021-03-05](https://github.com/OCR-D/ocrd_all/releases/v2021-03-05)
+## [v2021-03-08](https://github.com/OCR-D/ocrd_all/releases/v2021-03-08)
 
 * Do not set `VOLUME` in Dockerfile, #239
 * Do not bake in `tessdata` path for tesseract, #240
@@ -31,8 +31,10 @@
 
 ### [ocrd_wrap](https://github.com/bertsky/ocrd_wrap) [9dfbdb3](https://github.com/bertsky/ocrd_wrap/commits/9dfbdb3)..[5a501df](https://github.com/bertsky/ocrd_wrap/commits/5a501df)
 
-> Release: [v0.1.6](https://github.com/bertsky/ocrd_wrap/releases/v0.1.6)
+> Release: [v0.1.7](https://github.com/bertsky/ocrd_wrap/releases/v0.1.7)
 
+  > * :package: 0.1.7
+  > * skimage-denoise: change option `protect` from bool to pt
   > * :package: 0.1.6
   > * skimage_denoise: make maxsize in pt instead of pt²
   > * skimage_denoise: add option `protect`
