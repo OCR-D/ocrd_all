@@ -1,5 +1,73 @@
 # Changelog
 
+## [v2021-03-15](https://github.com/OCR-D/ocrd_all/releases/v2021-03-15)
+
+### [core](https://github.com/OCR-D/core) [1df3f45](https://github.com/OCR-D/core/commits/1df3f45)..[1aabf82](https://github.com/OCR-D/core/commits/1aabf82)
+
+> Release: [v2.23.2](https://github.com/OCR-D/core/releases/v2.23.2)
+
+  > * :package: v2.23.2
+  > * add updated sbb_binarization models, ht @vahidrezanezhad
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [fe614c60](https://github.com/tesseract-ocr/tesseract/commits/fe614c60)..[c676d5bc](https://github.com/tesseract-ocr/tesseract/commits/c676d5bc)
+
+> Release: [5.0.0-alpha-20201231](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha-20201231)
+
+  > * STRING is no longer required for Visual Studio
+  > * Remove last usage of STRING
+  > * Remove unused parts of class STRING
+  > * Replace remaining STRING by std::string in unittest
+  > * Replace remaining STRING by std::string in src/training
+  > * Replace all but one remaining STRING by std::string in src/ccstruct
+  > * Replace remaining STRING by std::string in src/dict
+  > * Replace remaining STRING by std::string in src/viewer and src/wordrec
+  > * Replace remaining STRING by std::string in src/classify
+  > * Replace remaining STRING by std::string in src/ccmain
+  > * Remove unused file.
+  > * Replace typedef structs with structs.
+  > * snprintf will add '\0' at the end itself.
+  > * [training] Modernize.
+  > * [unittest] Use more smart ptrs, more std::make_unique instead of .reset(new T()).
+  > * Merge pull request #3327 from Shreeshrii/patch-1
+  > * [capi] Restore some of wrongly removed apis.
+  > * Misc.
+  > * Merge pull request #3325 from stweil/string
+  > * Merge pull request #3324 from stweil/nt_symclip
+  > * Remove unused include statements for strngs.h
+  > * [readme] Require C++17 for building.
+  > * Add missing export header.
+  > * [clang-format] Format generated protobuf source.
+  > * [clang-format] Format unit tests.
+  > * Include missing config_auto.h
+  > * Add missing forward decl.
+  > * [clang-format] Execute clang format on include and src dirs.
+  > * [clang-format] Update config.
+  > * Revert "Format public API files with 'clang-format-11 -i include/tesseract/*.h'"
+  > * Format public API files with 'clang-format-11 -i include/tesseract/*.h'
+  > * Fix tatweel_test for C++-20
+  > * Replace GenericVector by std::vector in class ImageData
+  > * Merge pull request #3323 from Shreeshrii/ci
+  > * autobuild: Require C++17
+  > * Fix build (#3322)
+  > * Fix linux build.
+  > * Pass empty strings into Tesseract::init_tesseract().
+  > * Pass init strings as std::string instead of const char * internally. This does not affect public APIs.
+  > * Remove STRING::size() method.
+  > * Remove unused STRING::strdup().
+  > * Remove unused STRING::unsigned_size().
+  > * Replace STRING::truncate_at() with resize().
+  > * More std::string replacements.
+  > * [cmake] Require C++17.
+  > * Clean implementation for (de-)serialization of a vector
+  > * Update .travis.yml
+  > * Fix serialization for vector of RecodedCharID
+  > * Travis: build linux matrix (#3320)
+  > * Merge pull request #3318 from Shreeshrii/travis
+  > * Add heuristic to fix swap (partially fixes issue #2586)
+  > * Replace GenericVector<TBOX> by std::vector<TBOX>
+  > * Fix two compiler warnings for serialis.h
+
+
 ## [v2021-03-08](https://github.com/OCR-D/ocrd_all/releases/v2021-03-08)
 
 * Do not set `VOLUME` in Dockerfile, #239
