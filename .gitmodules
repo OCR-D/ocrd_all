@@ -85,3 +85,6 @@
 [submodule "sbb_binarization"]
 	path = sbb_binarization
 	url = https://github.com/qurator-spk/sbb_binarization.git
+[submodule "eynollah"]
+	path = eynollah
+	url = https://github.com/qurator-spk/eynollah
