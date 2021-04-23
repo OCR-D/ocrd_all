@@ -1,5 +1,207 @@
 # Changelog
 
+## Unreleased
+
+## [v2021-04-23](https://github.com/OCR-D/ocrd_all/releases/v2021-04-23)
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [bd32433](https://github.com/qurator-spk/dinglehopper/commits/bd32433)..[1778b36](https://github.com/qurator-spk/dinglehopper/commits/1778b36)
+
+  > * 🚧 dinglehopper: Read PAGE UnorderedGroup in XML order
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [e63f555](https://github.com/OCR-D/ocrd_anybaseocr/commits/e63f555)..[6dd5678](https://github.com/OCR-D/ocrd_anybaseocr/commits/6dd5678)
+
+> Release: [v1.4.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.4.0)
+
+  > * :package: v1.4.0
+  > * cropping: edge detection: make position priority peak at 30% of margin and decrease slower inwards
+  > * cropping: allow steeper angles for badly skewed/keystoned images
+  > * cropping: apply detected ruler to edge detector result, too
+  > * cropping: fix for grayscale input
+  > * cropping: improve bombast/outdated comment header
+  > * cropping: reduce default left/right margin zones
+  > * cropping: use more adequate LSD parameters to make line reconstruction via line segment clustering easier
+  > * cropping: crop in last derived image (including binarized) and use transparency and bg-filling
+  > * cropping: add docstring
+  > * cropping: allow plotting debug images to files
+  > * cropping: fix 0e00b3e7 (absolute vs relative position)
+  > * cropping: edge detection: include wider range of line segments
+  > * cropping: edge detection: make position priority peak at 10% of margin
+  > * cropping: fix 370005b3 (polygon ordering)
+  > * cropping: make everything DPI-relative (assuming 300 DPI as natural scale)
+  > * cropping: use intersections from edge detection as polygon instead of bbox, and pad it inwardly
+  > * cropping: ignore margin-only columns before merging
+  > * cropping: edge detection: make consistency criterion more robust
+  > * cropping: edge detection: increase length priority over position
+  > * cropping: edge detection: fix gap criterion
+  > * cropping: prefer line-based detector if successful on all 4 sides
+  > * cropping: more logging
+  > * cropping: lower fg density text boxes, merge nearby columns before removing small ones
+  > * cropping: ruler detection does not binarization (but mask instead of clip it)
+  > * :package: 1.4.0
+  > * cropping: ignore margin-only text areas
+  > * cropping: rewrite edge detection based algorithm…
+  > * cropping: rename and describe parameters in a sane way
+  > * cropping: use existing parameters for same things everywhere
+  > * cropping: for detection based on textbox estimation, use all contours recursively (not just outer) and use exact contour area (without drawing to intermediate image)
+  > * cropping: paste improved pil2array, remove legacy ocrolib dependency
+  > * cropping: PIL/ocrolib uses RGB (not BGR) channels
+  > * cropping: algorithm needs raw (not binarized) images
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [5fd7254](https://github.com/OCR-D/ocrd_segment/commits/5fd7254)..[34c72c0](https://github.com/OCR-D/ocrd_segment/commits/34c72c0)
+
+> Release: [v0.1.11](https://github.com/OCR-D/ocrd_segment/releases/v0.1.11)
+
+  > * :package: 0.1.11
+  > * extract_pages: fix 5c548b1a (BorderType has no id)
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [4a5544d](https://github.com/qurator-spk/sbb_binarization/commits/4a5544d)..[2c7cd84](https://github.com/qurator-spk/sbb_binarization/commits/2c7cd84)
+
+> Release: [v0.0.7](https://github.com/qurator-spk/sbb_binarization/releases/v0.0.7)
+
+  > * resolving error for inputs whcih have smaller scale than model patch
+  > * Merge pull request #28 from qurator-spk/fix-unbound-var
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [c676d5bc](https://github.com/tesseract-ocr/tesseract/commits/c676d5bc)..[e3ac1835](https://github.com/tesseract-ocr/tesseract/commits/e3ac1835)
+
+> Release: [5.0.0-alpha-20210401](https://github.com/tesseract-ocr/tesseract/releases/5.0.0-alpha-20210401)
+
+  > * Remove unneeded ctor.
+  > * Make FontSet just a vector.
+  > * Properly init font set.
+  > * Replace FontSet struct with vector. It may be improved further (remove pointer?).
+  > * Remove unused headers.
+  > * Fix issue #3404 (empty page regression)
+  > * Remove two assertions which are triggered by fuzzing
+  > * Fix some compiler warnings with GRAPHICS_DISABLED
+  > * Fix memory leak (OSS-Fuzz issue 33220)
+  > * Merge pull request #3401 from adaptech-cz/fix-wrong-param
+  > * Fix old TODO for struct EDGEPT
+  > * Add SVSemaphore destructor to avoid system objects leaks
+  > * Replace pointer by value for ScrollView mutex
+  > * Fix NULL pointer access (issue #3394)
+  > * Merge pull request #3396 from zdenop/v5.clang.cmake.win
+  > * Fix OSS-Fuzz issue 32142 (container-overflow write)
+  > * Clean, format and optimize code in edgblob.cpp / edgblob.h
+  > * Fix headers.
+  > * Remove unneeded header.
+  > * [edgblob] Replace unique ptr with vector. Fix possible index issues.
+  > * Fix another use-after-free (issue #3394)
+  > * Merge pull request #3395 from amitdo/amitdo-patch-1
+  > * Fix use-after-free (issue #3394)
+  > * Merge pull request #3393 from eighttails/fix_zero_division
+  > * Fix some typos (most found by codespell)
+  > * automake: Add build rule for fuzzer-api-512x256
+  > * Update URLs for Google groups
+  > * Fix memory leak (OSS-Fuzz issue #32246)
+  > * Fix broken build for fuzzer
+  > * Merge pull request #3389 from amitdo/authors
+  > * lstmrecognizer.cpp: Call OutputStats() only when 'invert' is true (#3387)
+  > * Change message from 'Found SSE' to 'Found SSE4.1'
+  > * Add const attribute to some functions (API change)
+  > * Simplify class REJ by replacing two std::bitset<16> by one std::bitset<32>
+  > * Make more functions in class REJ inline
+  > * Remove bits16.h and BITS16 data type
+  > * Format public API files with modified rules for clang-format
+  > * clang-format: Clean formatting rules
+  > * Modernize and optimize list_rec a little bit
+  > * Modernize code
+  > * Remove mfdefs.cpp from CMakeLists.txt and Makefile.am
+  > * Refactor microfeatures a bit.
+  > * Replace microfeatures from oldlist to std::forward_list.
+  > * Correct template args.
+  > * Fix new / delete class mismatch
+  > * Add missing TESS_API.
+  > * Reorder list templates.
+  > * Misc.
+  > * [elist2] Convert macros to template. Remove source file macro ELIST2IZE.
+  > * [elist] Rework macro into template and small macro. Move common iterator template into 'list_iterator.h'.
+  > * Misc.
+  > * Remove unused methods.
+  > * [elist] Remove unused macros QUOTE_IT.
+  > * [clist] Remove unused methods.
+  > * Rework big clist macro into template and small macro. Remove unused macros QUOTE_IT and CLISTIZE (source file macro).
+  > * Merge pull request #3382 from Shreeshrii/windows
+  > * RAII: TessBaseAPI::GetIterator()
+  > * RAII: TessBaseAPI::AnalyseLayout()
+  > * Clean code for hOCR renderer
+  > * Merge pull request #3380 from stweil/gridsearch
+  > * Remove unnecessary pointer hasher for uset.
+  > * Fix CI and update package list before installation
+  > * Merge pull request #3376 from stweil/master
+  > * Merge pull request #3375 from amitdo/viewer
+  > * Create new pre-release 5.0.0-alpha-20210401
+  > * Add Image::operator&=().
+  > * Add Image::operator|=().
+  > * Remove arg from Image::copy().
+  > * Init variable.
+  > * Add Image::isZero().
+  > * Add Image::clone().
+  > * Add Image::copy().
+  > * Add new files ccstruct/image.cpp and ccstruct/image.h to Makefile
+  > * Fix name conflict between class and function named Image
+  > * [misc] Update header guard.
+  > * Revert 4fa05b9147b957344bf94df1e0fb781acc2c84a6. Make a note.
+  > * Basic usage of new Image class. Only pixDestroy is wrapped at the moment.
+  > * Initial tesseract Image wrapper.
+  > * Remove unused ifdef.
+  > * Partially fix issue #3374
+  > * Fix some compiler warnings
+  > * Improve some structs further (fixes several CID issues)
+  > * lstm: Include missing header
+  > * Fix compilation for Tensorflow code
+  > * Fix some compiler warnings
+  > * Merge pull request #3368 from stweil/master
+  > * Merge pull request #3367 from stweil/master
+  > * Merge pull request #3366 from stweil/master
+  > * Add more list tests
+  > * Misc.
+  > * Remove default locale setting in debug config. Any locale errors must be fixed separately (if any).
+  > * Merge pull request #3365 from Shreeshrii/fix
+  > * Replace some snprintf by std::to_string and modernize more code
+  > * Merge pull request #3364 from stweil/master
+  > * Merge pull request #3363 from Shreeshrii/split
+  > * Don't convert for loop after '#pragma omp parallel' with clang-tidy
+  > * Remove TessBaseAPI::SetThresholder (API change)
+  > * Modernize code for OTSU and reduce public API further
+  > * Merge pull request #3358 from stweil/master
+  > * Merge pull request #3356 from Shreeshrii/ciupdate
+  > * Merge pull request #3355 from eighttails/output_training_command_line
+  > * Update submodule abseil to tagged release 20200923.3
+  > * Fix some compiler warnings
+  > * Merge pull request #3354 from stweil/master
+  > * Merge pull request #3351 from stweil/master
+  > * Use more smart pointers.
+  > * Merge pull request #3350 from stweil/master
+  > * Merge pull request #3349 from stweil/master
+  > * Remove unused function UnicharIdArrayUtils::find_in
+  > * Disable unused WriteMemoryCallback if libcurl is not used
+  > * Use smart pointers.
+  > * Misc.
+  > * Fix double free caused by commit f33e80e (fixes issue #3348)
+  > * Rename GenericVector::get
+  > * Rename UnicityTable::get, UnicityTable::get_mutable
+  > * Replace std::array by std::vector to avoid stack overflow
+  > * Merge pull request #3345 from stweil/vector
+  > * Merge pull request #3344 from stweil/vector
+  > * Merge pull request #3342 from stweil/master
+  > * Fix new alert reported by LGTM
+  > * Merge pull request #3341 from stweil/vector
+  > * Merge pull request #3340 from stweil/vector
+  > * Partially revert "Replace more GenericVector by std::vector for src/ccutil"
+  > * Partially revert "Replace remaining GenericVector by std::vector for src/training"
+  > * Merge pull request #3338 from stweil/vector
+  > * Merge pull request #3337 from stweil/vector
+  > * Fix new alerts reported by LGTM
+  > * Add missing reference & for loop iterator
+  > * Make only locally used functions row_y_order and row_spacing_order static
+  > * Merge pull request #3336 from stweil/vector
+  > * Merge pull request #3335 from stweil/genericvector
+  > * Merge pull request #3330 from Sintun/master
+  > * Fix build system macro. Fixes #3334.
+  > * Fix alerts reported by LGTM
+  > * Fix removal of duplicates in StructuredTable::FindLinedStructure
+  > * Merge pull request #3332 from stweil/vector
+
 ## [v2021-03-15](https://github.com/OCR-D/ocrd_all/releases/v2021-03-15)
 
 ### [core](https://github.com/OCR-D/core) [1df3f45](https://github.com/OCR-D/core/commits/1df3f45)..[1aabf82](https://github.com/OCR-D/core/commits/1aabf82)
@@ -120,8 +322,6 @@
   > * Fix memory leak in DocumentCache
   > * Avoid fp division by 0 (fix issue #3314)
   > * Merge pull request #3313 from stweil/learning_rate
-
-## Unreleased
 
 ## [v2021-02-27](https://github.com/OCR-D/ocrd_all/releases/v2021-02-27)
 
@@ -869,9 +1069,6 @@ Submodule ocrd_anybaseocr contains modified content
   > * when in a GPU semaphore, don't buffer (log) output
   > * ocrd-import: ensure OCR-D-IMG exists before convert
   > * ocrd-import: prefix PAGE-XML file ID by fileGrp in -P mode, too
-
-
-## Unreleased
 
 
 ## [v2020-11-18](https://github.com/OCR-D/ocrd_all/releases/v2020-11-18)
