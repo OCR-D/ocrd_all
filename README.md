@@ -363,7 +363,7 @@ rm -rf ocrd_all
 
 Next, remove all contents under ~/.parallel/semaphores:
 ```
-rm -rf /~/.parallel/semaphores/*
+rm -rf ~/.parallel/semaphores
 ```
 
 ## Challenges
