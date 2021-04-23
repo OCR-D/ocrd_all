@@ -522,7 +522,6 @@ install-models-eynollah:
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-eynollah-segment '*'
 OCRD_EXECUTABLES += $(EYNOLLAH_SEGMENT)
 EYNOLLAH_SEGMENT := $(BIN)/ocrd-eynollah-segment
-EYNOLLAH_SEGMENT += $(BIN)/eynollah
 $(EYNOLLAH_SEGMENT): eynollah
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(EYNOLLAH_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
