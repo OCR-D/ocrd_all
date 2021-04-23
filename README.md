@@ -11,6 +11,8 @@ It includes a Makefile for their installation into a virtual environment (venv) 
 (A venv is a local user directory with shell scripts to load/unload itself
 in the current shell environment via PATH and PYTHONHOME.)
 
+(NOTE: If you are going to install ocrd_all, you may want to first reference the [OCR-D setup guide](https://ocr-d.de/en/setup) at the OCR-D website. If you are a non-IT user, it is especially recommended you utilize the guide.)
+
 * [Preconditions](#preconditions)
     * [Space](#space)
     * [Locale](#locale)
@@ -352,6 +354,17 @@ enabled by explicitly setting `OCRD_MODULES` or `DISABLED_MODULES`:
 * ocrd_kraken (currently unmaintained)
 * clstm (required only for ocrd_kraken)
 
+### Uninstall
+
+If you have installed ocrd_all natively and wish to uninstall, first `deactivate` the virtual environment  and remove the `ocrd_all` directory:
+```
+rm -rf ocrd_all
+```
+
+Next, remove all contents under ~/.parallel/semaphores:
+```
+rm -rf ~/.parallel/semaphores
+```
 
 ## Challenges
 
