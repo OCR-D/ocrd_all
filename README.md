@@ -356,7 +356,7 @@ enabled by explicitly setting `OCRD_MODULES` or `DISABLED_MODULES`:
 
 ### Uninstall
 
-If you have installed ocrd_all natively and wish to uninstall, first remove the `ocrd_all` directory:
+If you have installed ocrd_all natively and wish to uninstall, first `deactivate` the virtual environment  and remove the `ocrd_all` directory:
 ```
 rm -rf ocrd_all
 ```
