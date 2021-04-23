@@ -4,6 +4,8 @@
 
 ## [v2021-04-23](https://github.com/OCR-D/ocrd_all/releases/v2021-04-23)
 
+* Added https://github.com/qurator-spk/eynollah
+
 ### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [bd32433](https://github.com/qurator-spk/dinglehopper/commits/bd32433)..[1778b36](https://github.com/qurator-spk/dinglehopper/commits/1778b36)
 
   > * 🚧 dinglehopper: Read PAGE UnorderedGroup in XML order
@@ -1071,6 +1073,10 @@ Submodule ocrd_anybaseocr contains modified content
   > * ocrd-import: prefix PAGE-XML file ID by fileGrp in -P mode, too
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> add-eynollah
 ## [v2020-11-18](https://github.com/OCR-D/ocrd_all/releases/v2020-11-18)
 
 Fixed:

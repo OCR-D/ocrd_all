@@ -515,6 +515,24 @@ else
 endif
 endif
 
+ifneq ($(findstring eynollah, $(OCRD_MODULES)),)
+install-models: install-models-eynollah
+.PHONY: install-models-eynollah
+install-models-eynollah:
+	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-eynollah-segment '*'
+OCRD_EXECUTABLES += $(EYNOLLAH_SEGMENT)
+EYNOLLAH_SEGMENT := $(BIN)/ocrd-eynollah-segment
+$(EYNOLLAH_SEGMENT): eynollah
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(EYNOLLAH_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(call delegate_venv,$(EYNOLLAH_SEGMENT),$(SUB_VENV)/headless-tf1)
+eynollah-check:
+	$(MAKE) check OCRD_MODULES=eynollah VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+else
+	$(pip_install)
+endif
+endif
+
 ifneq ($(findstring ocrd_repair_inconsistencies, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_REPAIR_INCONSISTENCIES)
 OCRD_REPAIR_INCONSISTENCIES := $(BIN)/ocrd-repair-inconsistencies
