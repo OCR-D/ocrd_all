@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## [v2021-04-25](https://github.com/OCR-D/ocrd_all/releases/v2021-04-25)
+
 * Added https://github.com/qurator-spk/eynollah
 
 ## [v2021-03-15](https://github.com/OCR-D/ocrd_all/releases/v2021-03-15)
