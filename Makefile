@@ -320,6 +320,7 @@ OCRD_SEGMENT := $(BIN)/ocrd-segment-evaluate
 OCRD_SEGMENT += $(BIN)/ocrd-segment-from-masks
 OCRD_SEGMENT += $(BIN)/ocrd-segment-from-coco
 OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-glyphs
+OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-words
 OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-lines
 OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-regions
 OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-pages
