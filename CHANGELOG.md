@@ -2,6 +2,26 @@
 
 ## Unreleased
 
+## [v2021-05-04](https://github.com/OCR-D/ocrd_all/releases/v2021-05-04)
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [12f5b29](https://github.com/qurator-spk/eynollah/commits/12f5b29)..[26283c6](https://github.com/qurator-spk/eynollah/commits/26283c6)
+
+> Release: [v0.0.2](https://github.com/qurator-spk/eynollah/releases/v0.0.2)
+
+  > * :package: v0.0.2
+  > * resolving issue https://github.com/qurator-spk/eynollah/issues/38
+  > * adding the binarization model and option to binarize input document for the cases like dark, stronly bright and other ones
+  > * strong erosion, more modification
+  > * Merge pull request #36 from mikegerber/fix/ocrd-core-req
+  > * Update eynollah.py
+  > * Merge branch 'main' of https://github.com/qurator-spk/eynollah into main
+  > * fixing again the error raised because of erosion
+
+### [sbb_textline_detector](https://github.com/qurator-spk/sbb_textline_detector) [95d8f70](https://github.com/qurator-spk/sbb_textline_detector/commits/95d8f70)..[f1d2777](https://github.com/qurator-spk/sbb_textline_detector/commits/f1d2777)
+
+  > * Merge pull request #57 from mikegerber/fix/setup-namespace
+
+
 ## [v2021-04-25](https://github.com/OCR-D/ocrd_all/releases/v2021-04-25)
 
 * Added https://github.com/qurator-spk/eynollah
