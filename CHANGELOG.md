@@ -2,6 +2,33 @@
 
 ## Unreleased
 
+## [v2021-05-19](https://github.com/OCR-D/ocrd_all/releases/v2021-05-19)
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [bd32433](https://github.com/qurator-spk/dinglehopper/commits/bd32433)..[0b9af3a](https://github.com/qurator-spk/dinglehopper/commits/0b9af3a)
+
+  > * Merge pull request #58 from kba/unorderedgroupindexed
+  > * 🚧 dinglehopper: Read PAGE UnorderedGroup in XML order
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [26283c6](https://github.com/qurator-spk/eynollah/commits/26283c6)..[80795c9](https://github.com/qurator-spk/eynollah/commits/80795c9)
+
+> Release: [v0.0.5](https://github.com/qurator-spk/eynollah/releases/v0.0.5)
+
+  > * :package: v0.0.5
+  > * Merge pull request #42 from qurator-spk/ocrd-noae
+  > * :package: v0.0.4
+  > * fixed #40 and separators are also written in xml
+  > * :package: v0.0.3
+  > * Merge branch 'main' of https://github.com/qurator-spk/eynollah into main
+  > * fixed #38
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [4a5544d](https://github.com/qurator-spk/sbb_binarization/commits/4a5544d)..[8dd0506](https://github.com/qurator-spk/sbb_binarization/commits/8dd0506)
+
+> Release: [v0.0.8](https://github.com/qurator-spk/sbb_binarization/releases/v0.0.8)
+
+  > * :package: v0.0.8
+  > * resolving error for inputs whcih have smaller scale than model patch
+  > * Merge pull request #28 from qurator-spk/fix-unbound-var
+
 ## [v2021-05-04](https://github.com/OCR-D/ocrd_all/releases/v2021-05-04)
 
 ### [eynollah](https://github.com/qurator-spk/eynollah) [12f5b29](https://github.com/qurator-spk/eynollah/commits/12f5b29)..[26283c6](https://github.com/qurator-spk/eynollah/commits/26283c6)
