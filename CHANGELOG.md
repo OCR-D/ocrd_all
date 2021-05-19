@@ -4,6 +4,47 @@
 
 ## [v2021-05-19](https://github.com/OCR-D/ocrd_all/releases/v2021-05-19)
 
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [e63f555](https://github.com/OCR-D/ocrd_anybaseocr/commits/e63f555)..[093758d](https://github.com/OCR-D/ocrd_anybaseocr/commits/093758d)
+
+> Release: [v1.4.1](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.4.1)
+
+  > * :package: v1.4.1
+  > * hotfix: re-introduce ocrd-fork-ocropy requirement
+  > * :package: v1.4.0
+  > * cropping: edge detection: make position priority peak at 30% of margin and decrease slower inwards
+  > * cropping: allow steeper angles for badly skewed/keystoned images
+  > * cropping: apply detected ruler to edge detector result, too
+  > * cropping: fix for grayscale input
+  > * cropping: improve bombast/outdated comment header
+  > * cropping: reduce default left/right margin zones
+  > * cropping: use more adequate LSD parameters to make line reconstruction via line segment clustering easier
+  > * cropping: crop in last derived image (including binarized) and use transparency and bg-filling
+  > * cropping: add docstring
+  > * cropping: allow plotting debug images to files
+  > * cropping: fix 0e00b3e7 (absolute vs relative position)
+  > * cropping: edge detection: include wider range of line segments
+  > * cropping: edge detection: make position priority peak at 10% of margin
+  > * cropping: fix 370005b3 (polygon ordering)
+  > * cropping: make everything DPI-relative (assuming 300 DPI as natural scale)
+  > * cropping: use intersections from edge detection as polygon instead of bbox, and pad it inwardly
+  > * cropping: ignore margin-only columns before merging
+  > * cropping: edge detection: make consistency criterion more robust
+  > * cropping: edge detection: increase length priority over position
+  > * cropping: edge detection: fix gap criterion
+  > * cropping: prefer line-based detector if successful on all 4 sides
+  > * cropping: more logging
+  > * cropping: lower fg density text boxes, merge nearby columns before removing small ones
+  > * cropping: ruler detection does not binarization (but mask instead of clip it)
+  > * :package: 1.4.0
+  > * cropping: ignore margin-only text areas
+  > * cropping: rewrite edge detection based algorithm…
+  > * cropping: rename and describe parameters in a sane way
+  > * cropping: use existing parameters for same things everywhere
+  > * cropping: for detection based on textbox estimation, use all contours recursively (not just outer) and use exact contour area (without drawing to intermediate image)
+  > * cropping: paste improved pil2array, remove legacy ocrolib dependency
+  > * cropping: PIL/ocrolib uses RGB (not BGR) channels
+  > * cropping: algorithm needs raw (not binarized) images
+
 ### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [bd32433](https://github.com/qurator-spk/dinglehopper/commits/bd32433)..[0b9af3a](https://github.com/qurator-spk/dinglehopper/commits/0b9af3a)
 
   > * Merge pull request #58 from kba/unorderedgroupindexed
