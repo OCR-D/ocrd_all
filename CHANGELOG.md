@@ -6,8 +6,10 @@
 
 ### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [e63f555](https://github.com/OCR-D/ocrd_anybaseocr/commits/e63f555)..[093758d](https://github.com/OCR-D/ocrd_anybaseocr/commits/093758d)
 
-> Release: [v1.4.1](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.4.1)
+> Release: [v1.5.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.5.0)
 
+  > * :package: v1.5.0
+  > * Merge branch 'fix-tiseg'
   > * :package: v1.4.1
   > * hotfix: re-introduce ocrd-fork-ocropy requirement
   > * :package: v1.4.0
