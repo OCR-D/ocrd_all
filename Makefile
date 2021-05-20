@@ -441,7 +441,6 @@ install-models: install-models-anybaseocr
 .PHONY: install-models-anybaseocr
 install-models-anybaseocr:
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-dewarp '*'
-	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-block-segmentation '*'
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-layout-analysis '*'
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-tiseg '*'
 
@@ -453,7 +452,6 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-dewarp
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-tiseg
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
-OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-block-segmentation
 $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf21
