@@ -2,12 +2,18 @@
 
 ## Unreleased
 
-## [v2021-05-19](https://github.com/OCR-D/ocrd_all/releases/v2021-05-19)
+## [v2021-05-20](https://github.com/OCR-D/ocrd_all/releases/v2021-05-20)
 
-### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [e63f555](https://github.com/OCR-D/ocrd_anybaseocr/commits/e63f555)..[093758d](https://github.com/OCR-D/ocrd_anybaseocr/commits/093758d)
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [6fe756a](https://github.com/OCR-D/ocrd_anybaseocr/commits/6fe756a)..[e930c93](https://github.com/OCR-D/ocrd_anybaseocr/commits/e930c93)
 
-> Release: [v1.5.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.5.0)
+> Release: [v1.6.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.6.0)
 
+  > * :package: v1.6.0
+  > * ragequit debugging block-segmentation, disable it
+  > * replace keras.saving with the up-to-date location
+  > * logging doesn't like standalone % signs
+  > * keras.engine.Layer is now tensorflow.keras.layers.Layer
+  > * fix keras imports
   > * :package: v1.5.0
   > * Merge branch 'fix-tiseg'
   > * :package: v1.4.1
