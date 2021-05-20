@@ -70,6 +70,13 @@
   > * Merge branch 'main' of https://github.com/qurator-spk/eynollah into main
   > * fixed #38
 
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [6c831fa](https://github.com/ASVLeipzig/cor-asv-ann/commits/6c831fa)..[e919020](https://github.com/ASVLeipzig/cor-asv-ann/commits/e919020)
+
+> Release: [v0.1.10](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.10)
+
+  > * :package: 0.1.10
+  > * forgot compare script
+
 ### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [4a5544d](https://github.com/qurator-spk/sbb_binarization/commits/4a5544d)..[8dd0506](https://github.com/qurator-spk/sbb_binarization/commits/8dd0506)
 
 > Release: [v0.0.8](https://github.com/qurator-spk/sbb_binarization/releases/v0.0.8)
