@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## [v2021-05-21](https://github.com/OCR-D/ocrd_all/releases/v2021-05-21)
+
+Hotfix (v2021-05-20 was an incomplete merge)
+
 ## [v2021-05-20](https://github.com/OCR-D/ocrd_all/releases/v2021-05-20)
 
 ### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [6fe756a](https://github.com/OCR-D/ocrd_anybaseocr/commits/6fe756a)..[e930c93](https://github.com/OCR-D/ocrd_anybaseocr/commits/e930c93)
