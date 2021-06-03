@@ -658,9 +658,13 @@ ifneq ($(findstring tesseract, $(OCRD_MODULES)),)
 # Tesseract.
 
 # when not installing via PPA, we must cope without ocrd_tesserocr's deps-ubuntu-modules
-CUSTOM_DEPS += g++ make automake libleptonica-dev
-# but since we are building statically, we need more (static) libs at build time
-CUSTOM_DEPS += libarchive-dev libcurl4-nss-dev libgif-dev libjpeg-dev libpng-dev libtiff-dev
+CUSTOM_DEPS += automake ca-certificates g++ libtool make pkg-config
+# Required library.
+CUSTOM_DEPS += libleptonica-dev
+# Optional libraries for enhanced functionality.
+CUSTOM_DEPS += libarchive-dev libcurl4-nss-dev
+# Optional library for training tools.
+CUSTOM_DEPS += libpango1.0-dev
 
 XDG_DATA_HOME ?= $(if $(HOME),$(HOME)/.local/share,/usr/local/share)
 DEFAULT_RESLOC ?= $(XDG_DATA_HOME)/ocrd-resources
