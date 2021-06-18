@@ -433,6 +433,7 @@ ocrd_pc_segmentation-check:
 else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
+	. $(ACTIVATE_VENV) && $(PIP) install 'h5py<3'
 endif
 endif
 
