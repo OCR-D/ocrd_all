@@ -97,6 +97,8 @@
 
 > Release: [v0.13.3](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.13.3)
 
+  > * :package: 0.13.4
+  > * Merge pull request #179 from bertsky/improve-tessapi-reset
   > * recognize: fix 318cefd5 (inverted ChoiceIterator conf threshold)
   > * recognize: improve Tesseract API state wrapper:
   > * typo
