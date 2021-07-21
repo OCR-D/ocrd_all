@@ -142,7 +142,7 @@ deinit:
 # Get Python modules.
 
 $(VIRTUAL_ENV)/bin/$(PIP): $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && $(SEM) $(PIP) install --upgrade pip setuptools
+	. $(ACTIVATE_VENV) && $(SEM) $(PIP) install --no-cache --upgrade pip setuptools
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
 	$(SEM) $(PYTHON) -m venv $(VIRTUAL_ENV)
