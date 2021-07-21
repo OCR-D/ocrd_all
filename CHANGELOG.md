@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## [v2021-07-19](https://github.com/OCR-D/ocrd_all/releases/v2021-07-19)
+## [v2021-07-21](https://github.com/OCR-D/ocrd_all/releases/v2021-07-21)
 
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [e919020](https://github.com/ASVLeipzig/cor-asv-ann/commits/e919020)..[1b8c120](https://github.com/ASVLeipzig/cor-asv-ann/commits/1b8c120)
 
@@ -62,8 +62,10 @@
 
 ### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [da98713](https://github.com/OCR-D/ocrd_calamari/commits/da98713)..[34013dd](https://github.com/OCR-D/ocrd_calamari/commits/34013dd)
 
-> Release: [v1.0.2](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.2)
+> Release: [v1.0.3](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.3)
 
+  > * 📦 v1.0.3
+  > * 🐛 Fix TensorFlow (and h3py) dependency
   > * 📝 Reduce process() docstring again
   > * Merge pull request #65 from bertsky/setup-init
   > * Merge pull request #64 from bertsky/patch-1

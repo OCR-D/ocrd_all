@@ -426,10 +426,10 @@ OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
 $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf21
-	$(call delegate_venv,$(OCRD_PC_SEGMENTATION),$(SUB_VENV)/headless-tf21)
+	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
+	$(call delegate_venv,$(OCRD_PC_SEGMENTATION),$(SUB_VENV)/headless-tf2)
 ocrd_pc_segmentation-check:
-	$(MAKE) check OCRD_MODULES=ocrd_pc_segmentation VIRTUAL_ENV=$(SUB_VENV)/headless-tf21
+	$(MAKE) check OCRD_MODULES=ocrd_pc_segmentation VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
 else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
@@ -658,9 +658,13 @@ ifneq ($(findstring tesseract, $(OCRD_MODULES)),)
 # Tesseract.
 
 # when not installing via PPA, we must cope without ocrd_tesserocr's deps-ubuntu-modules
-CUSTOM_DEPS += g++ make automake libleptonica-dev
-# but since we are building statically, we need more (static) libs at build time
-CUSTOM_DEPS += libarchive-dev libcurl4-nss-dev libgif-dev libjpeg-dev libpng-dev libtiff-dev
+CUSTOM_DEPS += automake ca-certificates g++ libtool make pkg-config
+# Required library.
+CUSTOM_DEPS += libleptonica-dev
+# Optional libraries for enhanced functionality.
+CUSTOM_DEPS += libarchive-dev libcurl4-nss-dev
+# Optional library for training tools.
+CUSTOM_DEPS += libpango1.0-dev
 
 XDG_DATA_HOME ?= $(if $(HOME),$(HOME)/.local/share,/usr/local/share)
 DEFAULT_RESLOC ?= $(XDG_DATA_HOME)/ocrd-resources
