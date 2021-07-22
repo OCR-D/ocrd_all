@@ -11,6 +11,11 @@ export PIP ?= pip3
 # Derived variable to allow filtering -e, or inserting other options
 # (the option --editable must always be last and only applies to src install)
 PIP_OPTIONS_E = $(filter-out -e,$(PIP_OPTIONS))
+# Most initial versions of pip are too old for modern packages,
+# --upgrade ensures we get the most recent pip/setuptools.
+# Some initial versions of pip have a broken cache system,
+# --no-cache is a workaround for that.
+PIP_UPGRADE = --no-cache --upgrade
 # Set to 1 to skip all submodule updates. For development.
 NO_UPDATE ?= 0
 # Set to non-empty to try running all executables with --help / -h during make check
@@ -143,7 +148,7 @@ deinit:
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
 	$(SEM) $(PYTHON) -m venv $(VIRTUAL_ENV)
-	. $(ACTIVATE_VENV) && $(SEM) $(PIP) install --no-cache --upgrade pip setuptools
+	. $(ACTIVATE_VENV) && $(SEM) $(PIP) install $(PIP_OPTIONS_E) $(PIP_UPGRADE) pip setuptools
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
