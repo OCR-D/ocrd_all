@@ -2,131 +2,7 @@
 
 ## Unreleased
 
-## [v2021-07-21](https://github.com/OCR-D/ocrd_all/releases/v2021-07-21)
-
-### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [e919020](https://github.com/ASVLeipzig/cor-asv-ann/commits/e919020)..[1b8c120](https://github.com/ASVLeipzig/cor-asv-ann/commits/1b8c120)
-
-> Release: [v0.1.12](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.12)
-
-  > * :package: 0.1.12
-  > * wrapper.evaluate: allow aggregating histograms, add parameter
-  > * scripts.compare: allow aggregating histograms
-  > * lib.seq2seq / scripts.eval: allow aggregating histograms
-  > * lib.alignment: allow aggregating histograms
-  > * wrapper.evaluate: rename reported metrics and measure WER, too; expose gt_level parameter
-  > * scripts.compare: rename reported metrics and measure WER, too
-  > * lib.alignment: apply equivalences when aggregating confusion, too
-  > * lib.alignment: more level 1/2 equivalences/normalizations
-  > * lib.alignment: remove commented experimental code for other aligners
-  > * :package: 0.1.11
-  > * update README
-  > * lib.alignment: no gaps for confusion counts
-
-### [core](https://github.com/OCR-D/core) [d2c6216f](https://github.com/OCR-D/core/commits/d2c6216f)..[271dcdf6](https://github.com/OCR-D/core/commits/271dcdf6)
-
-> Release: [v2.25.1](https://github.com/OCR-D/core/releases/v2.25.1)
-
-  > * Merge pull request #701 from OCR-D/apidocs-standalone
-  > * :package: v2.25.1
-  > * Merge remote-tracking branch 'origin/gds-id'
-  > * :package: v2.25.0
-  > * :memo: changelog
-  > * Merge remote-tracking branch 'bertsky/ocrd_page_etree'
-  > * :memo: changelog
-  > * Merge remote-tracking branch 'bertsky/fix-recrop'
-  > * :memo: changelog
-  > * Merge branch 'gds-id'
-  > * :memo: changelog
-  > * fix METS schemaLocation, fix #694
-  > * :package: v2.24.0
-  > * :memo: changelog
-  > * test for #686
-  > * image_from_*: yield matching AlternativeImage with richest features, not last
-  > * crop_image/image_from_polygon: use mask for background estimation, too
-
-### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [0b9af3a](https://github.com/qurator-spk/dinglehopper/commits/0b9af3a)..[2497876](https://github.com/qurator-spk/dinglehopper/commits/2497876)
-
-  > * Merge branch 'master' of github.com:qurator-spk/dinglehopper
-  > * 🐛 dinglehopper: Call initLogging before logging
-
-### [eynollah](https://github.com/qurator-spk/eynollah) [80795c9](https://github.com/qurator-spk/eynollah/commits/80795c9)..[d784202](https://github.com/qurator-spk/eynollah/commits/d784202)
-
-> Release: [v0.0.7](https://github.com/qurator-spk/eynollah/releases/v0.0.7)
-
-  > * :package: v0.0.7
-  > * Merge remote-tracking branch 'vahidrezanezhad/main' into main
-  > * :package: v0.0.6
-  > * trivial
-  > * #43 empty textlines caused by newer python-opencv, is resolved
-  > * #43 resolved
-
-### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [da98713](https://github.com/OCR-D/ocrd_calamari/commits/da98713)..[34013dd](https://github.com/OCR-D/ocrd_calamari/commits/34013dd)
-
-> Release: [v1.0.3](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.3)
-
-  > * 📦 v1.0.3
-  > * 🐛 Fix TensorFlow (and h3py) dependency
-  > * 📝 Reduce process() docstring again
-  > * Merge pull request #65 from bertsky/setup-init
-  > * Merge pull request #64 from bertsky/patch-1
-
-### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [426a33d](https://github.com/cisocrgroup/ocrd_cis/commits/426a33d)..[6f8a612](https://github.com/cisocrgroup/ocrd_cis/commits/6f8a612)
-
-> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
-
-  > * ocrolib.morph: fix select_regions dtype for just 1 label
-  > * segment/polygon_for_parent: skip segment if polygon cannot be made valid
-
-### [ocrd_pc_segmentation](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation) [413f5d3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/413f5d3)..[ff7c007](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/ff7c007)
-
-> Release: [v0.1.3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/releases/v0.1.3)
-
-  > * rename ocrd-{pixelclasifier,pc} in code
-  > * Remove extras_require from setup.py, no longer needed
-  > * Remove extra flags for GPU use (see ocr-d-modul-2-segmentierung/page-segmentation#4)
-  > * ocrd-tool.json: ocrd-{pixelclassifier,pc}-segmentation
-
-### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [5fd7254](https://github.com/OCR-D/ocrd_segment/commits/5fd7254)..[34c72c0](https://github.com/OCR-D/ocrd_segment/commits/34c72c0)
-
-> Release: [v0.1.11](https://github.com/OCR-D/ocrd_segment/releases/v0.1.11)
-
-  > * :package: 0.1.11
-  > * extract_pages: fix 5c548b1a (BorderType has no id)
-
-### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [b755b26](https://github.com/OCR-D/ocrd_tesserocr/commits/b755b26)..[c9a27bd](https://github.com/OCR-D/ocrd_tesserocr/commits/c9a27bd)
-
-> Release: [v0.13.4](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.13.4)
-
-  > * :package: 0.13.4
-  > * Merge pull request #179 from bertsky/improve-tessapi-reset
-  > * recognize: fix 318cefd5 (inverted ChoiceIterator conf threshold)
-  > * recognize: improve Tesseract API state wrapper:
-  > * typo
-  > * :package: 0.13.3
-  > * recognize: on glyph level, fall back to RIL.SYMBOL of ChoiceIterator is empty
-  > * :package: 0.13.2
-  > * forgot requirements
-  > * Merge pull request #175 from bertsky/osd-line-recognize-load-script-lang
-  > * :package: 0.13.0
-  > * Merge pull request #177 from bertsky/clipped-page-image
-
-### [opencv-python](https://github.com/skvark/opencv-python) [fd4e604](https://github.com/skvark/opencv-python/commits/fd4e604)..[86c3d2a](https://github.com/skvark/opencv-python/commits/86c3d2a)
-
-> Release: [56](https://github.com/skvark/opencv-python/releases/56)
-
-  > * Merge pull request #500 from williamjacksn/upload-sdist-to-pypi
-  > * Merge pull request #510 from asenyaev/asen/master_update
-  > * Merge pull request #507 from asenyaev/asen/macos_m1
-  > * Merge pull request #483 from asenyaev/asen/arm_build
-  > * Merge pull request #479 from asmorkalov/as/docs_update
-  > * Fixed if condition for release job (#478)
-  > * make it possible to compile from sources against numpy on macOS aarch64 (#475)
-  > * Update opencv to 4.5.2
-  > * Add GitHub actions setup for CI instead of Travis & Appveyour (where possible) (#470)
-
-### [sbb_textline_detector](https://github.com/qurator-spk/sbb_textline_detector) [f1d2777](https://github.com/qurator-spk/sbb_textline_detector/commits/f1d2777)..[325389a](https://github.com/qurator-spk/sbb_textline_detector/commits/325389a)
-
-  > * Update README.md
+## [v2021-07-22](https://github.com/OCR-D/ocrd_all/releases/v2021-07-22)
 
 ### [tesseract](https://github.com/tesseract-ocr/tesseract) [c676d5bc](https://github.com/tesseract-ocr/tesseract/commits/c676d5bc)..[88d4028a](https://github.com/tesseract-ocr/tesseract/commits/88d4028a)
 
@@ -322,6 +198,132 @@
   > * Fix alerts reported by LGTM
   > * Fix removal of duplicates in StructuredTable::FindLinedStructure
   > * Merge pull request #3332 from stweil/vector
+
+## [v2021-07-21](https://github.com/OCR-D/ocrd_all/releases/v2021-07-21)
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [e919020](https://github.com/ASVLeipzig/cor-asv-ann/commits/e919020)..[1b8c120](https://github.com/ASVLeipzig/cor-asv-ann/commits/1b8c120)
+
+> Release: [v0.1.12](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.12)
+
+  > * :package: 0.1.12
+  > * wrapper.evaluate: allow aggregating histograms, add parameter
+  > * scripts.compare: allow aggregating histograms
+  > * lib.seq2seq / scripts.eval: allow aggregating histograms
+  > * lib.alignment: allow aggregating histograms
+  > * wrapper.evaluate: rename reported metrics and measure WER, too; expose gt_level parameter
+  > * scripts.compare: rename reported metrics and measure WER, too
+  > * lib.alignment: apply equivalences when aggregating confusion, too
+  > * lib.alignment: more level 1/2 equivalences/normalizations
+  > * lib.alignment: remove commented experimental code for other aligners
+  > * :package: 0.1.11
+  > * update README
+  > * lib.alignment: no gaps for confusion counts
+
+### [core](https://github.com/OCR-D/core) [d2c6216f](https://github.com/OCR-D/core/commits/d2c6216f)..[271dcdf6](https://github.com/OCR-D/core/commits/271dcdf6)
+
+> Release: [v2.25.1](https://github.com/OCR-D/core/releases/v2.25.1)
+
+  > * Merge pull request #701 from OCR-D/apidocs-standalone
+  > * :package: v2.25.1
+  > * Merge remote-tracking branch 'origin/gds-id'
+  > * :package: v2.25.0
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/ocrd_page_etree'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/fix-recrop'
+  > * :memo: changelog
+  > * Merge branch 'gds-id'
+  > * :memo: changelog
+  > * fix METS schemaLocation, fix #694
+  > * :package: v2.24.0
+  > * :memo: changelog
+  > * test for #686
+  > * image_from_*: yield matching AlternativeImage with richest features, not last
+  > * crop_image/image_from_polygon: use mask for background estimation, too
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [0b9af3a](https://github.com/qurator-spk/dinglehopper/commits/0b9af3a)..[2497876](https://github.com/qurator-spk/dinglehopper/commits/2497876)
+
+  > * Merge branch 'master' of github.com:qurator-spk/dinglehopper
+  > * 🐛 dinglehopper: Call initLogging before logging
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [80795c9](https://github.com/qurator-spk/eynollah/commits/80795c9)..[d784202](https://github.com/qurator-spk/eynollah/commits/d784202)
+
+> Release: [v0.0.7](https://github.com/qurator-spk/eynollah/releases/v0.0.7)
+
+  > * :package: v0.0.7
+  > * Merge remote-tracking branch 'vahidrezanezhad/main' into main
+  > * :package: v0.0.6
+  > * trivial
+  > * #43 empty textlines caused by newer python-opencv, is resolved
+  > * #43 resolved
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [da98713](https://github.com/OCR-D/ocrd_calamari/commits/da98713)..[34013dd](https://github.com/OCR-D/ocrd_calamari/commits/34013dd)
+
+> Release: [v1.0.3](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.3)
+
+  > * 📦 v1.0.3
+  > * 🐛 Fix TensorFlow (and h3py) dependency
+  > * 📝 Reduce process() docstring again
+  > * Merge pull request #65 from bertsky/setup-init
+  > * Merge pull request #64 from bertsky/patch-1
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [426a33d](https://github.com/cisocrgroup/ocrd_cis/commits/426a33d)..[6f8a612](https://github.com/cisocrgroup/ocrd_cis/commits/6f8a612)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * ocrolib.morph: fix select_regions dtype for just 1 label
+  > * segment/polygon_for_parent: skip segment if polygon cannot be made valid
+
+### [ocrd_pc_segmentation](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation) [413f5d3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/413f5d3)..[ff7c007](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/commits/ff7c007)
+
+> Release: [v0.1.3](https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation/releases/v0.1.3)
+
+  > * rename ocrd-{pixelclasifier,pc} in code
+  > * Remove extras_require from setup.py, no longer needed
+  > * Remove extra flags for GPU use (see ocr-d-modul-2-segmentierung/page-segmentation#4)
+  > * ocrd-tool.json: ocrd-{pixelclassifier,pc}-segmentation
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [5fd7254](https://github.com/OCR-D/ocrd_segment/commits/5fd7254)..[34c72c0](https://github.com/OCR-D/ocrd_segment/commits/34c72c0)
+
+> Release: [v0.1.11](https://github.com/OCR-D/ocrd_segment/releases/v0.1.11)
+
+  > * :package: 0.1.11
+  > * extract_pages: fix 5c548b1a (BorderType has no id)
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [b755b26](https://github.com/OCR-D/ocrd_tesserocr/commits/b755b26)..[c9a27bd](https://github.com/OCR-D/ocrd_tesserocr/commits/c9a27bd)
+
+> Release: [v0.13.4](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.13.4)
+
+  > * :package: 0.13.4
+  > * Merge pull request #179 from bertsky/improve-tessapi-reset
+  > * recognize: fix 318cefd5 (inverted ChoiceIterator conf threshold)
+  > * recognize: improve Tesseract API state wrapper:
+  > * typo
+  > * :package: 0.13.3
+  > * recognize: on glyph level, fall back to RIL.SYMBOL of ChoiceIterator is empty
+  > * :package: 0.13.2
+  > * forgot requirements
+  > * Merge pull request #175 from bertsky/osd-line-recognize-load-script-lang
+  > * :package: 0.13.0
+  > * Merge pull request #177 from bertsky/clipped-page-image
+
+### [opencv-python](https://github.com/skvark/opencv-python) [fd4e604](https://github.com/skvark/opencv-python/commits/fd4e604)..[86c3d2a](https://github.com/skvark/opencv-python/commits/86c3d2a)
+
+> Release: [56](https://github.com/skvark/opencv-python/releases/56)
+
+  > * Merge pull request #500 from williamjacksn/upload-sdist-to-pypi
+  > * Merge pull request #510 from asenyaev/asen/master_update
+  > * Merge pull request #507 from asenyaev/asen/macos_m1
+  > * Merge pull request #483 from asenyaev/asen/arm_build
+  > * Merge pull request #479 from asmorkalov/as/docs_update
+  > * Fixed if condition for release job (#478)
+  > * make it possible to compile from sources against numpy on macOS aarch64 (#475)
+  > * Update opencv to 4.5.2
+  > * Add GitHub actions setup for CI instead of Travis & Appveyour (where possible) (#470)
+
+### [sbb_textline_detector](https://github.com/qurator-spk/sbb_textline_detector) [f1d2777](https://github.com/qurator-spk/sbb_textline_detector/commits/f1d2777)..[325389a](https://github.com/qurator-spk/sbb_textline_detector/commits/325389a)
+
+  > * Update README.md
 
 
 ### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [cf51eb1](https://github.com/bertsky/workflow-configuration/commits/cf51eb1)..[f1a858a](https://github.com/bertsky/workflow-configuration/commits/f1a858a)
