@@ -21,6 +21,7 @@ jobs:
       - run: docker tag ocrd/all:medium-git ocrd/all:medium
       - run: make docker-maximum-git
       - run: docker tag ocrd/all:maximum-git ocrd/all:maximum
+      - run: docker tag ocrd/all:maximum-git ocrd/all:latest
       - run: make docker-maximum-cuda-git
       - run: docker tag ocrd/all:maximum-cuda-git ocrd/all:maximum-cuda
       - run:
@@ -35,6 +36,7 @@ jobs:
             docker push ocrd/all:medium &
             docker push ocrd/all:medium-git &
             docker push ocrd/all:maximum &
+            docker push ocrd/all:latest &
             docker push ocrd/all:maximum-git &
             docker push ocrd/all:maximum-cuda &
             docker push ocrd/all:maximum-cuda-git &
