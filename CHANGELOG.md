@@ -2,6 +2,87 @@
 
 ## Unreleased
 
+## [v2021-09-28](https://github.com/OCR-D/ocrd_all/releases/v2021-09-28)
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [1b8c120](https://github.com/ASVLeipzig/cor-asv-ann/commits/1b8c120)..[55e58f0](https://github.com/ASVLeipzig/cor-asv-ann/commits/55e58f0)
+
+> Release: [v0.1.12](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.12)
+
+  > * lib.keras_train: adapt to Keras 2.3.*
+
+### [core](https://github.com/OCR-D/core) [271dcdf](https://github.com/OCR-D/core/commits/271dcdf)..[9069a65](https://github.com/OCR-D/core/commits/9069a65)
+
+> Release: [v2.26.0](https://github.com/OCR-D/core/releases/v2.26.0)
+
+  > * :memo: changelog, describe --no-copy-files fix of #713 properly
+  > * :package: v2.26.0
+  > * :memo: changelog
+  > * Merge branch 'resmgr-tesseract-main'
+  > * :memo: changelog
+  > * Merge branch 'log-to-stderr'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/ocrd-utils-scale'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/fix-workspace-merge-filegrp'
+  > * :memo: changelog
+  > * makefile: reintroduce tests -> assets dependency
+  > * Adapt tests to not use OcrdFile directly anymore
+  > * Workspace.remove_file: Will always be a single file (because ID is unique)
+  > * OcrdFile.__str__: don't raise if not connected to OcrdMets
+  > * workspace: raise FNFE in download_file, remove mets:file only after recursion
+  > * Workspace.download_url: Use a dummy METS instead of direct OcrdFile instantiation
+  > * utils.get_local_filename: handle Kitodo/Goobi file URLs gracefully
+  > * workspace validator: catch unresolveable files when doing multipage validation
+  > * OcrdFile should never be instantiated w/o reference to METS
+  > * eliminate OcrdFile() from OcrdWorkspace, #324
+  > * tests/data/sample-features: PNG urls missed .png suffix in mets.xml
+  > * tests/data/sample-features: missed foo0.png reference in mets.xml
+  > * Merge pull request #706 from OCR-D/more-apidoc-fixes
+  > * Merge pull request #705 from OCR-D/fix-exif-test
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [d784202](https://github.com/qurator-spk/eynollah/commits/d784202)..[e769f62](https://github.com/qurator-spk/eynollah/commits/e769f62)
+
+> Release: [v0.0.10](https://github.com/qurator-spk/eynollah/releases/v0.0.10)
+
+  > * :package: v0.0.10
+  > * Merge remote-tracking branch 'vahidrezanezhad/main' into main
+  > * :package: v0.0.9
+  > * Merge remote-tracking branch 'vahidrezanezhad/main' into main
+  > * :package: v0.0.8
+  > * set pcGtsId before adding file to mets
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [86763d1](https://github.com/OCR-D/ocrd_fileformat/commits/86763d1)..[72139bc](https://github.com/OCR-D/ocrd_fileformat/commits/72139bc)
+
+> Release: [v0.3.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.3.0)
+
+  > * update ocr-fileformat
+  > * :package: v0.3.0
+
+### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [9db846c](https://github.com/OCR-D/ocrd_olena/commits/9db846c)..[faf3170](https://github.com/OCR-D/ocrd_olena/commits/faf3170)
+
+> Release: [v1.2.4](https://github.com/OCR-D/ocrd_olena/releases/v1.2.4)
+
+  > * Update CHANGELOG.md
+  > * Dockerfile: skip apt autoremove
+  > * auto-push to Dockerhub
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [c0e1440](https://github.com/OCR-D/ocrd_tesserocr/commits/c0e1440)..[b37a710](https://github.com/OCR-D/ocrd_tesserocr/commits/b37a710)
+
+> Release: [v0.13.5](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.13.5)
+
+  > * :package: 0.13.5
+
+### [opencv-python](https://github.com/skvark/opencv-python) [86c3d2a](https://github.com/skvark/opencv-python/commits/86c3d2a)..[f07201c](https://github.com/skvark/opencv-python/commits/f07201c)
+
+> Release: [56](https://github.com/skvark/opencv-python/releases/56)
+
+  > * Merge pull request #545 from Skylion007/patch-1
+  > * Merge pull request #515 from asmorkalov/as/docs_update_actions
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [f1a858a](https://github.com/bertsky/workflow-configuration/commits/f1a858a)..[8d3dc73](https://github.com/bertsky/workflow-configuration/commits/8d3dc73)
+
+  > * skip workspace backups when searching for METS files
+
 ## [v2021-07-22](https://github.com/OCR-D/ocrd_all/releases/v2021-07-22)
 
 ### [tesseract](https://github.com/tesseract-ocr/tesseract) [c676d5bc](https://github.com/tesseract-ocr/tesseract/commits/c676d5bc)..[88d4028a](https://github.com/tesseract-ocr/tesseract/commits/88d4028a)
