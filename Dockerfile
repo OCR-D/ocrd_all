@@ -110,6 +110,8 @@ RUN ldconfig
 RUN sed -i 's/rights="none"/rights="read|write"/g' /etc/ImageMagick-6/policy.xml || true
 # prevent cache resources exhausted errors
 RUN sed -i 's/name="disk" value="1GiB"/name="disk" value="8GiB"/g' /etc/ImageMagick-6/policy.xml || true
+# relax overly restrictive maximum resolution
+RUN sed -i '/width\|height/s/value="16KP"/value="64KP"/' /etc/ImageMagick-6/policy.xml || true
 
 # reset to interactive
 ENV DEBIAN_FRONTEND teletype
