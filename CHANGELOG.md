@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## [v2021-09-28](https://github.com/OCR-D/ocrd_all/releases/v2021-09-28)
+## [v2021-10-12](https://github.com/OCR-D/ocrd_all/releases/v2021-10-12)
 
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [1b8c120](https://github.com/ASVLeipzig/cor-asv-ann/commits/1b8c120)..[55e58f0](https://github.com/ASVLeipzig/cor-asv-ann/commits/55e58f0)
 
