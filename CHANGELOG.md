@@ -68,9 +68,14 @@
 
 ### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [c0e1440](https://github.com/OCR-D/ocrd_tesserocr/commits/c0e1440)..[b37a710](https://github.com/OCR-D/ocrd_tesserocr/commits/b37a710)
 
-> Release: [v0.13.5](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.13.5)
+> Release: [v0.13.6](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.13.6)
 
+  > * :package: 0.13.6
+  > * Merge pull request #180 from bertsky/no-music-by-default 
+  > * segment/recognize: add param find_staves (for pageseg_apply_music_mask) 
+  > * segment/recognize: do not find tables when already looking for cells 
   > * :package: 0.13.5
+
 
 ### [opencv-python](https://github.com/skvark/opencv-python) [86c3d2a](https://github.com/skvark/opencv-python/commits/86c3d2a)..[f07201c](https://github.com/skvark/opencv-python/commits/f07201c)
 
