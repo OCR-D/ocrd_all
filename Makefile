@@ -672,6 +672,7 @@ TESSDATA ?= $(DEFAULT_RESLOC)/ocrd-tesserocr-recognize
 TESSDATA_RELEASE = 4.1.0
 TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast/raw/$(TESSDATA_RELEASE)
 TESSERACT_TRAINEDDATA = $(ALL_TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
+TESSERACT_TRAINEDDATA += $(ALL_TESSERACT_MODELS:%=$(VIRTUAL_ENV)/share/tessdata/%.traineddata)
 
 stripdir = $(patsubst %/,%,$(dir $(1)))
 
@@ -692,6 +693,9 @@ $(TESSDATA)/%.traineddata:
 	$(call WGET,$@,$(TESSDATA_URL)/$(notdir $@)) || \
 	$(call WGET,$@,$(TESSDATA_URL)/$(notdir $(call stripdir,$@))/$(notdir $@)) || \
 		{ $(RM) $@; false; }
+
+$(VIRTUAL_ENV)/share/tessdata/%.traineddata: $(TESSDATA)/%.traineddata
+	cp $< $@
 
 tesseract/Makefile.in: tesseract
 	cd tesseract && ./autogen.sh
