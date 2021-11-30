@@ -2,6 +2,69 @@
 
 ## Unreleased
 
+## [v2021-11-30](https://github.com/OCR-D/ocrd_all/releases/v2021-11-30)
+
+Changed:
+
+  * Re-enable `TESSDATA_PREFIX`, #261
+
+### [core](https://github.com/OCR-D/core) [9069a658](https://github.com/OCR-D/core/commits/9069a658)..[c4ca4fab](https://github.com/OCR-D/core/commits/c4ca4fab)
+
+> Release: [v2.28.0](https://github.com/OCR-D/core/releases/v2.28.0)
+
+  > * :package: v2.28.0
+  > * Merge branch 'pr/748'
+  > * Merge branch 'pr/739'
+  > * Merge branch 'pr/743'
+  > * Merge remote-tracking branch 'bertsky/workspace-download-wait' > * :memo: changelog
+  > * metsHdr/agent/note: add only necessary namespace
+  > * run_processor: add mets:notes with in/output fileGrp and params via mets:agent
+  > * allow adding mets:note to mets:agent
+  > * Merge pull request #737 from OCR-D/update-readme-docs
+  > * :package: v2.27.0
+  > * Merge remote-tracking branch 'bertsky/workspace-remove-allow-empty-regex'
+  > * Merge branch 'resmgr-undefined-resdict'
+  > * Merge branch 'fix-workspace-remove-group-fnfe'
+  > * Merge branch 'rename-group-id'
+  > * remove undeclared requirement on six, fix #726
+  > * bump spec to 3.14.0
+  > * :package: v2.26.1
+  > * Fixed tesseract resource URL for resource 'configs'
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [34c72c0](https://github.com/OCR-D/ocrd_segment/commits/34c72c0)..[bdc6771](https://github.com/OCR-D/ocrd_segment/commits/bdc6771)
+
+> Release: [v0.1.11](https://github.com/OCR-D/ocrd_segment/releases/v0.1.11)
+
+  > * evaluate: basic mAP/AR functionality (based on pycocotools)
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [3313bb79](https://github.com/tesseract-ocr/tesseract/commits/3313bb79)..[924b746e](https://github.com/tesseract-ocr/tesseract/commits/924b746e)
+
+> Release: [5.0.0](https://github.com/tesseract-ocr/tesseract/releases/5.0.0)
+
+  > * Create new release 5.0.0
+  > * Merge pull request #3664 from stweil/classify
+  > * Merge pull request #3663 from stweil/clang7
+  > * autobuild: Fix autogen.sh (reduce build time)
+  > * Remove unused GenericVector::contains_index, UnicityTable::contains_id
+  > * Remove member function GenericVector<T>::contains
+  > * Remove member function UnicityTable<T>::contains
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [8d3dc73](https://github.com/bertsky/workflow-configuration/commits/8d3dc73)..[af76e39](https://github.com/bertsky/workflow-configuration/commits/af76e39)
+
+  > * PAGE transformation scripts: improve error handling vs options
+  > * PAGE transformation scripts: cancel if input is not PAGE
+  > * add PAGE transformation script for namespace update
+  > * add PAGE transformation scripts for text projection
+  > * in multi-input case, allow repeating the same input fileGrps
+  > * update README
+  > * ocrd-import: avoid additional . in file IDs/names
+  > * add PAGE transformation script, add comments
+  > * remove old repair/view rules
+  > * add+wrap various PAGE transformation scripts
+  > * ocrd-import: fix backing out of errors
+  > * ocrd-import: allow upper case suffixes
+
+
 ## [v2021-10-12](https://github.com/OCR-D/ocrd_all/releases/v2021-10-12)
 
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [1b8c120](https://github.com/ASVLeipzig/cor-asv-ann/commits/1b8c120)..[55e58f0](https://github.com/ASVLeipzig/cor-asv-ann/commits/55e58f0)
@@ -1102,8 +1165,6 @@ Hotfix (v2021-05-20 was an incomplete merge)
   > * Merge pull request #660 from OCR-D/add-guess-mimetype
   > * Merge pull request #655 from OCR-D/rename-group
 
-Submodule ocrd_anybaseocr contains untracked content
-Submodule ocrd_anybaseocr contains modified content
 ### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [de27915](https://github.com/OCR-D/ocrd_anybaseocr/commits/de27915)..[e63f555](https://github.com/OCR-D/ocrd_anybaseocr/commits/e63f555)
 
 > Release: [v1.3.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.3.0)
