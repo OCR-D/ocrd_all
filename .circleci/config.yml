@@ -34,10 +34,16 @@ jobs:
           command: |
             docker push ocrd/all:<< parameters.variant >>
             docker push ocrd/all:<< parameters.variant >>-git
-      - run:
-          name: Create a date-versioned mirror of ocrd/all:maximum
-          command: bash release.sh release-dockerhub
-      - run: curl -X POST "$MICROBADGER_WEBHOOK" || true
+      - when:
+          condition:
+            equal: [ maximum, << parameters.variant >> ]
+          steps:
+            - run:
+                name: Create a date-versioned mirror of ocrd/all:maximum
+                command: bash release.sh release-dockerhub
+            - run:
+                name: Update badge
+                command: curl -X POST "$MICROBADGER_WEBHOOK" || true
 workflows:
   version: 2
   build-master:
