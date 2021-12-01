@@ -15,15 +15,22 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
-      - run: make docker-minimum-git
-      - run: docker tag ocrd/all:minimum-git ocrd/all:minimum
-      - run: make docker-medium-git
-      - run: docker tag ocrd/all:medium-git ocrd/all:medium
-      - run: make docker-maximum-git
-      - run: docker tag ocrd/all:maximum-git ocrd/all:maximum
-      - run: docker tag ocrd/all:maximum-git ocrd/all:latest
-      - run: make docker-maximum-cuda-git
-      - run: docker tag ocrd/all:maximum-cuda-git ocrd/all:maximum-cuda
+      - run:
+          name: Build Docker images
+          command: |
+            make docker-minimum-git &
+            make docker-medium-git &
+            make docker-maximum-git &
+            make docker-maximum-cuda-git &
+            wait
+      - run:
+          name: Alias Docker images
+          command: |
+            docker tag ocrd/all:minimum-git ocrd/all:minimum
+            docker tag ocrd/all:medium-git ocrd/all:medium
+            docker tag ocrd/all:maximum-git ocrd/all:maximum
+            docker tag ocrd/all:maximum-git ocrd/all:latest
+            docker tag ocrd/all:maximum-cuda-git ocrd/all:maximum-cuda
       - run:
           name: Login to Docker Hub
           command: echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
