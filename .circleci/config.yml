@@ -12,42 +12,28 @@ jobs:
       - image: circleci/buildpack-deps:stretch
     environment:
       GIT_DEPTH: "--depth 1"
+    parameters:
+      name:
+        type:
+          string
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
       - run:
-          name: Build Docker images
-          command: |
-            make docker-minimum-git &
-            make docker-medium-git &
-            make docker-maximum-git &
-            make docker-maximum-cuda-git &
-            wait
+          name: Build Docker image
+          command: make docker-<< parameters.name >>-git
       - run:
           name: Alias Docker images
-          command: |
-            docker tag ocrd/all:minimum-git ocrd/all:minimum
-            docker tag ocrd/all:medium-git ocrd/all:medium
-            docker tag ocrd/all:maximum-git ocrd/all:maximum
-            docker tag ocrd/all:maximum-git ocrd/all:latest
-            docker tag ocrd/all:maximum-cuda-git ocrd/all:maximum-cuda
+          command: docker tag ocrd/all:<< parameters.name >>-git ocrd/all:<< parameters.name >>
       - run:
           name: Login to Docker Hub
           command: echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
       - run:
-          name: Push images to Docker Hub in parallel
+          name: Push images to Docker Hub
           no_output_timeout: 2.5h
           command: |
-            docker push ocrd/all:minimum &
-            docker push ocrd/all:minimum-git &
-            docker push ocrd/all:medium &
-            docker push ocrd/all:medium-git &
-            docker push ocrd/all:maximum &
-            docker push ocrd/all:latest &
-            docker push ocrd/all:maximum-git &
-            docker push ocrd/all:maximum-cuda &
-            docker push ocrd/all:maximum-cuda-git &
-            wait
+            docker push ocrd/all:<< parameters.name >>
+            docker push ocrd/all:<< parameters.name >>-git
       - run:
           name: Create a date-versioned mirror of ocrd/all:maximum
           command: bash release.sh release-dockerhub
@@ -57,6 +43,9 @@ workflows:
   build-master:
     jobs:
       - deploy:
+          matrix:
+            parameters:
+              name: [minimum medium maximum maximum-cuda]
           filters:
             branches:
               only: master
