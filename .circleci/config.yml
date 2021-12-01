@@ -45,7 +45,7 @@ workflows:
       - deploy:
           matrix:
             parameters:
-              variant: [minimum medium maximum maximum-cuda]
+              variant: [minimum, medium, maximum, maximum-cuda]
           filters:
             branches:
               only: master
