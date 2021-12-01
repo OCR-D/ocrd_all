@@ -13,7 +13,7 @@ jobs:
     environment:
       GIT_DEPTH: "--depth 1"
     parameters:
-      name:
+      variant:
         type:
           string
     steps:
@@ -21,10 +21,10 @@ jobs:
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
       - run:
           name: Build Docker image
-          command: make docker-<< parameters.name >>-git
+          command: make docker-<< parameters.variant >>-git
       - run:
           name: Alias Docker images
-          command: docker tag ocrd/all:<< parameters.name >>-git ocrd/all:<< parameters.name >>
+          command: docker tag ocrd/all:<< parameters.variant >>-git ocrd/all:<< parameters.variant >>
       - run:
           name: Login to Docker Hub
           command: echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
@@ -32,8 +32,8 @@ jobs:
           name: Push images to Docker Hub
           no_output_timeout: 2.5h
           command: |
-            docker push ocrd/all:<< parameters.name >>
-            docker push ocrd/all:<< parameters.name >>-git
+            docker push ocrd/all:<< parameters.variant >>
+            docker push ocrd/all:<< parameters.variant >>-git
       - run:
           name: Create a date-versioned mirror of ocrd/all:maximum
           command: bash release.sh release-dockerhub
@@ -45,7 +45,7 @@ workflows:
       - deploy:
           matrix:
             parameters:
-              name: [minimum medium maximum maximum-cuda]
+              variant: [minimum medium maximum maximum-cuda]
           filters:
             branches:
               only: master
