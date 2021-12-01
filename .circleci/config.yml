@@ -12,33 +12,28 @@ jobs:
       - image: circleci/buildpack-deps:stretch
     environment:
       GIT_DEPTH: "--depth 1"
+    parameters:
+      variant:
+        type:
+          string
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
-      - run: make docker-minimum-git
-      - run: docker tag ocrd/all:minimum-git ocrd/all:minimum
-      - run: make docker-medium-git
-      - run: docker tag ocrd/all:medium-git ocrd/all:medium
-      - run: make docker-maximum-git
-      - run: docker tag ocrd/all:maximum-git ocrd/all:maximum
-      - run: make docker-maximum-cuda-git
-      - run: docker tag ocrd/all:maximum-cuda-git ocrd/all:maximum-cuda
+      - run:
+          name: Build Docker image
+          command: make docker-<< parameters.variant >>-git
+      - run:
+          name: Alias Docker images
+          command: docker tag ocrd/all:<< parameters.variant >>-git ocrd/all:<< parameters.variant >>
       - run:
           name: Login to Docker Hub
           command: echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
       - run:
-          name: Push images to Docker Hub in parallel
+          name: Push images to Docker Hub
           no_output_timeout: 2.5h
           command: |
-            docker push ocrd/all:minimum &
-            docker push ocrd/all:minimum-git &
-            docker push ocrd/all:medium &
-            docker push ocrd/all:medium-git &
-            docker push ocrd/all:maximum &
-            docker push ocrd/all:maximum-git &
-            docker push ocrd/all:maximum-cuda &
-            docker push ocrd/all:maximum-cuda-git &
-            wait
+            docker push ocrd/all:<< parameters.variant >>
+            docker push ocrd/all:<< parameters.variant >>-git
       - run:
           name: Create a date-versioned mirror of ocrd/all:maximum
           command: bash release.sh release-dockerhub
@@ -48,6 +43,9 @@ workflows:
   build-master:
     jobs:
       - deploy:
+          matrix:
+            parameters:
+              variant: [minimum, medium, maximum, maximum-cuda]
           filters:
             branches:
               only: master

@@ -669,8 +669,10 @@ CUSTOM_DEPS += libpango1.0-dev
 XDG_DATA_HOME ?= $(if $(HOME),$(HOME)/.local/share,/usr/local/share)
 DEFAULT_RESLOC ?= $(XDG_DATA_HOME)/ocrd-resources
 TESSDATA ?= $(DEFAULT_RESLOC)/ocrd-tesserocr-recognize
-TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast
+TESSDATA_RELEASE = 4.1.0
+TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast/raw/$(TESSDATA_RELEASE)
 TESSERACT_TRAINEDDATA = $(ALL_TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
+TESSERACT_TRAINEDDATA += $(ALL_TESSERACT_MODELS:%=$(VIRTUAL_ENV)/share/tessdata/%.traineddata)
 
 stripdir = $(patsubst %/,%,$(dir $(1)))
 
@@ -685,27 +687,21 @@ all: install-tesseract
 script/%.traineddata: $(TESSDATA)/script/%.traineddata
 	$(MAKE) $^
 
-# Special rule for equ.traineddata which is only available from tesseract-ocr/tessdata.
-$(TESSDATA)/equ.traineddata:
-	@mkdir -p $(dir $@)
-	$(call WGET,$@,https://github.com/tesseract-ocr/tessdata/raw/master/$(notdir $@)) || \
-		{ $(RM) $@; false; }
-
-# Default rule for all other traineddata models.
+# Default rule for traineddata models.
 $(TESSDATA)/%.traineddata:
 	@mkdir -p $(dir $@)
-	$(call WGET,$@,$(TESSDATA_URL)/raw/master/$(notdir $@)) || \
-	$(call WGET,$@,$(TESSDATA_URL)/raw/master/$(notdir $(call stripdir,$@))/$(notdir $@)) || \
+	$(call WGET,$@,$(TESSDATA_URL)/$(notdir $@)) || \
+	$(call WGET,$@,$(TESSDATA_URL)/$(notdir $(call stripdir,$@))/$(notdir $@)) || \
 		{ $(RM) $@; false; }
+
+$(VIRTUAL_ENV)/share/tessdata/%.traineddata: $(TESSDATA)/%.traineddata
+	cp $< $@
 
 tesseract/Makefile.in: tesseract
 	cd tesseract && ./autogen.sh
 
 # Build and install Tesseract.
-# We do not want to compile-in TESSDATA_PREFIX here, because our preferred TESSDATA path
-# would still get incorrectly suffixed by "/tessdata" at runtime.
-# Instead, we will rely on TESSDATA_PREFIX=$(TESSDATA) as a shell variable for the standalone CLI.
-TESSERACT_CONFIG ?= --disable-tessdata-prefix --disable-openmp --disable-shared CXXFLAGS="-g -O2 -fPIC"
+TESSERACT_CONFIG ?= --disable-openmp --disable-shared CXXFLAGS="-g -O2 -fPIC"
 $(BIN)/tesseract: tesseract/Makefile.in
 	mkdir -p $(VIRTUAL_ENV)/build/tesseract
 	cd $(VIRTUAL_ENV)/build/tesseract && $(CURDIR)/tesseract/configure --prefix="$(VIRTUAL_ENV)" $(TESSERACT_CONFIG)
