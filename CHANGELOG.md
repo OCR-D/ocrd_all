@@ -4,6 +4,17 @@
 
 ## [v2021-12-08](https://github.com/OCR-D/ocrd_all/releases/v2021-12-08)
 
+### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [faf3170](https://github.com/OCR-D/ocrd_olena/commits/faf3170)..[fce9933](https://github.com/OCR-D/ocrd_olena/commits/fce9933)
+
+> Release: [v1.2.6](https://github.com/OCR-D/ocrd_olena/releases/v1.2.6)
+
+  > * :package: 1.2.6
+  > * Merge pull request #82 from bertsky/use-bashlib-input-files
+  > * be robust if file has no pageId
+  > * fix typo in CircleCI
+  > * Merge pull request #80 from bertsky/master
+
+
 ### [core](https://github.com/OCR-D/core) [c4ca4fab](https://github.com/OCR-D/core/commits/c4ca4fab)..[66cd13f9](https://github.com/OCR-D/core/commits/66cd13f9)
 
 > Release: [v2.29.0](https://github.com/OCR-D/core/releases/v2.29.0)
