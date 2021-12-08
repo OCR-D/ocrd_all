@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+## [v2021-12-08](https://github.com/OCR-D/ocrd_all/releases/v2021-12-08)
+
+### [core](https://github.com/OCR-D/core) [c4ca4fab](https://github.com/OCR-D/core/commits/c4ca4fab)..[66cd13f9](https://github.com/OCR-D/core/commits/66cd13f9)
+
+> Release: [v2.29.0](https://github.com/OCR-D/core/releases/v2.29.0)
+
+  > * :package: v2.29.0
+  > * Update CHANGELOG.md
+  > * Merge branch 'restrict-fileGrp-USE' into release-2.29.0
+  > * :memo: changelog
+  > * Merge branch 'pr/744'
+  > * Merge branch 'pr/753'
+  > * Merge pull request #755 from ulb-sachsen-anhalt/feat/rfct/review-dep-opencv
+
+
 ## [v2021-11-30](https://github.com/OCR-D/ocrd_all/releases/v2021-11-30)
 
 Changed:
