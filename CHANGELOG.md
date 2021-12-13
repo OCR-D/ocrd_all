@@ -2,7 +2,26 @@
 
 ## Unreleased
 
-## [v2021-12-08](https://github.com/OCR-D/ocrd_all/releases/v2021-12-08)
+## [v2021-12-13](https://github.com/OCR-D/ocrd_all/releases/v2021-12-13)
+
+### [core](https://github.com/OCR-D/core) [c4ca4fab](https://github.com/OCR-D/core/commits/c4ca4fab)..[66cd13f9](https://github.com/OCR-D/core/commits/66cd13f9)
+
+> Release: [v2.29.0](https://github.com/OCR-D/core/releases/v2.29.0)
+
+  > * test_exif: remove platform-dependent skipif mark
+  > * Merge remote-tracking branch 'upstream/master' into feat/rfct/pytest
+  > * [test][rfct] switch to pytest style
+  > * [app][dep] add uniform formatter
+  > * [test][rfct] ocrd-exif param + skipif
+  > * [app][dep] rather opencv-headless
+  > * [test][rfct] exchange unittest with pytest
+  > * :package: v2.29.0
+  > * Update CHANGELOG.md
+  > * Merge branch 'restrict-fileGrp-USE' into release-2.29.0
+  > * :memo: changelog
+  > * Merge branch 'pr/744'
+  > * Merge branch 'pr/753'
+  > * Merge pull request #755 from ulb-sachsen-anhalt/feat/rfct/review-dep-opencv
 
 ### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [faf3170](https://github.com/OCR-D/ocrd_olena/commits/faf3170)..[fce9933](https://github.com/OCR-D/ocrd_olena/commits/fce9933)
 
@@ -14,18 +33,19 @@
   > * fix typo in CircleCI
   > * Merge pull request #80 from bertsky/master
 
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [bdc6771](https://github.com/OCR-D/ocrd_segment/commits/bdc6771)..[8f180b6](https://github.com/OCR-D/ocrd_segment/commits/8f180b6)
 
-### [core](https://github.com/OCR-D/core) [c4ca4fab](https://github.com/OCR-D/core/commits/c4ca4fab)..[66cd13f9](https://github.com/OCR-D/core/commits/66cd13f9)
+> Release: [v0.1.13](https://github.com/OCR-D/ocrd_segment/releases/v0.1.13)
 
-> Release: [v2.29.0](https://github.com/OCR-D/core/releases/v2.29.0)
-
-  > * :package: v2.29.0
-  > * Update CHANGELOG.md
-  > * Merge branch 'restrict-fileGrp-USE' into release-2.29.0
-  > * :memo: changelog
-  > * Merge branch 'pr/744'
-  > * Merge branch 'pr/753'
-  > * Merge pull request #755 from ulb-sachsen-anhalt/feat/rfct/review-dep-opencv
+  > * :package: 0.1.13
+  > * evaluate: fix multi-matching and over/undersegmentation metrics, add pixel scores
+  > * evaluate: add pixel-wise measures IoU / IoGT / IoDT…
+  > * evaluate: also get over/undersegmentation and false DT/GT…
+  > * evaluate: refactor and expose standalone CLI
+  > * change pycocotools dependency to fork
+  > * :package: 0.1.12
+  > * evaluate: cleanup unrestricted maxDets
+  > * evaluate: fix pycocotools match pair extraction, work around annotation id > 0 assumption
 
 
 ## [v2021-11-30](https://github.com/OCR-D/ocrd_all/releases/v2021-11-30)
