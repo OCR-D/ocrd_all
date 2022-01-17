@@ -21,7 +21,7 @@ GIT_DEPTH = # --depth 1
 ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
 
 # directory for virtual Python environment
-# (but re-use if already active); overriden
+# (but re-use if already active); overridden
 # to nested venv in recursive calls for modules
 # that have known dependency clashes with others
 export VIRTUAL_ENV ?= $(CURDIR)/venv
