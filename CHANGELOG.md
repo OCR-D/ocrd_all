@@ -28,6 +28,18 @@
   > * resolve_mets_arguments: handle mets&directory&!mets_basename
   > * extract --mets/--mets-basenme/--directory logic to utils.resolve_mets_arguments
 
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [6f8a612](https://github.com/cisocrgroup/ocrd_cis/commits/6f8a612)..[529f7f5](https://github.com/cisocrgroup/ocrd_cis/commits/529f7f5)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * compute_hlines/compute_separators_morph: early length filt by opening must be softer than final criterion
+  > * compute_hlines: fix h/v kernel size
+  > * ocropy.lines2regions: fall back to topological partitioning
+  > * ocropy.lines2regions: improve splitting by separators
+  > * ocropy.segment: improve within-region hmerge rule
+  > * ocropy.lines2regions: fix textline assignment around existing regions
+  > * ocrolib.morph: opt out of np.unique counts
+
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [55e58f0](https://github.com/ASVLeipzig/cor-asv-ann/commits/55e58f0)..[f19a9b3](https://github.com/ASVLeipzig/cor-asv-ann/commits/f19a9b3)
 
 > Release: [v0.1.12](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.12)
