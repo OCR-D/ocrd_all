@@ -237,6 +237,21 @@ else
 endif
 endif
 
+ifneq ($(findstring ocrd_detectron2, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
+OCRD_DETECTRON2 += $(BIN)/ocrd-detectron2-segment
+$(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(OCRD_DETECTRON2)) VIRTUAL_ENV=$(SUB_VENV)/headless-torch14
+	$(call delegate_venv,$(OCRD_DETECTRON2),$(SUB_VENV)/headless-torch14)
+ocrd_detectron2-check:
+	$(MAKE) check OCRD_MODULES=ocrd_detectron2 VIRTUAL_ENV=$(SUB_VENV)/headless-torch14
+else
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
+	$(pip_install)
+endif
+endif
+
 ifneq ($(findstring cor-asv-fst, $(OCRD_MODULES)),)
 deps-ubuntu-modules: cor-asv-fst
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
@@ -477,6 +492,13 @@ ocrd_typegroups_classifier-check:
 else
 	$(pip_install)
 endif
+endif
+
+ifneq ($(findstring ocrd_doxa, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(OCRD_DOXA)
+OCRD_DOXA := $(BIN)/ocrd-doxa-binarize
+$(OCRD_DOXA): ocrd_doxa $(BIN)/ocrd
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
 endif
 
 ifneq ($(findstring sbb_binarization, $(OCRD_MODULES)),)

@@ -2,6 +2,12 @@
 
 ## [v2022-02-02](https://github.com/OCR-D/ocrd_all/releases/v2022-02-02)
 
+New projects:
+
+* [ocrd_doxa](https://github.com/bertsky/ocrd_doxa)
+* [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2)
+
+
 ### [core](https://github.com/OCR-D/core) [66cd13f9](https://github.com/OCR-D/core/commits/66cd13f9)..[836eb05e](https://github.com/OCR-D/core/commits/836eb05e)
 
 > Release: [v2.30.0](https://github.com/OCR-D/core/releases/v2.30.0)
