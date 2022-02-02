@@ -62,7 +62,7 @@ loginfo () {
 
 submodule_url () {
     local sm="$1"
-    git config --file .gitmodules --get-regexp "$sm.url" |cut -d' ' -f 2|sed 's,\.git$,,'
+    git config --file .gitmodules --get-regexp "\b$sm.url" |cut -d' ' -f 2|sed 's,\.git$,,'
 }
 
 list_all_submodules () {
