@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2022-02-02](https://github.com/OCR-D/ocrd_all/releases/v2022-02-02)
+## [v2022-02-03](https://github.com/OCR-D/ocrd_all/releases/v2022-02-03)
 
 New projects:
 
@@ -167,8 +167,9 @@ New projects:
   > * Merge pull request #547 from asenyaev/asen/lapack_issue
   > * Merge pull request #555 from asenyaev/asen/fix_macos_m1
 
-### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [af76e39](https://github.com/bertsky/workflow-configuration/commits/af76e39)..[9296644](https://github.com/bertsky/workflow-configuration/commits/9296644)
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [9296644](https://github.com/bertsky/workflow-configuration/commits/9296644)..[f5faf29](https://github.com/bertsky/workflow-configuration/commits/f5faf29)
 
+  > * ocrd-page-transform: add param mimetype (default to PAGE-XML)
   > * ocrd-page-transform: add option to pass xslt-params
   > * add more PAGE XSLT, add option for param mechanism
   > * add 2 more PAGE XSLs
