@@ -34,10 +34,20 @@ New projects:
   > * resolve_mets_arguments: handle mets&directory&!mets_basename
   > * extract --mets/--mets-basenme/--directory logic to utils.resolve_mets_arguments
 
-### [tesseract](https://github.com/tesseract-ocr/tesseract) [924b746e](https://github.com/tesseract-ocr/tesseract/commits/924b746e)..[5d5cd77e](https://github.com/tesseract-ocr/tesseract/commits/5d5cd77e)
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [5d5cd77e](https://github.com/tesseract-ocr/tesseract/commits/5d5cd77e)..[8b5571f8](https://github.com/tesseract-ocr/tesseract/commits/8b5571f8)
 
 > Release: [5.0.1](https://github.com/tesseract-ocr/tesseract/releases/5.0.1)
 
+  > * Merge pull request #3742 from stweil/robustness
+  > * Fix old TODO (STATS::rangemax_)
+  > * Additional fix for CI action autotools-macos for MacPorts
+  > * Fix CI action autotools-macos for MacPorts
+  > * Require cmake 3.10 or newer (#3724)
+  > * Add new parameter curl_timeout for curl_easy_setop
+  > * Add missing include file for std::max, std::min
+  > * ci: Setting PKG_CONFIG_PATH is no longer needed for autoconf builds on MacOS
+  > * autoconf: Set PKG_CONFIG_PATH required for Homebrew (macOS)
+  > * Merge pull request #3716 from ffontaine/main
   > * Create new release 5.0.1
   > * Update documentation for release 5.0.1
   > * Merge pull request #3712 from stweil/cmake
