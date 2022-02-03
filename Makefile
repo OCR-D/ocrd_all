@@ -500,7 +500,7 @@ ifneq ($(findstring ocrd_doxa, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_DOXA)
 OCRD_DOXA := $(BIN)/ocrd-doxa-binarize
 $(OCRD_DOXA): ocrd_doxa $(BIN)/ocrd
-	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
+	$(pip_install)
 endif
 
 ifneq ($(findstring sbb_binarization, $(OCRD_MODULES)),)
