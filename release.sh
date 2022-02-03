@@ -49,7 +49,7 @@ main () {
     shift
     case "$cmd" in
         update) update_all_submodules "$@" ;;
-        changelog) update_changelog ;;
+        changelog) update_changelog "$@" ;;
         release-github) release_github ;;
         release-dockerhub) release_dockerhub ;;
         *) usage; exit 1 ;;
@@ -112,12 +112,17 @@ submodule_changelog () {
 }
 
 update_changelog () {
+    if (( $# == 0 ));then
+        sms=($(list_changed_submodules))
+    else
+        sms=($@)
+    fi
     (
         echo "# Changelog"
         echo ""
         echo "## [$version](https://github.com/OCR-D/ocrd_all/releases/$version)"
         echo ""
-        for sm in $(list_changed_submodules);do
+        for sm in ${sms[@]};do
             submodule_changelog $sm
             echo ""
         done
