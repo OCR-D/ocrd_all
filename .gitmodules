@@ -88,3 +88,9 @@
 [submodule "eynollah"]
 	path = eynollah
 	url = https://github.com/qurator-spk/eynollah
+[submodule "ocrd_detectron2"]
+	path = ocrd_detectron2
+	url = https://github.com/bertsky/ocrd_detectron2.git
+[submodule "ocrd_doxa"]
+	path = ocrd_doxa
+	url = https://github.com/bertsky/ocrd_doxa.git

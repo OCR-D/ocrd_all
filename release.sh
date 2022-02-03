@@ -49,7 +49,7 @@ main () {
     shift
     case "$cmd" in
         update) update_all_submodules "$@" ;;
-        changelog) update_changelog ;;
+        changelog) update_changelog "$@" ;;
         release-github) release_github ;;
         release-dockerhub) release_dockerhub ;;
         *) usage; exit 1 ;;
@@ -62,7 +62,7 @@ loginfo () {
 
 submodule_url () {
     local sm="$1"
-    git config --file .gitmodules --get-regexp "$sm.url" |cut -d' ' -f 2|sed 's,\.git$,,'
+    git config --file .gitmodules --get-regexp "\b$sm.url" |cut -d' ' -f 2|sed 's,\.git$,,'
 }
 
 list_all_submodules () {
@@ -112,12 +112,17 @@ submodule_changelog () {
 }
 
 update_changelog () {
+    if (( $# == 0 ));then
+        sms=($(list_changed_submodules))
+    else
+        sms=($@)
+    fi
     (
         echo "# Changelog"
         echo ""
         echo "## [$version](https://github.com/OCR-D/ocrd_all/releases/$version)"
         echo ""
-        for sm in $(list_changed_submodules);do
+        for sm in ${sms[@]};do
             submodule_changelog $sm
             echo ""
         done

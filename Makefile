@@ -220,9 +220,11 @@ endif
 
 ifneq ($(findstring cor-asv-ann, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
+OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-align
 OCRD_COR_ASV_ANN := $(BIN)/ocrd-cor-asv-ann-evaluate
 OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-process
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-train
+OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-proc
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-eval
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-compare
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
@@ -233,6 +235,21 @@ ifeq (0,$(MAKELEVEL))
 cor-asv-ann-check:
 	$(MAKE) check OCRD_MODULES=cor-asv-ann VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
+	$(pip_install)
+endif
+endif
+
+ifneq ($(findstring ocrd_detectron2, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
+OCRD_DETECTRON2 += $(BIN)/ocrd-detectron2-segment
+$(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(OCRD_DETECTRON2)) VIRTUAL_ENV=$(SUB_VENV)/headless-torch14
+	$(call delegate_venv,$(OCRD_DETECTRON2),$(SUB_VENV)/headless-torch14)
+ocrd_detectron2-check:
+	$(MAKE) check OCRD_MODULES=ocrd_detectron2 VIRTUAL_ENV=$(SUB_VENV)/headless-torch14
+else
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
 endif
 endif
@@ -479,6 +496,13 @@ else
 endif
 endif
 
+ifneq ($(findstring ocrd_doxa, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(OCRD_DOXA)
+OCRD_DOXA := $(BIN)/ocrd-doxa-binarize
+$(OCRD_DOXA): ocrd_doxa $(BIN)/ocrd
+	$(pip_install)
+endif
+
 ifneq ($(findstring sbb_binarization, $(OCRD_MODULES)),)
 install-models: install-models-sbb-binarization
 .PHONY: install-models-sbb-binarization
@@ -553,6 +577,7 @@ deps-ubuntu-modules: workflow-configuration
 OCRD_EXECUTABLES += $(WORKFLOW_CONFIGURATION)
 WORKFLOW_CONFIGURATION := $(BIN)/ocrd-make
 WORKFLOW_CONFIGURATION += $(BIN)/ocrd-import
+WORKFLOW_CONFIGURATION += $(BIN)/ocrd-page-transform
 $(BIN)/ocrd-make-check: override CHECK_HELP=
 $(call multirule,$(WORKFLOW_CONFIGURATION)): workflow-configuration $(BIN)/ocrd
 	$(MAKE) -C $< install
