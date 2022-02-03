@@ -34,6 +34,53 @@ New projects:
   > * resolve_mets_arguments: handle mets&directory&!mets_basename
   > * extract --mets/--mets-basenme/--directory logic to utils.resolve_mets_arguments
 
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [924b746e](https://github.com/tesseract-ocr/tesseract/commits/924b746e)..[5d5cd77e](https://github.com/tesseract-ocr/tesseract/commits/5d5cd77e)
+
+> Release: [5.0.1](https://github.com/tesseract-ocr/tesseract/releases/5.0.1)
+
+  > * Create new release 5.0.1
+  > * Update documentation for release 5.0.1
+  > * Merge pull request #3712 from stweil/cmake
+  > * Fix build on non-x86 non-ARM with clang
+  > * Merge pull request #3705 from stweil/cmake
+  > * Update required packages for CI
+  > * Merge pull request #3704 from stweil/cmake-fixes
+  > * Use cmake policy CMP0074 only with version 3.12 or newer
+  > * Update submodule googletest to release v1.11.0
+  > * Remove unused include statement
+  > * Add function ERRCODE::error with only 2 parameters
+  > * Fix some compiler warnings (implicit float to double conversion)
+  > * Remove unused forward declaration
+  > * Merge pull request #3699 from stweil/bugfix
+  > * Merge pull request #3697 from stweil/opt
+  > * Catch nullptr in STATS::pile_count (fix isse #3694)
+  > * Update generator for lookup tables to use TFloat instead of double
+  > * Fix some clang compiler warnings
+  > * Merge pull request #3690 from stweil/SPDX
+  > * Add SPDX-License-Identifier to public include files
+  > * Fix compiler warning [-Wsign-compare]
+  > * Allow printing of bitfield with variadic templates
+  > * Fix compiler warnings caused by empty statements
+  > * Replace tprintf comment in API header
+  > * Cmake install (#3685)
+  > * clean up condition to detect MSCV
+  > * fix lstm.cpp build with clang
+  > * cmake: fix bcf7bbb6e23fcd7c081
+  > * cmake: do not try to even configure training tools if pkg-config is not present.
+  > * cmake: reformat with cmake-format and check with cmake-lint
+  > * cmake: do not try to configure training tools without PkgConfig
+  > * cmake: remove unused code
+  > * CMake: Also check x86_64 and i686
+  > * cmake: fix fb74c7eac1292fca6221d66ed4428d3a031e99dd
+  > * Merge pull request #3681 from stweil/curl
+  > * Update README.md
+  > * Update unittest-disablelegacy.yml
+  > * Update vcpkg-4.1.1.yml
+  > * Fix broken msys2 build with gcc 11
+  > * Update unittest-disablelegacy.yml
+  > * Merge pull request #3669 from pkubaj/patch-1
+  > * README: Latest stable version is 5.0.0
+
 ### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [6f8a612](https://github.com/cisocrgroup/ocrd_cis/commits/6f8a612)..[529f7f5](https://github.com/cisocrgroup/ocrd_cis/commits/529f7f5)
 
 > Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
