@@ -176,6 +176,7 @@ multirule = $(patsubst $(BIN)/%,\%/%,$(1))
 ifneq ($(findstring format-converters, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(PAGE2IMG)
 PAGE2IMG := $(BIN)/page2img
+format-converters/page2img.py: format-converters
 $(PAGE2IMG): format-converters/page2img.py
 	. $(ACTIVATE_VENV) && $(PIP) install validators
 	echo "#!$(BIN)/python3" | cat - $< >$@
