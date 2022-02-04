@@ -720,6 +720,7 @@ $(TESSDATA)/%.traineddata:
 		{ $(RM) $@; false; }
 
 $(VIRTUAL_ENV)/share/tessdata/%.traineddata: $(TESSDATA)/%.traineddata
+	@mkdir -p $(dir $@)
 	cp $< $@
 
 tesseract/Makefile.in: tesseract
