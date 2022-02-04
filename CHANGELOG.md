@@ -1,5 +1,197 @@
 # Changelog
 
+## [v2022-02-03](https://github.com/OCR-D/ocrd_all/releases/v2022-02-03)
+
+New projects:
+
+* [ocrd_doxa](https://github.com/bertsky/ocrd_doxa)
+* [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2)
+
+
+### [core](https://github.com/OCR-D/core) [66cd13f9](https://github.com/OCR-D/core/commits/66cd13f9)..[836eb05e](https://github.com/OCR-D/core/commits/836eb05e)
+
+> Release: [v2.30.0](https://github.com/OCR-D/core/releases/v2.30.0)
+
+  > * :package: v2.30.0
+  > * :memo: changelog
+  > * Merge branch 'show-resource-subdir'
+  > * :memo: changelog
+  > * Merge branch 'bulk-add-from-stdin'
+  > * :memo: changelog
+  > * Merge branch 'simplify-bashlib'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/patch-2'
+  > * Merge remote-tracking branch 'bertsky/patch-1'
+  > * :memo: changelog
+  > * Merge branch 'master' into decorator-working-dir
+  > * Merge remote-tracking branch 'origin/master' into decorator-working-dir
+  > * Resolve.resolve_mets_arguments: simplify resolution logic, test all cases
+  > * ocrd workspace CLI: Rely on the --mets*/--directory logic in Resolver
+  > * make resolve_mets_arguments a method of Resolver, reintroduce --mets-basename DeprecactionWarning
+  > * Merge branch 'master' into decorator-working-dir
+  > * use resolve_mets_arguments in processor decorator, fix #693
+  > * resolve_mets_arguments: handle --mets == mets.xml, use pathlib
+  > * resolve_mets_arguments: handle mets&directory&!mets_basename
+  > * extract --mets/--mets-basenme/--directory logic to utils.resolve_mets_arguments
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [5d5cd77e](https://github.com/tesseract-ocr/tesseract/commits/5d5cd77e)..[8b5571f8](https://github.com/tesseract-ocr/tesseract/commits/8b5571f8)
+
+> Release: [5.0.1](https://github.com/tesseract-ocr/tesseract/releases/5.0.1)
+
+  > * Merge pull request #3742 from stweil/robustness
+  > * Fix old TODO (STATS::rangemax_)
+  > * Additional fix for CI action autotools-macos for MacPorts
+  > * Fix CI action autotools-macos for MacPorts
+  > * Require cmake 3.10 or newer (#3724)
+  > * Add new parameter curl_timeout for curl_easy_setop
+  > * Add missing include file for std::max, std::min
+  > * ci: Setting PKG_CONFIG_PATH is no longer needed for autoconf builds on MacOS
+  > * autoconf: Set PKG_CONFIG_PATH required for Homebrew (macOS)
+  > * Merge pull request #3716 from ffontaine/main
+  > * Create new release 5.0.1
+  > * Update documentation for release 5.0.1
+  > * Merge pull request #3712 from stweil/cmake
+  > * Fix build on non-x86 non-ARM with clang
+  > * Merge pull request #3705 from stweil/cmake
+  > * Update required packages for CI
+  > * Merge pull request #3704 from stweil/cmake-fixes
+  > * Use cmake policy CMP0074 only with version 3.12 or newer
+  > * Update submodule googletest to release v1.11.0
+  > * Remove unused include statement
+  > * Add function ERRCODE::error with only 2 parameters
+  > * Fix some compiler warnings (implicit float to double conversion)
+  > * Remove unused forward declaration
+  > * Merge pull request #3699 from stweil/bugfix
+  > * Merge pull request #3697 from stweil/opt
+  > * Catch nullptr in STATS::pile_count (fix isse #3694)
+  > * Update generator for lookup tables to use TFloat instead of double
+  > * Fix some clang compiler warnings
+  > * Merge pull request #3690 from stweil/SPDX
+  > * Add SPDX-License-Identifier to public include files
+  > * Fix compiler warning [-Wsign-compare]
+  > * Allow printing of bitfield with variadic templates
+  > * Fix compiler warnings caused by empty statements
+  > * Replace tprintf comment in API header
+  > * Cmake install (#3685)
+  > * clean up condition to detect MSCV
+  > * fix lstm.cpp build with clang
+  > * cmake: fix bcf7bbb6e23fcd7c081
+  > * cmake: do not try to even configure training tools if pkg-config is not present.
+  > * cmake: reformat with cmake-format and check with cmake-lint
+  > * cmake: do not try to configure training tools without PkgConfig
+  > * cmake: remove unused code
+  > * CMake: Also check x86_64 and i686
+  > * cmake: fix fb74c7eac1292fca6221d66ed4428d3a031e99dd
+  > * Merge pull request #3681 from stweil/curl
+  > * Update README.md
+  > * Update unittest-disablelegacy.yml
+  > * Update vcpkg-4.1.1.yml
+  > * Fix broken msys2 build with gcc 11
+  > * Update unittest-disablelegacy.yml
+  > * Merge pull request #3669 from pkubaj/patch-1
+  > * README: Latest stable version is 5.0.0
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [6f8a612](https://github.com/cisocrgroup/ocrd_cis/commits/6f8a612)..[529f7f5](https://github.com/cisocrgroup/ocrd_cis/commits/529f7f5)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * compute_hlines/compute_separators_morph: early length filt by opening must be softer than final criterion
+  > * compute_hlines: fix h/v kernel size
+  > * ocropy.lines2regions: fall back to topological partitioning
+  > * ocropy.lines2regions: improve splitting by separators
+  > * ocropy.segment: improve within-region hmerge rule
+  > * ocropy.lines2regions: fix textline assignment around existing regions
+  > * ocrolib.morph: opt out of np.unique counts
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [55e58f0](https://github.com/ASVLeipzig/cor-asv-ann/commits/55e58f0)..[f19a9b3](https://github.com/ASVLeipzig/cor-asv-ann/commits/f19a9b3)
+
+> Release: [v0.1.12](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.12)
+
+  > * align: fix 'alignment' if only 1 seq survived
+  > * align: fix conf for too long/short subseqs
+  > * align: fix conf avg for all-empty lines
+  > * update subrepos
+  > * add processor align (purely rule-based line-level n-ary multi-OCR voting)
+  > * add standalone CLI proc, update documentation
+  > * {gen,vectorize}_lines: track filenames and add unsupervised (no GT)
+  > * {seq2seq,scripts}.evaluate: add charmap option as well
+  > * lib.alignment: fix static confusion count
+  > * Merge remote-tracking branch 'origin/master' into HEAD
+  > * scripts.compare: show confusion as well
+  > * scripts.compare: ensure report contains line content (even for file lists)
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [2497876](https://github.com/qurator-spk/dinglehopper/commits/2497876)..[195354c](https://github.com/qurator-spk/dinglehopper/commits/195354c)
+
+  > * Merge branch 'feat/compare-line-texts'
+  > * ⬆️ dinglehopper: Require rapidfuzz >= 1.9.1
+  > * 💩 ocrd-galley: Work around OCR-D/core#730
+  > * Merge branch 'fix/ci-py310'
+  > * Revert "⬆️ CircleCI: Add Python 3.10"
+  > * ⬆️ CircleCI: Add Python 3.10
+  > * ⬆️ CircleCI: Switch to the new cimg/python image
+  > * Merge branch 'rapidfuzz'
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [e769f62](https://github.com/qurator-spk/eynollah/commits/e769f62)..[f0ac0bb](https://github.com/qurator-spk/eynollah/commits/f0ac0bb)
+
+> Release: [v0.0.11](https://github.com/qurator-spk/eynollah/releases/v0.0.11)
+
+  > * :package: v0.0.11
+  > * Merge pull request #61 from qurator-spk/resource-directory
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [72139bc](https://github.com/OCR-D/ocrd_fileformat/commits/72139bc)..[fbd0457](https://github.com/OCR-D/ocrd_fileformat/commits/fbd0457)
+
+> Release: [v0.4.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.4.0)
+
+  > * :package: v0.4.0
+  > * Merge pull request #31 from OCR-D/make-pip
+  > * Merge pull request #36 from bertsky/fix-page-to-alto
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [8f180b6](https://github.com/OCR-D/ocrd_segment/commits/8f180b6)..[ff1f477](https://github.com/OCR-D/ocrd_segment/commits/ff1f477)
+
+> Release: [v0.1.13](https://github.com/OCR-D/ocrd_segment/releases/v0.1.13)
+
+  > * evaluate: aggregate per-page metrics
+  > * evaluate: avoid clipped image and transparency
+  > * evaluate: if detection not found, use gt for logging pageID
+
+### [opencv-python](https://github.com/skvark/opencv-python) [f07201c](https://github.com/skvark/opencv-python/commits/f07201c)..[209d32e](https://github.com/skvark/opencv-python/commits/209d32e)
+
+> Release: [62](https://github.com/skvark/opencv-python/releases/62)
+
+  > * Merge pull request #617 from asenyaev/asen/update_dockerfile
+  > * Merge pull request #598 from asenyaev/asen/4.5.5_release
+  > * Merge pull request #596 from asenyaev/asen/config_version
+  > * Merge pull request #595 from asenyaev/asen/python_limited_api
+  > * Merge pull request #590 from cclauss/patch-4
+  > * Merge pull request #580 from jreese/patch-1
+  > * Merge pull request #579 from asenyaev/asen/fix_pylin_and_pycharm
+  > * Merge pull request #577 from asenyaev/asen/fix_build_from_source
+  > * Merge pull request #581 from asenyaev/asen/upgrade_auditwheel
+  > * Merge pull request #582 from kianmeng/fix-typos
+  > * Merge pull request #578 from asenyaev/asen/update_submodules_for_release
+  > * Merge pull request #561 from andruekonst/patch-1
+  > * Merge pull request #565 from cclauss/patch-2
+  > * Merge pull request #563 from asenyaev/asen/python_loader_support
+  > * Merge pull request #558 from cclauss/patch-2
+  > * Merge pull request #556 from asenyaev/asen/upgrade_to_python_3_10
+  > * Merge pull request #547 from asenyaev/asen/lapack_issue
+  > * Merge pull request #555 from asenyaev/asen/fix_macos_m1
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [9296644](https://github.com/bertsky/workflow-configuration/commits/9296644)..[f5faf29](https://github.com/bertsky/workflow-configuration/commits/f5faf29)
+
+  > * ocrd-page-transform: add param mimetype (default to PAGE-XML)
+  > * ocrd-page-transform: add option to pass xslt-params
+  > * add more PAGE XSLT, add option for param mechanism
+  > * add 2 more PAGE XSLs
+  > * add ocrd-page-transform as processor
+  > * ocrd-import: detect+allow ALTO-XML
+  > * ocrd-import: fix filenames with white-space
+  > * ocrd-import: add --skip option
+  > * fix regression in 88f5ca42
+  > * redirect stderr to stdout/logfile in parallel case, too
+  > * show success/failure of all workspaces
+  > * separate install-time and run-time, separate recursive `ocrd-make` and local `make`
+
 ## Unreleased
 
 ## [v2021-12-13](https://github.com/OCR-D/ocrd_all/releases/v2021-12-13)
