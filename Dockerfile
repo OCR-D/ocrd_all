@@ -101,7 +101,7 @@ RUN echo "apt-get -y autoremove && apt-get clean" >> docker.sh
 RUN echo "if [[ '${PIP_OPTIONS}' =~ -e|--editable ]]; then make -i clean-olena clean-tesseract; else rm -fr /build; fi" >> docker.sh
 # run the script in one layer/step (to minimise image size)
 # (and export all variables)
-RUN set -a; bash docker.sh
+RUN set -a; bash -x docker.sh
 # update ld.so cache for new libs in /usr/local
 RUN ldconfig
 
