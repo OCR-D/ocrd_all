@@ -176,6 +176,7 @@ multirule = $(patsubst $(BIN)/%,\%/%,$(1))
 ifneq ($(findstring format-converters, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(PAGE2IMG)
 PAGE2IMG := $(BIN)/page2img
+format-converters/page2img.py: format-converters
 $(PAGE2IMG): format-converters/page2img.py
 	. $(ACTIVATE_VENV) && $(PIP) install validators
 	echo "#!$(BIN)/python3" | cat - $< >$@
@@ -720,6 +721,7 @@ $(TESSDATA)/%.traineddata:
 		{ $(RM) $@; false; }
 
 $(VIRTUAL_ENV)/share/tessdata/%.traineddata: $(TESSDATA)/%.traineddata
+	@mkdir -p $(dir $@)
 	cp $< $@
 
 tesseract/Makefile.in: tesseract
@@ -833,10 +835,12 @@ docker%: Dockerfile $(DOCKER_MODULES)
 	--build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
 	--build-arg OCRD_MODULES="$(DOCKER_MODULES)" \
 	--build-arg PIP_OPTIONS="$(PIP_OPTIONS)" \
+	--build-arg PARALLEL="$(DOCKER_PARALLEL)" \
 	-t $(DOCKER_TAG):$(or $(*:-%=%),latest) .
 
 
 docker: DOCKER_MODULES ?= $(OCRD_MODULES)
+docker: DOCKER_PARALLEL ?= -j1
 docker: docker-latest
 
 # do not search for implicit rules here:
