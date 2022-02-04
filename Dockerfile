@@ -68,6 +68,10 @@ ENV OCRD_MODULES="${OCRD_MODULES}"
 # (defaults to no extra options)
 ARG PIP_OPTIONS=""
 
+# build in parallel to speed up (but risk running into clashes
+# when not all dependencies have been correctly explicated):
+ARG PARALLEL=""
+
 WORKDIR /build
 
 # copy (sub)module directories to build
@@ -90,7 +94,7 @@ RUN echo "> $PREFIX/bin/activate" >> docker.sh
 # try to fetch all modules system requirements
 RUN echo "make deps-ubuntu" >> docker.sh
 # build/install all tools of the requested modules:
-RUN echo "make -j all" >> docker.sh
+RUN echo "make $PARALLEL all" >> docker.sh
 # check installation
 RUN echo "make -j check CHECK_HELP=1" >> docker.sh
 # remove unneeded automatic deps and clear pkg cache

@@ -835,10 +835,12 @@ docker%: Dockerfile $(DOCKER_MODULES)
 	--build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
 	--build-arg OCRD_MODULES="$(DOCKER_MODULES)" \
 	--build-arg PIP_OPTIONS="$(PIP_OPTIONS)" \
+	--build-arg PARALLEL="$(DOCKER_PARALLEL)" \
 	-t $(DOCKER_TAG):$(or $(*:-%=%),latest) .
 
 
 docker: DOCKER_MODULES ?= $(OCRD_MODULES)
+docker: DOCKER_PARALLEL ?= -j1
 docker: docker-latest
 
 # do not search for implicit rules here:
