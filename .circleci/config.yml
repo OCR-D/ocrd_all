@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
-      - run: make docker-maximum DOCKER_PARALLEL=-j2
+      - run: make docker-maximum DOCKER_PARALLEL=-j3
       - run: docker image save ocrd/all:maximum > ocrd-all-maximum.tar
       # can be downloaded from CircleCI.com and imported via "docker image load"
       - store_artifacts:
@@ -26,7 +26,7 @@ jobs:
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
       - run:
           name: Build Docker image
-          command: make docker-<< parameters.variant >>-git DOCKER_PARALLEL=-j2
+          command: make docker-<< parameters.variant >>-git DOCKER_PARALLEL=-j3
       - run:
           name: Alias Docker images
           command: docker tag ocrd/all:<< parameters.variant >>-git ocrd/all:<< parameters.variant >>
