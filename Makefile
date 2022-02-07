@@ -223,9 +223,9 @@ endif
 
 ifneq ($(findstring cor-asv-ann, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
-OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-align
 OCRD_COR_ASV_ANN := $(BIN)/ocrd-cor-asv-ann-evaluate
 OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-process
+OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-align
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-train
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-proc
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-eval
