@@ -9,7 +9,7 @@ jobs:
       - run: make docker-maximum-cuda DOCKER_PARALLEL=-j3
       - run:
           name: persist image
-	  command: docker image save ocrd/all:maximum > ocrd-all-maximum.tar
+          command: docker image save ocrd/all:maximum-cuda > ocrd-all-maximum.tar
           no_output_timeout: 30min
       # can be downloaded from CircleCI.com and imported via "docker image load"
       - store_artifacts:
