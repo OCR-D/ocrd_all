@@ -49,7 +49,7 @@ export PKG_CONFIG_PATH
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_DEPS = unzip wget python3-venv parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
-DISABLED_MODULES ?= cor-asv-fst opencv-python ocrd_kraken clstm ocrd_ocropy
+DISABLED_MODULES ?= cor-asv-fst opencv-python ocrd_ocropy
 # Default to all submodules, but allow overriding by user
 # (and treat the empty value as if it was unset)
 # opencv-python is only needed for aarch64-linux-gnu and other less common platforms,
@@ -197,9 +197,6 @@ $(BIN)/ocrd: $(SHARE)/opencv-python
 endif
 
 ifneq ($(findstring ocrd_kraken, $(OCRD_MODULES)),)
-$(SHARE)/clstm: | $(SHARE)/numpy $(SHARE)
-CUSTOM_DEPS += scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig
-
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
 install-models: install-models-kraken
 .PHONY: install-models-kraken
@@ -208,7 +205,8 @@ install-models-kraken:
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-kraken-recognize '*'
 OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
-$(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(SHARE)/clstm $(BIN)/ocrd
+OCRD_KRAKEN += $(BIN)/ocrd-kraken-recognize
+$(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(BIN)/ocrd
 	$(pip_install)
 endif
 
@@ -642,7 +640,7 @@ endef
 endif
 
 # avoid making these .PHONY so they do not have to be repeated:
-# clstm tesserocr
+# tesserocr
 $(SHARE)/%: % | $(ACTIVATE_VENV) $(SHARE)
 	. $(ACTIVATE_VENV) && cd $< && $(PIP) install $(PIP_OPTIONS) .
 	@touch $@
