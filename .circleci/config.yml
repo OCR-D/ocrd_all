@@ -10,7 +10,7 @@ jobs:
       - run:
           name: persist image
           command: docker image save ocrd/all:maximum-cuda > ocrd-all-maximum.tar
-          no_output_timeout: 30min
+          no_output_timeout: 30m
       # can be downloaded from CircleCI.com and imported via "docker image load"
       - store_artifacts:
           path: ocrd-all-maximum.tar
