@@ -785,13 +785,20 @@ clean-tesseract:
 # install git and parallel first (which is required for the module updates)
 deps-ubuntu:
 	apt-get -y install git parallel
+ifneq ($(suffix $(PYTHON)),)
+# install specific Python version in system via PPA
+	apt-get install -y software-properties-common
+	add-apt-repository -y ppa:deadsnakes/ppa
+	apt-get update
+	apt-get install -y --no-install-recommends $(notdir $(PYTHON))-dev $(notdir $(PYTHON))-venv
+endif
 	$(MAKE) deps-ubuntu-modules
 	chown -R --reference=$(CURDIR) .git $(OCRD_MODULES)
 # prevent the sem commands during above module updates from imposing sudo perms on HOME:
 	chown -R --reference=$(HOME) $(HOME)/.parallel
 
 deps-ubuntu-modules:
-	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu; done
+	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu PYTHON=$(PYTHON) PIP=$(PIP); done
 	apt-get -y install $(CUSTOM_DEPS)
 
 .PHONY: deps-ubuntu deps-ubuntu-modules
@@ -836,6 +843,7 @@ docker%: Dockerfile $(DOCKER_MODULES)
 	--build-arg OCRD_MODULES="$(DOCKER_MODULES)" \
 	--build-arg PIP_OPTIONS="$(PIP_OPTIONS)" \
 	--build-arg PARALLEL="$(DOCKER_PARALLEL)" \
+	--build-arg PYTHON="$(PYTHON)" \
 	-t $(DOCKER_TAG):$(or $(*:-%=%),latest) .
 
 
