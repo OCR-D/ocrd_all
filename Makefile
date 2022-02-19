@@ -46,6 +46,8 @@ PKG_CONFIG_PATH := $(VIRTUAL_ENV)/lib/pkgconfig:$(PKG_CONFIG_PATH)
 endif
 export PKG_CONFIG_PATH
 
+SHELL = /bin/bash
+
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_DEPS = unzip wget python3-venv parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
@@ -236,6 +238,7 @@ ifeq (0,$(MAKELEVEL))
 cor-asv-ann-check:
 	$(MAKE) check OCRD_MODULES=cor-asv-ann VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
+	$(pip_install_tf1nvidia)
 	$(pip_install)
 endif
 endif
@@ -267,6 +270,7 @@ ifeq (0,$(MAKELEVEL))
 cor-asv-fst-check:
 	$(MAKE) check OCRD_MODULES=cor-asv-fst VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
+	$(pip_install_tf1nvidia)
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
 endif
@@ -283,6 +287,7 @@ ifeq (0,$(MAKELEVEL))
 ocrd_keraslm-check:
 	$(MAKE) check OCRD_MODULES=ocrd_keraslm VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
+	$(pip_install_tf1nvidia)
 	$(pip_install)
 endif
 endif
@@ -353,6 +358,7 @@ ifeq (0,$(MAKELEVEL))
 ocrd_segment-check:
 	$(MAKE) check OCRD_MODULES=ocrd_segment VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
+	$(pip_install_tf1nvidia)
 	$(pip_install)
 endif
 endif
@@ -519,6 +525,7 @@ ifeq (0,$(MAKELEVEL))
 sbb_binarization-check:
 	$(MAKE) check OCRD_MODULES=sbb_binarization VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
+	$(pip_install_tf1nvidia)
 	$(pip_install)
 endif
 endif
@@ -537,6 +544,7 @@ ifeq (0,$(MAKELEVEL))
 sbb_textline_detector-check:
 	$(MAKE) check OCRD_MODULES=sbb_textline_detector VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
+	$(pip_install_tf1nvidia)
 	$(pip_install)
 endif
 endif
@@ -555,6 +563,7 @@ ifeq (0,$(MAKELEVEL))
 eynollah-check:
 	$(MAKE) check OCRD_MODULES=eynollah VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
+	$(pip_install_tf1nvidia)
 	$(pip_install)
 endif
 endif
@@ -591,6 +600,25 @@ endif
 define pip_install
 . $(ACTIVATE_VENV) && cd $< && $(PIP) install $(PIP_OPTIONS_E) .
 . $(ACTIVATE_VENV) && cd $< && $(PIP) install --no-deps --force-reinstall $(PIP_OPTIONS) .
+endef
+
+# Workaround for missing prebuilt versions of TF<2 for Python>3.6
+# Nvidia has them, but under a different name, so let's rewrite that:
+define pip_install_tf1nvidia =
+. $(ACTIVATE_VENV) && if ! $(PIP) show -q tensorflow-gpu; then \
+	$(PIP) install nvidia-pyindex && \
+	pushd $$(mktemp -d) && \
+	$(PIP) download --no-deps nvidia-tensorflow && \
+	for name in nvidia_tensorflow-*.whl; do name=$${name%.whl}; done && \
+	$(PYTHON) -m wheel unpack $$name.whl && \
+	for name in nvidia_tensorflow-*/; do name=$${name%/}; done && \
+	newname=$${name/nvidia_tensorflow/tensorflow_gpu} &&\
+	sed -i s/nvidia_tensorflow/tensorflow_gpu/g $$name/$$name.dist-info/METADATA && \
+	sed -i s/nvidia_tensorflow/tensorflow_gpu/g $$name/$$name.dist-info/RECORD && \
+	sed -i s/nvidia_tensorflow/tensorflow_gpu/g $$name/tensorflow_core/tools/pip_package/setup.py && \
+	pushd $$name && for path in $$name*; do mv $$path $${path/$$name/$$newname}; done && popd && \
+	$(PYTHON) -m wheel pack $$name && \
+	$(PIP) install $$newname*.whl && popd && rm -fr $$OLDPWD; fi
 endef
 
 # pattern for recursive make:
