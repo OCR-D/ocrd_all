@@ -478,10 +478,10 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
 $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf21
-	$(call delegate_venv,$(OCRD_ANYBASEOCR),$(SUB_VENV)/headless-tf21)
+	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
+	$(call delegate_venv,$(OCRD_ANYBASEOCR),$(SUB_VENV)/headless-tf2)
 ocrd_anybaseocr-check:
-	$(MAKE) check OCRD_MODULES=ocrd_anybaseocr VIRTUAL_ENV=$(SUB_VENV)/headless-tf21
+	$(MAKE) check OCRD_MODULES=ocrd_anybaseocr VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
 else
 	cd $< ; $(MAKE) patch-pix2pixhd
 	$(pip_install)
