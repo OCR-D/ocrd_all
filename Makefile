@@ -31,8 +31,12 @@ BIN = $(VIRTUAL_ENV)/bin
 SHARE = $(VIRTUAL_ENV)/share
 ACTIVATE_VENV = $(VIRTUAL_ENV)/bin/activate
 
-define SEM
+define SEMGIT
 $(if $(shell sem --version 2>/dev/null),sem --will-cite --fg --id ocrd_all_git,$(error cannot find package GNU parallel))
+endef
+
+define SEMPIP
+$(if $(shell sem --version 2>/dev/null),sem --will-cite --fg --id ocrd_all_pip$(VIRTUAL_ENV),$(error cannot find package GNU parallel))
 endef
 
 define WGET
@@ -126,9 +130,9 @@ modules: $(OCRD_MODULES)
 ifneq (,$(wildcard .git))
 ifneq ($(NO_UPDATE),1)
 $(OCRD_MODULES): always-update
-	$(SEM) git submodule sync $(GIT_RECURSIVE) $@
+	$(SEMGIT) git submodule sync $(GIT_RECURSIVE) $@
 	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
-		$(SEM) git submodule update --init $(GIT_RECURSIVE) $(GIT_DEPTH) $@ && \
+		$(SEMGIT) git submodule update --init $(GIT_RECURSIVE) $(GIT_DEPTH) $@ && \
 		touch $@; fi
 endif
 endif
@@ -142,19 +146,19 @@ deinit:
 # Get Python modules.
 
 $(VIRTUAL_ENV)/bin/$(PIP): $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && $(SEM) $(PIP) install --upgrade pip setuptools
+	. $(ACTIVATE_VENV) && $(SEMPIP) $(PIP) install --upgrade pip setuptools
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
-	$(SEM) $(PYTHON) -m venv $(VIRTUAL_ENV)
+	$(SEMPIP) $(PYTHON) -m venv $(VIRTUAL_ENV)
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
 $(BIN)/wheel: | $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && $(PIP) install --force-reinstall $(PIP_OPTIONS_E) wheel
+	. $(ACTIVATE_VENV) && $(SEMPIP) $(PIP) install --force-reinstall $(PIP_OPTIONS_E) wheel
 
 # avoid making this .PHONY so it does not have to be repeated
 $(SHARE)/numpy: | $(ACTIVATE_VENV) $(SHARE)
-	. $(ACTIVATE_VENV) && $(PIP) install $(PIP_OPTIONS_E) numpy
+	. $(ACTIVATE_VENV) && $(SEMPIP) $(PIP) install $(PIP_OPTIONS_E) numpy
 	@touch $@
 
 # Install modules from source.
@@ -163,9 +167,7 @@ $(SHARE)/numpy: | $(ACTIVATE_VENV) $(SHARE)
 ocrd: $(BIN)/ocrd
 deps-ubuntu-modules: core
 $(BIN)/ocrd: core
-	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install $(PIP_OPTIONS)"
-	# workaround for core#351:
-	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(PIP) install --no-deps --force-reinstall $(PIP_OPTIONS)"
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(SEMPIP) $(PIP) install $(PIP_OPTIONS)" && touch -c $@
 
 # Convert the executable names (1) to a pattern rule,
 # so that the recipe will be used with single-recipe-
@@ -178,7 +180,7 @@ OCRD_EXECUTABLES += $(PAGE2IMG)
 PAGE2IMG := $(BIN)/page2img
 format-converters/page2img.py: format-converters
 $(PAGE2IMG): format-converters/page2img.py
-	. $(ACTIVATE_VENV) && $(PIP) install validators
+	. $(ACTIVATE_VENV) && $(SEMPIP) $(PIP) install validators
 	echo "#!$(BIN)/python3" | cat - $< >$@
 	chmod +x $@
 endif
@@ -191,7 +193,7 @@ opencv-python: GIT_RECURSIVE = --recursive
 opencv-python/setup.py: opencv-python
 $(SHARE)/opencv-python: opencv-python/setup.py | $(ACTIVATE_VENV) $(SHARE) $(SHARE)/numpy
 	. $(ACTIVATE_VENV) && cd opencv-python && ENABLE_HEADLESS=1 $(PYTHON) setup.py bdist_wheel
-	. $(ACTIVATE_VENV) && $(PIP) install $(<D)/dist/opencv_python_headless-*.whl
+	. $(ACTIVATE_VENV) && $(SEMPIP) $(PIP) install $(<D)/dist/opencv_python_headless-*.whl
 	@touch $@
 $(BIN)/ocrd: $(SHARE)/opencv-python
 endif
@@ -221,9 +223,9 @@ endif
 
 ifneq ($(findstring cor-asv-ann, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
-OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-align
 OCRD_COR_ASV_ANN := $(BIN)/ocrd-cor-asv-ann-evaluate
 OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-process
+OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-align
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-train
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-proc
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-eval
@@ -589,8 +591,7 @@ endif
 # install again forcefully without depds (to ensure
 # the binary itself updates):
 define pip_install
-. $(ACTIVATE_VENV) && cd $< && $(PIP) install $(PIP_OPTIONS_E) .
-. $(ACTIVATE_VENV) && cd $< && $(PIP) install --no-deps --force-reinstall $(PIP_OPTIONS) .
+. $(ACTIVATE_VENV) && cd $< && $(SEMPIP) $(PIP) install $(PIP_OPTIONS_E) . && touch -c $@
 endef
 
 # pattern for recursive make:
@@ -644,7 +645,7 @@ endif
 # avoid making these .PHONY so they do not have to be repeated:
 # clstm tesserocr
 $(SHARE)/%: % | $(ACTIVATE_VENV) $(SHARE)
-	. $(ACTIVATE_VENV) && cd $< && $(PIP) install $(PIP_OPTIONS) .
+	. $(ACTIVATE_VENV) && cd $< && $(SEMPIP) $(PIP) install $(PIP_OPTIONS) .
 	@touch $@
 
 $(SHARE):
