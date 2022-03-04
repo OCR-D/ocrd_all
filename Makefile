@@ -727,7 +727,7 @@ CUSTOM_DEPS += automake ca-certificates g++ libtool make pkg-config
 # Required library.
 CUSTOM_DEPS += libleptonica-dev
 # Optional libraries for enhanced functionality.
-CUSTOM_DEPS += libarchive-dev libcurl4-nss-dev
+CUSTOM_DEPS += libarchive-dev libcurl4-openssl-dev
 # Optional library for training tools.
 CUSTOM_DEPS += libpango1.0-dev
 
