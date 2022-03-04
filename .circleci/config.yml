@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
-      - run: make docker-maximum-cuda DOCKER_PARALLEL=-j3
+      - run: make docker-maximum-cuda
       - run:
           name: persist image
           command: docker image save ocrd/all:maximum-cuda > ocrd-all-maximum.tar
