@@ -27,11 +27,9 @@ ifeq (0, $(MAKELEVEL))
 SUB_VENV = $(VIRTUAL_ENV)/sub-venv
 SUB_VENV_TF1 = $(SUB_VENV)/headless-tf1
 SUB_VENV_TF2 = $(SUB_VENV)/headless-tf2
-SUB_VENV_TORCH14 = $(SUB_VENV)/headless-torch14
 else
 SUB_VENV_TF1 = $(VIRTUAL_ENV)
 SUB_VENV_TF2 = $(VIRTUAL_ENV)
-SUB_VENV_TORCH14 = $(VIRTUAL_ENV)
 endif
 
 BIN = $(VIRTUAL_ENV)/bin
@@ -262,12 +260,12 @@ endif
 ifneq ($(findstring ocrd_detectron2, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
 OCRD_DETECTRON2 += $(BIN)/ocrd-detectron2-segment
-$(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2 $(SUB_VENV_TORCH14)/bin/activate
+$(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2 $(SUB_VENV_TF1)/bin/activate
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_DETECTRON2)) VIRTUAL_ENV=$(SUB_VENV_TORCH14)
-	$(call delegate_venv,$(OCRD_DETECTRON2),$(SUB_VENV_TORCH14))
+	$(MAKE) -B -o $< $(notdir $(OCRD_DETECTRON2)) VIRTUAL_ENV=$(SUB_VENV_TF1)
+	$(call delegate_venv,$(OCRD_DETECTRON2),$(SUB_VENV_TF1))
 ocrd_detectron2-check:
-	$(MAKE) check OCRD_MODULES=ocrd_detectron2 VIRTUAL_ENV=$(SUB_VENV_TORCH14)
+	$(MAKE) check OCRD_MODULES=ocrd_detectron2 VIRTUAL_ENV=$(SUB_VENV_TF1)
 else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
@@ -508,15 +506,8 @@ ifneq ($(findstring ocrd_typegroups_classifier, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
 OCRD_TYPECLASS := $(BIN)/ocrd-typegroups-classifier
 OCRD_TYPECLASS += $(BIN)/typegroups-classifier
-$(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier $(SUB_VENV_TORCH14)/bin/activate
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_TYPECLASS)) VIRTUAL_ENV=$(SUB_VENV_TORCH14)
-	$(call delegate_venv,$(OCRD_TYPECLASS),$(SUB_VENV_TORCH14))
-ocrd_typegroups_classifier-check:
-	$(MAKE) check OCRD_MODULES=ocrd_typegroups_classifier VIRTUAL_ENV=$(SUB_VENV_TORCH14)
-else
+$(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier
 	$(pip_install)
-endif
 endif
 
 ifneq ($(findstring ocrd_doxa, $(OCRD_MODULES)),)
