@@ -603,10 +603,11 @@ define pip_install
 . $(ACTIVATE_VENV) && cd $< && $(SEMPIP) $(PIP) install $(PIP_OPTIONS_E) . && touch -c $@
 endef
 
-# Workaround for missing prebuilt versions of TF<2 for Python>3.6
+# Workaround for missing prebuilt versions of TF<2 for Python==3.8
+# todo: find another solution for 3.9, 3.10 etc
 # Nvidia has them, but under a different name, so let's rewrite that:
 define pip_install_tf1nvidia =
-. $(ACTIVATE_VENV) && if ! $(PIP) show -q tensorflow-gpu; then \
+. $(ACTIVATE_VENV) && if ! $(PYTHON) -c "import sys; sys.exit(sys.version_info.major==3 and sys.version_info.minor==8)" && ! $(PIP) show -q tensorflow-gpu; then \
 	$(PIP) install nvidia-pyindex && \
 	pushd $$(mktemp -d) && \
 	$(PIP) download --no-deps nvidia-tensorflow && \
