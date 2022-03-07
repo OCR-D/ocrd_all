@@ -1,0 +1,51 @@
+# Reusable GitHub workflow for `make all` on Linux'.
+
+name: make all (Linux)
+
+# https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
+on:
+  workflow_call:
+    # Workflow triggered by other workflow.
+    inputs:
+      os:
+        description: 'Stringified JSON object with operating systems'
+        default: 'undefined'
+        required: false
+        type: string
+      python-version:
+        description: 'Python version'
+        default: 'undefined'
+        required: false
+        type: string
+
+jobs:
+  make:
+    #runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ${{ fromJson(inputs.os) }}
+        python-version: ${{ fromJson(inputs.python-version) }}
+
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON_VERSION: ${{ matrix.python-version }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    #    architecture: x64
+    - name: Show inputs.os
+      run: echo ${{ inputs.os }}
+    - name: Show environment
+      run: echo OS=${{ env.OS }}, PYTHON_VERSION=${{ env.PYTHON_VERSION }}
+    - name: Install dependencies
+      run: sudo make deps-ubuntu PYTHON=python${{ env.PYTHON_VERSION}}
+    - name: Make all
+      run: make all PYTHON=python${{ env.PYTHON_VERSION }}
+    - name: Run check
+      run: make check
