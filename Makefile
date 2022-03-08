@@ -26,10 +26,8 @@ export VIRTUAL_ENV ?= $(CURDIR)/venv
 ifeq (0, $(MAKELEVEL))
 SUB_VENV = $(VIRTUAL_ENV)/sub-venv
 SUB_VENV_TF1 = $(SUB_VENV)/headless-tf1
-SUB_VENV_TF2 = $(SUB_VENV)/headless-tf2
 else
 SUB_VENV_TF1 = $(VIRTUAL_ENV)
-SUB_VENV_TF2 = $(VIRTUAL_ENV)
 endif
 
 BIN = $(VIRTUAL_ENV)/bin
@@ -430,8 +428,15 @@ OCRD_CIS += $(BIN)/ocrd-cis-ocropy-resegment
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-segment
 #OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
 OCRD_CIS += $(BIN)/ocrd-cis-postcorrect
-$(call multirule,$(OCRD_CIS)): ocrd_cis $(BIN)/ocrd
+$(call multirule,$(OCRD_CIS)): ocrd_cis $(BIN)/ocrd $(SUB_VENV_TF1)/bin/activate
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(OCRD_CIS)) VIRTUAL_ENV=$(SUB_VENV_TF1)
+	$(call delegate_venv,$(OCRD_CIS),$(SUB_VENV_TF1))
+ocrd_cis-check:
+	$(MAKE) check OCRD_MODULES=ocrd_cis VIRTUAL_ENV=$(SUB_VENV_TF1)
+else
 	$(pip_install)
+endif
 endif
 
 ifneq ($(findstring ocrd_pagetopdf, $(OCRD_MODULES)),)
@@ -449,30 +454,16 @@ install-models-calamari: $(BIN)/ocrd
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-calamari-recognize '*'
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
-$(OCRD_CALAMARI): ocrd_calamari $(SUB_VENV_TF2)/bin/activate
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_CALAMARI)) VIRTUAL_ENV=$(SUB_VENV_TF2)
-	$(call delegate_venv,$(OCRD_CALAMARI),$(SUB_VENV_TF2))
-ocrd_calamari-check:
-	$(MAKE) check OCRD_EXECUTABLES=$(OCRD_CALAMARI) VIRTUAL_ENV=$(SUB_VENV_TF2)
-else
+$(OCRD_CALAMARI): ocrd_calamari
 	$(pip_install)
-endif
 endif
 
 ifneq ($(findstring ocrd_pc_segmentation, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
-$(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation $(SUB_VENV_TF2)/bin/activate
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION)) VIRTUAL_ENV=$(SUB_VENV_TF2)
-	$(call delegate_venv,$(OCRD_PC_SEGMENTATION),$(SUB_VENV_TF2))
-ocrd_pc_segmentation-check:
-	$(MAKE) check OCRD_MODULES=ocrd_pc_segmentation VIRTUAL_ENV=$(SUB_VENV_TF2)
-else
+$(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
-endif
 endif
 
 ifneq ($(findstring ocrd_anybaseocr, $(OCRD_MODULES)),)
@@ -491,15 +482,8 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-dewarp
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-tiseg
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
-$(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr $(SUB_VENV_TF2)/bin/activate
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR)) VIRTUAL_ENV=$(SUB_VENV_TF2)
-	$(call delegate_venv,$(OCRD_ANYBASEOCR),$(SUB_VENV_TF2))
-ocrd_anybaseocr-check:
-	$(MAKE) check OCRD_MODULES=ocrd_anybaseocr VIRTUAL_ENV=$(SUB_VENV_TF2)
-else
+$(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
 	$(pip_install)
-endif
 endif
 
 ifneq ($(findstring ocrd_typegroups_classifier, $(OCRD_MODULES)),)
