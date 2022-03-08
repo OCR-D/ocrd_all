@@ -34,6 +34,38 @@ ACTIVATE_VENV = $(VIRTUAL_ENV)/bin/activate
 # Get Python major and minor versions for some conditional rules.
 PYTHON_VERSION := $(shell $(PYTHON) -c 'import sys; print("%u.%u" % (sys.version_info.major, sys.version_info.minor))')
 
+ifeq ($(MAKECMDGOALS), all)
+
+# Create all required virtual environments.
+ifeq ($(wildcard $(VIRTUAL_ENV)),)
+create_venv := $(shell $(PYTHON) -m venv $(VIRTUAL_ENV))
+endif
+ifeq ($(wildcard $(SUB_VENV)/headless-tf1),)
+create_venv := $(shell $(PYTHON) -m venv $(SUB_VENV)/headless-tf1)
+endif
+ifeq ($(wildcard $(SUB_VENV)/headless-tf21),)
+create_venv := $(shell $(PYTHON) -m venv $(SUB_VENV)/headless-tf21)
+endif
+
+# Try to install different versions of Tensorflow.
+ifneq (, $(shell bash -c "source $(SUB_VENV)/headless-tf1/bin/activate && pip install -U pip setuptools && pip install tensorflow-gpu==1.15" >/dev/null 2>&1 && echo true))
+TENSORFLOW_1 := 1
+endif
+ifneq (, $(shell bash -c "source $(SUB_VENV)/headless-tf21/bin/activate && pip install -U pip setuptools && pip install tensorflow==2.1" >/dev/null 2>&1 && echo true))
+TENSORFLOW_2_1 := 2.1
+endif
+ifneq (,$(shell bash -c "source $(VIRTUAL_ENV)/bin/activate && pip install -U pip setuptools && pip install tensorflow" >/dev/null 2>&1 && echo true))
+TENSORFLOW_2 := 2
+endif
+
+else
+
+TENSORFLOW_1 := 1
+TENSORFLOW_2_1 := 2.1
+TENSORFLOW_2 := 2
+
+endif
+
 define SEMGIT
 $(if $(shell sem --version 2>/dev/null),sem -q --will-cite --fg --id ocrd_all_git,$(error cannot find package GNU parallel))
 endef
@@ -229,6 +261,7 @@ $(OCRD_OCROPY): ocrd_ocropy $(BIN)/ocrd
 	$(pip_install)
 endif
 
+ifdef TENSORFLOW_1
 ifneq ($(findstring cor-asv-ann, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
 OCRD_COR_ASV_ANN := $(BIN)/ocrd-cor-asv-ann-evaluate
@@ -250,6 +283,7 @@ else
 	$(pip_install)
 endif
 endif
+endif
 
 ifneq ($(findstring ocrd_detectron2, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
@@ -260,6 +294,7 @@ $(OCRD_DETECTRON2): ocrd_detectron2
 	$(pip_install)
 endif
 
+ifdef TENSORFLOW_1
 ifneq ($(findstring cor-asv-fst, $(OCRD_MODULES)),)
 deps-ubuntu-modules: cor-asv-fst
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
@@ -277,7 +312,9 @@ else
 	$(pip_install)
 endif
 endif
+endif
 
+ifdef TENSORFLOW_1
 ifneq ($(findstring ocrd_keraslm, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KERASLM)
 OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
@@ -291,6 +328,7 @@ ocrd_keraslm-check:
 else
 	$(pip_install_tf1nvidia)
 	$(pip_install)
+endif
 endif
 endif
 
@@ -340,6 +378,7 @@ $(BIN)/ocrd-dinglehopper: dinglehopper $(BIN)/ocrd
 	$(pip_install)
 endif
 
+ifdef TENSORFLOW_1
 ifneq ($(findstring ocrd_segment, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_SEGMENT)
 OCRD_SEGMENT := $(BIN)/ocrd-segment-evaluate
@@ -363,6 +402,7 @@ ocrd_segment-check:
 else
 	$(pip_install_tf1nvidia)
 	$(pip_install)
+endif
 endif
 endif
 
@@ -457,6 +497,7 @@ install-models-anybaseocr:
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-layout-analysis '*'
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-tiseg '*'
 
+ifdef TENSORFLOW_2_1
 OCRD_EXECUTABLES += $(OCRD_ANYBASEOCR)
 OCRD_ANYBASEOCR := $(BIN)/ocrd-anybaseocr-crop
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-binarize
@@ -473,6 +514,7 @@ ocrd_anybaseocr-check:
 	$(MAKE) check OCRD_MODULES=ocrd_anybaseocr VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
 else
 	$(pip_install)
+endif
 endif
 endif
 
@@ -497,6 +539,7 @@ install-models: install-models-sbb-binarization
 install-models-sbb-binarization:
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-sbb-binarize '*'
 
+ifdef TENSORFLOW_1
 OCRD_EXECUTABLES += $(SBB_BINARIZATION)
 SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
 $(SBB_BINARIZATION): sbb_binarization
@@ -510,7 +553,9 @@ else
 	$(pip_install)
 endif
 endif
+endif
 
+ifdef TENSORFLOW_1
 ifneq ($(findstring sbb_textline_detector, $(OCRD_MODULES)),)
 install-models: install-models-sbb-textline
 .PHONY: install-models-sbb-textline
@@ -529,7 +574,9 @@ else
 	$(pip_install)
 endif
 endif
+endif
 
+ifdef TENSORFLOW_1
 ifneq ($(findstring eynollah, $(OCRD_MODULES)),)
 install-models: install-models-eynollah
 .PHONY: install-models-eynollah
@@ -546,6 +593,7 @@ eynollah-check:
 else
 	$(pip_install_tf1nvidia)
 	$(pip_install)
+endif
 endif
 endif
 
