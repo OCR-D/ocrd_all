@@ -785,6 +785,7 @@ clean-tesseract:
 # (in case deps-ubuntu has been used with sudo and some modules were updated)
 # install git and parallel first (which is required for the module updates)
 deps-ubuntu:
+	apt-get update
 	apt-get -y install git parallel
 	$(MAKE) deps-ubuntu-modules
 	chown -R --reference=$(CURDIR) .git $(OCRD_MODULES)
