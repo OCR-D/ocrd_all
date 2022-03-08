@@ -437,29 +437,15 @@ install-models-calamari: $(BIN)/ocrd
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
 $(OCRD_CALAMARI): ocrd_calamari
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_CALAMARI)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
-	$(call delegate_venv,$(OCRD_CALAMARI),$(SUB_VENV)/headless-tf2)
-ocrd_calamari-check:
-	$(MAKE) check OCRD_EXECUTABLES=$(OCRD_CALAMARI) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
-else
 	$(pip_install)
-endif
 endif
 
 ifneq ($(findstring ocrd_pc_segmentation, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
 $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
-	$(call delegate_venv,$(OCRD_PC_SEGMENTATION),$(SUB_VENV)/headless-tf2)
-ocrd_pc_segmentation-check:
-	$(MAKE) check OCRD_MODULES=ocrd_pc_segmentation VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
-else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
-endif
 endif
 
 ifneq ($(findstring ocrd_anybaseocr, $(OCRD_MODULES)),)
