@@ -25,7 +25,9 @@ ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
 # to nested venv in recursive calls for modules
 # that have known dependency clashes with others
 export VIRTUAL_ENV ?= $(CURDIR)/venv
-SUB_VENV = $(VIRTUAL_ENV)/local/sub-venv
+ifeq (0, $(MAKELEVEL))
+SUB_VENV = $(VIRTUAL_ENV)/sub-venv
+endif
 
 BIN = $(VIRTUAL_ENV)/bin
 SHARE = $(VIRTUAL_ENV)/share
