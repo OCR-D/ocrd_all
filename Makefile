@@ -35,6 +35,13 @@ ACTIVATE_VENV = $(VIRTUAL_ENV)/bin/activate
 PYTHON_VERSION := $(shell $(PYTHON) -c 'import sys; print("%u.%u" % (sys.version_info.major, sys.version_info.minor))')
 
 ifeq ($(MAKECMDGOALS), all)
+CHECK_SUBENVS := true
+endif
+ifeq ($(MAKECMDGOALS), check)
+CHECK_SUBENVS := true
+endif
+
+ifdef CHECK_SUBENVS
 
 # Create all required virtual environments.
 ifeq ($(wildcard $(VIRTUAL_ENV)),)
