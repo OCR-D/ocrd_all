@@ -34,42 +34,40 @@ ACTIVATE_VENV = $(VIRTUAL_ENV)/bin/activate
 # Get Python major and minor versions for some conditional rules.
 PYTHON_VERSION := $(shell $(PYTHON) -c 'import sys; print("%u.%u" % (sys.version_info.major, sys.version_info.minor))')
 
+ifeq (0, $(MAKELEVEL))
 ifeq ($(MAKECMDGOALS), all)
 CHECK_SUBENVS := true
 endif
 ifeq ($(MAKECMDGOALS), check)
 CHECK_SUBENVS := true
 endif
+endif
 
 ifdef CHECK_SUBENVS
 
 # Create all required virtual environments.
 ifeq ($(wildcard $(VIRTUAL_ENV)),)
-create_venv := $(shell $(PYTHON) -m venv $(VIRTUAL_ENV))
+create_venv := $(shell $(PYTHON) -m venv $(VIRTUAL_ENV) && bash -c "source $(VIRTUAL_ENV)/bin/activate && pip install -U pip setuptools wheel"))
 endif
 ifeq ($(wildcard $(SUB_VENV)/headless-tf1),)
-create_venv := $(shell $(PYTHON) -m venv $(SUB_VENV)/headless-tf1)
+create_venv := $(shell $(PYTHON) -m venv $(SUB_VENV)/headless-tf1 && bash -c "source $(SUB_VENV)/headless-tf1/bin/activate && pip install -U pip setuptools wheel")
 endif
 ifeq ($(wildcard $(SUB_VENV)/headless-tf21),)
-create_venv := $(shell $(PYTHON) -m venv $(SUB_VENV)/headless-tf21)
+create_venv := $(shell $(PYTHON) -m venv $(SUB_VENV)/headless-tf21 && bash -c "source $(SUB_VENV)/headless-tf21/bin/activate && pip install -U pip setuptools wheel")
 endif
 
 # Try to install different versions of Tensorflow.
-ifneq (, $(shell bash -c "source $(SUB_VENV)/headless-tf1/bin/activate && pip install -U pip setuptools && pip install tensorflow-gpu==1.15" >/dev/null 2>&1 && echo true))
+ifneq (, $(shell bash -c "source $(SUB_VENV)/headless-tf1/bin/activate && pip install tensorflow-gpu==1.15" >/dev/null 2>&1 && echo true))
 TENSORFLOW_1 := 1
 endif
-ifneq (, $(shell bash -c "source $(SUB_VENV)/headless-tf21/bin/activate && pip install -U pip setuptools && pip install tensorflow==2.1" >/dev/null 2>&1 && echo true))
+ifneq (, $(shell bash -c "source $(SUB_VENV)/headless-tf21/bin/activate && pip install tensorflow==2.1" >/dev/null 2>&1 && echo true))
 TENSORFLOW_2_1 := 2.1
-endif
-ifneq (,$(shell bash -c "source $(VIRTUAL_ENV)/bin/activate && pip install -U pip setuptools && pip install tensorflow" >/dev/null 2>&1 && echo true))
-TENSORFLOW_2 := 2
 endif
 
 else
 
 TENSORFLOW_1 := 1
 TENSORFLOW_2_1 := 2.1
-TENSORFLOW_2 := 2
 
 endif
 
@@ -200,11 +198,6 @@ $(VIRTUAL_ENV)/bin/pip: $(ACTIVATE_VENV)
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
 	$(SEMPIP) $(PYTHON) -m venv $(VIRTUAL_ENV)
 
-.PHONY: wheel
-wheel: $(BIN)/wheel
-$(BIN)/wheel: | $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && $(SEMPIP) pip install --force-reinstall $(PIP_OPTIONS_E) wheel
-
 # avoid making this .PHONY so it does not have to be repeated
 $(SHARE)/numpy: | $(ACTIVATE_VENV) $(SHARE)
 	. $(ACTIVATE_VENV) && $(SEMPIP) pip install $(PIP_OPTIONS_E) numpy
@@ -268,7 +261,9 @@ $(OCRD_OCROPY): ocrd_ocropy $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifdef TENSORFLOW_1
+ifndef TENSORFLOW_1
+override OCRD_MODULES := $(filter-out cor-asv-ann, $(OCRD_MODULES))
+endif
 ifneq ($(findstring cor-asv-ann, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
 OCRD_COR_ASV_ANN := $(BIN)/ocrd-cor-asv-ann-evaluate
@@ -281,14 +276,13 @@ OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-compare
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
 $(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN)) -c constraints-tf1.txt" VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_COR_ASV_ANN),$(SUB_VENV)/headless-tf1)
 cor-asv-ann-check:
 	$(MAKE) check OCRD_MODULES=cor-asv-ann VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
 	$(pip_install_tf1nvidia)
 	$(pip_install)
-endif
 endif
 endif
 
@@ -301,7 +295,9 @@ $(OCRD_DETECTRON2): ocrd_detectron2
 	$(pip_install)
 endif
 
-ifdef TENSORFLOW_1
+ifndef TENSORFLOW_1
+override OCRD_MODULES := $(filter-out cor-asv-fst, $(OCRD_MODULES))
+endif
 ifneq ($(findstring cor-asv-fst, $(OCRD_MODULES)),)
 deps-ubuntu-modules: cor-asv-fst
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
@@ -309,7 +305,7 @@ OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
 OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
 $(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST)) -c constraints-tf1.txt" VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_COR_ASV_FST),$(SUB_VENV)/headless-tf1)
 cor-asv-fst-check:
 	$(MAKE) check OCRD_MODULES=cor-asv-fst VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
@@ -319,23 +315,23 @@ else
 	$(pip_install)
 endif
 endif
-endif
 
-ifdef TENSORFLOW_1
+ifndef TENSORFLOW_1
+override OCRD_MODULES := $(filter-out ocrd_keraslm, $(OCRD_MODULES))
+endif
 ifneq ($(findstring ocrd_keraslm, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KERASLM)
 OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
 OCRD_KERASLM += $(BIN)/keraslm-rate
 $(call multirule,$(OCRD_KERASLM)): ocrd_keraslm
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM)) -c constraints-tf1.txt" VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_KERASLM),$(SUB_VENV)/headless-tf1)
 ocrd_keraslm-check:
 	$(MAKE) check OCRD_MODULES=ocrd_keraslm VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
 	$(pip_install_tf1nvidia)
 	$(pip_install)
-endif
 endif
 endif
 
@@ -385,7 +381,9 @@ $(BIN)/ocrd-dinglehopper: dinglehopper $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifdef TENSORFLOW_1
+ifndef TENSORFLOW_1
+override OCRD_MODULES := $(filter-out ocrd_segment, $(OCRD_MODULES))
+endif
 ifneq ($(findstring ocrd_segment, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_SEGMENT)
 OCRD_SEGMENT := $(BIN)/ocrd-segment-evaluate
@@ -402,14 +400,13 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 OCRD_SEGMENT += $(BIN)/ocrd-segment-project
 $(call multirule,$(OCRD_SEGMENT)): ocrd_segment
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT)) -c constraints-tf1.txt" VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_SEGMENT),$(SUB_VENV)/headless-tf1)
 ocrd_segment-check:
 	$(MAKE) check OCRD_MODULES=ocrd_segment VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
 	$(pip_install_tf1nvidia)
 	$(pip_install)
-endif
 endif
 endif
 
@@ -504,7 +501,9 @@ install-models-anybaseocr:
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-layout-analysis '*'
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-tiseg '*'
 
-ifdef TENSORFLOW_2_1
+ifndef TENSORFLOW_2_1
+override OCRD_MODULES := $(filter-out ocrd_anybaseocr, $(OCRD_MODULES))
+endif
 OCRD_EXECUTABLES += $(OCRD_ANYBASEOCR)
 OCRD_ANYBASEOCR := $(BIN)/ocrd-anybaseocr-crop
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-binarize
@@ -523,7 +522,6 @@ else
 	$(pip_install)
 endif
 endif
-endif
 
 ifneq ($(findstring ocrd_typegroups_classifier, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
@@ -540,18 +538,20 @@ $(OCRD_DOXA): ocrd_doxa $(BIN)/ocrd
 	$(pip_install)
 endif
 
+ifndef TENSORFLOW_1
+override OCRD_MODULES := $(filter-out sbb_binarization, $(OCRD_MODULES))
+endif
 ifneq ($(findstring sbb_binarization, $(OCRD_MODULES)),)
 install-models: install-models-sbb-binarization
 .PHONY: install-models-sbb-binarization
 install-models-sbb-binarization:
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-sbb-binarize '*'
 
-ifdef TENSORFLOW_1
 OCRD_EXECUTABLES += $(SBB_BINARIZATION)
 SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
 $(SBB_BINARIZATION): sbb_binarization
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(SBB_BINARIZATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) -B -o $< $(notdir $(SBB_BINARIZATION)) -c constraints-tf1.txt" VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(SBB_BINARIZATION),$(SUB_VENV)/headless-tf1)
 sbb_binarization-check:
 	$(MAKE) check OCRD_MODULES=sbb_binarization VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
@@ -560,9 +560,10 @@ else
 	$(pip_install)
 endif
 endif
-endif
 
-ifdef TENSORFLOW_1
+ifndef TENSORFLOW_1
+override OCRD_MODULES := $(filter-out sbb_textline_detector, $(OCRD_MODULES))
+endif
 ifneq ($(findstring sbb_textline_detector, $(OCRD_MODULES)),)
 install-models: install-models-sbb-textline
 .PHONY: install-models-sbb-textline
@@ -572,7 +573,7 @@ OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
 SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-textline-detector
 $(SBB_LINE_DETECTOR): sbb_textline_detector
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR)) -c constraints-tf1.txt" VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(SBB_LINE_DETECTOR),$(SUB_VENV)/headless-tf1)
 sbb_textline_detector-check:
 	$(MAKE) check OCRD_MODULES=sbb_textline_detector VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
@@ -581,9 +582,10 @@ else
 	$(pip_install)
 endif
 endif
-endif
 
-ifdef TENSORFLOW_1
+ifndef TENSORFLOW_1
+override OCRD_MODULES := $(filter-out eynollah, $(OCRD_MODULES))
+endif
 ifneq ($(findstring eynollah, $(OCRD_MODULES)),)
 install-models: install-models-eynollah
 .PHONY: install-models-eynollah
@@ -593,14 +595,13 @@ OCRD_EXECUTABLES += $(EYNOLLAH_SEGMENT)
 EYNOLLAH_SEGMENT := $(BIN)/ocrd-eynollah-segment
 $(EYNOLLAH_SEGMENT): eynollah
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(EYNOLLAH_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) -B -o $< $(notdir $(EYNOLLAH_SEGMENT)) -c constraints-tf1.txt" VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(EYNOLLAH_SEGMENT),$(SUB_VENV)/headless-tf1)
 eynollah-check:
 	$(MAKE) check OCRD_MODULES=eynollah VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
 	$(pip_install_tf1nvidia)
 	$(pip_install)
-endif
 endif
 endif
 
@@ -718,8 +719,8 @@ $(SHARE):
 	@mkdir -p "$@"
 
 # At last, add venv dependency (must not become first):
-$(OCRD_EXECUTABLES) $(BIN)/wheel: | $(VIRTUAL_ENV)/bin/pip
-$(OCRD_EXECUTABLES): | $(BIN)/wheel
+$(OCRD_EXECUTABLES): | $(VIRTUAL_ENV)/bin/pip
+$(OCRD_EXECUTABLES):
 # Also, add core dependency (but in a non-circular way):
 $(filter-out $(BIN)/ocrd,$(OCRD_EXECUTABLES)): $(BIN)/ocrd
 
