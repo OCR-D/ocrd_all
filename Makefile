@@ -276,7 +276,7 @@ OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-compare
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
 $(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN)) -c constraints-tf1.txt" VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_COR_ASV_ANN),$(SUB_VENV)/headless-tf1)
 cor-asv-ann-check:
 	$(MAKE) check OCRD_MODULES=cor-asv-ann VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
@@ -305,7 +305,7 @@ OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
 OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
 $(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST)) -c constraints-tf1.txt" VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_COR_ASV_FST),$(SUB_VENV)/headless-tf1)
 cor-asv-fst-check:
 	$(MAKE) check OCRD_MODULES=cor-asv-fst VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
@@ -325,7 +325,7 @@ OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
 OCRD_KERASLM += $(BIN)/keraslm-rate
 $(call multirule,$(OCRD_KERASLM)): ocrd_keraslm
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM)) -c constraints-tf1.txt" VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_KERASLM),$(SUB_VENV)/headless-tf1)
 ocrd_keraslm-check:
 	$(MAKE) check OCRD_MODULES=ocrd_keraslm VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
@@ -400,7 +400,7 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 OCRD_SEGMENT += $(BIN)/ocrd-segment-project
 $(call multirule,$(OCRD_SEGMENT)): ocrd_segment
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT)) -c constraints-tf1.txt" VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(OCRD_SEGMENT),$(SUB_VENV)/headless-tf1)
 ocrd_segment-check:
 	$(MAKE) check OCRD_MODULES=ocrd_segment VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
@@ -551,7 +551,7 @@ OCRD_EXECUTABLES += $(SBB_BINARIZATION)
 SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
 $(SBB_BINARIZATION): sbb_binarization
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(SBB_BINARIZATION)) -c constraints-tf1.txt" VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) -B -o $< $(notdir $(SBB_BINARIZATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(SBB_BINARIZATION),$(SUB_VENV)/headless-tf1)
 sbb_binarization-check:
 	$(MAKE) check OCRD_MODULES=sbb_binarization VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
@@ -573,7 +573,7 @@ OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
 SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-textline-detector
 $(SBB_LINE_DETECTOR): sbb_textline_detector
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR)) -c constraints-tf1.txt" VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(SBB_LINE_DETECTOR),$(SUB_VENV)/headless-tf1)
 sbb_textline_detector-check:
 	$(MAKE) check OCRD_MODULES=sbb_textline_detector VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
@@ -595,7 +595,7 @@ OCRD_EXECUTABLES += $(EYNOLLAH_SEGMENT)
 EYNOLLAH_SEGMENT := $(BIN)/ocrd-eynollah-segment
 $(EYNOLLAH_SEGMENT): eynollah
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(EYNOLLAH_SEGMENT)) -c constraints-tf1.txt" VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) -B -o $< $(notdir $(EYNOLLAH_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 	$(call delegate_venv,$(EYNOLLAH_SEGMENT),$(SUB_VENV)/headless-tf1)
 eynollah-check:
 	$(MAKE) check OCRD_MODULES=eynollah VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
@@ -634,9 +634,15 @@ endif
 # install gracefully with dependencies, and finally
 # install again forcefully without depds (to ensure
 # the binary itself updates):
+ifeq ($(findstring headless-tf1, $(VIRTUAL_ENV)),)
 define pip_install
 . $(ACTIVATE_VENV) && cd $< && $(SEMPIP) pip install $(PIP_OPTIONS_E) . && touch -c $@
 endef
+else
+define pip_install
+. $(ACTIVATE_VENV) && cd $< && $(SEMPIP) pip install -c $(CURDIR)/constraints_tf1.txt $(PIP_OPTIONS_E) . && touch -c $@
+endef
+endif
 
 # Workaround for missing prebuilt versions of TF<2 for Python==3.8
 # todo: find another solution for 3.9, 3.10 etc
