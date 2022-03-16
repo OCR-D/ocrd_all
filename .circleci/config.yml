@@ -9,11 +9,13 @@ jobs:
       - run: make docker-maximum-cuda
       - run:
           name: persist image
-          command: docker image save ocrd/all:maximum-cuda > ocrd-all-maximum.tar
+          command: |
+            sudo apt install pigz
+            docker image save ocrd/all:maximum-cuda | pigz --fast > ocrd-all-maximum.tar.gz
           no_output_timeout: 30m
       # can be downloaded from CircleCI.com and imported via "docker image load"
       - store_artifacts:
-          path: ocrd-all-maximum.tar
+          path: ocrd-all-maximum.tar.gz
           destination: artifacts
   deploy:
     docker:
