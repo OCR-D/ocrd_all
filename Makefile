@@ -302,8 +302,10 @@ ifneq ($(findstring ocrd_detectron2, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
 OCRD_DETECTRON2 := $(BIN)/ocrd-detectron2-segment
 $(OCRD_DETECTRON2): ocrd_detectron2
-	# . $(ACTIVATE_VENV) && $(MAKE) -C $< deps
-	. $(ACTIVATE_VENV) && cd $< && pip install 'git+https://github.com/facebookresearch/detectron2.git' && pip install -r requirements.txt
+	. $(ACTIVATE_VENV) && pip install torch
+	. $(ACTIVATE_VENV) && cd $< && pip install 'git+https://github.com/facebookresearch/detectron2.git'
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
+	. $(ACTIVATE_VENV) && cd $< && pip install -r requirements.txt
 	$(pip_install)
 endif
 
