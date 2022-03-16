@@ -620,7 +620,8 @@ define pip_install_tf1nvidia =
 	sed -i s/nvidia_tensorflow/tensorflow_gpu/g $$name/tensorflow_core/tools/pip_package/setup.py && \
 	pushd $$name && for path in $$name*; do mv $$path $${path/$$name/$$newname}; done && popd && \
 	$(PYTHON) -m wheel pack $$name && \
-	$(PIP) install $$newname*.whl && popd && rm -fr $$OLDPWD; fi
+	$(PIP) install $$newname*.whl && popd && rm -fr $$OLDPWD; fi && \
+	$(PIP) install imageio==2.4.1 # preempt conflict over numpy between scikit-image and tensorflow
 endef
 
 # pattern for recursive make:
