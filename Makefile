@@ -493,6 +493,9 @@ $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
 	$(pip_install)
 endif
 
+ifndef TENSORFLOW_2_1
+override OCRD_MODULES := $(filter-out ocrd_anybaseocr, $(OCRD_MODULES))
+endif
 ifneq ($(findstring ocrd_anybaseocr, $(OCRD_MODULES)),)
 install-models: install-models-anybaseocr
 .PHONY: install-models-anybaseocr
@@ -501,9 +504,6 @@ install-models-anybaseocr:
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-layout-analysis '*'
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-tiseg '*'
 
-ifndef TENSORFLOW_2_1
-override OCRD_MODULES := $(filter-out ocrd_anybaseocr, $(OCRD_MODULES))
-endif
 OCRD_EXECUTABLES += $(OCRD_ANYBASEOCR)
 OCRD_ANYBASEOCR := $(BIN)/ocrd-anybaseocr-crop
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-binarize
