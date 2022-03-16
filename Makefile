@@ -71,6 +71,9 @@ TENSORFLOW_2_1 := 2.1
 
 endif
 
+# Get Python major and minor versions for some conditional rules.
+PYTHON_VERSION := $(shell bash -c "$(PYTHON) -c 'import sys; print(\"%u.%u\" % (sys.version_info.major, sys.version_info.minor))'")
+
 define SEMGIT
 $(if $(shell sem --version 2>/dev/null),sem -q --will-cite --fg --id ocrd_all_git,$(error cannot find package GNU parallel))
 endef
@@ -240,6 +243,10 @@ $(SHARE)/opencv-python: opencv-python/setup.py | $(ACTIVATE_VENV) $(SHARE) $(SHA
 $(BIN)/ocrd: $(SHARE)/opencv-python
 endif
 
+ifeq ($(PYTHON_VERSION),3.10)
+# Python 3.10.x does not work with current kraken.
+override OCRD_MODULES := $(filter-out ocrd_kraken, $(OCRD_MODULES))
+endif
 ifneq ($(findstring ocrd_kraken, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
 install-models: install-models-kraken
@@ -251,7 +258,11 @@ OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-recognize
 $(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(BIN)/ocrd
+ifneq ($(PYTHON_VERSION),3.6)
+	# Python 3.6 only works with kraken 3.0.9.
+	# Newer versions of Python require kraken 4.0 or newer.
 	pip install 'git+https://github.com/stweil/kraken.git'
+endif
 	$(pip_install)
 endif
 
