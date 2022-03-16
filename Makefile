@@ -251,6 +251,7 @@ OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-recognize
 $(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(BIN)/ocrd
+	pip install 'git+https://github.com/stweil/kraken.git'
 	$(pip_install)
 endif
 
