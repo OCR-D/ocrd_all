@@ -31,6 +31,9 @@ BIN = $(VIRTUAL_ENV)/bin
 SHARE = $(VIRTUAL_ENV)/share
 ACTIVATE_VENV = $(VIRTUAL_ENV)/bin/activate
 
+# Get Python major and minor versions for some conditional rules.
+PYTHON_VERSION := $(shell $(PYTHON) -c 'import sys; print("%u.%u" % (sys.version_info.major, sys.version_info.minor))')
+
 define SEMGIT
 $(if $(shell sem --version 2>/dev/null),sem --will-cite --fg --id ocrd_all_git,$(error cannot find package GNU parallel))
 endef
@@ -53,7 +56,13 @@ export PKG_CONFIG_PATH
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_DEPS = unzip wget python3-venv parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
-DISABLED_MODULES ?= cor-asv-fst opencv-python ocrd_ocropy
+DEFAULT_DISABLED_MODULES = cor-asv-fst opencv-python ocrd_ocropy
+ifeq ($(PYTHON_VERSION),3.10)
+# Python 3.10.x does not work with current kraken.
+DEFAULT_DISABLED_MODULES += ocrd_kraken
+endif
+DISABLED_MODULES ?= $(DEFAULT_DISABLED_MODULES)
+
 # Default to all submodules, but allow overriding by user
 # (and treat the empty value as if it was unset)
 # opencv-python is only needed for aarch64-linux-gnu and other less common platforms,
