@@ -56,7 +56,13 @@ export PKG_CONFIG_PATH
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_DEPS = unzip wget python3-venv parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
+ifeq ($(PYTHON_VERSION),3.10)
+# Python 3.10.x does not work with current kraken.
+DISABLED_MODULES ?= cor-asv-fst opencv-python ocrd_ocropy ocrd_kraken
+else
 DISABLED_MODULES ?= cor-asv-fst opencv-python ocrd_ocropy
+endif
+
 # Default to all submodules, but allow overriding by user
 # (and treat the empty value as if it was unset)
 # opencv-python is only needed for aarch64-linux-gnu and other less common platforms,
@@ -201,10 +207,6 @@ $(SHARE)/opencv-python: opencv-python/setup.py | $(ACTIVATE_VENV) $(SHARE) $(SHA
 $(BIN)/ocrd: $(SHARE)/opencv-python
 endif
 
-ifeq ($(PYTHON_VERSION),3.10)
-# Python 3.10.x does not work with current kraken.
-override OCRD_MODULES := $(filter-out ocrd_kraken, $(OCRD_MODULES))
-endif
 ifneq ($(findstring ocrd_kraken, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
 install-models: install-models-kraken
