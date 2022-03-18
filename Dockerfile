@@ -68,6 +68,10 @@ ENV OCRD_MODULES="${OCRD_MODULES}"
 # (defaults to no extra options)
 ARG PIP_OPTIONS=""
 
+# allow passing build-time parameter for Python version
+# (defaults to python3 in all modules)
+ARG PYTHON=python3
+
 # build in parallel to speed up (but risk running into clashes
 # when not all dependencies have been correctly explicated):
 ARG PARALLEL=""

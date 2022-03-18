@@ -53,6 +53,8 @@ PKG_CONFIG_PATH := $(VIRTUAL_ENV)/lib/pkgconfig:$(PKG_CONFIG_PATH)
 endif
 export PKG_CONFIG_PATH
 
+SHELL = /bin/bash
+
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_DEPS = unzip wget python3-venv parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
@@ -245,6 +247,7 @@ ifeq (0,$(MAKELEVEL))
 cor-asv-ann-check:
 	$(MAKE) check OCRD_MODULES=cor-asv-ann VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
+	$(pip_install_tf1nvidia)
 	$(pip_install)
 endif
 endif
@@ -276,6 +279,7 @@ ifeq (0,$(MAKELEVEL))
 cor-asv-fst-check:
 	$(MAKE) check OCRD_MODULES=cor-asv-fst VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
+	$(pip_install_tf1nvidia)
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
 endif
@@ -292,6 +296,7 @@ ifeq (0,$(MAKELEVEL))
 ocrd_keraslm-check:
 	$(MAKE) check OCRD_MODULES=ocrd_keraslm VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
+	$(pip_install_tf1nvidia)
 	$(pip_install)
 endif
 endif
@@ -362,6 +367,7 @@ ifeq (0,$(MAKELEVEL))
 ocrd_segment-check:
 	$(MAKE) check OCRD_MODULES=ocrd_segment VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
+	$(pip_install_tf1nvidia)
 	$(pip_install)
 endif
 endif
@@ -481,10 +487,10 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
 $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf21
-	$(call delegate_venv,$(OCRD_ANYBASEOCR),$(SUB_VENV)/headless-tf21)
+	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
+	$(call delegate_venv,$(OCRD_ANYBASEOCR),$(SUB_VENV)/headless-tf2)
 ocrd_anybaseocr-check:
-	$(MAKE) check OCRD_MODULES=ocrd_anybaseocr VIRTUAL_ENV=$(SUB_VENV)/headless-tf21
+	$(MAKE) check OCRD_MODULES=ocrd_anybaseocr VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
 else
 	cd $< ; $(MAKE) patch-pix2pixhd
 	$(pip_install)
@@ -528,6 +534,7 @@ ifeq (0,$(MAKELEVEL))
 sbb_binarization-check:
 	$(MAKE) check OCRD_MODULES=sbb_binarization VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
+	$(pip_install_tf1nvidia)
 	$(pip_install)
 endif
 endif
@@ -546,6 +553,7 @@ ifeq (0,$(MAKELEVEL))
 sbb_textline_detector-check:
 	$(MAKE) check OCRD_MODULES=sbb_textline_detector VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
+	$(pip_install_tf1nvidia)
 	$(pip_install)
 endif
 endif
@@ -564,6 +572,7 @@ ifeq (0,$(MAKELEVEL))
 eynollah-check:
 	$(MAKE) check OCRD_MODULES=eynollah VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
 else
+	$(pip_install_tf1nvidia)
 	$(pip_install)
 endif
 endif
@@ -600,6 +609,31 @@ endif
 define pip_install
 . $(ACTIVATE_VENV) && cd $< && $(SEMPIP) $(PIP) install $(PIP_OPTIONS_E) . && touch -c $@
 endef
+
+# Workaround for missing prebuilt versions of TF<2 for Python==3.8
+# todo: find another solution for 3.9, 3.10 etc
+# Nvidia has them, but under a different name, so let's rewrite that:
+define pip_install_tf1nvidia =
+. $(ACTIVATE_VENV) && if ! $(PYTHON) -c "import sys; sys.exit(sys.version_info.major==3 and sys.version_info.minor==8)" && ! $(PIP) show -q tensorflow-gpu; then \
+	$(PIP) install nvidia-pyindex && \
+	pushd $$(mktemp -d) && \
+	$(PIP) download --no-deps nvidia-tensorflow && \
+	for name in nvidia_tensorflow-*.whl; do name=$${name%.whl}; done && \
+	$(PYTHON) -m wheel unpack $$name.whl && \
+	for name in nvidia_tensorflow-*/; do name=$${name%/}; done && \
+	newname=$${name/nvidia_tensorflow/tensorflow_gpu} &&\
+	sed -i s/nvidia_tensorflow/tensorflow_gpu/g $$name/$$name.dist-info/METADATA && \
+	sed -i s/nvidia_tensorflow/tensorflow_gpu/g $$name/$$name.dist-info/RECORD && \
+	sed -i s/nvidia_tensorflow/tensorflow_gpu/g $$name/tensorflow_core/tools/pip_package/setup.py && \
+	pushd $$name && for path in $$name*; do mv $$path $${path/$$name/$$newname}; done && popd && \
+	$(PYTHON) -m wheel pack $$name && \
+	$(PIP) install $$newname*.whl && popd && rm -fr $$OLDPWD; fi && \
+	$(PIP) install imageio==2.4.1 && \
+	$(PIP) install "tifffile<2022"
+endef
+# last recipe 2 lines:
+# - preempt conflict over numpy between scikit-image and tensorflow
+# - preempt conflict over numpy between tifffile and tensorflow
 
 # pattern for recursive make:
 # $(executables...): module...
@@ -794,13 +828,20 @@ clean-tesseract:
 deps-ubuntu:
 	apt-get update
 	apt-get -y install git parallel
+ifneq ($(suffix $(PYTHON)),)
+# install specific Python version in system via PPA
+	apt-get install -y software-properties-common
+	add-apt-repository -y ppa:deadsnakes/ppa
+	apt-get update
+	apt-get install -y --no-install-recommends $(notdir $(PYTHON))-dev $(notdir $(PYTHON))-venv
+endif
 	$(MAKE) deps-ubuntu-modules
 	chown -R --reference=$(CURDIR) .git $(OCRD_MODULES)
 # prevent the sem commands during above module updates from imposing sudo perms on HOME:
 	chown -R --reference=$(HOME) $(HOME)/.parallel
 
 deps-ubuntu-modules:
-	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu; done
+	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu PYTHON=$(PYTHON) PIP=$(PIP); done
 	apt-get -y install $(CUSTOM_DEPS)
 
 .PHONY: deps-ubuntu deps-ubuntu-modules
@@ -845,6 +886,7 @@ docker%: Dockerfile $(DOCKER_MODULES)
 	--build-arg OCRD_MODULES="$(DOCKER_MODULES)" \
 	--build-arg PIP_OPTIONS="$(PIP_OPTIONS)" \
 	--build-arg PARALLEL="$(DOCKER_PARALLEL)" \
+	--build-arg PYTHON="$(PYTHON)" \
 	-t $(DOCKER_TAG):$(or $(*:-%=%),latest) .
 
 
