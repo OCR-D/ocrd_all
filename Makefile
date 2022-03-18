@@ -621,8 +621,12 @@ define pip_install_tf1nvidia =
 	pushd $$name && for path in $$name*; do mv $$path $${path/$$name/$$newname}; done && popd && \
 	$(PYTHON) -m wheel pack $$name && \
 	$(PIP) install $$newname*.whl && popd && rm -fr $$OLDPWD; fi && \
-	$(PIP) install imageio==2.4.1 # preempt conflict over numpy between scikit-image and tensorflow
+	$(PIP) install imageio==2.4.1 && \
+	$(PIP) install tifffile==2021.11.2
 endef
+# last recipe 2 lines:
+# - preempt conflict over numpy between scikit-image and tensorflow
+# - preempt conflict over numpy between tifffile and tensorflow
 
 # pattern for recursive make:
 # $(executables...): module...
