@@ -7,16 +7,20 @@ jobs:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
       - run: make docker-maximum-cuda
-      - run:
-          name: persist image
-          command: |
-            sudo apt install pigz
-            docker image save ocrd/all:maximum-cuda | pigz --fast > ocrd-all-maximum.tar.gz
-          no_output_timeout: 30m
-      # can be downloaded from CircleCI.com and imported via "docker image load"
-      - store_artifacts:
-          path: ocrd-all-maximum.tar.gz
-          destination: artifacts
+      - when:
+          # takes too long for 1h1m CircleCI timeout overall
+          condition: false
+          steps:
+            - run:
+                name: persist image
+                command: |
+                  sudo apt install pigz
+                  docker image save ocrd/all:maximum-cuda | pigz --fast > ocrd-all-maximum.tar.gz
+                no_output_timeout: 30m
+            # can be downloaded from CircleCI.com and imported via "docker image load"
+            - store_artifacts:
+                path: ocrd-all-maximum.tar.gz
+                destination: artifacts
   deploy:
     docker:
       - image: circleci/buildpack-deps:stretch
