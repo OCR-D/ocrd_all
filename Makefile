@@ -622,7 +622,7 @@ define pip_install_tf1nvidia =
 	$(PYTHON) -m wheel pack $$name && \
 	$(PIP) install $$newname*.whl && popd && rm -fr $$OLDPWD; fi && \
 	$(PIP) install imageio==2.4.1 && \
-	$(PIP) install tifffile==2021.11.2
+	$(PIP) install "tifffile<2022"
 endef
 # last recipe 2 lines:
 # - preempt conflict over numpy between scikit-image and tensorflow
