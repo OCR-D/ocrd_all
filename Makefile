@@ -56,12 +56,12 @@ export PKG_CONFIG_PATH
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_DEPS = unzip wget python3-venv parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
+DEFAULT_DISABLED_MODULES = cor-asv-fst opencv-python ocrd_ocropy
 ifeq ($(PYTHON_VERSION),3.10)
 # Python 3.10.x does not work with current kraken.
-DISABLED_MODULES ?= cor-asv-fst opencv-python ocrd_ocropy ocrd_kraken
-else
-DISABLED_MODULES ?= cor-asv-fst opencv-python ocrd_ocropy
+DEFAULT_DISABLED_MODULES += ocrd_kraken
 endif
+DISABLED_MODULES ?= $(DEFAULT_DISABLED_MODULES)
 
 # Default to all submodules, but allow overriding by user
 # (and treat the empty value as if it was unset)
