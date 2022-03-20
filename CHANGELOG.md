@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+* Update kraken to include the work-in-progress segmentation, #288
+* GitHub actions for `make all`
+
 ## [v2022-02-03](https://github.com/OCR-D/ocrd_all/releases/v2022-02-03)
 
 New projects:
@@ -191,8 +196,6 @@ New projects:
   > * redirect stderr to stdout/logfile in parallel case, too
   > * show success/failure of all workspaces
   > * separate install-time and run-time, separate recursive `ocrd-make` and local `make`
-
-## Unreleased
 
 ## [v2021-12-13](https://github.com/OCR-D/ocrd_all/releases/v2021-12-13)
 
