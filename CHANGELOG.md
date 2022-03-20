@@ -2,8 +2,111 @@
 
 ## Unreleased
 
+## [v2022-03-20](https://github.com/OCR-D/ocrd_all/releases/v2022-03-20)
+
 * Update kraken to include the work-in-progress segmentation, #288
 * GitHub actions for `make all`
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [f19a9b3](https://github.com/ASVLeipzig/cor-asv-ann/commits/f19a9b3)..[bea828a](https://github.com/ASVLeipzig/cor-asv-ann/commits/bea828a)
+
+> Release: [v0.1.12](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.12)
+
+  > * show warning if metric=Levenshtein-fast and confusion>0
+
+### [core](https://github.com/OCR-D/core) [1a7b81c](https://github.com/OCR-D/core/commits/1a7b81c)..[6d359e7](https://github.com/OCR-D/core/commits/6d359e7)
+
+> Release: [v2.31.0](https://github.com/OCR-D/core/releases/v2.31.0)
+
+  > * :package: v2.31.0
+  > * Merge remote-tracking branch 'origin/anybaseocr-layout-analysis'
+  > * Merge remote-tracking branch 'origin/wsval-missing-args'
+  > * Merge remote-tracking branch 'bertsky/patch-5'
+  > * OcrdMets.add_file: fix fileGrp regex exception msg
+  > * Merge pull request #808 from ulb-sachsen-anhalt/doc/upd/install-deps
+  > * Merge pull request #779 from ulb-sachsen-anhalt/feat/rfct/pytest4
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [195354c](https://github.com/qurator-spk/dinglehopper/commits/195354c)..[edc24cd](https://github.com/qurator-spk/dinglehopper/commits/edc24cd)
+
+  > * ✔️ DroneCI: Build on Python 3.6 → 3.10
+  > * 👷🏾‍♂️ Remove str() on Path objects
+  > * ✔️ CircleCI: Stop testing using Python 3.5
+  > * 🐛 Bump rapidfuzz dep to >= 2.0.5 (Fixes gh-65)
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [f0ac0bb](https://github.com/qurator-spk/eynollah/commits/f0ac0bb)..[10f1ace](https://github.com/qurator-spk/eynollah/commits/10f1ace)
+
+> Release: [v0.0.11](https://github.com/qurator-spk/eynollah/releases/v0.0.11)
+
+  > * Merge pull request #65 from mikegerber/fix/enhanced-message
+  > * Merge pull request #64 from mikegerber/feat/better-time-msgs
+  > * Merge pull request #68 from mikegerber/fix/remove-spurious-textequivs
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [01aea45](https://github.com/OCR-D/ocrd_anybaseocr/commits/01aea45)..[1a6734a](https://github.com/OCR-D/ocrd_anybaseocr/commits/1a6734a)
+
+> Release: [v1.7.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.7.0)
+
+  > * :package: v1.7.0
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [76b34c5](https://github.com/OCR-D/ocrd_calamari/commits/76b34c5)..[ecb0d67](https://github.com/OCR-D/ocrd_calamari/commits/ecb0d67)
+
+> Release: [v1.0.3](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.3)
+
+  > * ✔️ Handle PAGE XML namespace dynamically and without hardcoding
+  > * ✔️ CircleCI: Use a test matrix to test on different Python versions
+  > * ✔️ Move installing deps to Makefile
+  > * ✔️ CircleCI: Test using the python:3.6.12 image
+  > * Merge pull request #74 from bertsky/fix-tests-again
+  > * git push
+  > * Merge pull request #70 from bertsky/patch-2
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [529f7f5](https://github.com/cisocrgroup/ocrd_cis/commits/529f7f5)..[b856f5b](https://github.com/cisocrgroup/ocrd_cis/commits/b856f5b)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * resegment: join_polygons: make equidistant points relative to estimated scale
+  > * resegment: join_polygons: allow non-contiguous input, too
+  > * resegment: fix method=baseline
+  > * Merge pull request #77 from bertsky/fix-resegment
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [ff1f477](https://github.com/OCR-D/ocrd_segment/commits/ff1f477)..[00f80bd](https://github.com/OCR-D/ocrd_segment/commits/00f80bd)
+
+> Release: [v0.1.17](https://github.com/OCR-D/ocrd_segment/releases/v0.1.17)
+
+  > * :package: 0.1.17
+  > * project: use alpha-shape instead of convex hull
+  > * forgot actual source file (86e9474edd)
+  > * update README
+  > * :package: v0.1.16
+  > * project: new processor
+  > * repair/plausibilize: fix scope of result list (avoids deleting multiple times)
+  > * :package: v0.1.15
+  > * Merge branch 'excel_gt_writer'
+  > * plausibilize: both analyse & apply iff enabled
+  > * :package: v0.1.14
+  > * repair: fix line split rule
+  > * Merge branch 'master' of ssh://github.com/OCR-D/ocrd_segment
+  > * repair: generalize plausibilization…
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [ac27465](https://github.com/OCR-D/ocrd_tesserocr/commits/ac27465)..[bfe71b7](https://github.com/OCR-D/ocrd_tesserocr/commits/bfe71b7)
+
+> Release: [v0.13.6](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.13.6)
+
+  > * ocrd-tool: list known resources
+
+### [opencv-python](https://github.com/skvark/opencv-python) [209d32e](https://github.com/skvark/opencv-python/commits/209d32e)..[8880543](https://github.com/skvark/opencv-python/commits/8880543)
+
+> Release: [64](https://github.com/skvark/opencv-python/releases/64)
+
+  > * Merge pull request #632 from asenyaev/asen/fix_current_builds
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [f5faf29](https://github.com/bertsky/workflow-configuration/commits/f5faf29)..[bef631c](https://github.com/bertsky/workflow-configuration/commits/bef631c)
+
+  > * ocrd-import: delegate to ocrd logging
+  > * ocrd-import: fix numerical retval
+  > * ocrd-import: fix backing out of errors (again)
+  > * ocrd-import: show error if not directory
+  > * ocrd-import: fix histexpand
+  > * ocrd-page-transform: rely on recent bashlib resource changes
+
 
 ## [v2022-02-03](https://github.com/OCR-D/ocrd_all/releases/v2022-02-03)
 
