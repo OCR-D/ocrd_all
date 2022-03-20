@@ -43,6 +43,8 @@ jobs:
       run: echo ${{ inputs.os }}
     - name: Show environment
       run: echo OS=${{ env.OS }}, PYTHON_VERSION=${{ env.PYTHON_VERSION }}
+    - name: update apt repositories
+      run: sudo apt-get update
     - name: Install dependencies
       run: sudo make deps-ubuntu PYTHON=python${{ env.PYTHON_VERSION}}
     - name: Make all

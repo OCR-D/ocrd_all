@@ -826,7 +826,6 @@ clean-tesseract:
 # (in case deps-ubuntu has been used with sudo and some modules were updated)
 # install git and parallel first (which is required for the module updates)
 deps-ubuntu:
-	apt-get update
 	apt-get -y install git parallel
 ifneq ($(suffix $(PYTHON)),)
 # install specific Python version in system via PPA
