@@ -35,7 +35,7 @@ jobs:
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
       - run:
           name: Build Docker image
-          command: make docker-<< parameters.variant >>-git DOCKER_PARALLEL=-j3
+          command: make docker-<< parameters.variant >>-git DOCKER_PARALLEL=-j1
       - run:
           name: Alias Docker images
           command: docker tag ocrd/all:<< parameters.variant >>-git ocrd/all:<< parameters.variant >>
