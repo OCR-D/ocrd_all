@@ -39,7 +39,7 @@ $(if $(shell sem --version 2>/dev/null),sem --will-cite --fg --id ocrd_all_git,$
 endef
 
 define SEMPIP
-$(if $(shell sem --version 2>/dev/null),sem --will-cite --fg --id ocrd_all_pip$(VIRTUAL_ENV),$(error cannot find package GNU parallel))
+$(if $(shell sem --version 2>/dev/null),sem --will-cite --fg --id ocrd_all_pip$(notdir $(VIRTUAL_ENV)),$(error cannot find package GNU parallel))
 endef
 
 define WGET
@@ -614,10 +614,11 @@ endef
 # todo: find another solution for 3.9, 3.10 etc
 # Nvidia has them, but under a different name, so let's rewrite that:
 define pip_install_tf1nvidia =
-. $(ACTIVATE_VENV) && if ! $(PYTHON) -c "import sys; sys.exit(sys.version_info.major==3 and sys.version_info.minor==8)" && ! $(PIP) show -q tensorflow-gpu; then \
-	$(PIP) install nvidia-pyindex && \
+ifeq ($(PYTHON_VERSION),3.8)
+. $(ACTIVATE_VENV) && if ! $(PIP) show -q tensorflow-gpu; then \
+	$(SEMPIP) $(PIP) install nvidia-pyindex && \
 	pushd $$(mktemp -d) && \
-	$(PIP) download --no-deps nvidia-tensorflow && \
+	$(SEMPIP) $(PIP) download --no-deps nvidia-tensorflow && \
 	for name in nvidia_tensorflow-*.whl; do name=$${name%.whl}; done && \
 	$(PYTHON) -m wheel unpack $$name.whl && \
 	for name in nvidia_tensorflow-*/; do name=$${name%/}; done && \
@@ -627,13 +628,12 @@ define pip_install_tf1nvidia =
 	sed -i s/nvidia_tensorflow/tensorflow_gpu/g $$name/tensorflow_core/tools/pip_package/setup.py && \
 	pushd $$name && for path in $$name*; do mv $$path $${path/$$name/$$newname}; done && popd && \
 	$(PYTHON) -m wheel pack $$name && \
-	$(PIP) install $$newname*.whl && popd && rm -fr $$OLDPWD; fi && \
-	$(PIP) install imageio==2.4.1 && \
-	$(PIP) install "tifffile<2022"
-endef
-# last recipe 2 lines:
+	$(SEMPIP) $(PIP) install $$newname*.whl && popd && rm -fr $$OLDPWD; fi
+endif
 # - preempt conflict over numpy between scikit-image and tensorflow
-# - preempt conflict over numpy between tifffile and tensorflow
+# - preempt conflict over numpy between tifffile and tensorflow (and allow py36)
+. $(ACTIVATE_VENV) && $(SEMPIP) $(PIP) install imageio==2.14.1 "tifffile<2022" 
+endef
 
 # pattern for recursive make:
 # $(executables...): module...
