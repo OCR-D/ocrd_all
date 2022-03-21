@@ -35,11 +35,11 @@ ACTIVATE_VENV = $(VIRTUAL_ENV)/bin/activate
 PYTHON_VERSION := $(shell $(PYTHON) -c 'import sys; print("%u.%u" % (sys.version_info.major, sys.version_info.minor))')
 
 define SEMGIT
-$(if $(shell sem --version 2>/dev/null),sem --will-cite --fg --id ocrd_all_git,$(error cannot find package GNU parallel))
+$(if $(shell sem --version 2>/dev/null),sem -q --will-cite --fg --id ocrd_all_git,$(error cannot find package GNU parallel))
 endef
 
 define SEMPIP
-$(if $(shell sem --version 2>/dev/null),sem --will-cite --fg --id ocrd_all_pip$(notdir $(VIRTUAL_ENV)),$(error cannot find package GNU parallel))
+$(if $(shell sem --version 2>/dev/null),sem -q --will-cite --fg --id ocrd_all_pip$(notdir $(VIRTUAL_ENV)),$(error cannot find package GNU parallel))
 endef
 
 define WGET
