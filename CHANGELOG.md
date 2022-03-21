@@ -40,11 +40,65 @@
   > * Merge pull request #64 from mikegerber/feat/better-time-msgs
   > * Merge pull request #68 from mikegerber/fix/remove-spurious-textequivs
 
-### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [01aea45](https://github.com/OCR-D/ocrd_anybaseocr/commits/01aea45)..[1a6734a](https://github.com/OCR-D/ocrd_anybaseocr/commits/1a6734a)
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [e930c93](https://github.com/OCR-D/ocrd_anybaseocr/commits/e930c93)..[1a6734a](https://github.com/OCR-D/ocrd_anybaseocr/commits/1a6734a)
 
 > Release: [v1.7.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.7.0)
 
   > * :package: v1.7.0
+  > * README: explain resmgr download and pip install
+  > * layout-analysis: fix parent fornew chapter/section
+  > * update CHANGELOG
+  > * fix/update README
+  > * :package: 1.7.0
+  > * test_dewarp: also when on CPU, use CROP as input
+  > * dewarping: improve model loading and rename params…
+  > * dewarping: fix image post-processing…
+  > * dewarping: fix prepare_data…
+  > * test_dewarp: mets.find_files is a generator now
+  > * tests: fix initLogging
+  > * tests: fix relative import
+  > * add test for dewarping
+  > * update requirements
+  > * ocrd-tool (tiseg/layout-analysis): use SavedFormat instead of HDF5 by default
+  > * layout-analysis: improve…
+  > * Makefile: fix test dependencies; update to resmgr cwd semantics
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [8b5571f8](https://github.com/tesseract-ocr/tesseract/commits/8b5571f8)..[c2a3efe2](https://github.com/tesseract-ocr/tesseract/commits/c2a3efe2)
+
+> Release: [5.1.0](https://github.com/tesseract-ocr/tesseract/releases/5.1.0)
+
+  > * Create new release 5.1.0
+  > * Remove unneeded include statements
+  > * Fix typo in descriptions of thresholding parameters
+  > * Fix linker flags for MSYS2 clang64 builds
+  > * [cmake] Indent.
+  > * Merge pull request #3752 from OgreTransporter/fix-issue-3751
+  > * README: ALTO is supported since version 4.1.0
+  > * Handle image and line regions in output formats ALTO, hOCR and text
+  > * Merge pull request #3753 from stweil/clang-warnings
+  > * Update codeql-analysis.yml
+  > * Update Makefile.am
+  > * Remove unused code.
+  > * Simplify. Move related function from separate file.
+  > * Merge pull request #3745 from egorpugin/main
+  > * Fix warnings.
+  > * Remove unused fwd.
+  > * Remove unused ctors in macros.
+  > * Fix list type.
+  > * Remove in-class TESS_API.
+  > * Ignore more build files.
+  > * Fix build.
+  > * Fix warnings.
+  > * Remove unneeded dtor.
+  > * Fix warnings.
+  > * Shorten macros.
+  > * Remove a local function from class TableRecognizer
+  > * Remove some local functions from class ImageFind
+  > * Remove unused functions ImageFind::ComposeRGB and ImageFind::ClipToByte
+  > * Remove unused function ImageFind::ComputeRectangleColors
+  > * Remove unused resolution parameters
+  > * Remove some local functions from class LineFinder
+  > * Fix comment
 
 ### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [76b34c5](https://github.com/OCR-D/ocrd_calamari/commits/76b34c5)..[ecb0d67](https://github.com/OCR-D/ocrd_calamari/commits/ecb0d67)
 
