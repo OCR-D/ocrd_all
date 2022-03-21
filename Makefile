@@ -614,8 +614,7 @@ endef
 # todo: find another solution for 3.9, 3.10 etc
 # Nvidia has them, but under a different name, so let's rewrite that:
 define pip_install_tf1nvidia =
-ifeq ($(PYTHON_VERSION),3.8)
-. $(ACTIVATE_VENV) && if ! $(PIP) show -q tensorflow-gpu; then \
+. $(ACTIVATE_VENV) && if test $(PYTHON_VERSION) = 3.8 && ! $(PIP) show -q tensorflow-gpu; then \
 	$(SEMPIP) $(PIP) install nvidia-pyindex && \
 	pushd $$(mktemp -d) && \
 	$(SEMPIP) $(PIP) download --no-deps nvidia-tensorflow && \
@@ -629,7 +628,6 @@ ifeq ($(PYTHON_VERSION),3.8)
 	pushd $$name && for path in $$name*; do mv $$path $${path/$$name/$$newname}; done && popd && \
 	$(PYTHON) -m wheel pack $$name && \
 	$(SEMPIP) $(PIP) install $$newname*.whl && popd && rm -fr $$OLDPWD; fi
-endif
 # - preempt conflict over numpy between scikit-image and tensorflow
 # - preempt conflict over numpy between tifffile and tensorflow (and allow py36)
 . $(ACTIVATE_VENV) && $(SEMPIP) $(PIP) install imageio==2.14.1 "tifffile<2022" 
