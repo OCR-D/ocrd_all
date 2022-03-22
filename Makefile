@@ -360,6 +360,7 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-pages
 OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-original
 OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-page
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
+OCRD_SEGMENT += $(BIN)/ocrd-segment-project
 $(call multirule,$(OCRD_SEGMENT)): ocrd_segment
 ifeq (0,$(MAKELEVEL))
 	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
