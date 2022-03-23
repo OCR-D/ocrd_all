@@ -104,8 +104,13 @@ CUSTOM_DEPS = unzip wget python3-venv parallel git less # add more packages for 
 
 DEFAULT_DISABLED_MODULES = cor-asv-fst opencv-python ocrd_ocropy
 ifeq ($(PYTHON_VERSION),3.10)
-# Python 3.10.x does not work with current kraken.
+# Python 3.10 fails to build numpy==1.19.3 which is required in headless-tf1.
+# This restriction can be removed as soon as ocrd_cis no longer depends on calamari_ocr==0.3.5.
+DEFAULT_DISABLED_MODULES += ocrd_cis
+# Python 3.10 does not work with current kraken.
 DEFAULT_DISABLED_MODULES += ocrd_kraken
+# Python 3.10 does not provide tensorflow<=2.5.0,>=2.0.0 (from ocr4all-pixel-classifier==0.6.6->-r requirements.in (line 2)).
+DEFAULT_DISABLED_MODULES += ocrd_pc_segmentation
 endif
 DISABLED_MODULES ?= $(DEFAULT_DISABLED_MODULES)
 
@@ -247,10 +252,6 @@ $(SHARE)/opencv-python: opencv-python/setup.py | $(ACTIVATE_VENV) $(SHARE) $(SHA
 $(BIN)/ocrd: $(SHARE)/opencv-python
 endif
 
-ifeq ($(PYTHON_VERSION),3.10)
-# Python 3.10.x does not work with current kraken.
-override OCRD_MODULES := $(filter-out ocrd_kraken, $(OCRD_MODULES))
-endif
 ifneq ($(findstring ocrd_kraken, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
 install-models: install-models-kraken
@@ -535,6 +536,8 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-tiseg
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
 $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
+	# Hack for Python 3.10 which fails to install ocrd-fork-pylsd 0.0.4 from PyPI.
+	. $(ACTIVATE_VENV) && pip install git+https://github.com/kba/pylsd.git
 	$(pip_install)
 endif
 
@@ -677,9 +680,10 @@ define pip_install_tf1nvidia =
 	pushd $$name && for path in $$name*; do mv $$path $${path/$$name/$$newname}; done && popd && \
 	$(PYTHON) -m wheel pack $$name && \
 	$(SEMPIP) pip install $$newname*.whl && popd && rm -fr $$OLDPWD; fi
+# TODO: Remove the following hack. It was replaced by pip constraints.
 # - preempt conflict over numpy between scikit-image and tensorflow
 # - preempt conflict over numpy between tifffile and tensorflow (and allow py36)
-. $(ACTIVATE_VENV) && $(SEMPIP) pip install imageio==2.14.1 "tifffile<2022"
+# . $(ACTIVATE_VENV) && $(SEMPIP) pip install imageio==2.14.1 "tifffile<2022"
 endef
 
 # pattern for recursive make:
