@@ -41,6 +41,9 @@ endif
 ifeq ($(MAKECMDGOALS), check)
 CHECK_SUBENVS := true
 endif
+ifeq ($(MAKECMDGOALS), show)
+CHECK_SUBENVS := true
+endif
 endif
 
 ifdef CHECK_SUBENVS
@@ -115,6 +118,16 @@ DEFAULT_DISABLED_MODULES += ocrd_cis
 DEFAULT_DISABLED_MODULES += ocrd_kraken
 # Python 3.10 does not provide tensorflow<=2.5.0,>=2.0.0 (from ocr4all-pixel-classifier==0.6.6->-r requirements.in (line 2)).
 DEFAULT_DISABLED_MODULES += ocrd_pc_segmentation
+endif
+ifndef TENSORFLOW_1
+# These modules cannot be built when tensorflow-gpu==1.15 is missing.
+DEFAULT_DISABLED_MODULES += cor-asv-ann
+DEFAULT_DISABLED_MODULES += cor-asv-fst
+DEFAULT_DISABLED_MODULES += eynollah
+DEFAULT_DISABLED_MODULES += ocrd_keraslm
+DEFAULT_DISABLED_MODULES += ocrd_segment
+DEFAULT_DISABLED_MODULES += sbb_binarization
+DEFAULT_DISABLED_MODULES += sbb_textline_detector
 endif
 DISABLED_MODULES ?= $(DEFAULT_DISABLED_MODULES)
 
@@ -282,9 +295,6 @@ $(OCRD_OCROPY): ocrd_ocropy $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifndef TENSORFLOW_1
-override OCRD_MODULES := $(filter-out cor-asv-ann, $(OCRD_MODULES))
-endif
 ifneq ($(findstring cor-asv-ann, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
 OCRD_COR_ASV_ANN := $(BIN)/ocrd-cor-asv-ann-evaluate
@@ -318,9 +328,6 @@ $(OCRD_DETECTRON2): ocrd_detectron2
 	$(pip_install)
 endif
 
-ifndef TENSORFLOW_1
-override OCRD_MODULES := $(filter-out cor-asv-fst, $(OCRD_MODULES))
-endif
 ifneq ($(findstring cor-asv-fst, $(OCRD_MODULES)),)
 deps-ubuntu-modules: cor-asv-fst
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
@@ -339,9 +346,6 @@ else
 endif
 endif
 
-ifndef TENSORFLOW_1
-override OCRD_MODULES := $(filter-out ocrd_keraslm, $(OCRD_MODULES))
-endif
 ifneq ($(findstring ocrd_keraslm, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KERASLM)
 OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
@@ -404,9 +408,6 @@ $(BIN)/ocrd-dinglehopper: dinglehopper $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifndef TENSORFLOW_1
-override OCRD_MODULES := $(filter-out ocrd_segment, $(OCRD_MODULES))
-endif
 ifneq ($(findstring ocrd_segment, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_SEGMENT)
 OCRD_SEGMENT := $(BIN)/ocrd-segment-evaluate
@@ -560,9 +561,6 @@ $(OCRD_DOXA): ocrd_doxa $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifndef TENSORFLOW_1
-override OCRD_MODULES := $(filter-out sbb_binarization, $(OCRD_MODULES))
-endif
 ifneq ($(findstring sbb_binarization, $(OCRD_MODULES)),)
 install-models: install-models-sbb-binarization
 .PHONY: install-models-sbb-binarization
@@ -583,9 +581,6 @@ else
 endif
 endif
 
-ifndef TENSORFLOW_1
-override OCRD_MODULES := $(filter-out sbb_textline_detector, $(OCRD_MODULES))
-endif
 ifneq ($(findstring sbb_textline_detector, $(OCRD_MODULES)),)
 install-models: install-models-sbb-textline
 .PHONY: install-models-sbb-textline
@@ -605,9 +600,6 @@ else
 endif
 endif
 
-ifndef TENSORFLOW_1
-override OCRD_MODULES := $(filter-out eynollah, $(OCRD_MODULES))
-endif
 ifneq ($(findstring eynollah, $(OCRD_MODULES)),)
 install-models: install-models-eynollah
 .PHONY: install-models-eynollah
@@ -757,6 +749,7 @@ $(filter-out $(BIN)/ocrd,$(OCRD_EXECUTABLES)): $(BIN)/ocrd
 all: $(OCRD_MODULES) $(OCRD_EXECUTABLES)
 show:
 	@echo VIRTUAL_ENV = $(VIRTUAL_ENV)
+	@echo DISABLED_MODULES = $(DISABLED_MODULES)
 	@echo OCRD_MODULES = $(OCRD_MODULES)
 	@echo OCRD_EXECUTABLES = $(OCRD_EXECUTABLES:$(BIN)/%=%)
 
