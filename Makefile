@@ -54,7 +54,11 @@ create_venv := $(shell $(PYTHON) -m venv $(VIRTUAL_ENV) && bash -c "source $(VIR
 endif
 endif
 ifeq ($(wildcard $(SUB_VENV)/headless-tf1),)
+ifeq ($(PYTHON_VERSION),3.6)
+create_venv := $(shell $(PYTHON) -m venv $(SUB_VENV)/headless-tf1 && bash -c "source $(SUB_VENV)/headless-tf1/bin/activate && curl https://bootstrap.pypa.io/pip/3.6/get-pip.py | python - && pip install -U pip setuptools wheel")
+else
 create_venv := $(shell $(PYTHON) -m venv $(SUB_VENV)/headless-tf1 && bash -c "source $(SUB_VENV)/headless-tf1/bin/activate && pip install -U pip setuptools wheel")
+endif
 endif
 #ifeq ($(wildcard $(SUB_VENV)/headless-tf21),)
 #create_venv := $(shell $(PYTHON) -m venv $(SUB_VENV)/headless-tf21 && bash -c "source $(SUB_VENV)/headless-tf21/bin/activate && pip install -U pip setuptools wheel")
