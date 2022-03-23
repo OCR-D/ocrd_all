@@ -178,7 +178,7 @@ $(SHARE)/numpy: | $(ACTIVATE_VENV) $(SHARE)
 ocrd: $(BIN)/ocrd
 deps-ubuntu-modules: core
 $(BIN)/ocrd: core
-	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP_INSTALL="$(SEMPIP) $(PIP) install $(PIP_OPTIONS)" && touch -c $@
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP="$(SEMPIP) $(PIP)" PIP_INSTALL="$(SEMPIP) $(PIP) install $(PIP_OPTIONS)" && touch -c $@
 
 # Convert the executable names (1) to a pattern rule,
 # so that the recipe will be used with single-recipe-
