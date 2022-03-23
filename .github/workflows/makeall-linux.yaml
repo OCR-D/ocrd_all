@@ -49,5 +49,7 @@ jobs:
       run: sudo make deps-ubuntu PYTHON=python${{ env.PYTHON_VERSION}}
     - name: Make all
       run: make all PYTHON=python${{ env.PYTHON_VERSION }}
+    - name: Show OCR-D modules and executables
+      run: make show PYTHON=python${{ env.PYTHON_VERSION }}
     - name: Run check
       run: make check
