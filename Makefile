@@ -47,27 +47,31 @@ ifdef CHECK_SUBENVS
 
 # Create all required virtual environments.
 ifeq ($(wildcard $(VIRTUAL_ENV)),)
+ifeq ($(PYTHON_VERSION),3.6)
+create_venv := $(shell $(PYTHON) -m venv $(VIRTUAL_ENV) && bash -c "source $(VIRTUAL_ENV)/bin/activate && curl https://bootstrap.pypa.io/pip/3.6/get-pip.py | python - && pip install -U pip setuptools wheel"))
+else
 create_venv := $(shell $(PYTHON) -m venv $(VIRTUAL_ENV) && bash -c "source $(VIRTUAL_ENV)/bin/activate && pip install -U pip setuptools wheel"))
+endif
 endif
 ifeq ($(wildcard $(SUB_VENV)/headless-tf1),)
 create_venv := $(shell $(PYTHON) -m venv $(SUB_VENV)/headless-tf1 && bash -c "source $(SUB_VENV)/headless-tf1/bin/activate && pip install -U pip setuptools wheel")
 endif
-ifeq ($(wildcard $(SUB_VENV)/headless-tf21),)
-create_venv := $(shell $(PYTHON) -m venv $(SUB_VENV)/headless-tf21 && bash -c "source $(SUB_VENV)/headless-tf21/bin/activate && pip install -U pip setuptools wheel")
-endif
+#ifeq ($(wildcard $(SUB_VENV)/headless-tf21),)
+#create_venv := $(shell $(PYTHON) -m venv $(SUB_VENV)/headless-tf21 && bash -c "source $(SUB_VENV)/headless-tf21/bin/activate && pip install -U pip setuptools wheel")
+#endif
 
 # Try to install different versions of Tensorflow.
 ifneq (, $(shell bash -c "source $(SUB_VENV)/headless-tf1/bin/activate && pip install tensorflow-gpu==1.15" >/dev/null 2>&1 && echo true))
 TENSORFLOW_1 := 1
 endif
-ifneq (, $(shell bash -c "source $(SUB_VENV)/headless-tf21/bin/activate && pip install tensorflow==2.1" >/dev/null 2>&1 && echo true))
-TENSORFLOW_2_1 := 2.1
-endif
+#ifneq (, $(shell bash -c "source $(SUB_VENV)/headless-tf21/bin/activate && pip install tensorflow==2.1" >/dev/null 2>&1 && echo true))
+#TENSORFLOW_2_1 := 2.1
+#endif
 
 else
 
 TENSORFLOW_1 := 1
-TENSORFLOW_2_1 := 2.1
+#TENSORFLOW_2_1 := 2.1
 
 endif
 
@@ -477,7 +481,14 @@ OCRD_CIS += $(BIN)/ocrd-cis-ocropy-segment
 #OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
 OCRD_CIS += $(BIN)/ocrd-cis-postcorrect
 $(call multirule,$(OCRD_CIS)): ocrd_cis $(BIN)/ocrd
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -B -o $< $(notdir $(OCRD_CIS)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(call delegate_venv,$(OCRD_CIS),$(SUB_VENV)/headless-tf1)
+ocrd_cis-check:
+	$(MAKE) check OCRD_MODULES=ocrd_cis VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+else
 	$(pip_install)
+endif
 endif
 
 ifneq ($(findstring ocrd_pagetopdf, $(OCRD_MODULES)),)
@@ -499,27 +510,14 @@ $(OCRD_CALAMARI): ocrd_calamari
 	$(pip_install)
 endif
 
-ifndef TENSORFLOW_2_1
-override OCRD_MODULES := $(filter-out ocrd_pc_segmentation, $(OCRD_MODULES))
-endif
 ifneq ($(findstring ocrd_pc_segmentation, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
 $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
-	$(call delegate_venv,$(OCRD_PC_SEGMENTATION),$(SUB_VENV)/headless-tf2)
-ocrd_pc_segmentation-check:
-	$(MAKE) check OCRD_MODULES=ocrd_pc_segmentation VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
-else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
 endif
-endif
 
-ifndef TENSORFLOW_2_1
-override OCRD_MODULES := $(filter-out ocrd_anybaseocr, $(OCRD_MODULES))
-endif
 ifneq ($(findstring ocrd_anybaseocr, $(OCRD_MODULES)),)
 install-models: install-models-anybaseocr
 .PHONY: install-models-anybaseocr
@@ -537,14 +535,7 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-tiseg
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
 $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
-	$(call delegate_venv,$(OCRD_ANYBASEOCR),$(SUB_VENV)/headless-tf2)
-ocrd_anybaseocr-check:
-	$(MAKE) check OCRD_MODULES=ocrd_anybaseocr VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
-else
 	$(pip_install)
-endif
 endif
 
 ifneq ($(findstring ocrd_typegroups_classifier, $(OCRD_MODULES)),)
