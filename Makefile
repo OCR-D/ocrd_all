@@ -477,6 +477,7 @@ install-models-anybaseocr:
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-layout-analysis '*'
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-tiseg '*'
 
+ocrd_anybaseocr: GIT_RECURSIVE = --recursive
 OCRD_EXECUTABLES += $(OCRD_ANYBASEOCR)
 OCRD_ANYBASEOCR := $(BIN)/ocrd-anybaseocr-crop
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-binarize
@@ -492,7 +493,6 @@ ifeq (0,$(MAKELEVEL))
 ocrd_anybaseocr-check:
 	$(MAKE) check OCRD_MODULES=ocrd_anybaseocr VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
 else
-	cd $< ; $(MAKE) patch-pix2pixhd
 	$(pip_install)
 endif
 endif
