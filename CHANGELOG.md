@@ -2,6 +2,52 @@
 
 ## Unreleased
 
+## [v2022-03-25](https://github.com/OCR-D/ocrd_all/releases/v2022-03-25)
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [bea828a](https://github.com/ASVLeipzig/cor-asv-ann/commits/bea828a)..[1058657](https://github.com/ASVLeipzig/cor-asv-ann/commits/1058657)
+
+> Release: [v0.1.12](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.12)
+
+  > * Ignore Python build artifacts
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [1a6734a](https://github.com/OCR-D/ocrd_anybaseocr/commits/1a6734a)..[736e302](https://github.com/OCR-D/ocrd_anybaseocr/commits/736e302)
+
+> Release: [v1.8.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.8.0)
+
+  > * :package: v1.8.0
+  > * Merge pull request #91 from bertsky/pix2pixhd-as-pkg
+  > * Merge pull request #90 from OCR-D/core-2.31
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [b856f5b](https://github.com/cisocrgroup/ocrd_cis/commits/b856f5b)..[2cdfa79](https://github.com/cisocrgroup/ocrd_cis/commits/2cdfa79)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * revert e673544 (crashes OpenCV)
+  > * fix Workspace.save_image_file args
+  > * update to shapely 1.8
+
+### [ocrd_olahd_client](https://github.com/OCR-D/ocrd_olahd_client) [128c3b8](https://github.com/OCR-D/ocrd_olahd_client/commits/128c3b8)..[9809d0c](https://github.com/OCR-D/ocrd_olahd_client/commits/9809d0c)
+
+  > * Merge pull request #4 from stweil/master
+
+### [opencv-python](https://github.com/skvark/opencv-python) [8880543](https://github.com/skvark/opencv-python/commits/8880543)..[65f12d9](https://github.com/skvark/opencv-python/commits/65f12d9)
+
+> Release: [64](https://github.com/skvark/opencv-python/releases/64)
+
+  > * Merge pull request #639 from asenyaev/asen/pre_downloaded_files
+  > * Merge pull request #638 from asenyaev/asen/pylint_test
+
+### [sbb_textline_detector](https://github.com/qurator-spk/sbb_textline_detector) [325389a](https://github.com/qurator-spk/sbb_textline_detector/commits/325389a)..[a78f40a](https://github.com/qurator-spk/sbb_textline_detector/commits/a78f40a)
+
+  > * Merge pull request #58 from bertsky/patch-1
+  > * Merge pull request #59 from stweil/master
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [bfe71b7](https://github.com/OCR-D/ocrd_tesserocr/commits/bfe71b7)..[4876c84](https://github.com/OCR-D/ocrd_tesserocr/commits/4876c84)
+
+> Release: [v0.13.6](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.13.6)
+
+  > * ocrd_tool.resources: better descriptions
+
 ## [v2022-03-20](https://github.com/OCR-D/ocrd_all/releases/v2022-03-20)
 
 * Update kraken to include the work-in-progress segmentation, #288
