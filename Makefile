@@ -5,8 +5,6 @@
 
 # Python version (python3 required).
 export PYTHON ?= python3
-# Python packaging
-export PIP ?= pip3
 # PIP_OPTIONS ?= # empty
 # Derived variable to allow filtering -e, or inserting other options
 # (the option --editable must always be last and only applies to src install)
@@ -120,7 +118,6 @@ Variables:
 	VIRTUAL_ENV: absolute path to (re-)use for the virtual environment
 	TMPDIR: path to use for temporary storage instead of the system default
 	PYTHON: name of the Python binary
-	PIP: name of the Python packaging binary
 	PIP_OPTIONS: extra options for the `pip install` command like `-q` or `-v` or `-e`
 	TESSERACT_MODELS: list of additional models/languages to download for Tesseract. Default: "$(ALL_TESSERACT_MODELS)"
 	TESSERACT_CONFIG: command line options for Tesseract `configure`. Default: "$(TESSERACT_CONFIG)"
@@ -158,8 +155,8 @@ deinit:
 
 # Get Python modules.
 
-$(VIRTUAL_ENV)/bin/$(PIP): $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && $(SEMPIP) $(PIP) install --upgrade pip setuptools
+$(VIRTUAL_ENV)/bin/pip: $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install --upgrade pip setuptools
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
 	$(SEMPIP) $(PYTHON) -m venv $(VIRTUAL_ENV)
@@ -167,11 +164,11 @@ $(ACTIVATE_VENV) $(VIRTUAL_ENV):
 .PHONY: wheel
 wheel: $(BIN)/wheel
 $(BIN)/wheel: | $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && $(SEMPIP) $(PIP) install --force-reinstall $(PIP_OPTIONS_E) wheel
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install --force-reinstall $(PIP_OPTIONS_E) wheel
 
 # avoid making this .PHONY so it does not have to be repeated
 $(SHARE)/numpy: | $(ACTIVATE_VENV) $(SHARE)
-	. $(ACTIVATE_VENV) && $(SEMPIP) $(PIP) install $(PIP_OPTIONS_E) numpy
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install $(PIP_OPTIONS_E) numpy
 	@touch $@
 
 # Install modules from source.
@@ -180,7 +177,7 @@ $(SHARE)/numpy: | $(ACTIVATE_VENV) $(SHARE)
 ocrd: $(BIN)/ocrd
 deps-ubuntu-modules: core
 $(BIN)/ocrd: core
-	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP="$(SEMPIP) $(PIP)" PIP_INSTALL="$(SEMPIP) $(PIP) install $(PIP_OPTIONS)" && touch -c $@
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP="$(SEMPIP) pip" PIP_INSTALL="$(SEMPIP) pip install $(PIP_OPTIONS)" && touch -c $@
 
 # Convert the executable names (1) to a pattern rule,
 # so that the recipe will be used with single-recipe-
@@ -193,7 +190,7 @@ OCRD_EXECUTABLES += $(PAGE2IMG)
 PAGE2IMG := $(BIN)/page2img
 format-converters/page2img.py: format-converters
 $(PAGE2IMG): format-converters/page2img.py
-	. $(ACTIVATE_VENV) && $(SEMPIP) $(PIP) install validators
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install validators
 	echo "#!$(BIN)/python3" | cat - $< >$@
 	chmod +x $@
 endif
@@ -206,7 +203,7 @@ opencv-python: GIT_RECURSIVE = --recursive
 opencv-python/setup.py: opencv-python
 $(SHARE)/opencv-python: opencv-python/setup.py | $(ACTIVATE_VENV) $(SHARE) $(SHARE)/numpy
 	. $(ACTIVATE_VENV) && cd opencv-python && ENABLE_HEADLESS=1 $(PYTHON) setup.py bdist_wheel
-	. $(ACTIVATE_VENV) && $(SEMPIP) $(PIP) install $(<D)/dist/opencv_python_headless-*.whl
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install $(<D)/dist/opencv_python_headless-*.whl
 	@touch $@
 $(BIN)/ocrd: $(SHARE)/opencv-python
 endif
@@ -610,17 +607,17 @@ endif
 # install again forcefully without depds (to ensure
 # the binary itself updates):
 define pip_install
-. $(ACTIVATE_VENV) && cd $< && $(SEMPIP) $(PIP) install $(PIP_OPTIONS_E) . && touch -c $@
+. $(ACTIVATE_VENV) && cd $< && $(SEMPIP) pip install $(PIP_OPTIONS_E) . && touch -c $@
 endef
 
 # Workaround for missing prebuilt versions of TF<2 for Python==3.8
 # todo: find another solution for 3.9, 3.10 etc
 # Nvidia has them, but under a different name, so let's rewrite that:
 define pip_install_tf1nvidia =
-. $(ACTIVATE_VENV) && if test $(PYTHON_VERSION) = 3.8 && ! $(PIP) show -q tensorflow-gpu; then \
-	$(SEMPIP) $(PIP) install nvidia-pyindex && \
+. $(ACTIVATE_VENV) && if test $(PYTHON_VERSION) = 3.8 && ! pip show -q tensorflow-gpu; then \
+	$(SEMPIP) pip install nvidia-pyindex && \
 	pushd $$(mktemp -d) && \
-	$(SEMPIP) $(PIP) download --no-deps nvidia-tensorflow && \
+	$(SEMPIP) pip download --no-deps nvidia-tensorflow && \
 	for name in nvidia_tensorflow-*.whl; do name=$${name%.whl}; done && \
 	$(PYTHON) -m wheel unpack $$name.whl && \
 	for name in nvidia_tensorflow-*/; do name=$${name%/}; done && \
@@ -630,10 +627,10 @@ define pip_install_tf1nvidia =
 	sed -i s/nvidia_tensorflow/tensorflow_gpu/g $$name/tensorflow_core/tools/pip_package/setup.py && \
 	pushd $$name && for path in $$name*; do mv $$path $${path/$$name/$$newname}; done && popd && \
 	$(PYTHON) -m wheel pack $$name && \
-	$(SEMPIP) $(PIP) install $$newname*.whl && popd && rm -fr $$OLDPWD; fi
+	$(SEMPIP) pip install $$newname*.whl && popd && rm -fr $$OLDPWD; fi
 # - preempt conflict over numpy between scikit-image and tensorflow
 # - preempt conflict over numpy between tifffile and tensorflow (and allow py36)
-. $(ACTIVATE_VENV) && $(SEMPIP) $(PIP) install imageio==2.14.1 "tifffile<2022" 
+. $(ACTIVATE_VENV) && $(SEMPIP) pip install imageio==2.14.1 "tifffile<2022"
 endef
 
 # pattern for recursive make:
@@ -687,14 +684,14 @@ endif
 # avoid making these .PHONY so they do not have to be repeated:
 # tesserocr
 $(SHARE)/%: % | $(ACTIVATE_VENV) $(SHARE)
-	. $(ACTIVATE_VENV) && cd $< && $(SEMPIP) $(PIP) install $(PIP_OPTIONS) .
+	. $(ACTIVATE_VENV) && cd $< && $(SEMPIP) pip install $(PIP_OPTIONS) .
 	@touch $@
 
 $(SHARE):
 	@mkdir -p "$@"
 
 # At last, add venv dependency (must not become first):
-$(OCRD_EXECUTABLES) $(BIN)/wheel: | $(VIRTUAL_ENV)/bin/$(PIP)
+$(OCRD_EXECUTABLES) $(BIN)/wheel: | $(VIRTUAL_ENV)/bin/pip
 $(OCRD_EXECUTABLES): | $(BIN)/wheel
 # Also, add core dependency (but in a non-circular way):
 $(filter-out $(BIN)/ocrd,$(OCRD_EXECUTABLES)): $(BIN)/ocrd
@@ -707,7 +704,7 @@ show:
 	@echo OCRD_EXECUTABLES = $(OCRD_EXECUTABLES:$(BIN)/%=%)
 
 check: $(OCRD_EXECUTABLES:%=%-check) $(OCRD_MODULES:%=%-check)
-	. $(ACTIVATE_VENV) && $(PIP) check
+	. $(ACTIVATE_VENV) && pip check
 %-check: ;
 
 .PHONY: $(OCRD_EXECUTABLES:%=%-check)
@@ -841,7 +838,7 @@ endif
 	chown -R --reference=$(HOME) $(HOME)/.parallel
 
 deps-ubuntu-modules:
-	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu PYTHON=$(PYTHON) PIP=$(PIP); done
+	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu PYTHON=$(PYTHON); done
 	apt-get -y install $(CUSTOM_DEPS)
 
 .PHONY: deps-ubuntu deps-ubuntu-modules
