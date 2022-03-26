@@ -492,7 +492,6 @@ ifeq (0,$(MAKELEVEL))
 ocrd_anybaseocr-check:
 	$(MAKE) check OCRD_MODULES=ocrd_anybaseocr VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
 else
-	cd $< ; $(MAKE) patch-pix2pixhd
 	$(pip_install)
 endif
 endif
