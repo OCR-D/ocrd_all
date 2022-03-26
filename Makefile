@@ -869,9 +869,9 @@ docker-medi%: DOCKER_MODULES = core cor-asv-ann dinglehopper format-converters o
 docker-maxi%: DOCKER_MODULES = $(OCRD_MODULES)
 
 # DOCKER_BASE_IMAGE
-docker%um docke%um-git: DOCKER_BASE_IMAGE = ocrd/core
+docker%um docke%um-git: DOCKER_BASE_IMAGE = docker.io/ocrd/core
 # CUDA variants
-docker%-cuda docker%-cuda-git: DOCKER_BASE_IMAGE = ocrd/core-cuda
+docker%-cuda docker%-cuda-git: DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda
 
 # Build rule for all selections
 # (maybe we should add --network=host here for smoother build-time?)
