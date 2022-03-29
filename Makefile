@@ -873,7 +873,6 @@ docker%um docke%um-git: DOCKER_BASE_IMAGE = ocrd/core
 docker%-cuda docker%-cuda-git: DOCKER_BASE_IMAGE = ocrd/core-cuda
 
 # Build rule for all selections
-# (maybe we should add --network=host here for smoother build-time?)
 docker%: Dockerfile $(DOCKER_MODULES)
 	docker build \
 	--build-arg BASE_IMAGE=$(DOCKER_BASE_IMAGE) \
@@ -883,6 +882,7 @@ docker%: Dockerfile $(DOCKER_MODULES)
 	--build-arg PIP_OPTIONS="$(PIP_OPTIONS)" \
 	--build-arg PARALLEL="$(DOCKER_PARALLEL)" \
 	--build-arg PYTHON="$(PYTHON)" \
+	--network=host \
 	-t $(DOCKER_TAG):$(or $(*:-%=%),latest) .
 
 
