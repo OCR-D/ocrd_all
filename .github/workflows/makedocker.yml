@@ -1,0 +1,36 @@
+# GitHub workflow for `make docker-maximum-cuda`.
+
+name: make docker-maximum-cuda
+
+# https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
+on:
+  # Trigger workflow in GitHub web frontend or from API.
+  workflow_dispatch:
+    inputs:
+      os:
+        description: 'Operating system'
+        required: true
+        default: any
+        type: choice
+        options:
+          - ubuntu-18.04
+          - ubuntu-20.04
+
+jobs:
+  make:
+    runs-on: ${{ github.event.inputs.os }}
+
+    env:
+      PYTHON_VERSION: '3.7'
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    - name: update apt repositories
+      run: sudo apt-get update
+    - name: Install dependencies
+      run: sudo make deps-ubuntu PYTHON=python${{ env.PYTHON_VERSION}}
+    - name: Make docker-maximum-cuda
+      run: make docker-maximum-cuda PYTHON=python${{ env.PYTHON_VERSION }}
