@@ -1,0 +1,4 @@
+# pytorch-lightning 1.6.0 requires typing-extensions>=4.0.0, but you have typing-extensions 3.7.4.3 which is incompatible.
+pytorch-lightning<1.6.0
+# ocr4all-pixel-classifier 0.6.6 requires tensorflow<=2.5.0,>=2.0.0
+tensorflow==2.5.0

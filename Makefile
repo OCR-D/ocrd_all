@@ -63,22 +63,15 @@ else
 create_venv := $(shell $(PYTHON) -m venv $(SUB_VENV)/headless-tf1 && bash -c "source $(SUB_VENV)/headless-tf1/bin/activate && pip install -U pip setuptools wheel")
 endif
 endif
-#ifeq ($(wildcard $(SUB_VENV)/headless-tf21),)
-#create_venv := $(shell $(PYTHON) -m venv $(SUB_VENV)/headless-tf21 && bash -c "source $(SUB_VENV)/headless-tf21/bin/activate && pip install -U pip setuptools wheel")
-#endif
 
 # Try to install different versions of Tensorflow.
 ifneq (, $(shell bash -c "source $(SUB_VENV)/headless-tf1/bin/activate && pip install tensorflow-gpu==1.15" >/dev/null 2>&1 && echo true))
 TENSORFLOW_1 := 1
 endif
-#ifneq (, $(shell bash -c "source $(SUB_VENV)/headless-tf21/bin/activate && pip install tensorflow==2.1" >/dev/null 2>&1 && echo true))
-#TENSORFLOW_2_1 := 2.1
-#endif
 
 else
 
 TENSORFLOW_1 := 1
-#TENSORFLOW_2_1 := 2.1
 
 endif
 
@@ -648,11 +641,18 @@ endif
 # install gracefully with dependencies, and finally
 # install again forcefully without depds (to ensure
 # the binary itself updates):
-ifeq ($(findstring headless-tf1, $(VIRTUAL_ENV)),)
+ifeq (0,$(MAKELEVEL))
+ifeq ($(PYTHON_VERSION),3.10)
 define pip_install
 . $(ACTIVATE_VENV) && cd $< && $(SEMPIP) pip install $(PIP_OPTIONS_E) . && touch -c $@
 endef
 else
+define pip_install
+. $(ACTIVATE_VENV) && cd $< && $(SEMPIP) pip install -c $(CURDIR)/constraints.txt $(PIP_OPTIONS_E) . && touch -c $@
+endef
+endif
+endif
+ifneq ($(findstring headless-tf1, $(VIRTUAL_ENV)),)
 define pip_install
 . $(ACTIVATE_VENV) && cd $< && $(SEMPIP) pip install -c $(CURDIR)/constraints_tf1.txt $(PIP_OPTIONS_E) . && touch -c $@
 endef
