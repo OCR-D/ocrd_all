@@ -2,6 +2,69 @@
 
 ## Unreleased
 
+## [v2022-03-30](https://github.com/OCR-D/ocrd_all/releases/v2022-03-30)
+
+### [core](https://github.com/OCR-D/core) [6d359e7](https://github.com/OCR-D/core/commits/6d359e7)..[f9c2b6c](https://github.com/OCR-D/core/commits/f9c2b6c)
+
+> Release: [v2.32.0](https://github.com/OCR-D/core/releases/v2.32.0)
+
+  > * :package: v2.32.0
+  > * Merge remote-tracking branch 'bertsky/fix-recropped' into test-2.32
+  > * Merge remote-tracking branch 'origin/identify-pil-fallback'
+  > * ocrd zip bag: in-place _not_ required
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [edc24cd](https://github.com/qurator-spk/dinglehopper/commits/edc24cd)..[1febea8](https://github.com/qurator-spk/dinglehopper/commits/1febea8)
+
+  > * Merge pull request #66 from stweil/master
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [5bc6de9](https://github.com/OCR-D/ocrd_anybaseocr/commits/5bc6de9)..[94e5037](https://github.com/OCR-D/ocrd_anybaseocr/commits/94e5037)
+
+> Release: [v1.8.2](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.8.2)
+
+  > * :package: v1.8.2
+  > * circleci: update before apt-get install
+  > * Merge remote-tracking branch 'bertsky/patch-2'
+  > * :package: v1.8.1
+  > * Merge pull request #93 from bertsky/patch-1
+  > * Merge pull request #92 from stweil/fix
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [6daa4f6](https://github.com/bertsky/ocrd_detectron2/commits/6daa4f6)..[5bb90b1](https://github.com/bertsky/ocrd_detectron2/commits/5bb90b1)
+
+> Release: [v0.1.1](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.1)
+
+  > * make deps: ignore CUDA 10.0 and 11.0
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [fbd0457](https://github.com/OCR-D/ocrd_fileformat/commits/fbd0457)..[9451a99](https://github.com/OCR-D/ocrd_fileformat/commits/9451a99)
+
+> Release: [v0.4.1](https://github.com/OCR-D/ocrd_fileformat/releases/v0.4.1)
+
+  > * :package: v0.4.1
+  > * :memo: changelog
+  > * Merge pull request #38 from bertsky/patch-1
+
+### [ocrd_pagetopdf](https://github.com/UB-Mannheim/ocrd_pagetopdf) [7eb2e4e](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/7eb2e4e)..[6155605](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/6155605)
+
+> Release: [v1.0.0](https://github.com/UB-Mannheim/ocrd_pagetopdf/releases/v1.0.0)
+
+  > * Merge pull request #19 from bertsky/fix-imagegrp
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [00f80bd](https://github.com/OCR-D/ocrd_segment/commits/00f80bd)..[f6c7f1c](https://github.com/OCR-D/ocrd_segment/commits/f6c7f1c)
+
+> Release: [v0.1.17](https://github.com/OCR-D/ocrd_segment/releases/v0.1.17)
+
+  > * extract-lines: fix typo
+  > * fix regression in 7e1f189c..d41993df
+  > * ocrd_tool.resources: better descriptions
+  > * ocrd-tool: list known resources
+  > * recognize: improve messages
+
+### [opencv-python](https://github.com/skvark/opencv-python) [65f12d9](https://github.com/skvark/opencv-python/commits/65f12d9)..[0eb6c12](https://github.com/skvark/opencv-python/commits/0eb6c12)
+
+> Release: [64](https://github.com/skvark/opencv-python/releases/64)
+
+  > * Merge pull request #642 from asenyaev/asen/skip_gapi
+  > * Merge pull request #641 from asenyaev/asen/revert_pre_downloaded_files
+
 ## [v2022-03-25](https://github.com/OCR-D/ocrd_all/releases/v2022-03-25)
 
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [bea828a](https://github.com/ASVLeipzig/cor-asv-ann/commits/bea828a)..[1058657](https://github.com/ASVLeipzig/cor-asv-ann/commits/1058657)
