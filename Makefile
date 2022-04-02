@@ -29,7 +29,7 @@ endif
 
 BIN = $(VIRTUAL_ENV)/bin
 SHARE = $(VIRTUAL_ENV)/share
-ACTIVATE_VENV = $(VIRTUAL_ENV)/bin/activate
+ACTIVATE_VENV = $(BIN)/activate
 
 # Get Python major and minor versions for some conditional rules.
 PYTHON_VERSION := $(shell $(PYTHON) -c 'import sys; print("%u.%u" % (sys.version_info.major, sys.version_info.minor))')
@@ -155,7 +155,7 @@ deinit:
 
 # Get Python modules.
 
-$(VIRTUAL_ENV)/bin/pip: $(ACTIVATE_VENV)
+$(BIN)/pip: $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(SEMPIP) pip install --upgrade pip setuptools
 
 $(ACTIVATE_VENV) $(VIRTUAL_ENV):
@@ -690,7 +690,7 @@ $(SHARE):
 	@mkdir -p "$@"
 
 # At last, add venv dependency (must not become first):
-$(OCRD_EXECUTABLES) $(BIN)/wheel: | $(VIRTUAL_ENV)/bin/pip
+$(OCRD_EXECUTABLES) $(BIN)/wheel: | $(BIN)/pip
 $(OCRD_EXECUTABLES): | $(BIN)/wheel
 # Also, add core dependency (but in a non-circular way):
 $(filter-out $(BIN)/ocrd,$(OCRD_EXECUTABLES)): $(BIN)/ocrd
