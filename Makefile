@@ -840,9 +840,12 @@ ifneq ($(suffix $(PYTHON)),)
 	apt-get install -y --no-install-recommends $(notdir $(PYTHON))-dev $(notdir $(PYTHON))-venv
 endif
 	$(MAKE) deps-ubuntu-modules
-	chown -R --reference=$(CURDIR) .git $(OCRD_MODULES)
+	# Fix ownership of new/modified files and directories because
+	# deps-ubuntu is run as root, but not in a Docker build were
+	# it is not needed and costs a lot of time.
+	test "$$HOME" == "/" || chown -R --reference=$(CURDIR) .git $(OCRD_MODULES)
 # prevent the sem commands during above module updates from imposing sudo perms on HOME:
-	chown -R --reference=$(HOME) $(HOME)/.parallel
+	test "$$HOME" == "/" || chown -R --reference=$(HOME) $(HOME)/.parallel
 
 deps-ubuntu-modules:
 	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu PYTHON=$(PYTHON); done
