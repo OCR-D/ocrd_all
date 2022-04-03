@@ -54,10 +54,6 @@ ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 ENV TF_FORCE_GPU_ALLOW_GROWTH=true
 
-# make apt system functional
-RUN apt-get -y update \
- && apt-get install -y apt-utils
-
 # allow passing build-time parameter for list of tools to be installed
 # (defaults to medium, which also requires those modules to be present)
 ARG OCRD_MODULES="core dinglehopper format-converters ocrd_calamari ocrd_cis ocrd_im6convert ocrd_keraslm ocrd_olena ocrd_segment ocrd_tesserocr tesseract tesserocr cor-asv-ann workflow-configuration"
@@ -76,6 +72,12 @@ ARG PYTHON=python3
 # when not all dependencies have been correctly explicated):
 ARG PARALLEL=""
 
+# increase default network timeouts (so builds don't fail because of small bandwidth)
+ENV PIP_OPTIONS="--timeout=3000 ${PIP_OPTIONS}"
+RUN echo "Acquire::http::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
+RUN echo "Acquire::https::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
+RUN echo "Acquire::ftp::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
+
 WORKDIR /build
 
 # copy (sub)module directories to build
@@ -83,11 +85,8 @@ WORKDIR /build
 #  so we must rely on .dockerignore here)
 COPY . .
 
-# increase default network timeouts (so builds don't fail because of small bandwidth)
-ENV PIP_OPTIONS="--timeout=3000 ${PIP_OPTIONS}"
-RUN echo "Acquire::http::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
-RUN echo "Acquire::https::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
-RUN echo "Acquire::ftp::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
+# make apt system functional
+RUN apt-get -y update && apt-get install -y apt-utils
 
 # start a shell script (so we can comment individual steps here)
 RUN echo "set -ex" > docker.sh
