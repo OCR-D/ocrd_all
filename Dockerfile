@@ -85,6 +85,9 @@ WORKDIR /build
 #  so we must rely on .dockerignore here)
 COPY . .
 
+# deinit opencv-python (otherwise git submodule status can segfault) and remove copied junk
+RUN git submodule deinit opencv-python && git submodule foreach --recursive git clean -fxd
+
 # make apt system functional
 RUN apt-get -y update && apt-get install -y apt-utils
 
