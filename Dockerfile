@@ -30,7 +30,7 @@ LABEL \
 
 # simulate a virtual env for the makefile,
 # coinciding with the Python system prefix
-ENV PREFIX=/usr
+ENV PREFIX=/usr/local
 ENV VIRTUAL_ENV $PREFIX
 # avoid HOME/.local/share (hard to predict USER here)
 # so let XDG_DATA_HOME coincide with fixed system location
@@ -80,6 +80,9 @@ RUN echo "Acquire::ftp::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
 
 WORKDIR /build
 
+# create virtual environment
+RUN rm /usr/local/bin/pip* && apt-get purge -y python3-pip && python3 -m venv /usr/local && python3 -m pip install --force pip
+
 # copy (sub)module directories to build
 # (ADD/COPY cannot copy a list of directories,
 #  so we must rely on .dockerignore here)
@@ -95,8 +98,8 @@ RUN apt-get -y update && apt-get install -y apt-utils
 RUN echo "set -ex" > docker.sh
 # get packages for build
 RUN echo "apt-get -y install automake autoconf libtool pkg-config g++" >> docker.sh
-# we want to use PREFIX as "venv", so we need activate (as no-op)
-RUN echo "> $PREFIX/bin/activate" >> docker.sh
+RUN echo "source $PREFIX/bin/activate" >> docker.sh
+RUN echo "pip install -U pip setuptools wheel" >> docker.sh
 # try to fetch all modules system requirements
 RUN echo "make deps-ubuntu" >> docker.sh
 # build/install all tools of the requested modules:
