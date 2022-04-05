@@ -1,6 +1,6 @@
-# GitHub workflow for `make docker-maximum-cuda`.
+# GitHub workflow for `make docker-*`.
 
-name: make docker-maximum-cuda
+name: make docker
 
 # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
 on:
@@ -10,27 +10,68 @@ on:
       os:
         description: 'Operating system'
         required: true
-        default: any
+        default: 'ubuntu-18.04'
         type: choice
         options:
-          - ubuntu-18.04
-          - ubuntu-20.04
+          - 'ubuntu-18.04'
+          - 'ubuntu-20.04'
+      python-version:
+        description: 'Python version'
+        required: true
+        default: '3.6'
+        type: choice
+        options:
+          - '3.6'
+          - '3.7'
+          - '3.8'
+          - '3.9'
+          - '3.10'
+      docker-image:
+        description: 'Docker image'
+        required: true
+        default: 'docker-minimum'
+        type: choice
+        options:
+          - 'minimum'
+          - 'minimum-cuda'
+          - 'medium'
+          - 'medium-cuda'
+          - 'maximum'
+          - 'maximum-cuda'
+          - 'minimum-git'
+          - 'minimum-cuda-git'
+          - 'medium-git'
+          - 'medium-cuda-git'
+          - 'maximum-git'
+          - 'maximum-cuda-git'
+      upload-docker-image:
+        description: 'Upload Docker image'
+        default: False
+        type: boolean
 
 jobs:
   make:
     runs-on: ${{ github.event.inputs.os }}
 
     env:
-      PYTHON_VERSION: '3.7'
+      PYTHON_VERSION: ${{ github.event.inputs.python-version }}
 
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
       with:
         python-version: ${{ env.PYTHON_VERSION }}
-    - name: update apt repositories
-      run: sudo apt-get update
-    - name: Install dependencies
-      run: sudo make deps-ubuntu PYTHON=python${{ env.PYTHON_VERSION}}
-    - name: Make docker-maximum-cuda
-      run: make docker-maximum-cuda PYTHON=python${{ env.PYTHON_VERSION }}
+    - name: Show Python3 version
+      run: python3 --version
+    - name: Make Docker image
+      run: make docker-${{ github.event.inputs.docker-image }}
+    - name: Alias Docker images
+      run: docker tag ocrd/all:${{ github.event.inputs.docker-image }} ubma/ocrd_all:${{ github.event.inputs.docker-image }}
+    - name: Show Docker images
+      run: docker images
+    - name: Login to Docker Hub and push images to Docker Hub
+      run: |
+           if ${{ github.event.inputs.upload-docker-image }}; then
+             echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+             docker push ubma/ocrd_all:${{ github.event.inputs.docker-image }}
+           fi
