@@ -108,13 +108,13 @@ jobs:
            df -h /
     - name: Make Docker image
       run: make docker-${{ github.event.inputs.docker-image }}
-    - name: Alias Docker images
-      run: docker tag ocrd/all:${{ github.event.inputs.docker-image }} ubma/ocrd_all:${{ github.event.inputs.docker-image }}
+    # - name: Alias Docker images
+    #  run: docker tag ocrd/all:${{ github.event.inputs.docker-image }} ocrd/all:${{ github.event.inputs.docker-image }}
     - name: Show Docker images
       run: docker images
     - name: Login to Docker Hub and push images to Docker Hub
       run: |
            if ${{ github.event.inputs.upload-docker-image }}; then
-             echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-             docker push ubma/ocrd_all:${{ github.event.inputs.docker-image }}
+             echo ${{ secrets.DOCKERHUB_PASS }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+             docker push ocrd/all:${{ github.event.inputs.docker-image }}
            fi
