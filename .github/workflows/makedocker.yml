@@ -63,6 +63,49 @@ jobs:
         python-version: ${{ env.PYTHON_VERSION }}
     - name: Show Python3 version
       run: python3 --version
+    - name: Show disk usage of Homebrew, Android and .NET
+      run: sudo du -mscx /home/linuxbrew /usr/local/lib/android /usr/share/dotnet 2>/dev/null || true
+    - name: Remove Docker images
+      run: |
+           df -h
+           docker images
+           docker rmi alpine:3.12 alpine:3.13 alpine:3.14
+           docker rmi buildpack-deps:stretch buildpack-deps:buster buildpack-deps:bullseye
+           docker rmi debian:9 debian:10 debian:11
+           docker rmi moby/buildkit:latest
+           docker rmi node:12-alpine node:14-alpine node:16-alpine
+           docker rmi node:12 node:14 node:16
+           if false; then # don't remove Ubuntu images
+           docker rmi ubuntu:16.04 ubuntu:18.04 ubuntu:20.04
+           fi
+           docker images
+           df -h /
+    - name: Remove unneeded Debian packages
+      run: |
+           if false; then # skip time consuming package uninstall
+           sudo apt-get install -y deborphan
+           deborphan -a | sort
+           sudo apt-get purge -y $(deborphan -a|fgrep main/cli-mono|while read dummy package; do echo $package; done)
+           sudo apt-get purge -y $(deborphan -a|fgrep main/database|while read dummy package; do echo $package; done)
+           sudo apt-get purge -y $(deborphan -a|fgrep main/devel|while read dummy package; do echo $package; done)
+           sudo apt-get purge -y $(deborphan -a|fgrep main/httpd|while read dummy package; do echo $package; done)
+           sudo apt-get purge -y $(deborphan -a|fgrep main/php|while read dummy package; do echo $package; done)
+           sudo apt-get purge -y $(deborphan -a|fgrep main/vcs|while read dummy package; do echo $package; done)
+           deborphan | sort
+           sudo du -mscx /* 2>/dev/null || true
+           sudo du -mscx /opt/* 2>/dev/null || true
+           sudo du -mscx /usr/* 2>/dev/null || true
+           df -h /
+           fi
+    - name: Remove Homebrew, Android and .NET
+      run: |
+           # https://github.com/actions/virtual-environments/issues/2606#issuecomment-772683150
+           # NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
+           sudo rm -rf /home/linuxbrew # will release Homebrew
+           sudo rm -rf /usr/local/lib/android # will release about 10 GB if you don't need Android
+           sudo rm -rf /usr/share/dotnet # will release about 20GB if you don't need .NET
+           sudo du -mscx /* 2>/dev/null || true
+           df -h /
     - name: Make Docker image
       run: make docker-${{ github.event.inputs.docker-image }}
     - name: Alias Docker images
