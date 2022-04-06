@@ -94,20 +94,18 @@ RUN git submodule deinit opencv-python && git submodule foreach --recursive git 
 # make apt system functional
 RUN apt-get -y update && apt-get install -y apt-utils
 
+# get packages for build, try to fetch all modules system requirements,
+# remove unneeded automatic deps and clear pkg cache
+RUN apt-get -y install automake autoconf libtool pkg-config g++ && make deps-ubuntu && apt-get -y autoremove && apt-get clean
+
 # start a shell script (so we can comment individual steps here)
 RUN echo "set -ex" > docker.sh
-# get packages for build
-RUN echo "apt-get -y install automake autoconf libtool pkg-config g++" >> docker.sh
 RUN echo "source $PREFIX/bin/activate" >> docker.sh
 RUN echo "pip install -U pip setuptools wheel" >> docker.sh
-# try to fetch all modules system requirements
-RUN echo "make deps-ubuntu" >> docker.sh
 # build/install all tools of the requested modules:
 RUN echo "make $PARALLEL all" >> docker.sh
 # check installation
 RUN echo "make -j check CHECK_HELP=1" >> docker.sh
-# remove unneeded automatic deps and clear pkg cache
-RUN echo "apt-get -y autoremove && apt-get clean" >> docker.sh
 # remove source directories from image, unless using editable mode
 # (in the latter case, the git repos are also the installation targets
 #  and must be kept; so merely clean-up some temporary files)
