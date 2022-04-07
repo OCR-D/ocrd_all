@@ -115,6 +115,6 @@ jobs:
     - name: Login to Docker Hub and push images to Docker Hub
       run: |
            if ${{ github.event.inputs.upload-docker-image }}; then
-             echo ${{ secrets.DOCKERHUB_PASS }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+             echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
              docker push ocrd/all:${{ github.event.inputs.docker-image }}
            fi
