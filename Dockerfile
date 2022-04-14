@@ -30,7 +30,7 @@ LABEL \
 
 # simulate a virtual env for the makefile,
 # coinciding with the Python system prefix
-ENV PREFIX=/usr
+ENV PREFIX=/usr/local
 ENV VIRTUAL_ENV $PREFIX
 # avoid HOME/.local/share (hard to predict USER here)
 # so let XDG_DATA_HOME coincide with fixed system location
@@ -54,10 +54,6 @@ ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 ENV TF_FORCE_GPU_ALLOW_GROWTH=true
 
-# make apt system functional
-RUN apt-get -y update \
- && apt-get install -y apt-utils
-
 # allow passing build-time parameter for list of tools to be installed
 # (defaults to medium, which also requires those modules to be present)
 ARG OCRD_MODULES="core dinglehopper format-converters ocrd_calamari ocrd_cis ocrd_im6convert ocrd_keraslm ocrd_olena ocrd_segment ocrd_tesserocr tesseract tesserocr cor-asv-ann workflow-configuration"
@@ -76,37 +72,44 @@ ARG PYTHON=python3
 # when not all dependencies have been correctly explicated):
 ARG PARALLEL=""
 
-WORKDIR /build
-
-# copy (sub)module directories to build
-# (ADD/COPY cannot copy a list of directories,
-#  so we must rely on .dockerignore here)
-COPY . .
-
 # increase default network timeouts (so builds don't fail because of small bandwidth)
 ENV PIP_OPTIONS="--timeout=3000 ${PIP_OPTIONS}"
 RUN echo "Acquire::http::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
 RUN echo "Acquire::https::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
 RUN echo "Acquire::ftp::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
 
+WORKDIR /build
+
+# create virtual environment
+RUN rm /usr/local/bin/pip* && apt-get purge -y python3-pip && python3 -m venv /usr/local && python3 -m pip install --force pip
+
+# copy (sub)module directories to build
+# (ADD/COPY cannot copy a list of directories,
+#  so we must rely on .dockerignore here)
+COPY . .
+
+# deinit opencv-python (otherwise git submodule status can segfault) and remove copied junk
+RUN git submodule deinit opencv-python && git submodule foreach --recursive git clean -fxd
+
+# make apt system functional
+RUN apt-get -y update && apt-get install -y apt-utils
+
+# get packages for build, try to fetch all modules system requirements,
+# remove unneeded automatic deps and clear pkg cache
+RUN apt-get -y install automake autoconf libtool pkg-config g++ && make deps-ubuntu && apt-get -y autoremove && apt-get clean
+
 # start a shell script (so we can comment individual steps here)
 RUN echo "set -ex" > docker.sh
-# get packages for build
-RUN echo "apt-get -y install automake autoconf libtool pkg-config g++" >> docker.sh
-# we want to use PREFIX as "venv", so we need activate (as no-op)
-RUN echo "> $PREFIX/bin/activate" >> docker.sh
-# try to fetch all modules system requirements
-RUN echo "make deps-ubuntu" >> docker.sh
+RUN echo "source $PREFIX/bin/activate" >> docker.sh
+RUN echo "pip install -U pip setuptools wheel" >> docker.sh
 # build/install all tools of the requested modules:
 RUN echo "make $PARALLEL all" >> docker.sh
 # check installation
 RUN echo "make -j check CHECK_HELP=1" >> docker.sh
-# remove unneeded automatic deps and clear pkg cache
-RUN echo "apt-get -y autoremove && apt-get clean" >> docker.sh
 # remove source directories from image, unless using editable mode
 # (in the latter case, the git repos are also the installation targets
 #  and must be kept; so merely clean-up some temporary files)
-RUN echo "if [[ '${PIP_OPTIONS}' =~ -e|--editable ]]; then make -i clean-olena clean-tesseract; else rm -fr /build; fi" >> docker.sh
+RUN echo "if [[ '${PIP_OPTIONS}' =~ -e|--editable ]]; then make -i clean-olena clean-tesseract; else rm -fr /.cache /build; fi" >> docker.sh
 # run the script in one layer/step (to minimise image size)
 # (and export all variables)
 RUN set -a; bash docker.sh

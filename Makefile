@@ -25,11 +25,18 @@ ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
 export VIRTUAL_ENV ?= $(CURDIR)/venv
 ifeq (0, $(MAKELEVEL))
 SUB_VENV = $(VIRTUAL_ENV)/sub-venv
+SUB_VENV_TF1 = $(SUB_VENV)/headless-tf1
+SUB_VENV_TF2 = $(SUB_VENV)/headless-tf2
+SUB_VENV_TORCH14 = $(SUB_VENV)/headless-torch14
+else
+SUB_VENV_TF1 = $(VIRTUAL_ENV)
+SUB_VENV_TF2 = $(VIRTUAL_ENV)
+SUB_VENV_TORCH14 = $(VIRTUAL_ENV)
 endif
 
 BIN = $(VIRTUAL_ENV)/bin
 SHARE = $(VIRTUAL_ENV)/share
-ACTIVATE_VENV = $(VIRTUAL_ENV)/bin/activate
+ACTIVATE_VENV = $(BIN)/activate
 
 # Get Python major and minor versions for some conditional rules.
 PYTHON_VERSION := $(shell $(PYTHON) -c 'import sys; print("%u.%u" % (sys.version_info.major, sys.version_info.minor))')
@@ -155,11 +162,12 @@ deinit:
 
 # Get Python modules.
 
-$(VIRTUAL_ENV)/bin/pip: $(ACTIVATE_VENV)
+$(BIN)/pip: $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(SEMPIP) pip install --upgrade pip setuptools
 
-$(ACTIVATE_VENV) $(VIRTUAL_ENV):
-	$(SEMPIP) $(PYTHON) -m venv $(VIRTUAL_ENV)
+%/bin/activate:
+	$(PYTHON) -m venv $(subst /bin/activate,,$@)
+	. $@ && pip install --upgrade pip setuptools wheel
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
@@ -239,12 +247,12 @@ OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-proc
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-eval
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-compare
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
-$(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann
+$(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann $(SUB_VENV_TF1)/bin/activate
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
-	$(call delegate_venv,$(OCRD_COR_ASV_ANN),$(SUB_VENV)/headless-tf1)
+	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN)) VIRTUAL_ENV=$(SUB_VENV_TF1)
+	$(call delegate_venv,$(OCRD_COR_ASV_ANN),$(SUB_VENV_TF1))
 cor-asv-ann-check:
-	$(MAKE) check OCRD_MODULES=cor-asv-ann VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) check OCRD_MODULES=cor-asv-ann VIRTUAL_ENV=$(SUB_VENV_TF1)
 else
 	$(pip_install_tf1nvidia)
 	$(pip_install)
@@ -254,12 +262,12 @@ endif
 ifneq ($(findstring ocrd_detectron2, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
 OCRD_DETECTRON2 += $(BIN)/ocrd-detectron2-segment
-$(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2
+$(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2 $(SUB_VENV_TORCH14)/bin/activate
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_DETECTRON2)) VIRTUAL_ENV=$(SUB_VENV)/headless-torch14
-	$(call delegate_venv,$(OCRD_DETECTRON2),$(SUB_VENV)/headless-torch14)
+	$(MAKE) -B -o $< $(notdir $(OCRD_DETECTRON2)) VIRTUAL_ENV=$(SUB_VENV_TORCH14)
+	$(call delegate_venv,$(OCRD_DETECTRON2),$(SUB_VENV_TORCH14))
 ocrd_detectron2-check:
-	$(MAKE) check OCRD_MODULES=ocrd_detectron2 VIRTUAL_ENV=$(SUB_VENV)/headless-torch14
+	$(MAKE) check OCRD_MODULES=ocrd_detectron2 VIRTUAL_ENV=$(SUB_VENV_TORCH14)
 else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
@@ -271,12 +279,12 @@ deps-ubuntu-modules: cor-asv-fst
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
 OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
 OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
-$(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst
+$(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst $(SUB_VENV_TF1)/bin/activate
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
-	$(call delegate_venv,$(OCRD_COR_ASV_FST),$(SUB_VENV)/headless-tf1)
+	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST)) VIRTUAL_ENV=$(SUB_VENV_TF1)
+	$(call delegate_venv,$(OCRD_COR_ASV_FST),$(SUB_VENV_TF1))
 cor-asv-fst-check:
-	$(MAKE) check OCRD_MODULES=cor-asv-fst VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) check OCRD_MODULES=cor-asv-fst VIRTUAL_ENV=$(SUB_VENV_TF1)
 else
 	$(pip_install_tf1nvidia)
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
@@ -288,12 +296,12 @@ ifneq ($(findstring ocrd_keraslm, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KERASLM)
 OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
 OCRD_KERASLM += $(BIN)/keraslm-rate
-$(call multirule,$(OCRD_KERASLM)): ocrd_keraslm
+$(call multirule,$(OCRD_KERASLM)): ocrd_keraslm $(SUB_VENV_TF1)/bin/activate
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
-	$(call delegate_venv,$(OCRD_KERASLM),$(SUB_VENV)/headless-tf1)
+	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM)) VIRTUAL_ENV=$(SUB_VENV_TF1)
+	$(call delegate_venv,$(OCRD_KERASLM),$(SUB_VENV_TF1))
 ocrd_keraslm-check:
-	$(MAKE) check OCRD_MODULES=ocrd_keraslm VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) check OCRD_MODULES=ocrd_keraslm VIRTUAL_ENV=$(SUB_VENV_TF1)
 else
 	$(pip_install_tf1nvidia)
 	$(pip_install)
@@ -360,12 +368,12 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-original
 OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-page
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 OCRD_SEGMENT += $(BIN)/ocrd-segment-project
-$(call multirule,$(OCRD_SEGMENT)): ocrd_segment
+$(call multirule,$(OCRD_SEGMENT)): ocrd_segment $(SUB_VENV_TF1)/bin/activate
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
-	$(call delegate_venv,$(OCRD_SEGMENT),$(SUB_VENV)/headless-tf1)
+	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV_TF1)
+	$(call delegate_venv,$(OCRD_SEGMENT),$(SUB_VENV_TF1))
 ocrd_segment-check:
-	$(MAKE) check OCRD_MODULES=ocrd_segment VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) check OCRD_MODULES=ocrd_segment VIRTUAL_ENV=$(SUB_VENV_TF1)
 else
 	$(pip_install_tf1nvidia)
 	$(pip_install)
@@ -443,12 +451,12 @@ install-models-calamari: $(BIN)/ocrd
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-calamari-recognize '*'
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
-$(OCRD_CALAMARI): ocrd_calamari
+$(OCRD_CALAMARI): ocrd_calamari $(SUB_VENV_TF2)/bin/activate
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_CALAMARI)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
-	$(call delegate_venv,$(OCRD_CALAMARI),$(SUB_VENV)/headless-tf2)
+	$(MAKE) -B -o $< $(notdir $(OCRD_CALAMARI)) VIRTUAL_ENV=$(SUB_VENV_TF2)
+	$(call delegate_venv,$(OCRD_CALAMARI),$(SUB_VENV_TF2))
 ocrd_calamari-check:
-	$(MAKE) check OCRD_EXECUTABLES=$(OCRD_CALAMARI) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
+	$(MAKE) check OCRD_EXECUTABLES=$(OCRD_CALAMARI) VIRTUAL_ENV=$(SUB_VENV_TF2)
 else
 	$(pip_install)
 endif
@@ -457,12 +465,12 @@ endif
 ifneq ($(findstring ocrd_pc_segmentation, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
-$(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
+$(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation $(SUB_VENV_TF2)/bin/activate
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
-	$(call delegate_venv,$(OCRD_PC_SEGMENTATION),$(SUB_VENV)/headless-tf2)
+	$(MAKE) -B -o $< $(notdir $(OCRD_PC_SEGMENTATION)) VIRTUAL_ENV=$(SUB_VENV_TF2)
+	$(call delegate_venv,$(OCRD_PC_SEGMENTATION),$(SUB_VENV_TF2))
 ocrd_pc_segmentation-check:
-	$(MAKE) check OCRD_MODULES=ocrd_pc_segmentation VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
+	$(MAKE) check OCRD_MODULES=ocrd_pc_segmentation VIRTUAL_ENV=$(SUB_VENV_TF2)
 else
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
@@ -485,12 +493,12 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-dewarp
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-tiseg
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
-$(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
+$(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr $(SUB_VENV_TF2)/bin/activate
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
-	$(call delegate_venv,$(OCRD_ANYBASEOCR),$(SUB_VENV)/headless-tf2)
+	$(MAKE) -B -o $< $(notdir $(OCRD_ANYBASEOCR)) VIRTUAL_ENV=$(SUB_VENV_TF2)
+	$(call delegate_venv,$(OCRD_ANYBASEOCR),$(SUB_VENV_TF2))
 ocrd_anybaseocr-check:
-	$(MAKE) check OCRD_MODULES=ocrd_anybaseocr VIRTUAL_ENV=$(SUB_VENV)/headless-tf2
+	$(MAKE) check OCRD_MODULES=ocrd_anybaseocr VIRTUAL_ENV=$(SUB_VENV_TF2)
 else
 	$(pip_install)
 endif
@@ -500,12 +508,12 @@ ifneq ($(findstring ocrd_typegroups_classifier, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
 OCRD_TYPECLASS := $(BIN)/ocrd-typegroups-classifier
 OCRD_TYPECLASS += $(BIN)/typegroups-classifier
-$(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier
+$(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier $(SUB_VENV_TORCH14)/bin/activate
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_TYPECLASS)) VIRTUAL_ENV=$(SUB_VENV)/headless-torch14
-	$(call delegate_venv,$(OCRD_TYPECLASS),$(SUB_VENV)/headless-torch14)
+	$(MAKE) -B -o $< $(notdir $(OCRD_TYPECLASS)) VIRTUAL_ENV=$(SUB_VENV_TORCH14)
+	$(call delegate_venv,$(OCRD_TYPECLASS),$(SUB_VENV_TORCH14))
 ocrd_typegroups_classifier-check:
-	$(MAKE) check OCRD_MODULES=ocrd_typegroups_classifier VIRTUAL_ENV=$(SUB_VENV)/headless-torch14
+	$(MAKE) check OCRD_MODULES=ocrd_typegroups_classifier VIRTUAL_ENV=$(SUB_VENV_TORCH14)
 else
 	$(pip_install)
 endif
@@ -526,12 +534,12 @@ install-models-sbb-binarization:
 
 OCRD_EXECUTABLES += $(SBB_BINARIZATION)
 SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
-$(SBB_BINARIZATION): sbb_binarization
+$(SBB_BINARIZATION): sbb_binarization $(SUB_VENV_TF1)/bin/activate
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(SBB_BINARIZATION)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
-	$(call delegate_venv,$(SBB_BINARIZATION),$(SUB_VENV)/headless-tf1)
+	$(MAKE) -B -o $< $(notdir $(SBB_BINARIZATION)) VIRTUAL_ENV=$(SUB_VENV_TF1)
+	$(call delegate_venv,$(SBB_BINARIZATION),$(SUB_VENV_TF1))
 sbb_binarization-check:
-	$(MAKE) check OCRD_MODULES=sbb_binarization VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) check OCRD_MODULES=sbb_binarization VIRTUAL_ENV=$(SUB_VENV_TF1)
 else
 	$(pip_install_tf1nvidia)
 	$(pip_install)
@@ -545,12 +553,12 @@ install-models-sbb-textline:
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-sbb-textline-detector '*'
 OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
 SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-textline-detector
-$(SBB_LINE_DETECTOR): sbb_textline_detector
+$(SBB_LINE_DETECTOR): sbb_textline_detector $(SUB_VENV_TF1)/bin/activate
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
-	$(call delegate_venv,$(SBB_LINE_DETECTOR),$(SUB_VENV)/headless-tf1)
+	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR)) VIRTUAL_ENV=$(SUB_VENV_TF1)
+	$(call delegate_venv,$(SBB_LINE_DETECTOR),$(SUB_VENV_TF1))
 sbb_textline_detector-check:
-	$(MAKE) check OCRD_MODULES=sbb_textline_detector VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) check OCRD_MODULES=sbb_textline_detector VIRTUAL_ENV=$(SUB_VENV_TF1)
 else
 	$(pip_install_tf1nvidia)
 	$(pip_install)
@@ -564,12 +572,12 @@ install-models-eynollah:
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-eynollah-segment '*'
 OCRD_EXECUTABLES += $(EYNOLLAH_SEGMENT)
 EYNOLLAH_SEGMENT := $(BIN)/ocrd-eynollah-segment
-$(EYNOLLAH_SEGMENT): eynollah
+$(EYNOLLAH_SEGMENT): eynollah $(SUB_VENV_TF1)/bin/activate
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(EYNOLLAH_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
-	$(call delegate_venv,$(EYNOLLAH_SEGMENT),$(SUB_VENV)/headless-tf1)
+	$(MAKE) -B -o $< $(notdir $(EYNOLLAH_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV_TF1)
+	$(call delegate_venv,$(EYNOLLAH_SEGMENT),$(SUB_VENV_TF1))
 eynollah-check:
-	$(MAKE) check OCRD_MODULES=eynollah VIRTUAL_ENV=$(SUB_VENV)/headless-tf1
+	$(MAKE) check OCRD_MODULES=eynollah VIRTUAL_ENV=$(SUB_VENV_TF1)
 else
 	$(pip_install_tf1nvidia)
 	$(pip_install)
@@ -635,8 +643,8 @@ endef
 # pattern for recursive make:
 # $(executables...): module...
 # ifeq (0,$(MAKELEVEL))
-# 	$(MAKE) -B -o $< $(notdir $(executables...)) VIRTUAL_ENV=$(SUB_VENV)/name
-# 	$(call delegate_venv,$(executables...),$(SUB_VENV)/name)
+# 	$(MAKE) -B -o $< $(notdir $(executables...)) VIRTUAL_ENV=$(SUB_VENV_name)
+# 	$(call delegate_venv,$(executables...),$(SUB_VENV_name))
 # else
 # 	actual recipe...
 # fi
@@ -690,7 +698,7 @@ $(SHARE):
 	@mkdir -p "$@"
 
 # At last, add venv dependency (must not become first):
-$(OCRD_EXECUTABLES) $(BIN)/wheel: | $(VIRTUAL_ENV)/bin/pip
+$(OCRD_EXECUTABLES) $(BIN)/wheel: | $(BIN)/pip
 $(OCRD_EXECUTABLES): | $(BIN)/wheel
 # Also, add core dependency (but in a non-circular way):
 $(filter-out $(BIN)/ocrd,$(OCRD_EXECUTABLES)): $(BIN)/ocrd
@@ -832,9 +840,12 @@ ifneq ($(suffix $(PYTHON)),)
 	apt-get install -y --no-install-recommends $(notdir $(PYTHON))-dev $(notdir $(PYTHON))-venv
 endif
 	$(MAKE) deps-ubuntu-modules
-	chown -R --reference=$(CURDIR) .git $(OCRD_MODULES)
+	# Fix ownership of new/modified files and directories because
+	# deps-ubuntu is run as root, but not in a Docker build were
+	# it is not needed and costs a lot of time.
+	test "$$HOME" == "/" || chown -R --reference=$(CURDIR) .git $(OCRD_MODULES)
 # prevent the sem commands during above module updates from imposing sudo perms on HOME:
-	chown -R --reference=$(HOME) $(HOME)/.parallel
+	test "$$HOME" == "/" || chown -R --reference=$(HOME) $(HOME)/.parallel
 
 deps-ubuntu-modules:
 	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu PYTHON=$(PYTHON); done
@@ -884,7 +895,6 @@ docker%: Dockerfile $(DOCKER_MODULES)
 	--build-arg PYTHON="$(PYTHON)" \
 	--network=host \
 	-t $(DOCKER_TAG):$(or $(*:-%=%),latest) .
-
 
 docker: DOCKER_MODULES ?= $(OCRD_MODULES)
 docker: DOCKER_PARALLEL ?= -j1
