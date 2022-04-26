@@ -343,7 +343,6 @@ This table lists which tag contains which module:
 | ocrd_pc_segmentation        | -         | -        | ☑         |
 | ocrd_typegroups_classifier  | -         | -        | ☑         |
 | sbb_binarization            | -         | -        | ☑         |
-| sbb_textline_detector       | -         | -        | ☑         |
 | cor-asv-fst                 | -         | -        | -         |
 
 **Note**: The following modules have been disabled by default and can only be
@@ -391,7 +390,7 @@ Modules may require mutually exclusive sets of dependent packages.
 
 - Tensorflow:
    * version 2 (required by ocrd_calamari, ocrd_anybaseocr and ocrd_pc_segmentation)
-   * version 1 (required by cor-asv-ann, ocrd_keraslm and sbb_textline_detector)
+   * version 1 (required by cor-asv-ann and ocrd_keraslm)
    
    The temporary solution is to require different package names:
    - `tensorflow>=2`

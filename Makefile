@@ -546,25 +546,6 @@ else
 endif
 endif
 
-ifneq ($(findstring sbb_textline_detector, $(OCRD_MODULES)),)
-install-models: install-models-sbb-textline
-.PHONY: install-models-sbb-textline
-install-models-sbb-textline:
-	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-sbb-textline-detector '*'
-OCRD_EXECUTABLES += $(SBB_LINE_DETECTOR)
-SBB_LINE_DETECTOR := $(BIN)/ocrd-sbb-textline-detector
-$(SBB_LINE_DETECTOR): sbb_textline_detector $(SUB_VENV_TF1)/bin/activate
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(SBB_LINE_DETECTOR)) VIRTUAL_ENV=$(SUB_VENV_TF1)
-	$(call delegate_venv,$(SBB_LINE_DETECTOR),$(SUB_VENV_TF1))
-sbb_textline_detector-check:
-	$(MAKE) check OCRD_MODULES=sbb_textline_detector VIRTUAL_ENV=$(SUB_VENV_TF1)
-else
-	$(pip_install_tf1nvidia)
-	$(pip_install)
-endif
-endif
-
 ifneq ($(findstring eynollah, $(OCRD_MODULES)),)
 install-models: install-models-eynollah
 .PHONY: install-models-eynollah
