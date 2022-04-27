@@ -16,7 +16,7 @@
 #   between modules (just as ocrd_all for local installation)
 
 # use OCR-D base container (from ubuntu:18.04)
-ARG BASE_IMAGE ocrd/core
+ARG BASE_IMAGE=ocrd/core
 FROM $BASE_IMAGE
 ARG VCS_REF
 ARG BUILD_DATE
