@@ -9,20 +9,19 @@
 #   docker-compose / kubernetes
 # cons:
 # - needs submodules checked out at build time,
-#   which implies a huge (1.5GB) build context
+#   which implies a huge build context
 # - needs to pull in all possible dependencies,
-#   which implies a huge (6.7GB) final image
+#   which implies a huge final image
 # - danger of running into inconsistent dependencies
 #   between modules (just as ocrd_all for local installation)
 
+# use OCR-D base container (from ubuntu:18.04)
+ARG BASE_IMAGE ocrd/core
+FROM $BASE_IMAGE
 ARG VCS_REF
 ARG BUILD_DATE
-ARG BASE_IMAGE
-
-# use OCR-D base container (from ubuntu:18.04)
-FROM $BASE_IMAGE
 LABEL \
-    maintainer="https://ocr-d.de/kontakt" \
+    maintainer="https://ocr-d.de/en/contact" \
     org.label-schema.vcs-ref=$VCS_REF \
     org.label-schema.vcs-url="https://github.com/OCR-D/ocrd_all" \
     org.label-schema.build-date=$BUILD_DATE
