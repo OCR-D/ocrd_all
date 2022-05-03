@@ -42,6 +42,20 @@ Changed:
   > * updating model directory
   > * Merge pull request #70 from qurator-spk/cneud-readme
 
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [ca15800](https://github.com/cisocrgroup/ocrd_cis/commits/ca15800)..[2cdfa79 (rewind)](https://github.com/cisocrgroup/ocrd_cis/commits/2cdfa79 (rewind))
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > join_polygons (alpha shape): make more robust
+  > remove Calamari dependency (not used, only CLI callout)
+  > segment: for more robust bg separator detection, combine criteria of gradient maximum and percentile
+  > segment: rewrite separator detection…
+  > resegment: if method=lineest, then annotate baselines, too
+  > resegment (ccomps/baseline): propagate/spread twice to catch diacritics/punctuation, too
+  > re/segment: alpha shape: smaller α to avoid holes
+  > segment: fix lines2regions non-continguous partitions
+  > segment: annotate baselines, too
+
 ### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [5bb90b1](https://github.com/bertsky/ocrd_detectron2/commits/5bb90b1)..[855fc3b](https://github.com/bertsky/ocrd_detectron2/commits/855fc3b)
 
 > Release: [v0.1.1](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.1)
