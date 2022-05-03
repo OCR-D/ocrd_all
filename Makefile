@@ -61,7 +61,7 @@ SHELL = /bin/bash
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_DEPS = unzip wget python3-venv parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
-DEFAULT_DISABLED_MODULES = cor-asv-fst opencv-python ocrd_ocropy
+DEFAULT_DISABLED_MODULES = cor-asv-fst opencv-python ocrd_ocropy ocrd_pc_segmentation
 ifeq ($(PYTHON_VERSION),3.10)
 # Python 3.10.x does not work with current kraken.
 DEFAULT_DISABLED_MODULES += ocrd_kraken
