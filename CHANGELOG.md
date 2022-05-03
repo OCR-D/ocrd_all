@@ -2,9 +2,126 @@
 
 ## Unreleased
 
+## [v2022-05-03](https://github.com/OCR-D/ocrd_all/releases/v2022-05-03)
+
 Changed:
 
   * `make clean`: remove sub-venvs and all semaphores, #315
+
+### [core](https://github.com/OCR-D/core) [f9c2b6c](https://github.com/OCR-D/core/commits/f9c2b6c)..[ecdb840](https://github.com/OCR-D/core/commits/ecdb840)
+
+> Release: [v2.33.0](https://github.com/OCR-D/core/releases/v2.33.0)
+
+  > * :package: v2.33.0
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'stweil/master'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'mexthecat/issues_838'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/remove-assets-server'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/workspace-altimg-retrieve-existing'
+  > * :memo: changelog
+  > * workspace bulk_add: fix automatic file_id
+  > * Simplify Makefile
+  > * Remove version restrictions for pip (no longer needed)
+  > * Always use apt --no-install-recommend
+  > * Merge branch 'master' of https://github.com/OCR-D/core
+  > * :memo: changelog
+  > * workspace.remove_file_group: pass recursive
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [10f1ace](https://github.com/qurator-spk/eynollah/commits/10f1ace)..[ae1990a](https://github.com/qurator-spk/eynollah/commits/ae1990a)
+
+> Release: [v0.0.11](https://github.com/qurator-spk/eynollah/releases/v0.0.11)
+
+  > * Merge pull request #74 from cneud/main
+  > * require model command line option (fix #59) (#73)
+  > * Update README.md
+  > * Merge pull request #71 from mikegerber/fix/downgrade-patch-dim-log
+  > * issue #55 resolved
+  > * updating model directory
+  > * Merge pull request #70 from qurator-spk/cneud-readme
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [5bb90b1](https://github.com/bertsky/ocrd_detectron2/commits/5bb90b1)..[855fc3b](https://github.com/bertsky/ocrd_detectron2/commits/855fc3b)
+
+> Release: [v0.1.1](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.1)
+
+  > * update requirements
+  > * Fix sed command for MacOS
+  > * make deps: ignore CUDA 11.2
+
+### [ocrd_doxa](https://github.com/bertsky/ocrd_doxa) [351eb0c](https://github.com/bertsky/ocrd_doxa/commits/351eb0c)..[a95f8e7](https://github.com/bertsky/ocrd_doxa/commits/a95f8e7)
+
+> Release: [v0.0.2](https://github.com/bertsky/ocrd_doxa/releases/v0.0.2)
+
+  > * :package: v0.0.2
+  > * add missing param 'dpi'
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [9451a99](https://github.com/OCR-D/ocrd_fileformat/commits/9451a99)..[38f4edf](https://github.com/OCR-D/ocrd_fileformat/commits/38f4edf)
+
+> Release: [v0.5.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.5.0)
+
+  > * :package: v0.5.0
+  > * update README
+  > * run pages in parallel (2 concurrent jobs)
+  > * make install: differentiate between install-tools (script+json) and deps (just OCRD)
+  > * use bulk-add and update to core 2.30
+  > * simplify and update to core 2.29
+  > * update ocr-fileformat
+  > * allow all supported transforms for from-to
+
+### [ocrd_keraslm](https://github.com/OCR-D/ocrd_keraslm) [b11b51d](https://github.com/OCR-D/ocrd_keraslm/commits/b11b51d)..[2101c8f](https://github.com/OCR-D/ocrd_keraslm/commits/2101c8f)
+
+> Release: [v0.4.1](https://github.com/OCR-D/ocrd_keraslm/releases/v0.4.1)
+
+  > * Merge pull request #18 from OCR-D/update-ws-cli
+  > * Merge pull request #20 from stweil/update
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [f6c7f1c](https://github.com/OCR-D/ocrd_segment/commits/f6c7f1c)..[e9acc81](https://github.com/OCR-D/ocrd_segment/commits/e9acc81)
+
+> Release: [v0.1.20](https://github.com/OCR-D/ocrd_segment/releases/v0.1.20)
+
+  > * :package: 0.1.20
+  > * extract_pages: fix interference between plotting and JSON extraction in b024b80aa
+  > * alpha shape: make even more robust yet
+  > * alpha shape: make more robust
+  > * :package: 0.1.19
+  > * repair (`sanitize`): rewrite…
+  > * repair (`plausibilize`): use true alpha shape instead of convex hull
+  > * project: reduce default alpha for alphashape
+  > * project: add level-of-operation=table
+  > * repair: add option 'simplify', generalize 'ensure_consistent'
+  > * Shapely 1.8 compatibility
+  > * :package: 0.1.18
+  > * extract-lines: fix regression in 8bfeb9f9bf
+
+### [opencv-python](https://github.com/skvark/opencv-python) [0eb6c12](https://github.com/skvark/opencv-python/commits/0eb6c12)..[5de8d66](https://github.com/skvark/opencv-python/commits/5de8d66)
+
+> Release: [64](https://github.com/skvark/opencv-python/releases/64)
+
+  > * Merge pull request #644 from nsait-linaro/windows-arm64
+  > * Merge pull request #652 from asenyaev/asen/pinned_dependencies
+  > * Merge pull request #637 from orbisvicis/master
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [8dd0506](https://github.com/qurator-spk/sbb_binarization/commits/8dd0506)..[0877199](https://github.com/qurator-spk/sbb_binarization/commits/0877199)
+
+> Release: [v0.0.9](https://github.com/qurator-spk/sbb_binarization/releases/v0.0.9)
+
+  > * importing types from click is enough
+  > * Update cli.py
+  > * fixing #30. Directory of model(s) is needed not  model file name.
+  > * Merge pull request #36 from qurator-spk/0.0.9
+  > * improve usage instructions
+  > * Merge pull request #35 from cneud/upgrade_to_tf2_with_tf1.compat_session
+  > * Revert "Merge pull request #34 from qurator-spk/upgrade_to_tf2_with_compat_mode"
+  > * Merge pull request #34 from qurator-spk/upgrade_to_tf2_with_compat_mode
+  > * Merge pull request #31 from bertsky/factor-setup
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [bef631c](https://github.com/bertsky/workflow-configuration/commits/bef631c)..[e50dee4](https://github.com/bertsky/workflow-configuration/commits/e50dee4)
+
+  > * Modifiy cp statement (fix build on MacOS)
+  > * ocrd-import: allow running in parallel
+  > * ocrd-import: use bulk-add for speedup
 
 ## [v2022-03-30](https://github.com/OCR-D/ocrd_all/releases/v2022-03-30)
 
