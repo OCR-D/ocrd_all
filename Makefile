@@ -428,15 +428,8 @@ OCRD_CIS += $(BIN)/ocrd-cis-ocropy-resegment
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-segment
 #OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
 OCRD_CIS += $(BIN)/ocrd-cis-postcorrect
-$(call multirule,$(OCRD_CIS)): ocrd_cis $(BIN)/ocrd $(SUB_VENV_TF1)/bin/activate
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_CIS)) VIRTUAL_ENV=$(SUB_VENV_TF1)
-	$(call delegate_venv,$(OCRD_CIS),$(SUB_VENV_TF1))
-ocrd_cis-check:
-	$(MAKE) check OCRD_MODULES=ocrd_cis VIRTUAL_ENV=$(SUB_VENV_TF1)
-else
+$(call multirule,$(OCRD_CIS)): ocrd_cis $(BIN)/ocrd
 	$(pip_install)
-endif
 endif
 
 ifneq ($(findstring ocrd_pagetopdf, $(OCRD_MODULES)),)
