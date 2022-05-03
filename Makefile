@@ -502,16 +502,8 @@ install-models-sbb-binarization:
 
 OCRD_EXECUTABLES += $(SBB_BINARIZATION)
 SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
-$(SBB_BINARIZATION): sbb_binarization $(SUB_VENV_TF1)/bin/activate
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(SBB_BINARIZATION)) VIRTUAL_ENV=$(SUB_VENV_TF1)
-	$(call delegate_venv,$(SBB_BINARIZATION),$(SUB_VENV_TF1))
-sbb_binarization-check:
-	$(MAKE) check OCRD_MODULES=sbb_binarization VIRTUAL_ENV=$(SUB_VENV_TF1)
-else
-	$(pip_install_tf1nvidia)
+$(SBB_BINARIZATION): sbb_binarization
 	$(pip_install)
-endif
 endif
 
 ifneq ($(findstring eynollah, $(OCRD_MODULES)),)
@@ -521,16 +513,8 @@ install-models-eynollah:
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-eynollah-segment '*'
 OCRD_EXECUTABLES += $(EYNOLLAH_SEGMENT)
 EYNOLLAH_SEGMENT := $(BIN)/ocrd-eynollah-segment
-$(EYNOLLAH_SEGMENT): eynollah $(SUB_VENV_TF1)/bin/activate
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(EYNOLLAH_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV_TF1)
-	$(call delegate_venv,$(EYNOLLAH_SEGMENT),$(SUB_VENV_TF1))
-eynollah-check:
-	$(MAKE) check OCRD_MODULES=eynollah VIRTUAL_ENV=$(SUB_VENV_TF1)
-else
-	$(pip_install_tf1nvidia)
+$(EYNOLLAH_SEGMENT): eynollah
 	$(pip_install)
-endif
 endif
 
 ifneq ($(findstring ocrd_repair_inconsistencies, $(OCRD_MODULES)),)
