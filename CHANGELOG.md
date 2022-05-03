@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+Changed:
+
+  * `make clean`: remove sub-venvs and all semaphores, #315
+
 ## [v2022-03-30](https://github.com/OCR-D/ocrd_all/releases/v2022-03-30)
 
 ### [core](https://github.com/OCR-D/core) [6d359e7](https://github.com/OCR-D/core/commits/6d359e7)..[f9c2b6c](https://github.com/OCR-D/core/commits/f9c2b6c)
