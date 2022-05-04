@@ -1,12 +1,14 @@
 # Changelog
 
-## Unreleased
-
-## [v2022-05-03](https://github.com/OCR-D/ocrd_all/releases/v2022-05-03)
+## [v2022-05-04](https://github.com/OCR-D/ocrd_all/releases/v2022-05-04)
 
 Changed:
 
   * `make clean`: remove sub-venvs and all semaphores, #315
+
+Removed:
+
+  * `ocrd_pc_segmentation` has been disabled since it's not used and not supported upstream, #317
 
 ### [core](https://github.com/OCR-D/core) [f9c2b6c](https://github.com/OCR-D/core/commits/f9c2b6c)..[ecdb840](https://github.com/OCR-D/core/commits/ecdb840)
 
@@ -30,10 +32,11 @@ Changed:
   > * :memo: changelog
   > * workspace.remove_file_group: pass recursive
 
-### [eynollah](https://github.com/qurator-spk/eynollah) [10f1ace](https://github.com/qurator-spk/eynollah/commits/10f1ace)..[ae1990a](https://github.com/qurator-spk/eynollah/commits/ae1990a)
+### [eynollah](https://github.com/qurator-spk/eynollah) [ae1990a](https://github.com/qurator-spk/eynollah/commits/ae1990a)..[34a0617](https://github.com/qurator-spk/eynollah/commits/34a0617)
 
 > Release: [v0.0.11](https://github.com/qurator-spk/eynollah/releases/v0.0.11)
 
+  > * depend on tensorflow instead of tensorflow-gpu (#76)
   > * Merge pull request #74 from cneud/main
   > * require model command line option (fix #59) (#73)
   > * Update README.md
@@ -117,10 +120,11 @@ Changed:
   > * Merge pull request #652 from asenyaev/asen/pinned_dependencies
   > * Merge pull request #637 from orbisvicis/master
 
-### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [8dd0506](https://github.com/qurator-spk/sbb_binarization/commits/8dd0506)..[0877199](https://github.com/qurator-spk/sbb_binarization/commits/0877199)
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [0877199](https://github.com/qurator-spk/sbb_binarization/commits/0877199)..[e4c1eb2](https://github.com/qurator-spk/sbb_binarization/commits/e4c1eb2)
 
 > Release: [v0.0.9](https://github.com/qurator-spk/sbb_binarization/releases/v0.0.9)
 
+  > * Merge pull request #37 from bertsky/patch-2
   > * importing types from click is enough
   > * Update cli.py
   > * fixing #30. Directory of model(s) is needed not  model file name.
