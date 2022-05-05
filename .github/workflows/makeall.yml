@@ -24,6 +24,7 @@ on:
           - any
           - ubuntu-18.04
           - ubuntu-20.04
+          - ubuntu-22.04
       python-version:
         description: 'Python version'
         required: true
@@ -44,7 +45,7 @@ jobs:
     if: ${{ (github.event.inputs.os == 'any') && (github.event.inputs.python-version == 'any') || (github.event.inputs.os == '') }}
     uses: ./.github/workflows/makeall-linux.yaml
     with:
-      os: "[\'ubuntu-18.04\', \'ubuntu-20.04\']"
+      os: "[\'ubuntu-18.04\', \'ubuntu-20.04\', \'ubuntu-22.04\']"
       python-version: "['3.6', '3.7', '3.8', '3.9', '3.10']"
 
   # Run builds for all Ubuntu versions and selected Python version.
@@ -52,7 +53,7 @@ jobs:
     if: ${{ (github.event.inputs.os == 'any') && (github.event.inputs.python-version != 'any') }}
     uses: ./.github/workflows/makeall-linux.yaml
     with:
-      os: "[\'ubuntu-18.04\', \'ubuntu-20.04\']"
+      os: "[\'ubuntu-18.04\', \'ubuntu-20.04\', \'ubuntu-22.04\']"
       python-version: "[\'${{ github.event.inputs.python-version }}\']"
 
   # Run builds for selected Ubuntu version and all Python versions.
