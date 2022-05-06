@@ -99,7 +99,7 @@ RUN apt-get -y install automake autoconf libtool pkg-config g++ && make deps-ubu
 
 # start a shell script (so we can comment individual steps here)
 RUN echo "set -ex" > docker.sh
-RUN echo "source $PREFIX/bin/activate" >> docker.sh
+RUN echo "source $VIRTUAL_ENV/bin/activate" >> docker.sh
 RUN echo "pip install -U pip setuptools wheel" >> docker.sh
 # build/install all tools of the requested modules:
 RUN echo "make $PARALLEL all" >> docker.sh
