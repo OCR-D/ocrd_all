@@ -80,7 +80,7 @@ RUN echo "Acquire::ftp::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
 WORKDIR /build
 
 # create virtual environment
-RUN rm /usr/local/bin/pip* && apt-get purge -y python3-pip && python3 -m venv /usr/local && python3 -m pip install --force pip
+RUN rm $VIRTUAL_ENV/bin/pip* && apt-get purge -y python3-pip && python3 -m venv $VIRTUAL_ENV && python3 -m pip install --force pip
 
 # copy (sub)module directories to build
 # (ADD/COPY cannot copy a list of directories,
@@ -99,7 +99,7 @@ RUN apt-get -y install automake autoconf libtool pkg-config g++ && make deps-ubu
 
 # start a shell script (so we can comment individual steps here)
 RUN echo "set -ex" > docker.sh
-RUN echo "source $PREFIX/bin/activate" >> docker.sh
+RUN echo "source $VIRTUAL_ENV/bin/activate" >> docker.sh
 RUN echo "pip install -U pip setuptools wheel" >> docker.sh
 # build/install all tools of the requested modules:
 RUN echo "make $PARALLEL all" >> docker.sh
