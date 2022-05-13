@@ -17,8 +17,12 @@ GIT_RECURSIVE = # --recursive
 GIT_DEPTH = # --depth 1
 # Required and optional Tesseract models.
 ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
-# Always run git as the user who owns the ocrd_all repo
+# The root user must run git as the user who owns the working directory.
+ifeq ($(USER),root)
 GIT = sudo -u $$(stat -c '%U' .) git
+else
+GIT = git
+endif
 
 # directory for virtual Python environment
 # (but re-use if already active); overridden
