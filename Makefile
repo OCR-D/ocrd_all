@@ -19,7 +19,12 @@ GIT_DEPTH = # --depth 1
 ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
 # The root user must run git as the user who owns the working directory.
 ifeq ($(USER),root)
-GIT = sudo -u $$(stat -c '%U' .) git
+ifeq ($(USER),root)
+SUDO = sudo -u `stat -c '%u' $(CURDIR)`
+else
+SUDO =
+fi
+GIT = $(SUDO) git
 else
 GIT = git
 endif
