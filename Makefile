@@ -19,15 +19,11 @@ GIT_DEPTH = # --depth 1
 ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
 # The root user must run git as the user who owns the working directory.
 ifeq ($(USER),root)
-ifeq ($(USER),root)
 SUDO = sudo -u `stat -c '%u' $(CURDIR)`
 else
 SUDO =
-fi
-GIT = $(SUDO) git
-else
-GIT = git
 endif
+GIT = $(SUDO) git
 
 # directory for virtual Python environment
 # (but re-use if already active); overridden
