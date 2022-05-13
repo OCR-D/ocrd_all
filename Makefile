@@ -17,6 +17,8 @@ GIT_RECURSIVE = # --recursive
 GIT_DEPTH = # --depth 1
 # Required and optional Tesseract models.
 ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
+# Always run git as the user who owns the ocrd_all repo
+GIT = sudo -u $$(stat -c '%U' .) git
 
 # directory for virtual Python environment
 # (but re-use if already active); overridden
@@ -73,7 +75,7 @@ DISABLED_MODULES ?= $(DEFAULT_DISABLED_MODULES)
 # opencv-python is only needed for aarch64-linux-gnu and other less common platforms,
 # so don't include it by default.
 ifeq ($(strip $(OCRD_MODULES)),)
-override OCRD_MODULES := $(filter-out $(DISABLED_MODULES),$(shell git submodule status | while read commit dir ref; do echo $$dir; done))
+override OCRD_MODULES := $(filter-out $(DISABLED_MODULES),$(shell $(GIT) submodule status | while read commit dir ref; do echo $$dir; done))
 endif
 
 # `all` is too much for a default, and `ocrd` is too little
@@ -143,9 +145,9 @@ modules: $(OCRD_MODULES)
 ifneq (,$(wildcard .git))
 ifneq ($(NO_UPDATE),1)
 $(OCRD_MODULES): always-update
-	$(SEMGIT) git submodule sync $(GIT_RECURSIVE) $@
-	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
-		$(SEMGIT) git submodule update --init $(GIT_RECURSIVE) $(GIT_DEPTH) $@ && \
+	$(SEMGIT) $(GIT) submodule sync $(GIT_RECURSIVE) $@
+	if $(GIT) submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
+		$(SEMGIT) $(GIT) submodule update --init $(GIT_RECURSIVE) $(GIT_DEPTH) $@ && \
 		touch $@; fi
 endif
 endif
@@ -153,8 +155,8 @@ endif
 deinit: clean
 .PHONY: deinit
 deinit:
-	git submodule deinit --all # --force
-	git submodule status | while read stat dir ver; do rmdir $$dir; done
+	$(GIT) submodule deinit --all # --force
+	$(GIT) submodule status | while read stat dir ver; do rmdir $$dir; done
 
 # Get Python modules.
 
@@ -820,7 +822,7 @@ docker%-cuda docker%-cuda-git: DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda
 docker%: Dockerfile $(DOCKER_MODULES)
 	docker build \
 	--build-arg BASE_IMAGE=$(DOCKER_BASE_IMAGE) \
-	--build-arg VCS_REF=$$(git rev-parse --short HEAD) \
+	--build-arg VCS_REF=$$($(GIT) rev-parse --short HEAD) \
 	--build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
 	--build-arg OCRD_MODULES="$(DOCKER_MODULES)" \
 	--build-arg PIP_OPTIONS="$(PIP_OPTIONS)" \
