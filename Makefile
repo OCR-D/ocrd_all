@@ -160,8 +160,8 @@ endif
 deinit: clean
 .PHONY: deinit
 deinit:
-	$(GIT) submodule deinit --all # --force
-	$(GIT) submodule status | while read stat dir ver; do rmdir $$dir; done
+	git submodule deinit --all # --force
+	git submodule status | while read stat dir ver; do rmdir $$dir; done
 
 # Get Python modules.
 
@@ -827,7 +827,7 @@ docker%-cuda docker%-cuda-git: DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda
 docker%: Dockerfile $(DOCKER_MODULES)
 	docker build \
 	--build-arg BASE_IMAGE=$(DOCKER_BASE_IMAGE) \
-	--build-arg VCS_REF=$$($(GIT) rev-parse --short HEAD) \
+	--build-arg VCS_REF=$$(git rev-parse --short HEAD) \
 	--build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
 	--build-arg OCRD_MODULES="$(DOCKER_MODULES)" \
 	--build-arg PIP_OPTIONS="$(PIP_OPTIONS)" \
