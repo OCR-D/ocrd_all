@@ -20,6 +20,9 @@ on:
 
 jobs:
   make:
+    # Don't run unsupported Ubuntu 22.04 with Python 3.6.
+    if: ${{ (fromJson(inputs.os) != 'ubuntu-22.04') || (inputs.python-version != '3.6') }}
+
     #runs-on: ubuntu-latest
     runs-on: ${{ matrix.os }}
 
