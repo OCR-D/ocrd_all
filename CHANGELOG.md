@@ -1,5 +1,95 @@
 # Changelog
 
+## [v2022-06-02](https://github.com/OCR-D/ocrd_all/releases/v2022-06-02)
+
+### [core](https://github.com/OCR-D/core) [ecdb840](https://github.com/OCR-D/core/commits/ecdb840)..[60697e4](https://github.com/OCR-D/core/commits/60697e4)
+
+> Release: [v2.35.0](https://github.com/OCR-D/core/releases/v2.35.0)
+
+  > * :package: v2.35.0
+  > * :memo: changelog
+  > * update bagit-profile and ocrd_tool.schema.yml from spec
+  > * update spec
+  > * :package: v2.34.0
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/patch-12'
+  > * :memo: changelog
+  > * Merge branch 'resmgr-do-not-parse-dates'
+  > * :memo: changelog
+  > * Merge branch 'ocrd-log-stdin'
+  > * :memo: changelog
+  > * cleanup
+  > * change tests according to previous commit
+  > * change return type to list of tuples
+  > * remove printing error message
+  > * remove single newline from last commit
+  > * resource_manager list_available: fix #854
+  > * test_ocrd_mets: test new pageId regex
+  > * Merge branch 'add-pageid-regex' of https://github.com/bertsky/core into add-pageid-regex
+  > * :memo: changelog
+  > * Merge branch 'add-pageid-regex'
+  > * :memo: changelog
+  > * adapt safe_filename without dots
+  > * safe_filename: allow underscore, avoid dot
+  > * Merge pull request #849 from tdoan2010/master
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [855fc3b](https://github.com/bertsky/ocrd_detectron2/commits/855fc3b)..[833319a](https://github.com/bertsky/ocrd_detectron2/commits/833319a)
+
+> Release: [v0.1.1](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.1)
+
+  > * table mode: relax image requirements
+  > * fix typo
+  > * add param operation_level, add level table
+
+### [ocrd_keraslm](https://github.com/OCR-D/ocrd_keraslm) [2101c8f](https://github.com/OCR-D/ocrd_keraslm/commits/2101c8f)..[787341d](https://github.com/OCR-D/ocrd_keraslm/commits/787341d)
+
+> Release: [v0.4.1](https://github.com/OCR-D/ocrd_keraslm/releases/v0.4.1)
+
+  > * Update test-python3 to large resource class in config.yml
+
+### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [fce9933](https://github.com/OCR-D/ocrd_olena/commits/fce9933)..[dbef534](https://github.com/OCR-D/ocrd_olena/commits/dbef534)
+
+> Release: [v1.3.0](https://github.com/OCR-D/ocrd_olena/releases/v1.3.0)
+
+  > * :package: v1.3.0
+  > * install libtool in Docker
+  > * Merge branch 'circleci-update-resource-class' into fix-default-winsize
+  > * re-use METS basename for output
+  > * use bulk-add for METS results
+  > * use 1/6th DPI for non-Sauvola win-size default
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [e9acc81](https://github.com/OCR-D/ocrd_segment/commits/e9acc81)..[309b7f9](https://github.com/OCR-D/ocrd_segment/commits/309b7f9)
+
+> Release: [v0.1.21](https://github.com/OCR-D/ocrd_segment/releases/v0.1.21)
+
+  > * forgot src file
+  > * new processor replace-text
+  > * repair/project: fix MST bridge polygons
+  > * repair/project: use minimum spanning tree for shortest path search when joining polygons
+  > * :package: 0.1.21
+  > * Merge remote-tracking branch 'bertsky/extract-regions-coco'
+  > * repair/project: join polygons directly instead of alphashape
+  > * fixed parameter in save_image_file(), updated classes-parameter to type array
+  > * Update ocrd_segment/ocrd-tool.json
+  > * Update ocrd_segment/extract_regions.py
+  > * added classes parameter to extract-region-processor; enables extraction of specific regions e.g. TableRegion
+  > * tool.json: restrict numerical ranges
+  > * extract-lines: reduce default min-* values
+
+### [opencv-python](https://github.com/skvark/opencv-python) [5de8d66](https://github.com/skvark/opencv-python/commits/5de8d66)..[f2f924c](https://github.com/skvark/opencv-python/commits/f2f924c)
+
+> Release: [64](https://github.com/skvark/opencv-python/releases/64)
+
+  > * Merge pull request #666 from asenyaev/asen/update_all_dependencies
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [e50dee4](https://github.com/bertsky/workflow-configuration/commits/e50dee4)..[bb2a4e2](https://github.com/bertsky/workflow-configuration/commits/bb2a4e2)
+
+  > * ocrd-import: fix mkdir context
+  > * ocrd-import: avoid . in IDs
+  > * ocrd-import: ensure grayscale after PDF import
+  > * ocrd-import: forgot to set errexit in subshell too
+
+
 ## [v2022-05-04](https://github.com/OCR-D/ocrd_all/releases/v2022-05-04)
 
 Changed:
