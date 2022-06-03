@@ -2,6 +2,19 @@
 
 ## [v2022-06-02](https://github.com/OCR-D/ocrd_all/releases/v2022-06-02)
 
+Fixed:
+
+  * Work around issues with git's new `safe.directory` setting interfering with `sudo git`, #321, #323, #324
+
+Changed:
+
+  * Disable `cor-asv-ann` and `ocrd_keraslm` which require old tensorflow-gpu unless it is available, #325
+  * Dockerfile: use `$VIRTUAL_ENV` instead of hard-coded paths or `$PREFIX`
+
+Added:
+
+  * Start building on Ubuntu 22.04 in addition to 20.04 and 18.04, #318
+
 ### [core](https://github.com/OCR-D/core) [ecdb840](https://github.com/OCR-D/core/commits/ecdb840)..[60697e4](https://github.com/OCR-D/core/commits/60697e4)
 
 > Release: [v2.35.0](https://github.com/OCR-D/core/releases/v2.35.0)
