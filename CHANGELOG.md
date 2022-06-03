@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2022-06-02](https://github.com/OCR-D/ocrd_all/releases/v2022-06-02)
+## [v2022-06-03](https://github.com/OCR-D/ocrd_all/releases/v2022-06-03)
 
 Fixed:
 
