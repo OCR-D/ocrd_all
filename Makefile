@@ -13,6 +13,13 @@ PIP_OPTIONS_E = $(filter-out -e,$(PIP_OPTIONS))
 NO_UPDATE ?= 0
 # Set to non-empty to try running all executables with --help / -h during make check
 CHECK_HELP ?=
+GIT = git
+ifdef SUDO_USER
+ifneq ($(USER),$(SUDO_USER))
+# When running with sudo, git commands must use the original user.
+GIT = sudo -u $(SUDO_USER) git
+endif
+endif
 GIT_RECURSIVE = # --recursive
 GIT_DEPTH = # --depth 1
 # Required and optional Tesseract models.
@@ -62,6 +69,14 @@ OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_DEPS = unzip wget python3-venv parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
 DEFAULT_DISABLED_MODULES = cor-asv-fst opencv-python ocrd_ocropy ocrd_pc_segmentation
+ifneq ($(PYTHON_VERSION),3.6)
+ifneq ($(PYTHON_VERSION),3.7)
+ifneq ($(PYTHON_VERSION),3.8)
+# Disable modules which require tensorflow-gpu 1.15 unless running a Python version which provides it.
+DEFAULT_DISABLED_MODULES += cor-asv-ann ocrd_keraslm
+endif
+endif
+endif
 ifeq ($(PYTHON_VERSION),3.10)
 # Python 3.10.x does not work with current kraken.
 DEFAULT_DISABLED_MODULES += ocrd_kraken
@@ -73,7 +88,7 @@ DISABLED_MODULES ?= $(DEFAULT_DISABLED_MODULES)
 # opencv-python is only needed for aarch64-linux-gnu and other less common platforms,
 # so don't include it by default.
 ifeq ($(strip $(OCRD_MODULES)),)
-override OCRD_MODULES := $(filter-out $(DISABLED_MODULES),$(shell git submodule status | while read commit dir ref; do echo $$dir; done))
+override OCRD_MODULES := $(filter-out $(DISABLED_MODULES),$(shell $(GIT) submodule status | while read commit dir ref; do echo $$dir; done))
 endif
 
 # `all` is too much for a default, and `ocrd` is too little
@@ -143,9 +158,9 @@ modules: $(OCRD_MODULES)
 ifneq (,$(wildcard .git))
 ifneq ($(NO_UPDATE),1)
 $(OCRD_MODULES): always-update
-	$(SEMGIT) git submodule sync $(GIT_RECURSIVE) $@
-	if git submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
-		$(SEMGIT) git submodule update --init $(GIT_RECURSIVE) $(GIT_DEPTH) $@ && \
+	$(SEMGIT) $(GIT) submodule sync $(GIT_RECURSIVE) $@
+	if $(GIT) submodule status $(GIT_RECURSIVE) $@ | grep -qv '^ '; then \
+		$(SEMGIT) $(GIT) submodule update --init $(GIT_RECURSIVE) $(GIT_DEPTH) $@ && \
 		touch $@; fi
 endif
 endif
@@ -773,12 +788,6 @@ ifneq ($(suffix $(PYTHON)),)
 	apt-get install -y --no-install-recommends $(notdir $(PYTHON))-dev $(notdir $(PYTHON))-venv
 endif
 	$(MAKE) deps-ubuntu-modules
-	# Fix ownership of new/modified files and directories because
-	# deps-ubuntu is run as root, but not in a Docker build were
-	# it is not needed and costs a lot of time.
-	test "$$HOME" == "/" || chown -R --reference=$(CURDIR) .git $(OCRD_MODULES)
-# prevent the sem commands during above module updates from imposing sudo perms on HOME:
-	test "$$HOME" == "/" || chown -R --reference=$(HOME) $(HOME)/.parallel
 
 deps-ubuntu-modules:
 	set -e; for dir in $^; do $(MAKE) -C $$dir deps-ubuntu PYTHON=$(PYTHON); done
