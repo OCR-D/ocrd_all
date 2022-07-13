@@ -66,7 +66,7 @@ export PKG_CONFIG_PATH
 SHELL = /bin/bash
 
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
-CUSTOM_DEPS = unzip wget python3-venv parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
+CUSTOM_DEPS = unzip wget parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
 DEFAULT_DISABLED_MODULES = cor-asv-fst opencv-python ocrd_ocropy ocrd_pc_segmentation
 ifneq ($(PYTHON_VERSION),3.6)
@@ -785,8 +785,8 @@ ifneq ($(suffix $(PYTHON)),)
 	apt-get install -y software-properties-common
 	add-apt-repository -y ppa:deadsnakes/ppa
 	apt-get update
-	apt-get install -y --no-install-recommends $(notdir $(PYTHON))-dev $(notdir $(PYTHON))-venv
 endif
+	apt-get install -y --no-install-recommends $(notdir $(PYTHON))-dev $(notdir $(PYTHON))-venv
 	$(MAKE) deps-ubuntu-modules
 
 deps-ubuntu-modules:
