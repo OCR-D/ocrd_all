@@ -75,11 +75,12 @@ list_changed_submodules () {
 
 update_one_submodule () {
     local sm="$1"
-    local branch="master"
     (
         cd $sm
-        git pull --rebase origin "$branch"
-        git pull --rebase origin "$branch" --tags
+        local branch=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+        loginfo "Updating submodule $sm / branch $branch"
+        git pull -q --rebase origin "$branch" 
+        git pull -q --rebase origin "$branch" --tags
         git submodule update --init
      )
 }
