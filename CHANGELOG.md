@@ -1,5 +1,119 @@
 # Changelog
 
+## [v2022-07-15](https://github.com/OCR-D/ocrd_all/releases/v2022-07-15)
+
+### [core](https://github.com/OCR-D/core) [60697e4](https://github.com/OCR-D/core/commits/60697e4)..[a78d4c5](https://github.com/OCR-D/core/commits/a78d4c5)
+
+> Release: [v2.35.0](https://github.com/OCR-D/core/releases/v2.35.0)
+
+  > * :memo: changelog
+  > * Merge branch 'improve-workspace-merge'
+  > * :memo: changelog
+  > * Merge branch 'ocrd-tool-new-constructs'
+  > * :memo: changelog
+  > * Merge branch 'workspace-pageId-to-page_id'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'joschrew/ocrd_mets-find_files-split'
+  > * Merge pull request #879 from bertsky/allow-fill-none
+  > * Merge pull request #868 from bertsky/patch-13
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [34a0617](https://github.com/qurator-spk/eynollah/commits/34a0617)..[00be99d](https://github.com/qurator-spk/eynollah/commits/00be99d)
+
+> Release: [v0.0.11](https://github.com/qurator-spk/eynollah/releases/v0.0.11)
+
+  > * add short section on supported Python, TF and CUDA versions
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [ecb0d67](https://github.com/OCR-D/ocrd_calamari/commits/ecb0d67)..[395e43c](https://github.com/OCR-D/ocrd_calamari/commits/395e43c)
+
+> Release: [v1.0.3](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.3)
+
+  > * Merge pull request #75 from bertsky/recurse-regions
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [309b7f9](https://github.com/OCR-D/ocrd_segment/commits/309b7f9)..[4c74cda](https://github.com/OCR-D/ocrd_segment/commits/4c74cda)
+
+> Release: [v0.1.21](https://github.com/OCR-D/ocrd_segment/releases/v0.1.21)
+
+  > * repair/project: add touching polygons to MST
+  > * repair/plausibilize: prefer delete/merge over split, not vice versa
+
+### [opencv-python](https://github.com/skvark/opencv-python) [f2f924c](https://github.com/skvark/opencv-python/commits/f2f924c)..[4638ce5](https://github.com/skvark/opencv-python/commits/4638ce5)
+
+> Release: [66](https://github.com/skvark/opencv-python/releases/66)
+
+  > * Changed labeles for macOS ARM64 and Linux ARM64 builds (#681)
+  > * Merge pull request #684 from radarhere/multibuild
+  > * Merge pull request #672 from asenyaev/asen/change_format_for_source_package_4.x
+  > * Merge pull request #668 from asenyaev/asen/check_latest_commits_4.x
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [c2a3efe](https://github.com/tesseract-ocr/tesseract/commits/c2a3efe)..[87dd04f](https://github.com/tesseract-ocr/tesseract/commits/87dd04f)
+
+> Release: [5.2.0](https://github.com/tesseract-ocr/tesseract/releases/5.2.0)
+
+  > * [ci][sw] Disable nightly macos tests.
+  > * Update cmake.yml
+  > * Update sw.yml
+  > * Create new release 5.2.0
+  > * Mark parameter 'tessedit_do_invert' as deprecated
+  > * Add new parameter for invert_threshold (#3852)
+  > * capi: Fix calling delete[] for memory allocated by malloc
+  > * Merge pull request #3775 from Shreeshrii/disableopenmp
+  > * Merge pull request #3682 from leleliu008/improve-build-for-android-integrate-with-cpu_features-library
+  > * fix issue #3092 - skip removing colormap
+  > * Update code to support Leptonica 1.83.0 and newer
+  > * Use Leptonica API to access internals of Pix
+  > * C API: Add a function to init tesseract with traineddata from memory (#3780)
+  > * Update README.md [skip ci]
+  > * README: Add link to tessdoc/InputFormats
+  > * Replace BOX -> Box
+  > * Update README.md
+  > * Update cmake-win64.yml (D8016: '/Qpar' and '/openmp:llvm' command-line options are incompatible )
+  > * Update cmake-win64.yml
+  > * GA: improve cmake-win64: use variable for location, add libarchive build, disabple not need functions
+  > * do not use '\0' in std::string => fixes issue #3837 (loading uzn file)
+  > * cmake: fix Build with clang-cl on Windows; fixes #3683
+  > * Merge pull request #3835 from Yulv-git/typos1
+  > * [sw] Fix macos aarch64 build.
+  > * Update cmake-win64.yml
+  > * Update sw.yml
+  > * [ci][sw] Add vs2019 and ubuntu22.04.
+  > * Remove Travis from README.md
+  > * Remove trailing blanks
+  > * Fix NEON detection on FreeBSD (#3782)
+  > * Replace std::regex by std::string functions (fixes issue #3830)
+  > * Replace direct access to Leptonica internal data structures by function calls
+  > * Use unsigned offsets for PDF
+  > * Pdf offset fix (#3808)
+  > * Delete .travis.yml
+  > * cmake: report build arch
+  > * cmake:fix typo
+  > * Fix sw build for AVX512
+  > * Merge pull request #3792 from stweil/avx512f
+  > * Add missing `apt-get update` in CI actions
+  > * Merge pull request #3789 from sunoru/patch-appendstring
+  > * Set /Os for some 32 bit MS compilers (fixes #3769)
+  > * scrollview: Fix two comments
+  > * Add CI for openmp performance comparison (#3774)
+  > * Merge pull request #3773 from Gitoffthelawn/patch-1
+  > * fix OpenCL with Nvidia drivers
+  > * cmake: fix OpenCL build
+  > * Update cmake.yml
+  > * Update ccutil.cpp (#3768)
+  > * Update CMakeLists.txt
+  > * Update cmake.yml
+  > * cmake: turn off LTO
+  > * cmake: enable link-time optimization by default
+  > * Merge pull request #3765 from zdenop/cmake_unused
+  > * autoconf: Use more robust code to get git tag
+  > * Use static linker flags for OSS-Fuzz build
+  > * Update linker flags for OSS-Fuzz build
+
+### [tesserocr](https://github.com/sirfz/tesserocr) [310ae9a](https://github.com/sirfz/tesserocr/commits/310ae9a)..[e0da9df](https://github.com/sirfz/tesserocr/commits/e0da9df)
+
+> Release: [v2.5.2](https://github.com/sirfz/tesserocr/releases/v2.5.2)
+
+  > * docs: fix simple typo, instalation -> installation
+
+
 ## [v2022-06-03](https://github.com/OCR-D/ocrd_all/releases/v2022-06-03)
 
 Fixed:
