@@ -1,18 +1,18 @@
 # Changelog
 
-## [v2022-07-15](https://github.com/OCR-D/ocrd_all/releases/v2022-07-15)
+## [v2022-07-18](https://github.com/OCR-D/ocrd_all/releases/v2022-07-18)
 
-### [core](https://github.com/OCR-D/core) [60697e4](https://github.com/OCR-D/core/commits/60697e4)..[a78d4c5](https://github.com/OCR-D/core/commits/a78d4c5)
+### [core](https://github.com/OCR-D/core) [a78d4c5](https://github.com/OCR-D/core/commits/a78d4c5)..[0c62081](https://github.com/OCR-D/core/commits/0c62081)
 
-> Release: [v2.35.0](https://github.com/OCR-D/core/releases/v2.35.0)
+> Release: [v2.36.0](https://github.com/OCR-D/core/releases/v2.36.0)
 
-  > * :memo: changelog
+  > * :package: v2.36.0
+  > * Merge branch 'release-2.36.0'
+  > * Merge pull request #890 from stweil/typos
+  > * Merge pull request #891 from stweil/lgtm
   > * Merge branch 'improve-workspace-merge'
-  > * :memo: changelog
   > * Merge branch 'ocrd-tool-new-constructs'
-  > * :memo: changelog
   > * Merge branch 'workspace-pageId-to-page_id'
-  > * :memo: changelog
   > * Merge remote-tracking branch 'joschrew/ocrd_mets-find_files-split'
   > * Merge pull request #879 from bertsky/allow-fill-none
   > * Merge pull request #868 from bertsky/patch-13
