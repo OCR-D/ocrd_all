@@ -1,5 +1,128 @@
 # Changelog
 
+## [v2022-08-15](https://github.com/OCR-D/ocrd_all/releases/v2022-08-15)
+
+### [core](https://github.com/OCR-D/core) [0c62081](https://github.com/OCR-D/core/commits/0c62081)..[4148a88](https://github.com/OCR-D/core/commits/4148a88)
+
+> Release: [v2.38.0](https://github.com/OCR-D/core/releases/v2.38.0)
+
+  > * :package: v2.30.0
+  > * update spec to v3.20.0
+  > * :memo: changelog
+  > * ocrd zip: remove Ocrd-Manifestation-Depth
+  > * :memo: changelog
+  > * Merge branch 'resmgr-dynamic-download'
+  > * :memo: changelog
+  > * Merge branch 'add-processor-profiling'
+  > * :memo: changelog
+  > * Merge branch 'merge-fix'
+  > * :memo: changelog
+  > * bagger: fix for working with different mets name
+  > * :package: v2.37.0
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/master' into resmgr-dynamic-discovery
+  > * resmgr: drop ocrd-tesserocr from resource_list.yml
+  > * ocrd resmgr migrate to update existing configurations
+  > * resmgr: catch OSError for non-exec ocrd processors in $PATH
+  > * move JSONDecodeError catch back to get_ocrd_tool
+  > * os.list_all_resources: ignore more core-builtin resources
+  > * get_processor_resource_types: handle non-existing "paramters"
+  > * Merge branch 'master' into resmgr-dynamic-discovery
+  > * resource_list.yml: tarball -> archive
+  > * Merge branch 'master' into resmgr-dynamic-discovery
+  > * OcrdResourceManager.list_available: handle JSONDecodeError with a log msg
+  > * ocrd resmgr list-available: -e should be glob with trailing asterisk
+  > * ocrd resmgr list-available: fix kwargs
+  > * resmgr: invert `--dynamic` option and drop positive variant
+  > * OcrdResourceManager.list_available: treat executable consistently as a glob
+  > * catch case that processor not installed but listed in resource_list
+  > * test_task_sequence: invalidate ocrd-tool cache on tearDown
+  > * resource_manager: ocrd-tool-derived resources should take precedence
+  > * disable caching of get_ocrd_tool_json, causes non-sequitur errors in testing
+  > * fix import error in resource_manager.py
+  > * Merge remote-tracking branch 'bertsky/patch-4' into resmgr-dynamic-discovery
+  > * Merge branch 'resmgr-folder' into resmgr-dynamic-discovery
+  > * Merge branch 'assets-change' into resmgr-dynamic-discovery
+  > * Merge remote-tracking branch 'bertsky/patch-3' into resmgr-dynamic-discovery
+  > * wip
+  > * replace module-level cache with functools.lru_cache
+  > * taks_sequence: use ocrd_utils.get_ocrd_tool
+  > * wip: merge discover and list_available
+  > * replace resmgr schema with ocrd-tool schema fragment
+  > * resource_list: tarball -> archive
+  > * resmgr: take processor's resource_locations into account
+  > * ocrd_utils.get_ocrd_tool_json
+  > * ocrd resmgr discover
+  > * update spec to 3.17.0
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [00be99d](https://github.com/qurator-spk/eynollah/commits/00be99d)..[8d5079c](https://github.com/qurator-spk/eynollah/commits/8d5079c)
+
+> Release: [v0.0.11](https://github.com/qurator-spk/eynollah/releases/v0.0.11)
+
+  > * issue #77 is resolved on main branch
+
+### [ocrd_kraken](https://github.com/OCR-D/ocrd_kraken) [cb719e7](https://github.com/OCR-D/ocrd_kraken/commits/cb719e7)..[f8235c4](https://github.com/OCR-D/ocrd_kraken/commits/f8235c4)
+
+> Release: [v0.2.0](https://github.com/OCR-D/ocrd_kraken/releases/v0.2.0)
+
+  > * :package: v0.2.0
+  > * ci: download model first
+  > * fix test_binarize
+  > * fix typos
+  > * Revert "Revert "segment: use binarized input only if use_legacy""
+  > * Revert "segment: use binarized input only if use_legacy"
+  > * recognize: use proper relative coordinate system for words and glyphs
+  > * recognize: move model init to setup fn
+  > * recognize: use binarized image only if model expects it
+  > * segment: move model init to setup fn
+  > * segment: decode arbitrary region types, add param blla_classes
+  > * segment: use binarized input only if use_legacy
+  > * recognize: fix decoding in case word is empty
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [4d2593d](https://github.com/OCR-D/ocrd_tesserocr/commits/4d2593d)..[0427f6f](https://github.com/OCR-D/ocrd_tesserocr/commits/0427f6f)
+
+> Release: [v0.14.0](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.14.0)
+
+  > * :package: v0.14.0
+  > * :memo: changelog
+  > * Merge branch 'resmgr-ocrd-tool'
+
+### [opencv-python](https://github.com/skvark/opencv-python) [4638ce5](https://github.com/skvark/opencv-python/commits/4638ce5)..[60630d1](https://github.com/skvark/opencv-python/commits/60630d1)
+
+> Release: [66](https://github.com/skvark/opencv-python/releases/66)
+
+  > * macOS x86_64 runner change to macos-11 (#701)
+  > * Scheduled rolling workflows (#699)
+  > * Run pipelines on 4.x and 5.x branches (#697)
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [e4c1eb2](https://github.com/qurator-spk/sbb_binarization/commits/e4c1eb2)..[c99be55](https://github.com/qurator-spk/sbb_binarization/commits/c99be55)
+
+> Release: [v0.0.10](https://github.com/qurator-spk/sbb_binarization/releases/v0.0.10)
+
+  > * :package: v0.0.10
+  > * :memo: changelog
+  > * Merge pull request #40 from maxnth/fix/cli
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [87dd04f](https://github.com/tesseract-ocr/tesseract/commits/87dd04f)..[0daf18c](https://github.com/tesseract-ocr/tesseract/commits/0daf18c)
+
+> Release: [5.2.0](https://github.com/tesseract-ocr/tesseract/releases/5.2.0)
+
+  > * Detect availability of AVX512-VNNI
+  > * GA cmake-win64: use webp v1.2.3 as new code requires libsharpyuv
+  > * cmake.yml: Remove macOS 10
+  > * Merge pull request #3888 from arseniy-sonar/patch-1
+  > * Update sw.cpp
+  > * [sw] Do not link pthread on android.
+  > * [sw] Add svpaint.
+  > * [sw] Add missing file for arm64. Change branch name.
+  > * Merge pull request #3878 from stweil/exit
+  > * Fix double free in function vigorous_noise_removal (fixes issue #3876)
+  > * Create to_win if needed in Textord::make_spline_rows (fixes issue #3875)
+  > * autotools: Add rule for svpaint executable (#3873)
+  > * Merge pull request #3872 from p12tic/fix-scrollview-double-free (fixes issue #3869)
+  > * Catch potential nullptr in SVNetwork::SVNetwork
+
+
 ## [v2022-07-18](https://github.com/OCR-D/ocrd_all/releases/v2022-07-18)
 
 ### [core](https://github.com/OCR-D/core) [a78d4c5](https://github.com/OCR-D/core/commits/a78d4c5)..[0c62081](https://github.com/OCR-D/core/commits/0c62081)
