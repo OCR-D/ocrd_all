@@ -1,5 +1,191 @@
 # Changelog
 
+## [v2022-10-24](https://github.com/OCR-D/ocrd_all/releases/v2022-10-24)
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [1058657](https://github.com/ASVLeipzig/cor-asv-ann/commits/1058657)..[006a70e](https://github.com/ASVLeipzig/cor-asv-ann/commits/006a70e)
+
+> Release: [v0.1.14](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.14)
+
+  > * Merge pull request #11 from ASVLeipzig/textline-textequiv-join-processor
+
+### [core](https://github.com/OCR-D/core) [4148a88](https://github.com/OCR-D/core/commits/4148a88)..[0713e0e](https://github.com/OCR-D/core/commits/0713e0e)
+
+> Release: [v2.39.0](https://github.com/OCR-D/core/releases/v2.39.0)
+
+  > * :package: v2.39.0
+  > * update spec
+  > * ocrd/ocrd/cli/validate: typo Ba{a,s}ename
+  > * :memo: changelog
+  > * Merge branch 'bashlib-validate-mets-basename'
+  > * :memo: changelog
+  > * test_merge_force: adapt to stricter ID clash check in add_file after #861
+  > * fix kwarg conflict inm merge
+  > * Merge branch 'master' into workspace_merge_fix
+  > * ocrd workspace merge: support both --force and --overwrite, test
+  > * Use the cli overwrite
+  > * Keep consistency
+  > * Accept overwrite parameter instead of passing just True
+  > * Pass the force parameter when merging
+  > * update spec
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/patch-14' into resmgr-moduledir
+  > * resmgr.download: use data structures correctly, test --overwrite
+  > * strip newline from --dump-module-dir
+  > * resmgr: list_available with the same features as removed find_resources
+  > * wip: resource manager respecting processor's moduledir
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [1febea8](https://github.com/qurator-spk/dinglehopper/commits/1febea8)..[dcc10c5](https://github.com/qurator-spk/dinglehopper/commits/dcc10c5)
+
+  > * ✔️ Skip test_lines_similar() for now
+  > * 📝 Note that old terminals might not render the Unicode characters correctly
+  > * 🐛 Update editops() and seq_align() due to RapidFuzz API changes
+  > * Revert "Revert "Merge pull request #67 from maxbachmann/rapidfuzz""
+  > * Revert "💩 Stick with rapidfuzz < 2.1.0 for now"
+  > * 💩 Stick with rapidfuzz < 2.1.0 for now
+  > * Revert "Merge pull request #67 from maxbachmann/rapidfuzz"
+  > * Merge pull request #67 from maxbachmann/rapidfuzz
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [395e43c](https://github.com/OCR-D/ocrd_calamari/commits/395e43c)..[c7ad6eb](https://github.com/OCR-D/ocrd_calamari/commits/c7ad6eb)
+
+> Release: [v1.0.5](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.5)
+
+  > * 📦 v1.0.5
+  > * Merge pull request #76 from bertsky/skip-empty
+  > * Merge pull request #80 from mikegerber/fix/readme-no-checkpoint
+  > * 📝 README-DEV: Update wrt ocrd-tool.json and CI
+  > * 📦 v1.0.4
+  > * 🔐 Use a safe temporary directory for the test workspace
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [38f4edf](https://github.com/OCR-D/ocrd_fileformat/commits/38f4edf)..[c3dddfc](https://github.com/OCR-D/ocrd_fileformat/commits/c3dddfc)
+
+> Release: [v0.5.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.5.0)
+
+  > * :memo: changelog
+  > * update ocr-fileformat to include merge
+  > * update ocr-fileformat
+
+### [ocrd_kraken](https://github.com/OCR-D/ocrd_kraken) [f8235c4](https://github.com/OCR-D/ocrd_kraken/commits/f8235c4)..[802c6b0](https://github.com/OCR-D/ocrd_kraken/commits/802c6b0)
+
+> Release: [v0.3.0](https://github.com/OCR-D/ocrd_kraken/releases/v0.3.0)
+
+  > * :package: v0.3.0
+  > * :memo: changelog
+  > * Merge pull request #33 from OCR-D/resources
+
+### [ocrd_olahd_client](https://github.com/OCR-D/ocrd_olahd_client) [9809d0c](https://github.com/OCR-D/ocrd_olahd_client/commits/9809d0c)..[947724f](https://github.com/OCR-D/ocrd_olahd_client/commits/947724f)
+
+  > * Merge pull request #5 from stweil/master
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [0427f6f](https://github.com/OCR-D/ocrd_tesserocr/commits/0427f6f)..[7459a41](https://github.com/OCR-D/ocrd_tesserocr/commits/7459a41)
+
+> Release: [v0.15.0](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.15.0)
+
+  > * :package: v0.15.0
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/resmgr-moduledir'
+  > * :memo: changelog
+  > * fix user_defined_dpi (reset for each page)
+  > * fix json typo
+  > * binarize: add tiseg parameter (for optional sepmask clipping)
+  > * fix user_defined_dpi (reset for each page)
+  > * fix pageId for AlternativeImage
+  > * Update requirements.txt
+  > * update+improve polygon handling
+
+### [ocrd_typegroups_classifier](https://github.com/OCR-D/ocrd_typegroups_classifier) [1ed0cb1](https://github.com/OCR-D/ocrd_typegroups_classifier/commits/1ed0cb1)..[ffa40fc](https://github.com/OCR-D/ocrd_typegroups_classifier/commits/ffa40fc)
+
+> Release: [v0.4.0](https://github.com/OCR-D/ocrd_typegroups_classifier/releases/v0.4.0)
+
+  > * :package: v0.4.0
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/add-oplevel-region'
+  > * :memo: changelog
+  > * Merge pull request #11 from OCR-D/fix-simple-cli
+
+### [opencv-python](https://github.com/skvark/opencv-python) [60630d1](https://github.com/skvark/opencv-python/commits/60630d1)..[3725898](https://github.com/skvark/opencv-python/commits/3725898)
+
+> Release: [66](https://github.com/skvark/opencv-python/releases/66)
+
+  > * Bump numpy version to 1.21.4 for macOS builds (#720)
+  > * Build x64 macOS wheels for 10.13 build target (#716)
+  > * Build zlib from the source on Linux with the latest version (#715)
+  > * Remove source packages for rolling packages (#711)
+  > * Adapted rolling releases to workflow_dispatch event (#708)
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [c99be55](https://github.com/qurator-spk/sbb_binarization/commits/c99be55)..[aeb6804](https://github.com/qurator-spk/sbb_binarization/commits/aeb6804)
+
+> Release: [v0.0.11](https://github.com/qurator-spk/sbb_binarization/releases/v0.0.11)
+
+  > * :package: v0.0.11
+  > * :memo: changelog
+  > * Merge pull request #53 from bertsky/patch-3
+  > * Update README.md
+  > * issue #45 the patches option is omitted and it means that documents will be processed in patches while no patches is not desired by the tool
+  > * Merge pull request #52 from bertsky/img-allow-alpha
+  > * Update README
+  > * #42 is resolved
+  > * Merge pull request #43 from apacha/fix_no_models_available
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [0daf18c](https://github.com/tesseract-ocr/tesseract/commits/0daf18c)..[e3c06d1](https://github.com/tesseract-ocr/tesseract/commits/e3c06d1)
+
+> Release: [5.2.0](https://github.com/tesseract-ocr/tesseract/releases/5.2.0)
+
+  > * Update codeql-analysis.yml
+  > * Update sw.yml
+  > * Update codeql-analysis.yml
+  > * Fix regression (broken unit tests)
+  > * Restore comment
+  > * Fix memory leaks in ImageThresholder::ThresholdToPix
+  > * remove src.destroy();
+  > * Update autotools-macos.yml
+  > * Merge pull request #3948 from rettinghaus/update-action
+  > * Merge pull request #3949 from rettinghaus/update-upload
+  > * Merge pull request #3942 from zdenop/main
+  > * Update autotools-macos.yml
+  > * Update autotools.yml
+  > * Update unittest.yml
+  > * Update autotools-openmp.yml
+  > * Update cmake-win64.yml
+  > * Merge pull request #3938 from Gitoffthelawn/patch-1
+  > * Merge pull request #3935 from nicholasz2510/main
+  > * Merge pull request #3930 from jeroen/patch-1
+  > * Update .mailmap
+  > * Create .mailmap (#3910)
+  > * Update README.md
+  > * Update appveyor.yml
+  > * appveyor.yml: Add files filter
+  > * Add missing .exe for training tools to fix build with msys2
+  > * Update codeql-analysis.yml
+  > * Update codeql-analysis.yml [skip ci]
+  > * Update README.md
+  > * Merge pull request #3908 from tesseract-ocr/amitdo-sw-paths
+  > * Merge pull request #3907 from ffontaine/main
+  > * Update msys2.yml [skip ci]
+  > * CI: Remove Ubuntu 18.04 (#3902)
+  > * unittest-macos.yml: Use macOS 12 instead.of  10.15
+  > * autotools-macos.yml: Remove macOS 10.15
+
+### [tesserocr](https://github.com/sirfz/tesserocr) [e0da9df](https://github.com/sirfz/tesserocr/commits/e0da9df)..[3bfa7d9](https://github.com/sirfz/tesserocr/commits/3bfa7d9)
+
+> Release: [v2.5.2](https://github.com/sirfz/tesserocr/releases/v2.5.2)
+
+  > * provide pointsize
+  > * Add support for upcoming Leptonica 1.83.0
+  > * Fix typo (found by codespell)
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [bb2a4e2](https://github.com/bertsky/workflow-configuration/commits/bb2a4e2)..[904ce8c](https://github.com/bertsky/workflow-configuration/commits/904ce8c)
+
+  > * page-fix-coords: fix Baseline in addition to Coords
+  > * try to fix markdown
+  > * update documentation
+  > * page-sort-textequiv-index: new (sort TextEquiv by its @index)
+  > * page-extract-text: variant with level param (defaults to highest)
+  > * update documentation
+  > * page-remove-alternativeimages: new XSLT with comprehensive params
+  > * Merge branch 'master' of ssh://github.com/bertsky/workflow-configuration
+  > * page-extract-lines: allow respecting (recursive) reading order
+
+
 ## [v2022-08-15](https://github.com/OCR-D/ocrd_all/releases/v2022-08-15)
 
 ### [core](https://github.com/OCR-D/core) [0c62081](https://github.com/OCR-D/core/commits/0c62081)..[4148a88](https://github.com/OCR-D/core/commits/4148a88)
