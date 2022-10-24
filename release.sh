@@ -22,7 +22,7 @@ usage () {
     echo ""
     echo "Commands:"
     echo ""
-    echo "  update              Update all submodules to most recent master/dev branch"
+    echo "  update              Update all submodules to most recent default branch"
     echo "  changelog           Generate a changelog for all modified submodules"
     echo "  release-github      Release to GitHub as $version"
     echo "  release-dockerhub   Release ocrd/all:maximum as ocrd/all:${version#v} to DockerHub"
@@ -79,7 +79,7 @@ update_one_submodule () {
         cd $sm
         local branch=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
         loginfo "Updating submodule $sm / branch $branch"
-        git pull -q --rebase origin "$branch" 
+        git pull -q --rebase origin "$branch"
         git pull -q --rebase origin "$branch" --tags
         git submodule update --init
      )
