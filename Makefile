@@ -464,7 +464,7 @@ install-models-calamari: $(BIN)/ocrd
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-calamari-recognize '*'
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
-$(OCRD_CALAMARI): ocrd_calamari
+$(OCRD_CALAMARI): ocrd_calamari $(BIN)/ocrd
 	$(pip_install)
 endif
 
@@ -492,7 +492,7 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-dewarp
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-tiseg
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
-$(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
+$(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr $(BIN)/ocrd
 	$(pip_install)
 endif
 
@@ -520,7 +520,7 @@ install-models-sbb-binarization:
 OCRD_EXECUTABLES += $(SBB_BINARIZATION)
 SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
 SBB_BINARIZATION += $(BIN)/sbb_binarize
-$(SBB_BINARIZATION): sbb_binarization
+$(call multirule,$(SBB_BINARIZATION)): sbb_binarization $(BIN)/ocrd
 	$(pip_install)
 endif
 
@@ -532,7 +532,7 @@ install-models-eynollah:
 OCRD_EXECUTABLES += $(EYNOLLAH_SEGMENT)
 EYNOLLAH_SEGMENT := $(BIN)/ocrd-eynollah-segment
 EYNOLLAH_SEGMENT += $(BIN)/eynollah
-$(EYNOLLAH_SEGMENT): eynollah
+$(call multirule,$(EYNOLLAH_SEGMENT)): eynollah $(BIN)/ocrd
 	$(pip_install)
 endif
 
