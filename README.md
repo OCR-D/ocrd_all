@@ -333,14 +333,16 @@ This table lists which tag contains which module:
 | format-converters           | -         | ☑        | ☑         |
 | ocrd_calamari               | -         | ☑        | ☑         |
 | ocrd_keraslm                | -         | ☑        | ☑         |
-| ocrd_olahd_client           | -         | ☑        | ☑         |
+| ocrd_olahd_client           | ☑         | ☑        | ☑         |
 | ocrd_olena                  | -         | ☑        | ☑         |
 | ocrd_segment                | -         | ☑        | ☑         |
 | tesseract                   | -         | ☑        | ☑         |
 | ocrd_anybaseocr             | -         | -        | ☑         |
-| ocrd_kraken                 | -         | -        | -         |
+| ocrd_detectron2             | -         | -        | ☑         |
+| ocrd_doxa                   | -         | -        | ☑         |
+| ocrd_kraken                 | -         | -        | ☑         |
 | ocrd_ocropy                 | -         | -        | -         |
-| ocrd_pc_segmentation        | -         | -        | ☑         |
+| ocrd_pc_segmentation        | -         | -        | -         |
 | ocrd_typegroups_classifier  | -         | -        | ☑         |
 | sbb_binarization            | -         | -        | ☑         |
 | cor-asv-fst                 | -         | -        | -         |
@@ -350,8 +352,6 @@ enabled by explicitly setting `OCRD_MODULES` or `DISABLED_MODULES`:
 
 * cor-asv-fst (runtime issues)
 * ocrd_ocropy (better implementation in ocrd_cis available)
-* ocrd_kraken (currently unmaintained)
-* clstm (required only for ocrd_kraken)
 
 ### Uninstall
 
@@ -373,7 +373,6 @@ This repo offers solutions to the following problems with OCR-D integration.
 
 The following Python modules need an installation from code for different reasons:
 
-- clstm (needs modified code for Python3)
 - cor-asv-ann (not available in PyPI)
 - cor-asv-fst (not available in PyPI)
 - dinglehopper (not available in PyPI)
@@ -417,7 +416,6 @@ _(Solved by managing and delegating to different subsets of venvs.)_
 
 Not all modules advertise their system package requirements via `make deps-ubuntu`.
 
-- `clstm`: depends on `scons libprotobuf-dev protobuf-compiler libpng-dev libeigen3-dev swig`
 - `tesseract` (when installing from source not PPA): depends on `libleptonica-dev` etc
 
 _(Solved by maintaining these requirements under `deps-ubuntu` here.)_

@@ -139,7 +139,6 @@ Variables:
 	PIP_OPTIONS: extra options for the `pip install` command like `-q` or `-v` or `-e`
 	TESSERACT_MODELS: list of additional models/languages to download for Tesseract. Default: "$(ALL_TESSERACT_MODELS)"
 	TESSERACT_CONFIG: command line options for Tesseract `configure`. Default: "$(TESSERACT_CONFIG)"
-	TESSDATA: directory path where to install Tesseract models. Default (based on XDG_DATA_HOME): "$(TESSDATA)"
 EOF
 endef
 export HELP
@@ -253,6 +252,8 @@ OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
 OCRD_COR_ASV_ANN := $(BIN)/ocrd-cor-asv-ann-evaluate
 OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-process
 OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-align
+OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-join
+OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-mark
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-train
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-proc
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-eval
@@ -411,6 +412,7 @@ OCRD_TESSEROCR := $(BIN)/ocrd-tesserocr-binarize
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-crop
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-deskew
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-recognize
+OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-line
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-region
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-word
@@ -462,7 +464,7 @@ install-models-calamari: $(BIN)/ocrd
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-calamari-recognize '*'
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
-$(OCRD_CALAMARI): ocrd_calamari
+$(OCRD_CALAMARI): ocrd_calamari $(BIN)/ocrd
 	$(pip_install)
 endif
 
@@ -490,7 +492,7 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-dewarp
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-tiseg
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
-$(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr
+$(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr $(BIN)/ocrd
 	$(pip_install)
 endif
 
@@ -517,7 +519,8 @@ install-models-sbb-binarization:
 
 OCRD_EXECUTABLES += $(SBB_BINARIZATION)
 SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
-$(SBB_BINARIZATION): sbb_binarization
+SBB_BINARIZATION += $(BIN)/sbb_binarize
+$(call multirule,$(SBB_BINARIZATION)): sbb_binarization $(BIN)/ocrd
 	$(pip_install)
 endif
 
@@ -528,7 +531,7 @@ install-models-eynollah:
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-eynollah-segment '*'
 OCRD_EXECUTABLES += $(EYNOLLAH_SEGMENT)
 EYNOLLAH_SEGMENT := $(BIN)/ocrd-eynollah-segment
-$(EYNOLLAH_SEGMENT): eynollah
+$(EYNOLLAH_SEGMENT): eynollah $(BIN)/ocrd
 	$(pip_install)
 endif
 
@@ -689,11 +692,10 @@ CUSTOM_DEPS += libpango1.0-dev
 
 XDG_DATA_HOME ?= $(if $(HOME),$(HOME)/.local/share,/usr/local/share)
 DEFAULT_RESLOC ?= $(XDG_DATA_HOME)/ocrd-resources
-TESSDATA ?= $(DEFAULT_RESLOC)/ocrd-tesserocr-recognize
+TESSDATA = $(VIRTUAL_ENV)/share/tessdata/
 TESSDATA_RELEASE = 4.1.0
 TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast/raw/$(TESSDATA_RELEASE)
 TESSERACT_TRAINEDDATA = $(ALL_TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
-TESSERACT_TRAINEDDATA += $(ALL_TESSERACT_MODELS:%=$(VIRTUAL_ENV)/share/tessdata/%.traineddata)
 
 stripdir = $(patsubst %/,%,$(dir $(1)))
 
@@ -714,10 +716,6 @@ $(TESSDATA)/%.traineddata:
 	$(call WGET,$@,$(TESSDATA_URL)/$(notdir $@)) || \
 	$(call WGET,$@,$(TESSDATA_URL)/$(notdir $(call stripdir,$@))/$(notdir $@)) || \
 		{ $(RM) $@; false; }
-
-$(VIRTUAL_ENV)/share/tessdata/%.traineddata: $(TESSDATA)/%.traineddata
-	@mkdir -p $(dir $@)
-	cp $< $@
 
 tesseract/Makefile.in: tesseract
 	cd tesseract && ./autogen.sh
