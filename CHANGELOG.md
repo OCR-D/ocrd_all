@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2022-10-24](https://github.com/OCR-D/ocrd_all/releases/v2022-10-24)
+## [v2022-10-25](https://github.com/OCR-D/ocrd_all/releases/v2022-10-25)
 
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [1058657](https://github.com/ASVLeipzig/cor-asv-ann/commits/1058657)..[006a70e](https://github.com/ASVLeipzig/cor-asv-ann/commits/006a70e)
 
@@ -8,10 +8,19 @@
 
   > * Merge pull request #11 from ASVLeipzig/textline-textequiv-join-processor
 
-### [core](https://github.com/OCR-D/core) [4148a88](https://github.com/OCR-D/core/commits/4148a88)..[0713e0e](https://github.com/OCR-D/core/commits/0713e0e)
+### [core](https://github.com/OCR-D/core) [0713e0e](https://github.com/OCR-D/core/commits/0713e0e)..[bae7ac2](https://github.com/OCR-D/core/commits/bae7ac2)
 
-> Release: [v2.39.0](https://github.com/OCR-D/core/releases/v2.39.0)
+> Release: [v2.40.0](https://github.com/OCR-D/core/releases/v2.40.0)
 
+  > * :package: v2.40.0
+  > * :memo: changelog
+  > * Merge pull request #929 from OCR-D/bashlib-add-moduledir
+  > * :memo: changelog
+  > * Merge pull request #932 from OCR-D/add-missing-resloc-module
+  > * :memo: changelog
+  > * Merge pull request #933 from OCR-D/resmgr-msg-debug
+  > * :memo: changelog
+  > * resmgr download: module location must not use exe subdir
   > * :package: v2.39.0
   > * update spec
   > * ocrd/ocrd/cli/validate: typo Ba{a,s}ename
@@ -76,10 +85,15 @@
 
   > * Merge pull request #5 from stweil/master
 
-### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [0427f6f](https://github.com/OCR-D/ocrd_tesserocr/commits/0427f6f)..[7459a41](https://github.com/OCR-D/ocrd_tesserocr/commits/7459a41)
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [7459a41](https://github.com/OCR-D/ocrd_tesserocr/commits/7459a41)..[c10f94d](https://github.com/OCR-D/ocrd_tesserocr/commits/c10f94d)
 
-> Release: [v0.15.0](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.15.0)
+> Release: [v0.16.0](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.16.0)
 
+  > * :package: v0.16.0
+  > * :memo: changelog
+  > * require core >= 2.40.0
+  > * makefile: resmgr location now module, no need for envvar
+  > * readme: update explanation of resource location
   > * :package: v0.15.0
   > * :memo: changelog
   > * Merge remote-tracking branch 'origin/resmgr-moduledir'
