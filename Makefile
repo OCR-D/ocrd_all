@@ -531,8 +531,7 @@ install-models-eynollah:
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-eynollah-segment '*'
 OCRD_EXECUTABLES += $(EYNOLLAH_SEGMENT)
 EYNOLLAH_SEGMENT := $(BIN)/ocrd-eynollah-segment
-EYNOLLAH_SEGMENT += $(BIN)/eynollah
-$(call multirule,$(EYNOLLAH_SEGMENT)): eynollah $(BIN)/ocrd
+$(EYNOLLAH_SEGMENT): eynollah $(BIN)/ocrd
 	$(pip_install)
 endif
 
