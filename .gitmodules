@@ -88,3 +88,6 @@
 [submodule "ocrd_doxa"]
 	path = ocrd_doxa
 	url = https://github.com/bertsky/ocrd_doxa.git
+[submodule "docstruct"]
+	path = docstruct
+	url = https://github.com/bertsky/docstruct.git

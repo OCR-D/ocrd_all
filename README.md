@@ -330,6 +330,7 @@ This table lists which tag contains which module:
 | workflow-configuration      | ☑         | ☑        | ☑         |
 | cor-asv-ann                 | -         | ☑        | ☑         |
 | dinglehopper                | -         | ☑        | ☑         |
+| docstruct                   | -         | ☑        | ☑         |
 | format-converters           | -         | ☑        | ☑         |
 | ocrd_calamari               | -         | ☑        | ☑         |
 | ocrd_keraslm                | -         | ☑        | ☑         |
