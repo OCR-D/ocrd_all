@@ -337,6 +337,7 @@ This table lists which tag contains which module:
 | ocrd_olena                  | -         | ☑        | ☑         |
 | ocrd_segment                | -         | ☑        | ☑         |
 | tesseract                   | -         | ☑        | ☑         |
+| ocrd_neat                   | -         | ☑        | ☑         |
 | ocrd_anybaseocr             | -         | -        | ☑         |
 | ocrd_detectron2             | -         | -        | ☑         |
 | ocrd_doxa                   | -         | -        | ☑         |

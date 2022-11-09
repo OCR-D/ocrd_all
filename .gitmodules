@@ -88,3 +88,6 @@
 [submodule "ocrd_doxa"]
 	path = ocrd_doxa
 	url = https://github.com/bertsky/ocrd_doxa.git
+[submodule "ocrd_neat"]
+	path = ocrd_neat
+	url = https://github.com/qurator-spk/page2tsv
