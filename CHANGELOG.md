@@ -2,6 +2,10 @@
 
 ## [v2022-11-10](https://github.com/OCR-D/ocrd_all/releases/v2022-11-10)
 
+Added:
+
+  * [`ocrd-docstruct`](https://github.com/bertsky/docstruct.git): Document structure detection from PAGE-XML to METS-XML
+
 ### [core](https://github.com/OCR-D/core) [bae7ac2](https://github.com/OCR-D/core/commits/bae7ac2)..[e841ce8](https://github.com/OCR-D/core/commits/e841ce8)
 
 > Release: [v2.41.0](https://github.com/OCR-D/core/releases/v2.41.0)
