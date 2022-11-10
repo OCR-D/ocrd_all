@@ -4,7 +4,8 @@
 
 Added:
 
-  * [`ocrd-docstruct`](https://github.com/bertsky/docstruct.git): Document structure detection from PAGE-XML to METS-XML
+  * [`ocrd-docstruct`](https://github.com/bertsky/docstruct): Document structure detection from PAGE-XML to METS-XML, #338
+  * [`ocrd-neat-export`/`ocrd-neat-import`](https://github.com/qurator-spk/page2tsv): Convert between PAGE and [neat](https://github.com/qurator-spk/neat) TSV, #339
 
 ### [core](https://github.com/OCR-D/core) [bae7ac2](https://github.com/OCR-D/core/commits/bae7ac2)..[e841ce8](https://github.com/OCR-D/core/commits/e841ce8)
 
