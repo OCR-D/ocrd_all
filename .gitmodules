@@ -90,4 +90,4 @@
 	url = https://github.com/bertsky/ocrd_doxa.git
 [submodule "ocrd_neat"]
 	path = ocrd_neat
-	url = https://github.com/qurator-spk/page2tsv
+	url = https://github.com/qurator-spk/page2tsv.git
