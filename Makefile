@@ -366,6 +366,14 @@ $(BIN)/ocrd-dinglehopper: dinglehopper $(BIN)/ocrd
 	$(pip_install)
 endif
 
+ifneq ($(findstring docstruct, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(BIN)/ocrd-docstruct
+.PHONY: ocrd-docstruct
+ocrd-docstruct: $(BIN)/ocrd-docstruct
+$(BIN)/ocrd-docstruct: docstruct $(BIN)/ocrd
+	$(pip_install)
+endif
+
 ifneq ($(findstring ocrd_segment, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_SEGMENT)
 OCRD_SEGMENT := $(BIN)/ocrd-segment-evaluate
@@ -814,7 +822,7 @@ docker-%-git: PIP_OPTIONS = -e
 # Minimum-size selection: use Ocropy binarization, use Tesseract from PPA
 docker-mini%: DOCKER_MODULES = core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap tesserocr workflow-configuration ocrd_olahd_client
 # Medium-size selection: add Olena binarization and Calamari, use Tesseract from git, add evaluation
-docker-medi%: DOCKER_MODULES = core cor-asv-ann dinglehopper format-converters ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap tesseract tesserocr workflow-configuration ocrd_olahd_client
+docker-medi%: DOCKER_MODULES = core cor-asv-ann dinglehopper docstruct format-converters ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap tesseract tesserocr workflow-configuration ocrd_olahd_client
 # Maximum-size selection: use all modules
 docker-maxi%: DOCKER_MODULES = $(OCRD_MODULES)
 
