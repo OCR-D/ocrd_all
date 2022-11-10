@@ -91,3 +91,6 @@
 [submodule "docstruct"]
 	path = docstruct
 	url = https://github.com/bertsky/docstruct.git
+[submodule "ocrd_neat"]
+	path = ocrd_neat
+	url = https://github.com/qurator-spk/page2tsv.git
