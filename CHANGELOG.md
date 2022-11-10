@@ -1,5 +1,73 @@
 # Changelog
 
+## [v2022-11-10](https://github.com/OCR-D/ocrd_all/releases/v2022-11-10)
+
+### [core](https://github.com/OCR-D/core) [bae7ac2](https://github.com/OCR-D/core/commits/bae7ac2)..[e841ce8](https://github.com/OCR-D/core/commits/e841ce8)
+
+> Release: [v2.41.0](https://github.com/OCR-D/core/releases/v2.41.0)
+
+  > * Update README.md
+  > * improve/complete bashlib description, add APIdoc refs
+  > * :package: v2.41.0
+  > * :memo: changelog
+  > * Merge branch 'resmgr-id-fallback'
+  > * :memo: changelog
+  > * make deps-ubuntu: drop python3-venv, run apt update in CI
+  > * ci: make deps-ubuntu/install geos via brew
+  > * make deps-ubuntu: For workaround shapely/shapely#1598, we need libgeos-dev
+  > * make install: workaround for broken shapely wheels
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/resmgr-content-length'
+  > * :memo: changelog
+  > * resmgr: avoid adding fake user db entries for module resources
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [833319a](https://github.com/bertsky/ocrd_detectron2/commits/833319a)..[7596962](https://github.com/bertsky/ocrd_detectron2/commits/7596962)
+
+> Release: [v0.1.3](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.3)
+
+  > * :package: 0.1.3
+  > * setup: use detectron2.config.CfgNode.freeze to be on the safe side
+  > * deps: fallback to src build of detectron2
+  > * fix resource URLs
+  > * deps: prevent pulling torch from PyPI
+  > * added resources and presets
+  > * :package: 0.1.2
+  > * Merge pull request #11 from bertsky/fallback-on-detectron2-sdist
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [c3dddfc](https://github.com/OCR-D/ocrd_fileformat/commits/c3dddfc)..[5022408](https://github.com/OCR-D/ocrd_fileformat/commits/5022408)
+
+> Release: [v0.6.1](https://github.com/OCR-D/ocrd_fileformat/releases/v0.6.1)
+
+  > * :package: v0.6.1
+  > * :memo: changelog
+  > * Merge pull request #41 from bertsky/patch-2
+  > * :package: v0.6.0
+  > * update ocr-fileformat to v0.5.0
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [e3c06d1](https://github.com/tesseract-ocr/tesseract/commits/e3c06d1)..[78bcc0d](https://github.com/tesseract-ocr/tesseract/commits/78bcc0d)
+
+> Release: [5.2.0](https://github.com/tesseract-ocr/tesseract/releases/5.2.0)
+
+  > * Update cmake.yml
+  > * Merge pull request #3959 from amitdo/amitdo-pdf-Ignore-non-text-blocks
+  > * Remove remaining references to deprecated LGTM (fix for #3958)
+  > * github action/cmake: fix macos icu linking
+  > * cmake: fix linux&mac build
+  > * fix typo in variable
+  > * README.md: Show CodeQL alerts
+  > * README.md: Make CodeQL badge clickable
+  > * README.md: Add CodeQL badge
+  > * show dropped unrendable words
+  > * cmake: install common_training and  unicharset_training libs
+  > * cmake: we can build training tools without PkgConfig
+  > * Merge pull request #3951 from doraeric/patch-1
+  > * Merge pull request #3950 from Saibamen/patch-1
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [904ce8c](https://github.com/bertsky/workflow-configuration/commits/904ce8c)..[2dd00a1](https://github.com/bertsky/workflow-configuration/commits/2dd00a1)
+
+  > * ocrd-make: add MKL control variable
+
+
 ## [v2022-10-25](https://github.com/OCR-D/ocrd_all/releases/v2022-10-25)
 
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [1058657](https://github.com/ASVLeipzig/cor-asv-ann/commits/1058657)..[006a70e](https://github.com/ASVLeipzig/cor-asv-ann/commits/006a70e)
