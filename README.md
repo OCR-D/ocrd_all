@@ -321,6 +321,7 @@ This table lists which tag contains which module:
 | core                        | ☑         | ☑        | ☑         |
 | ocrd_cis                    | ☑         | ☑        | ☑         |
 | ocrd_fileformat             | ☑         | ☑        | ☑         |
+| ocrd_olahd_client           | ☑         | ☑        | ☑         |
 | ocrd_im6convert             | ☑         | ☑        | ☑         |
 | ocrd_pagetopdf              | ☑         | ☑        | ☑         |
 | ocrd_repair_inconsistencies | ☑         | ☑        | ☑         |
@@ -332,22 +333,22 @@ This table lists which tag contains which module:
 | dinglehopper                | -         | ☑        | ☑         |
 | docstruct                   | -         | ☑        | ☑         |
 | format-converters           | -         | ☑        | ☑         |
+| nmalign                     | -         | ☑        | ☑         |
 | ocrd_calamari               | -         | ☑        | ☑         |
 | ocrd_keraslm                | -         | ☑        | ☑         |
-| ocrd_olahd_client           | ☑         | ☑        | ☑         |
+| ocrd_neat                   | -         | ☑        | ☑         |
 | ocrd_olena                  | -         | ☑        | ☑         |
 | ocrd_segment                | -         | ☑        | ☑         |
 | tesseract                   | -         | ☑        | ☑         |
-| ocrd_neat                   | -         | ☑        | ☑         |
 | ocrd_anybaseocr             | -         | -        | ☑         |
 | ocrd_detectron2             | -         | -        | ☑         |
 | ocrd_doxa                   | -         | -        | ☑         |
 | ocrd_kraken                 | -         | -        | ☑         |
-| ocrd_ocropy                 | -         | -        | -         |
-| ocrd_pc_segmentation        | -         | -        | -         |
 | ocrd_typegroups_classifier  | -         | -        | ☑         |
 | sbb_binarization            | -         | -        | ☑         |
 | cor-asv-fst                 | -         | -        | -         |
+| ocrd_ocropy                 | -         | -        | -         |
+| ocrd_pc_segmentation        | -         | -        | -         |
 
 **Note**: The following modules have been disabled by default and can only be
 enabled by explicitly setting `OCRD_MODULES` or `DISABLED_MODULES`:
