@@ -1,5 +1,40 @@
 # Changelog
 
+## [v2022-11-23](https://github.com/OCR-D/ocrd_all/releases/v2022-11-23)
+
+### [core](https://github.com/OCR-D/core) [e841ce8](https://github.com/OCR-D/core/commits/e841ce8)..[c75e219](https://github.com/OCR-D/core/commits/c75e219)
+
+> Release: [v2.42.0](https://github.com/OCR-D/core/releases/v2.42.0)
+
+  > * :package: v2.42.0
+  > * :memo: changelog
+  > * Merge branch 'mexthecat-802'
+  > * Merge branch 'profile-mem'
+  > * :memo: changelog
+  > * Merge pull request #875 from OCR-D/cache_functionality
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [4c74cda](https://github.com/OCR-D/ocrd_segment/commits/4c74cda)..[3c63e21](https://github.com/OCR-D/ocrd_segment/commits/3c63e21)
+
+> Release: [v0.1.21](https://github.com/OCR-D/ocrd_segment/releases/v0.1.21)
+
+  > * repair/project: always use make_valid on input side
+  > * repair/project: handle parent without Coords
+  > * extract_lines: add param 'textequiv-index'
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [78bcc0d](https://github.com/tesseract-ocr/tesseract/commits/78bcc0d)..[5f297dc](https://github.com/tesseract-ocr/tesseract/commits/5f297dc)
+
+> Release: [5.2.0](https://github.com/tesseract-ocr/tesseract/releases/5.2.0)
+
+  > * Merge pull request #3967 from stweil/coverity
+  > * [sw] Do a lightweight build during PRs.
+  > * Fix AMD64 detection with autobuild on FreeBSD (#3964)
+  > * lstm.train: allow .box from .raw.png too
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [2dd00a1](https://github.com/bertsky/workflow-configuration/commits/2dd00a1)..[49c743d](https://github.com/bertsky/workflow-configuration/commits/49c743d)
+
+  > * 2 more XSLTs
+  > * ocrd-import: set detected ALTO MIME type correctly
+
 ## [v2022-11-10](https://github.com/OCR-D/ocrd_all/releases/v2022-11-10)
 
 Added:
