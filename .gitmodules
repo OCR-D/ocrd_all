@@ -94,3 +94,6 @@
 [submodule "ocrd_neat"]
 	path = ocrd_neat
 	url = https://github.com/qurator-spk/page2tsv.git
+[submodule "nmalign"]
+	path = nmalign
+	url = https://github.com/bertsky/nmalign.git
