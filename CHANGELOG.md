@@ -1,6 +1,10 @@
 # Changelog
 
-## [v2022-11-23](https://github.com/OCR-D/ocrd_all/releases/v2022-11-23)
+## [v2022-11-24](https://github.com/OCR-D/ocrd_all/releases/v2022-11-24)
+
+Added:
+
+  * New processor [`ocrd-nmalign-merge`](https://github.com/bertsky/nmalign)
 
 ### [core](https://github.com/OCR-D/core) [e841ce8](https://github.com/OCR-D/core/commits/e841ce8)..[c75e219](https://github.com/OCR-D/core/commits/c75e219)
 
