@@ -1,5 +1,43 @@
 # Changelog
 
+## [v2022-11-30](https://github.com/OCR-D/ocrd_all/releases/v2022-11-30)
+
+### [core](https://github.com/OCR-D/core) [c75e219](https://github.com/OCR-D/core/commits/c75e219)..[c992296](https://github.com/OCR-D/core/commits/c992296)
+
+> Release: [v2.42.1](https://github.com/OCR-D/core/releases/v2.42.1)
+
+  > * :package: v2.42.1
+  > * update spec to v3.21.0
+  > * :memo: changelog
+  > * Merge branch 'missing-import'
+  > * :memo: changelog
+  > * OcrdMets: fix (return) types when caching is on, #957
+  > * OcrdMets.remove_file_group with caching: shallow copy DictValues
+
+### [docstruct](https://github.com/bertsky/docstruct) [19f6d60](https://github.com/bertsky/docstruct/commits/19f6d60)..[a7ffdda](https://github.com/bertsky/docstruct/commits/a7ffdda)
+
+  > * Merge pull request #1 from stweil/master
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [7596962](https://github.com/bertsky/ocrd_detectron2/commits/7596962)..[979816f](https://github.com/bertsky/ocrd_detectron2/commits/979816f)
+
+> Release: [v0.1.3](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.3)
+
+  > * deps: drop trying detectron2 wheels
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [5f297dc](https://github.com/tesseract-ocr/tesseract/commits/5f297dc)..[c1a1d7e](https://github.com/tesseract-ocr/tesseract/commits/c1a1d7e)
+
+> Release: [5.2.0](https://github.com/tesseract-ocr/tesseract/releases/5.2.0)
+
+  > * Update cmake-win64.yml
+  > * GA cmake-win64: uninstall strawberryperl to fix libtiff build
+  > * GA cmake-win64: fix getting version info
+  > * Fix training tools for legacy engine (issue #3925) (#3970)
+  > * stop cron cmake-win64 build
+  > * Update cmake-win64.yml
+  > * [sw] Remove VS2019 builds.
+  > * Update cmake-win64.yml
+
+
 ## [v2022-11-24](https://github.com/OCR-D/ocrd_all/releases/v2022-11-24)
 
 Added:
