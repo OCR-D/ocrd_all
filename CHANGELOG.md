@@ -1,11 +1,14 @@
 # Changelog
 
-## [v2022-11-30](https://github.com/OCR-D/ocrd_all/releases/v2022-11-30)
+## [v2022-12-01](https://github.com/OCR-D/ocrd_all/releases/v2022-12-01)
 
-### [core](https://github.com/OCR-D/core) [c75e219](https://github.com/OCR-D/core/commits/c75e219)..[c992296](https://github.com/OCR-D/core/commits/c992296)
+### [core](https://github.com/OCR-D/core) [c992296](https://github.com/OCR-D/core/commits/c992296)..[8406621](https://github.com/OCR-D/core/commits/8406621)
 
-> Release: [v2.42.1](https://github.com/OCR-D/core/releases/v2.42.1)
+> Release: [v2.43.0](https://github.com/OCR-D/core/releases/v2.43.0)
 
+  > * :package: v2.43.0
+  > * :memo: changelog
+  > * Add refresh_caches method
   > * :package: v2.42.1
   > * update spec to v3.21.0
   > * :memo: changelog
