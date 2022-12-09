@@ -1,5 +1,50 @@
 # Changelog
 
+## [v2022-12-09](https://github.com/OCR-D/ocrd_all/releases/v2022-12-09)
+
+### [core](https://github.com/OCR-D/core) [8406621](https://github.com/OCR-D/core/commits/8406621)..[881fd5f](https://github.com/OCR-D/core/commits/881fd5f)
+
+> Release: [v2.44.0](https://github.com/OCR-D/core/releases/v2.44.0)
+
+  > * :package: v2.44.0
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'joschrew/remove-inplace'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'joschrew/recreate-checksums'
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [979816f](https://github.com/bertsky/ocrd_detectron2/commits/979816f)..[eb7ae2d](https://github.com/bertsky/ocrd_detectron2/commits/eb7ae2d)
+
+> Release: [v0.1.4](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.4)
+
+  > * region_id mustn't contain colon
+  > * ocrd-tool.json: fix resource specs
+  > * add new params postprocessing and debug_img …
+  > * add an alternative preset file for DocBank
+  > * Update README.md
+
+### [ocrd_olahd_client](https://github.com/OCR-D/ocrd_olahd_client) [947724f](https://github.com/OCR-D/ocrd_olahd_client/commits/947724f)..[10d70a9](https://github.com/OCR-D/ocrd_olahd_client/commits/10d70a9)
+
+  > * log received pid after uploading workspace
+  > * add param pid-previous-version
+  > * workaround/reset default input-file-group
+  > * Merge pull request #3 from OCR-D/logging
+
+### [opencv-python](https://github.com/skvark/opencv-python) [3725898](https://github.com/skvark/opencv-python/commits/3725898)..[8efd7aa](https://github.com/skvark/opencv-python/commits/8efd7aa)
+
+> Release: [66](https://github.com/skvark/opencv-python/releases/66)
+
+  > * Merge pull request #754 from asmorkalov/as/cmake_3.25_regression_win
+  > * Merge pull request #751 from asmorkalov/as/dependencies_update
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [c1a1d7e](https://github.com/tesseract-ocr/tesseract/commits/c1a1d7e)..[b7319c2](https://github.com/tesseract-ocr/tesseract/commits/b7319c2)
+
+> Release: [5.2.0](https://github.com/tesseract-ocr/tesseract/releases/5.2.0)
+
+  > * Merge branch 'main' of https://github.com/tesseract-ocr/tesseract
+  > * fix: index variable in OpenMP 'for' statement must have signed integral type
+  > * fix typo (missing space)
+
+
 ## [v2022-12-01](https://github.com/OCR-D/ocrd_all/releases/v2022-12-01)
 
 ### [core](https://github.com/OCR-D/core) [c992296](https://github.com/OCR-D/core/commits/c992296)..[8406621](https://github.com/OCR-D/core/commits/8406621)
