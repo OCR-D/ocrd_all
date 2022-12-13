@@ -1,5 +1,54 @@
 # Changelog
 
+## [v2022-12-13](https://github.com/OCR-D/ocrd_all/releases/v2022-12-13)
+
+### [core](https://github.com/OCR-D/core) [881fd5f](https://github.com/OCR-D/core/commits/881fd5f)..[6331433](https://github.com/OCR-D/core/commits/6331433)
+
+> Release: [v2.45.0](https://github.com/OCR-D/core/releases/v2.45.0)
+
+  > * :package: v2.45.0
+  > * :memo: changelog
+  > * test ocrd-dummy copy_files=false behavior
+  > * ocrd-dummy: make copying of image files (only) optional
+  > * merge master
+  > * ocrd-dummy: make copying optional and disable by default, #803
+  > * :memo: changelog
+  > * fix regression from 2fb4bbabd
+  > * test resgmgr download --overwrite for directory
+  > * tests: adapt to resmgr --overwrite change, speed up
+  > * resmgr: simplify --overwrite logic
+  > * Merge branch 'master' into resmgr-overwrite
+  > * resmgr: support zip archives and non-folder archive contents
+
+### [opencv-python](https://github.com/skvark/opencv-python) [8efd7aa](https://github.com/skvark/opencv-python/commits/8efd7aa)..[ede2269](https://github.com/skvark/opencv-python/commits/ede2269)
+
+> Release: [66](https://github.com/skvark/opencv-python/releases/66)
+
+  > * Merge pull request #759 from asenyaev:asen/pypi_fix
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [b7319c2](https://github.com/tesseract-ocr/tesseract/commits/b7319c2)..[6a21a74](https://github.com/tesseract-ocr/tesseract/commits/6a21a74)
+
+> Release: [5.2.0](https://github.com/tesseract-ocr/tesseract/releases/5.2.0)
+
+  > * Suppress compiler warning caused by very long string
+  > * Replace at accessor by [] operator in function Classify::CreateIntTemplates
+  > * Fix function ReadTrainingSamples (issue #3925)
+  > * Fix function Classify::WriteIntTemplates (issue #3925)
+  > * Fix function tesseract::write_set (issue #3925)
+  > * Fix function UnicityTable::push_back (issue #3925)
+  > * Fix function ComputeChiSquared (issue #3925)
+  > * Remove assertion in function NewSimpleProto (issue #3925)
+  > * Fix function Classify::CreateIntTemplates (issue #3925)
+  > * Add missing serialization to FILE for vector of pointers (issue #3925)
+  > * Replace void_proc by kdwald_proc with correct arguments
+  > * clang-format: use default value for line width (80)
+  > * Merge pull request #3978 from stweil/sanfix
+  > * Revert "fix: index variable in OpenMP 'for' statement must have signed integral type"
+  > * reformat code (files with tabs)
+  > * report missing or empty box file
+  > * GA: use png 1.6.39 from cmake-win64
+
+
 ## [v2022-12-09](https://github.com/OCR-D/ocrd_all/releases/v2022-12-09)
 
 ### [core](https://github.com/OCR-D/core) [8406621](https://github.com/OCR-D/core/commits/8406621)..[881fd5f](https://github.com/OCR-D/core/commits/881fd5f)
