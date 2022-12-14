@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2022-12-13](https://github.com/OCR-D/ocrd_all/releases/v2022-12-13)
+## [v2022-12-14](https://github.com/OCR-D/ocrd_all/releases/v2022-12-14)
 
 ### [core](https://github.com/OCR-D/core) [881fd5f](https://github.com/OCR-D/core/commits/881fd5f)..[6331433](https://github.com/OCR-D/core/commits/6331433)
 
@@ -19,6 +19,11 @@
   > * resmgr: simplify --overwrite logic
   > * Merge branch 'master' into resmgr-overwrite
   > * resmgr: support zip archives and non-folder archive contents
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [eb7ae2d](https://github.com/bertsky/ocrd_detectron2/commits/979816f)..[fde2f3c](https://github.com/bertsky/ocrd_detectron2/commits/eb7ae2d)
+
+  > * img_debug: use region_id, not region.id
+
 
 ### [opencv-python](https://github.com/skvark/opencv-python) [8efd7aa](https://github.com/skvark/opencv-python/commits/8efd7aa)..[ede2269](https://github.com/skvark/opencv-python/commits/ede2269)
 
@@ -65,6 +70,7 @@
 
 > Release: [v0.1.4](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.4)
 
+  > * img_debug: use region_id, not region.id
   > * region_id mustn't contain colon
   > * ocrd-tool.json: fix resource specs
   > * add new params postprocessing and debug_img …
