@@ -1,5 +1,60 @@
 # Changelog
 
+## [v2023-01-20](https://github.com/OCR-D/ocrd_all/releases/v2023-01-20)
+
+### [core](https://github.com/OCR-D/core) [6331433](https://github.com/OCR-D/core/commits/6331433)..[ee92cfc](https://github.com/OCR-D/core/commits/ee92cfc)
+
+> Release: [2.45.1](https://github.com/OCR-D/core/releases/2.45.1)
+
+  > * :package: v2.45.1
+  > * :memo: changelog
+  > * resmgr: insert from tool instead of append
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [fde2f3c](https://github.com/bertsky/ocrd_detectron2/commits/fde2f3c)..[f3342a4](https://github.com/bertsky/ocrd_detectron2/commits/f3342a4)
+
+> Release: [0.1.5](https://github.com/bertsky/ocrd_detectron2/releases/0.1.5)
+
+  > * :package: 0.1.5
+  > * fix debug_img indentation (only once per page/table)
+  > * ocrd-tool.json: fix PubLayNet/jpleorx model specs
+
+### [ocrd_olahd_client](https://github.com/OCR-D/ocrd_olahd_client) [10d70a9](https://github.com/OCR-D/ocrd_olahd_client/commits/10d70a9)..[6bcbb4b](https://github.com/OCR-D/ocrd_olahd_client/commits/6bcbb4b)
+
+> Release: [v0.0.2](https://github.com/OCR-D/ocrd_olahd_client/releases/v0.0.2)
+
+  > * :package: v0.0.2
+  > * :memo: changelog
+  > * Merge branch 'manipulate-mets-agent'
+
+### [opencv-python](https://github.com/skvark/opencv-python) [ede2269](https://github.com/skvark/opencv-python/commits/ede2269)..[736b905](https://github.com/skvark/opencv-python/commits/736b905)
+
+> Release: [68](https://github.com/skvark/opencv-python/releases/68)
+
+  > * OpenCV package does not distribute zlib (#780)
+  > * OpenCV 4.7.0 release preparation
+  > * Merge pull request #756 from asmorkalov:as/pipelines_update_4.7
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [6a21a74](https://github.com/tesseract-ocr/tesseract/commits/6a21a74)..[4142b32](https://github.com/tesseract-ocr/tesseract/commits/4142b32)
+
+> Release: [5.3.0](https://github.com/tesseract-ocr/tesseract/releases/5.3.0)
+
+  > * Fix some whitespace issues in source code and text files
+  > * Merge pull request #3992 from seupedro/patch-1
+  > * fix "cannot pass non-trivial object of type 'std::string'"
+  > * show out filename on successful created of traineddata (combine_lang_model)
+  > * fix "cannot pass non-trivial object of type 'std::string'"
+  > * unicharset_extractor: - run ReadMemBoxes only for box files - do not write unicharset in case of broken box file
+  > * Update issue-bug.yml
+  > * Create an issue template for a feature request
+  > * Create a new issue template
+  > * Create new release 5.3.0
+  > * Update README.md
+  > * cmake - msvc/openmp: clean&document configuration
+  > * cmake - mscvc: silent warning C4068: unknown pragma 'GCC'
+  > * Create new release 5.3.0-rc1
+  > * Replace MacOS -> macOS
+
+
 ## [v2022-12-14](https://github.com/OCR-D/ocrd_all/releases/v2022-12-14)
 
 ### [core](https://github.com/OCR-D/core) [881fd5f](https://github.com/OCR-D/core/commits/881fd5f)..[6331433](https://github.com/OCR-D/core/commits/6331433)
