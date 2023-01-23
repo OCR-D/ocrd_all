@@ -6,7 +6,10 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
-      - run: make docker-maximum-cuda
+      - run:
+          name: build image
+          command: make docker-maximum-cuda
+          no_output_timeout: 30m
       - when:
           # takes too long for 1h1m CircleCI timeout overall
           condition: false
