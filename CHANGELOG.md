@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2023-01-20](https://github.com/OCR-D/ocrd_all/releases/v2023-01-20)
+## [v2023-02-06](https://github.com/OCR-D/ocrd_all/releases/v2023-02-06)
 
 ### [core](https://github.com/OCR-D/core) [6331433](https://github.com/OCR-D/core/commits/6331433)..[ee92cfc](https://github.com/OCR-D/core/commits/ee92cfc)
 
