@@ -40,6 +40,7 @@ jobs:
           name: Build Docker image
           command: make docker-<< parameters.variant >>-git
           # fails due to pip races: DOCKER_PARALLEL=-j3
+          no_output_timeout: 30m
       - run:
           name: Alias Docker images
           command: docker tag ocrd/all:<< parameters.variant >>-git ocrd/all:<< parameters.variant >>
