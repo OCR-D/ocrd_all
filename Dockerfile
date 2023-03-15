@@ -79,8 +79,8 @@ RUN echo "Acquire::ftp::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
 
 WORKDIR /build
 
-# create virtual environment
-RUN rm $VIRTUAL_ENV/bin/pip* && apt-get purge -y python3-pip && python3 -m venv $VIRTUAL_ENV && python3 -m pip install --force pip
+# remove pip incarnations outside of the virtual environment
+RUN rm $VIRTUAL_ENV/bin/pip* && apt-get purge -y python3-pip
 
 # copy (sub)module directories to build
 # (ADD/COPY cannot copy a list of directories,
@@ -91,7 +91,10 @@ COPY . .
 RUN git submodule deinit opencv-python && git submodule foreach --recursive git clean -fxd
 
 # make apt system functional
-RUN apt-get -y update && apt-get install -y apt-utils
+RUN apt-get -y update && apt-get install -y apt-utils python3-venv
+
+# create virtual environment
+RUN python3 -m venv $VIRTUAL_ENV && python3 -m pip install --force pip
 
 # get packages for build, try to fetch all modules system requirements,
 # remove unneeded automatic deps and clear pkg cache
