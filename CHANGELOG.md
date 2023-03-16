@@ -2,6 +2,9 @@
 
 ## [v2023-03-16](https://github.com/OCR-D/ocrd_all/releases/v2023-03-16)
 
+
+## [v2023-03-16](https://github.com/OCR-D/ocrd_all/releases/v2023-03-16)
+
 ### [core](https://github.com/OCR-D/core) [ee92cfc](https://github.com/OCR-D/core/commits/ee92cfc)..[cbe83ab](https://github.com/OCR-D/core/commits/cbe83ab)
 
 > Release: [v2.47.4](https://github.com/OCR-D/core/releases/v2.47.4)
@@ -116,6 +119,12 @@
   > * :package: v0.6.2
   > * :memo: changelog
   > * Merge pull request #44 from bertsky/patch-3
+
+### [ocrd_keraslm](https://github.com/OCR-D/ocrd_keraslm) [787341d](https://github.com/OCR-D/ocrd_keraslm/commits/787341d)..[9c50478](https://github.com/OCR-D/ocrd_keraslm/commits/9c50478)
+
+> Release: [v0.4.1](https://github.com/OCR-D/ocrd_keraslm/releases/v0.4.1)
+
+  > * deps: hold numpy and h5py
 
 ### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [c10f94d](https://github.com/OCR-D/ocrd_tesserocr/commits/c10f94d)..[515be8d](https://github.com/OCR-D/ocrd_tesserocr/commits/515be8d)
 
