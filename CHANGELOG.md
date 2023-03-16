@@ -1,5 +1,199 @@
 # Changelog
 
+## [v2023-03-16](https://github.com/OCR-D/ocrd_all/releases/v2023-03-16)
+
+### [core](https://github.com/OCR-D/core) [ee92cfc](https://github.com/OCR-D/core/commits/ee92cfc)..[cbe83ab](https://github.com/OCR-D/core/commits/cbe83ab)
+
+> Release: [v2.47.4](https://github.com/OCR-D/core/releases/v2.47.4)
+
+  > * :package: v2.47.4
+  > * :memo: changelog
+  > * Merge pull request #1011 from OCR-D/drop-fontgroup-resources
+  > * :package: v2.47.3
+  > * :memo: changelog
+  > * Dockerfile: reintroduce python3-pip so "pip install -U pip" succeeds again
+  > * :package: v2.47.2
+  > * :memo: changelog
+  > * Merge branch 'pr/986'
+  > * :package: v2.47.1
+  > * :memo: changelog
+  > * Merge pull request #1004 from stweil/fix-dockerfile
+  > * Merge pull request #1003 from OCR-D/fix-docker-venv
+  > * :package: v2.47.0
+  > * require importlib_resources for python <= 3.8, #996
+  > * :memo: changelog
+  > * resmgr: drop anybaseocr models from resource list
+  > * :memo: changelog
+  > * Merge branch 'pr/999'
+  > * :memo: changelog
+  > * ocrd_utils: adapt to newer importlib.resources API
+  > * Merge pull request #994 from OCR-D/fix-scrutinizer
+  > * :memo: changelog
+  > * Merge pull request #977 from OCR-D/fix-add-agent
+  > * :memo: changelog
+  > * Merge branch 'pr/993'
+  > * :memo: changelog
+  > * Merge pull request #991 from bertsky/fix-resmgr-download-mimetype
+  > * :memo: changelog
+  > * Merge pull request #985 from OCR-D/fix-917
+  > * :package: v2.46.0
+  > * :memo: changelog
+  > * Merge branch 'drop-3.6'
+  > * :memo: changelog
+  > * Merge branch 'drop-mime-magic'
+  > * :memo: changelog
+  > * Merge branch 'pr/980'
+  > * :memo: changelog
+  > * Merge branch 'pr/981'
+  > * :memo: changelog
+  > * Merge pull request #972 from OCR-D/ref-processor-helper
+  > * :memo: changelog
+  > * Merge pull request #979 from OCR-D/workspace-validator-empty-pageid
+  > * :memo: changelog
+  > * Merge pull request #978 from OCR-D/bashlib-inputfiles
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [dcc10c5](https://github.com/qurator-spk/dinglehopper/commits/dcc10c5)..[38c09d1](https://github.com/qurator-spk/dinglehopper/commits/38c09d1)
+
+  > * add version to ocrd-tool.json (and setup.py)
+  > * 🕸Do not use deprecated ID, pageId options
+  > * 🔧 Remove explicit namespace_packages
+  > * ✔ CircleCI: Explicitly install binary opencv-python-headless (dep of OCR-D?) to avoid compilation
+  > * 🐛 Remove deprecated declare_namespace call
+  > * ✔ Add @cneud's former 40 GB problem files to the test suite
+  > * 🎨 Reformat using Black
+  > * ✔ CircleCI: Test on Python 3.11
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [8d5079c](https://github.com/qurator-spk/eynollah/commits/8d5079c)..[13bc237](https://github.com/qurator-spk/eynollah/commits/13bc237)
+
+> Release: [v0.0.11](https://github.com/qurator-spk/eynollah/releases/v0.0.11)
+
+  > * Update config.yml (#90)
+  > * Merge pull request #88 from emresvd/patch-1
+  > * Update config.yml (#89)
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [94e5037](https://github.com/OCR-D/ocrd_anybaseocr/commits/94e5037)..[5978a1f](https://github.com/OCR-D/ocrd_anybaseocr/commits/5978a1f)
+
+> Release: [v1.9.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.9.0)
+
+  > * Merge pull request #97 from stweil/master
+  > * :package: v1.9.0
+  > * :memo: changelog
+  > * move remaining resources to GWDG S3
+  > * block-segmentation: parameter "th" should be number
+  > * add resources to ocrd-tool.json, #98
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [c7ad6eb](https://github.com/OCR-D/ocrd_calamari/commits/c7ad6eb)..[3a029ca](https://github.com/OCR-D/ocrd_calamari/commits/3a029ca)
+
+> Release: [v1.0.5](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.5)
+
+  > * ✔ Do not test on Python 3.11 for now (unsupported)
+  > * ✔ CircleCI: Install TF by explicitly invoking pip on Py 3.11
+  > * ✔ Do not delete test workspace when DEBUG env variable is set
+  > * ✔ CircleCI: Test on Python 3.11, too
+  > * ✔ CircleCI: Install binary OpenCV for Python 3.6
+  > * Revert "✔ CircleCI: Do not test on Python 3.6 anymore"
+  > * ✔ CircleCI: Do not test on Python 3.6 anymore
+  > * ✔ Fix tests to use the new filenames
+  > * 🐛 Fix NumPy dependency (hopefully...)
+  > * 🐛 Fix syntax error in setup.py
+  > * 🐛  Require NumPy < 1.24 due to np.str deprecation/error
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [f3342a4](https://github.com/bertsky/ocrd_detectron2/commits/f3342a4)..[e005d3c](https://github.com/bertsky/ocrd_detectron2/commits/e005d3c)
+
+> Release: [v0.1.6](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.6)
+
+  > * :package: 0.1.6
+  > * add fixture for badly written config files (base path)
+  > * add models for table detection with Psarpei/Multi-Type-TD-TSR
+  > * ocrd-tool resources: update/fix
+  > * make deps: add torch deps explicitly
+  > * avoid colon in generated region IDs
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [5022408](https://github.com/OCR-D/ocrd_fileformat/commits/5022408)..[dacfa50](https://github.com/OCR-D/ocrd_fileformat/commits/dacfa50)
+
+> Release: [v0.6.2](https://github.com/OCR-D/ocrd_fileformat/releases/v0.6.2)
+
+  > * :package: v0.6.2
+  > * :memo: changelog
+  > * Merge pull request #44 from bertsky/patch-3
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [c10f94d](https://github.com/OCR-D/ocrd_tesserocr/commits/c10f94d)..[515be8d](https://github.com/OCR-D/ocrd_tesserocr/commits/515be8d)
+
+> Release: [v0.16.0](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.16.0)
+
+  > * deps-ubuntu: allow PPA to fail (on newer distributions)
+  > * CI: chmod PPA Tesseract tessdata g+w
+  > * deps-ubuntu: allow PPA to fail (on newer distributions)
+  > * CI: fix conditional step syntax
+  > * CI: seems to require sudo
+  > * CI: speedup Py36 deps
+  > * CI: update+simplify (on cimg/python:* instead of ocrd/core)
+
+### [ocrd_typegroups_classifier](https://github.com/OCR-D/ocrd_typegroups_classifier) [ffa40fc](https://github.com/OCR-D/ocrd_typegroups_classifier/commits/ffa40fc)..[a78a85f](https://github.com/OCR-D/ocrd_typegroups_classifier/commits/a78a85f)
+
+> Release: [v0.5.0](https://github.com/OCR-D/ocrd_typegroups_classifier/releases/v0.5.0)
+
+  > * :package: v0.5.0
+  > * :memo: changelog
+  > * Merge pull request #15 from OCR-D/ocrd-tool-resources
+  > * :memo: changelog
+  > * Merge pull request #14 from OCR-D/textline-level
+
+### [opencv-python](https://github.com/skvark/opencv-python) [736b905](https://github.com/skvark/opencv-python/commits/736b905)..[6b73d90](https://github.com/skvark/opencv-python/commits/6b73d90)
+
+> Release: [72](https://github.com/skvark/opencv-python/releases/72)
+
+  > * Merge pull request #820 from asmorkalov/as/config_py_path
+  > * Merge pull request #803 from asmorkalov/as/license
+  > * Merge pull request #790 from asmorkalov/as/docs_update
+  > * Merge pull request #787 from asmorkalov/as/migrate_mac_m1
+  > * Merge pull request #744 from peter-kovacs-aimotive/add-vulkan-license
+  > * Merge pull request #768 from AlexeySalmin/patch-1
+  > * Merge pull request #776 from TheCleric/fix/numpy_version_mac
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [aeb6804](https://github.com/qurator-spk/sbb_binarization/commits/aeb6804)..[39ef3fd](https://github.com/qurator-spk/sbb_binarization/commits/39ef3fd)
+
+> Release: [v0.0.11](https://github.com/qurator-spk/sbb_binarization/releases/v0.0.11)
+
+  > * Merge pull request #54 from qurator-spk/circleci-python37_38
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [4142b32](https://github.com/tesseract-ocr/tesseract/commits/4142b32)..[a6e0aa7](https://github.com/tesseract-ocr/tesseract/commits/a6e0aa7)
+
+> Release: [5.3.0](https://github.com/tesseract-ocr/tesseract/releases/5.3.0)
+
+  > * Update issue-bug.yml
+  > * autotools.yml: Update compilers
+  > * Update cmake.yml
+  > * cmake.yml: Update compilers
+  > * Improve the DebugDump output by slightly adjusting the format. (#4022)
+  > * Link to list of supported languages in docs (#4027)
+  > * Update autotools.yml
+  > * Update cmake.yml
+  > * Merge branch 'main' of https://github.com/tesseract-ocr/tesseract
+  > * cmake: fix gcc-7 fatal error: filesystem: No such file or directory
+  > * Fix some typos in comments (found by codespell)
+  > * Merge pull request #4015 from stweil/spelling
+  > * Update cmake-win64.yml
+  > * Merge pull request #4013 from ferdnyc/patch-1
+  > * msvc debug: fix wrong lib name in generated pkgconfig file (#4008)
+  > * Merge pull request #4009 from kraj/gcc13
+  > * Merge pull request #4006 from autoantwort/fix-linkage
+  > * Fix FP division by zero in LanguageModel::ExtractFeaturesFromPath (issue #3995)
+  > * Remove unneeded type cast in LanguageModel::ExtractFeaturesFromPath
+
+### [tesserocr](https://github.com/sirfz/tesserocr) [3bfa7d9](https://github.com/sirfz/tesserocr/commits/3bfa7d9)..[e184c62](https://github.com/sirfz/tesserocr/commits/e184c62)
+
+> Release: [v2.6.0](https://github.com/sirfz/tesserocr/releases/v2.6.0)
+
+  > * version bump
+  > * added 3.10,3.11 classifiers
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [49c743d](https://github.com/bertsky/workflow-configuration/commits/49c743d)..[cb923f7](https://github.com/bertsky/workflow-configuration/commits/cb923f7)
+
+  > * add mets-copy-agents.xsl
+  > * ocrd-import: avoid removing non-empty directories on rollback (conversion results / preexisting images)
+
+
 ## [v2023-02-06](https://github.com/OCR-D/ocrd_all/releases/v2023-02-06)
 
 Fixed:
