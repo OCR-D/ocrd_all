@@ -613,6 +613,8 @@ define pip_install_tf1nvidia =
 # - preempt conflict over numpy between scikit-image and tensorflow
 # - preempt conflict over numpy between tifffile and tensorflow (and allow py36)
 . $(ACTIVATE_VENV) && $(SEMPIP) pip install imageio==2.14.1 "tifffile<2022"
+# - preempt conflict over numpy between h5py and tensorflow
+. $(ACTIVATE_VENV) && $(SEMPIP) pip install "numpy<1.24"
 endef
 
 # pattern for recursive make:
