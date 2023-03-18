@@ -7,7 +7,8 @@ local.mk
 # not needed in Ubuntu:
 opencv-python
 # only needed for testing:
-*/assets
+**/assets/*
 # avoid interference with host-local builds:
-ocrd_olena/olena-git/build
-tesseract/build
+**/build/*
+*/.eggs/*
+*/*.egg-info
