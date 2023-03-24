@@ -74,12 +74,8 @@
   > * :memo: changelog
   > * Merge pull request #978 from OCR-D/bashlib-inputfiles
 
-### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [0fd4ea1](https://github.com/qurator-spk/dinglehopper/commits/0fd4ea1)..[c4ab7c9](https://github.com/qurator-spk/dinglehopper/commits/c4ab7c9)
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [c4ab7c9](https://github.com/qurator-spk/dinglehopper/commits/c4ab7c9)..[0fd4ea1 (rewind)](https://github.com/qurator-spk/dinglehopper/commits/0fd4ea1 (rewind))
 
-  > * 🕸Do not use deprecated ID, pageId options
-  > * 🔧 Remove explicit namespace_packages
-  > * ✔ CircleCI: Explicitly install binary opencv-python-headless (dep of OCR-D?) to avoid compilation
-  > * 🐛 Remove deprecated declare_namespace call
   > * ✔ Add @cneud's former 40 GB problem files to the test suite
   > * 🎨 Reformat using Black
   > * ✔ CircleCI: Test on Python 3.11
@@ -1152,10 +1148,20 @@ Removed:
   > * updating model directory
   > * Merge pull request #70 from qurator-spk/cneud-readme
 
-### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [ca15800](https://github.com/cisocrgroup/ocrd_cis/commits/ca15800)..[2cdfa79 (rewind)](https://github.com/cisocrgroup/ocrd_cis/commits/2cdfa79 (rewind))
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [ca15800](https://github.com/cisocrgroup/ocrd_cis/commits/ca15800)..[c90b29f](https://github.com/cisocrgroup/ocrd_cis/commits/c90b29f)
 
 > Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
 
+  > * re/segment: join_polygons: fix b490d3f8 imports
+  > * sepline detection polygonization: cut inner holes open
+  > * ocrolib.morph.all_neighbors: no diagonals
+  > * ocropy.lines2region: improve splitting by separators (fix 6d8c0d36)
+  > * sepline detection masking: spread against bg and non-separator fg
+  > * sepline detection linking: filter results entirely composed by tiny components
+  > * sepline detection linking: partition by finding largest cliques
+  > * baseline extraction: partition by finding largest cliques
+  > * re/segment: sort text lines in reading order
+  > * re/segment: join_polygons directly instead of alphashape
   > join_polygons (alpha shape): make more robust
   > remove Calamari dependency (not used, only CLI callout)
   > segment: for more robust bg separator detection, combine criteria of gradient maximum and percentile
