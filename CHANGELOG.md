@@ -1,11 +1,16 @@
 # Changelog
 
-## [v2023-03-16](https://github.com/OCR-D/ocrd_all/releases/v2023-03-16)
+## [v2023-03-24](https://github.com/OCR-D/ocrd_all/releases/v2023-03-24)
 
-### [core](https://github.com/OCR-D/core) [cbe83ab](https://github.com/OCR-D/core/commits/cbe83ab)..[d969cbb](https://github.com/OCR-D/core/commits/d969cbb)
+### [core](https://github.com/OCR-D/core) [cbe83ab](https://github.com/OCR-D/core/commits/cbe83ab)..[de08453](https://github.com/OCR-D/core/commits/de08453)
 
-> Release: [v2.48.1](https://github.com/OCR-D/core/releases/v2.48.1)
+> Release: [v2.49.0](https://github.com/OCR-D/core/releases/v2.49.0)
 
+  > * :package v2.49.0
+  > * :memo: changelog
+  > * drop eynollah model from resource list, provided by eynollah itself
+  > * :memo: changelog
+  > * rename Docker image (to make work with GHCR)
   > * :package: v2.48.1
   > * :memo: changelog
   > * core-cuda: CUDA 11.3 instead of 11.2
@@ -79,10 +84,13 @@
   > * 🎨 Reformat using Black
   > * ✔ CircleCI: Test on Python 3.11
 
-### [eynollah](https://github.com/qurator-spk/eynollah) [13bc237](https://github.com/qurator-spk/eynollah/commits/13bc237)..[71d0ec8](https://github.com/qurator-spk/eynollah/commits/71d0ec8)
+### [eynollah](https://github.com/qurator-spk/eynollah) [13bc237](https://github.com/qurator-spk/eynollah/commits/13bc237)..[ea792d1](https://github.com/qurator-spk/eynollah/commits/ea792d1)
 
-> Release: [v0.1.0](https://github.com/qurator-spk/eynollah/releases/v0.1.0)
+> Release: [v0.2.0](https://github.com/qurator-spk/eynollah/releases/v0.2.0)
 
+  > * :package: v0.2.0
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/savedmodel-format'
   > * :package: v0.1.0
   > * :memo: changelog
   > * Update config.yml (#90)
@@ -160,10 +168,16 @@
 
   > * deps: hold numpy and h5py
 
-### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [c10f94d](https://github.com/OCR-D/ocrd_tesserocr/commits/c10f94d)..[515be8d](https://github.com/OCR-D/ocrd_tesserocr/commits/515be8d)
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [515be8d](https://github.com/OCR-D/ocrd_tesserocr/commits/515be8d)..[09d1e13](https://github.com/OCR-D/ocrd_tesserocr/commits/09d1e13)
 
-> Release: [v0.16.0](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.16.0)
+> Release: [v0.17.0](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.17.0)
 
+  > * try with lowercase image tag
+  > * rename Docker image
+  > * Update docker-image.yml
+  > * Create docker-image.yml
+  > * :package: 0.17.0
+  > * Merge pull request #191 from bertsky/override-insteadof-wrap
   > * deps-ubuntu: allow PPA to fail (on newer distributions)
   > * CI: chmod PPA Tesseract tessdata g+w
   > * deps-ubuntu: allow PPA to fail (on newer distributions)
@@ -200,16 +214,14 @@
 
   > * Merge pull request #54 from qurator-spk/circleci-python37_38
 
-### [tesseract](https://github.com/tesseract-ocr/tesseract) [4142b32](https://github.com/tesseract-ocr/tesseract/commits/4142b32)..[a6e0aa7](https://github.com/tesseract-ocr/tesseract/commits/a6e0aa7)
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [a6e0aa7](https://github.com/tesseract-ocr/tesseract/commits/a6e0aa7)..[1569e50](https://github.com/tesseract-ocr/tesseract/commits/1569e50)
 
 > Release: [5.3.0](https://github.com/tesseract-ocr/tesseract/releases/5.3.0)
 
-### [tesseract](https://github.com/tesseract-ocr/tesseract) [a6e0aa7](https://github.com/tesseract-ocr/tesseract/commits/a6e0aa7)..[f779c43](https://github.com/tesseract-ocr/tesseract/commits/f779c43)
-
-> Release: [5.3.0](https://github.com/tesseract-ocr/tesseract/releases/5.3.0)
-
+  > * textord: Catch empty rows in block iterator (fixes #4039)
+  > * cmake: sync with autotools (OPENMP_SIMD, fast-math)
+  > * cmake: improve style
   > * cmake: disable "-march=native" by default
-
   > * Update issue-bug.yml
   > * autotools.yml: Update compilers
   > * Update cmake.yml
