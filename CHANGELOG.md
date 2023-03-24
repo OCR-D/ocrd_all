@@ -2,13 +2,27 @@
 
 ## [v2023-03-16](https://github.com/OCR-D/ocrd_all/releases/v2023-03-16)
 
+### [core](https://github.com/OCR-D/core) [cbe83ab](https://github.com/OCR-D/core/commits/cbe83ab)..[d969cbb](https://github.com/OCR-D/core/commits/d969cbb)
 
-## [v2023-03-16](https://github.com/OCR-D/ocrd_all/releases/v2023-03-16)
+> Release: [v2.48.1](https://github.com/OCR-D/core/releases/v2.48.1)
 
-### [core](https://github.com/OCR-D/core) [ee92cfc](https://github.com/OCR-D/core/commits/ee92cfc)..[cbe83ab](https://github.com/OCR-D/core/commits/cbe83ab)
-
-> Release: [v2.47.4](https://github.com/OCR-D/core/releases/v2.47.4)
-
+  > * :package: v2.48.1
+  > * :memo: changelog
+  > * core-cuda: CUDA 11.3 instead of 11.2
+  > * ocrd_tool_validator: fix link in comment, fix #1019
+  > * :package: v2.48.0
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/build36-speedup-without-update'
+  > * :memo: changelog
+  > * Merge branch 'master' into fix-972
+  > * Set ws outside the constructor
+  > * chdir to ws in the beginning
+  > * Undo the revert of getcwd()
+  > * Revert getcwd() location - failing tests
+  > * Raise the error instead of returning it
+  > * Change getcwd() call location
+  > * Chdir before processor.process() calls
+  > * Fix the instance caching
   > * :package: v2.47.4
   > * :memo: changelog
   > * Merge pull request #1011 from OCR-D/drop-fontgroup-resources
@@ -55,9 +69,8 @@
   > * :memo: changelog
   > * Merge pull request #978 from OCR-D/bashlib-inputfiles
 
-### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [dcc10c5](https://github.com/qurator-spk/dinglehopper/commits/dcc10c5)..[38c09d1](https://github.com/qurator-spk/dinglehopper/commits/38c09d1)
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [0fd4ea1](https://github.com/qurator-spk/dinglehopper/commits/0fd4ea1)..[c4ab7c9](https://github.com/qurator-spk/dinglehopper/commits/c4ab7c9)
 
-  > * add version to ocrd-tool.json (and setup.py)
   > * 🕸Do not use deprecated ID, pageId options
   > * 🔧 Remove explicit namespace_packages
   > * ✔ CircleCI: Explicitly install binary opencv-python-headless (dep of OCR-D?) to avoid compilation
@@ -66,10 +79,12 @@
   > * 🎨 Reformat using Black
   > * ✔ CircleCI: Test on Python 3.11
 
-### [eynollah](https://github.com/qurator-spk/eynollah) [8d5079c](https://github.com/qurator-spk/eynollah/commits/8d5079c)..[13bc237](https://github.com/qurator-spk/eynollah/commits/13bc237)
+### [eynollah](https://github.com/qurator-spk/eynollah) [13bc237](https://github.com/qurator-spk/eynollah/commits/13bc237)..[71d0ec8](https://github.com/qurator-spk/eynollah/commits/71d0ec8)
 
-> Release: [v0.0.11](https://github.com/qurator-spk/eynollah/releases/v0.0.11)
+> Release: [v0.1.0](https://github.com/qurator-spk/eynollah/releases/v0.1.0)
 
+  > * :package: v0.1.0
+  > * :memo: changelog
   > * Update config.yml (#90)
   > * Merge pull request #88 from emresvd/patch-1
   > * Update config.yml (#89)
@@ -101,10 +116,29 @@
   > * 🐛 Fix syntax error in setup.py
   > * 🐛  Require NumPy < 1.24 due to np.str deprecation/error
 
-### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [f3342a4](https://github.com/bertsky/ocrd_detectron2/commits/f3342a4)..[e005d3c](https://github.com/bertsky/ocrd_detectron2/commits/e005d3c)
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [e005d3c](https://github.com/bertsky/ocrd_detectron2/commits/e005d3c)..[04bf4c6](https://github.com/bertsky/ocrd_detectron2/commits/04bf4c6)
 
-> Release: [v0.1.6](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.6)
+> Release: [v0.1.7](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.7)
 
+  > * publish: commit images, too
+  > * CI: publish test results to gh-pages
+  > * add link for test results
+  > * Delete jekyll-gh-pages.yml
+  > * try to fix gh-pages
+  > * add GH pages
+  > * doc: add CI badge
+  > * CI: use cache instead of artifacts for models
+  > * CI: try to get the damn conditional to work
+  > * CI: use stupid GHA negation syntax
+  > * CI: fix action URL
+  > * CI: fix negation
+  > * CI: cache detectron models via artifacts
+  > * Merge branch 'master' of ssh://github.com/bertsky/ocrd_detectron2
+  > * some workarounds for broken model configs
+  > * :package: 0.1.7
+  > * add CLI test
+  > * add models for magazine layout by Jambo-sudo (PubLayNet+custom GT) and LayoutParser (PRImA Layout GT)
+  > * adapt to numpy v1.24
   > * :package: 0.1.6
   > * add fixture for badly written config files (base path)
   > * add models for table detection with Psarpei/Multi-Type-TD-TSR
@@ -169,6 +203,12 @@
 ### [tesseract](https://github.com/tesseract-ocr/tesseract) [4142b32](https://github.com/tesseract-ocr/tesseract/commits/4142b32)..[a6e0aa7](https://github.com/tesseract-ocr/tesseract/commits/a6e0aa7)
 
 > Release: [5.3.0](https://github.com/tesseract-ocr/tesseract/releases/5.3.0)
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [a6e0aa7](https://github.com/tesseract-ocr/tesseract/commits/a6e0aa7)..[f779c43](https://github.com/tesseract-ocr/tesseract/commits/f779c43)
+
+> Release: [5.3.0](https://github.com/tesseract-ocr/tesseract/releases/5.3.0)
+
+  > * cmake: disable "-march=native" by default
 
   > * Update issue-bug.yml
   > * autotools.yml: Update compilers
