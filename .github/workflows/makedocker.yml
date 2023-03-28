@@ -7,25 +7,6 @@ on:
   # Trigger workflow in GitHub web frontend or from API.
   workflow_dispatch:
     inputs:
-      os:
-        description: 'Operating system'
-        required: true
-        default: 'ubuntu-18.04'
-        type: choice
-        options:
-          - 'ubuntu-18.04'
-          - 'ubuntu-20.04'
-      python-version:
-        description: 'Python version'
-        required: true
-        default: '3.6'
-        type: choice
-        options:
-          - '3.6'
-          - '3.7'
-          - '3.8'
-          - '3.9'
-          - '3.10'
       docker-image:
         description: 'Docker image'
         required: true
@@ -38,65 +19,43 @@ on:
           - 'medium-cuda'
           - 'maximum'
           - 'maximum-cuda'
-          - 'minimum-git'
-          - 'minimum-cuda-git'
-          - 'medium-git'
-          - 'medium-cuda-git'
-          - 'maximum-git'
-          - 'maximum-cuda-git'
-      upload-docker-image:
-        description: 'Upload Docker image'
+      upload-dockerhub:
+        description: 'Upload Docker image to Dockerhub'
         default: False
         type: boolean
+      upload-github:
+        description: 'Upload Docker image Github Container Registry'
+        default: False
+        type: boolean
+  # not yet:
+  #push:
+  #  branches: [ "master" ]
 
 jobs:
   make:
-    runs-on: ${{ github.event.inputs.os }}
-
-    env:
-      PYTHON_VERSION: ${{ github.event.inputs.python-version }}
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-      with:
-        python-version: ${{ env.PYTHON_VERSION }}
-    - name: Show Python3 version
-      run: python3 --version
-    - name: Show disk usage of Homebrew, Android and .NET
-      run: sudo du -mscx /home/linuxbrew /usr/local/lib/android /usr/share/dotnet 2>/dev/null || true
     - name: Remove Docker images
       run: |
            df -h
            docker images
-           docker rmi alpine:3.12 alpine:3.13 alpine:3.14
-           docker rmi buildpack-deps:stretch buildpack-deps:buster buildpack-deps:bullseye
-           docker rmi debian:9 debian:10 debian:11
-           docker rmi moby/buildkit:latest
-           docker rmi node:12-alpine node:14-alpine node:16-alpine
-           docker rmi node:12 node:14 node:16
-           if false; then # don't remove Ubuntu images
-           docker rmi ubuntu:16.04 ubuntu:18.04 ubuntu:20.04
-           fi
-           docker images
+           docker rmi $(docker images --filter=reference="alpine:*")
+           docker rmi $(docker images --filter=reference="buildpack-deps:*")
+           docker rmi $(docker images --filter=reference="debian:*")
+           docker rmi $(docker images --filter=reference="node:*")
+           docker rmi ubuntu:16.04 ubuntu:18.04
            df -h /
     - name: Remove unneeded Debian packages
       run: |
-           if false; then # skip time consuming package uninstall
            sudo apt-get install -y deborphan
-           deborphan -a | sort
-           sudo apt-get purge -y $(deborphan -a|fgrep main/cli-mono|while read dummy package; do echo $package; done)
-           sudo apt-get purge -y $(deborphan -a|fgrep main/database|while read dummy package; do echo $package; done)
-           sudo apt-get purge -y $(deborphan -a|fgrep main/devel|while read dummy package; do echo $package; done)
-           sudo apt-get purge -y $(deborphan -a|fgrep main/httpd|while read dummy package; do echo $package; done)
-           sudo apt-get purge -y $(deborphan -a|fgrep main/php|while read dummy package; do echo $package; done)
-           sudo apt-get purge -y $(deborphan -a|fgrep main/vcs|while read dummy package; do echo $package; done)
+           sudo apt-get purge -y $(deborphan -a | fgrep -e main/cli-mono -e main/database -e main/devel -e main/httpd -e main/php -e main/vcs | while read _ pkg; do echo $package; done)
            deborphan | sort
            sudo du -mscx /* 2>/dev/null || true
            sudo du -mscx /opt/* 2>/dev/null || true
            sudo du -mscx /usr/* 2>/dev/null || true
            df -h /
-           fi
     - name: Remove Homebrew, Android and .NET
       run: |
            # https://github.com/actions/virtual-environments/issues/2606#issuecomment-772683150
@@ -104,20 +63,51 @@ jobs:
            sudo rm -rf /home/linuxbrew # will release Homebrew
            sudo rm -rf /usr/local/lib/android # will release about 10 GB if you don't need Android
            sudo rm -rf /usr/share/dotnet # will release about 20GB if you don't need .NET
+           sudo rm -rf /opt/ghc
+           sudo rm -rf /usr/local/share/boost
+           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
            sudo du -mscx /* 2>/dev/null || true
            df -h /
     - name: Make Docker image
       run: make docker-${{ github.event.inputs.docker-image }}
-    - name: Show Docker images
-      run: docker images
-    - name: Login to Docker Hub and push new image(s) to Docker Hub
+    - name: Generate ocrd-all-tool.json
       run: |
-           if ${{ github.event.inputs.upload-docker-image }}; then
-             echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-             docker push ocrd/all:${{ github.event.inputs.docker-image }}
-             if test ${{ github.event.inputs.docker-image }} = maximum-git; then
-               # Alias Docker image.
-               docker tag ocrd/all:maximum-git ocrd/all:latest
-               docker push ocrd/all:latest
-             fi
+           mkdir -p data
+           echo "cd /build && make ocrd-all-tool.json && cp ocrd-all-tool.json /data" | docker run -v $PWD/data:/data --rm docker-${{ github.event.inputs.docker-image }}
+           wc -l data/ocrd-all-tool.json
+    - name: Upload ocrd-all-tool.json
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ github.event.inputs.docker-image }}_ocrd-all-tool.json
+        path: ./data/ocrd-all-tool.json
+        # if-no-files-found: error
+    - name: Login to Docker Hub
+      if: github.event.inputs.upload-dockerhub == true
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+    - name: Push to Docker Hub
+      if: github.event.inputs.upload-dockerhub == true
+      run: |
+           docker push ocrd/all:${{ github.event.inputs.docker-image }}
+           if test ${{ github.event.inputs.docker-image }} = maximum-git; then
+             # Alias Docker image.
+             docker tag ocrd/all:maximum-git ocrd/all:latest
+             docker push ocrd/all:latest
            fi
+    - name: Login to GitHub Container Registry
+      if: github.event.inputs.upload-github == true
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Push to Github Container Registry
+      if: github.event.inputs.upload-github == true
+      run: |
+           docker tag ocrd/all:${{ github.event.inputs.docker-image }} ghcr.io/ocr-d/all:${{ github.event.inputs.docker-image }}
+           docker push ghcr.io/ocr-d/all:${{ github.event.inputs.docker-image }}
+           if test ${{ github.event.inputs.docker-image }} = maximum-git; then
+             # Alias Docker image.
+             docker tag ocrd/all:maximum-git ghcr.io/ocr-d/all:latest
+             docker push ghcr.io/ocr-d/all:latest
+           fi
+
