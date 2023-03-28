@@ -76,12 +76,14 @@ jobs:
     - name: Make Docker image
       run: make docker-${{ github.event.inputs.docker-image }}
     - name: Generate ocrd-all-tool.json
-      # the Docker build will set OCRD_MODULES and VIRTUAL_ENV inside the image, which we can re-use
+      # the Docker build will set OCRD_MODULES inside the image, which we can re-use
       # regardless of whether we have /build, we can just use the Makefile from outside again
       run: |
-           echo "cd /data && make show ocrd-all-tool.json NO_UPDATE=1" | docker run -i -v $PWD:/data --rm ocrd/all:${{ github.event.inputs.docker-image }}
+           export OCRD_MODULES=$(docker run --rm ocrd/all:${{ github.event.inputs.docker-image }} bash -c 'echo $OCRD_MODULES')
+           make ocrd-all-tool.json
            wc -l ocrd-all-tool.json
     - name: Setup upterm session
+      if: false # interactive SSH logins for debugging
       uses: lhotari/action-upterm@v1
     - name: Upload ocrd-all-tool.json
       uses: actions/upload-artifact@v3
