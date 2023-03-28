@@ -10,7 +10,7 @@ on:
       docker-image:
         description: 'Docker image'
         required: true
-        default: 'docker-minimum'
+        default: 'minimum'
         type: choice
         options:
           - 'minimum'
@@ -19,6 +19,12 @@ on:
           - 'medium-cuda'
           - 'maximum'
           - 'maximum-cuda'
+          - 'minimum-git'
+          - 'minimum-cuda-git'
+          - 'medium-git'
+          - 'medium-cuda-git'
+          - 'maximum-git'
+          - 'maximum-cuda-git'
       upload-dockerhub:
         description: 'Upload Docker image to Dockerhub'
         default: False
