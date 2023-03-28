@@ -701,7 +701,7 @@ for path in sys.argv[1:]:
 print(json.dumps(all, indent=2))
 endef
 tool-jsons-file != mktemp -u
-ocrd-all-tool.json: modules
+ocrd-all-tool.json: modules $(ACTIVATE_VENV)
 	$(file >$(tool-jsons-file),$(tool-jsons-code))
 	. $(ACTIVATE_VENV) && $(PYTHON) $(tool-jsons-file) $(wildcard $(OCRD_MODULES:%=%/ocrd-tool.json)) > $@
 	$(RM) $(tool-jsons-file)
