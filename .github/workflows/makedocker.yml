@@ -78,7 +78,7 @@ jobs:
     - name: Generate ocrd-all-tool.json
       run: |
            mkdir -p data
-           echo "cd /build && make ocrd-all-tool.json && cp ocrd-all-tool.json /data" | docker run -v $PWD/data:/data --rm docker-${{ github.event.inputs.docker-image }}
+           echo "cd /build && make ocrd-all-tool.json && cp ocrd-all-tool.json /data" | docker run -v $PWD/data:/data --rm ocrd/all:${{ github.event.inputs.docker-image }}
            wc -l data/ocrd-all-tool.json
     - name: Upload ocrd-all-tool.json
       uses: actions/upload-artifact@v3
