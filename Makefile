@@ -115,6 +115,7 @@ Targets:
 	show: list the venv path and all executables (to be) installed
 	check: verify that all executables are runnable and the venv is consistent
 	modules: download all submodules to the managed revision
+	ocrd-all-tool.json: generate union of ocrd-tool.json for all executables of all modules
 	all: install all executables of all modules
 	ocrd: only install the virtual environment and OCR-D/core packages
 	install-tesseract: only build and install Tesseract (with TESSERACT_MODELS)
@@ -690,6 +691,20 @@ show:
 check: $(OCRD_EXECUTABLES:%=%-check) $(OCRD_MODULES:%=%-check)
 	. $(ACTIVATE_VENV) && pip check
 %-check: ;
+
+define tool-jsons-code =
+import json
+import sys
+all = dict()
+for path in sys.argv[1:]:
+    all.update(json.load(open(path))['tools'])
+print(json.dumps(all, indent=2))
+endef
+tool-jsons-file != mktemp -u
+ocrd-all-tool.json: modules
+	$(file >$(tool-jsons-file),$(tool-jsons-code))
+	. $(ACTIVATE_VENV) && $(PYTHON) $(tool-jsons-file) $(wildcard $(OCRD_MODULES:%=%/ocrd-tool.json)) > $@
+	$(RM) $(tool-jsons-file)
 
 .PHONY: $(OCRD_EXECUTABLES:%=%-check)
 $(OCRD_EXECUTABLES:%=%-check):
