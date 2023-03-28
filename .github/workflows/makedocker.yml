@@ -45,7 +45,6 @@ jobs:
            docker rmi $(docker images --filter=reference="buildpack-deps:*" -q)
            docker rmi $(docker images --filter=reference="debian:*" -q)
            docker rmi $(docker images --filter=reference="node:*" -q)
-           docker rmi ubuntu:16.04 ubuntu:18.04
            df -h /
     - name: Remove unneeded Debian packages
       run: |
