@@ -471,6 +471,8 @@ OCRD_CIS += $(BIN)/ocrd-cis-ocropy-segment
 #OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
 OCRD_CIS += $(BIN)/ocrd-cis-postcorrect
 $(call multirule,$(OCRD_CIS)): ocrd_cis $(BIN)/ocrd
+	@# workaround against breaking changes in Numpy
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "numpy<1.24"
 	$(pip_install)
 endif
 
@@ -491,7 +493,7 @@ OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
 $(OCRD_CALAMARI): ocrd_calamari $(BIN)/ocrd
 	@# workaround for Calamari#337:
-	$(PIP) install "protobuf<4"
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "protobuf<4"
 	$(pip_install)
 endif
 
