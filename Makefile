@@ -600,7 +600,7 @@ define pip_install_tf1nvidia =
 . $(ACTIVATE_VENV) && if test $(PYTHON_VERSION) = 3.8 && ! pip show -q tensorflow-gpu; then \
 	$(SEMPIP) pip install nvidia-pyindex && \
 	pushd $$(mktemp -d) && \
-	$(SEMPIP) pip download --no-deps nvidia-tensorflow && \
+	$(SEMPIP) pip download --no-deps "nvidia-tensorflow!=1.15.5+nv23.3" && \
 	for name in nvidia_tensorflow-*.whl; do name=$${name%.whl}; done && \
 	$(PYTHON) -m wheel unpack $$name.whl && \
 	for name in nvidia_tensorflow-*/; do name=$${name%/}; done && \
