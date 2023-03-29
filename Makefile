@@ -490,6 +490,8 @@ install-models-calamari: $(BIN)/ocrd
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
 $(OCRD_CALAMARI): ocrd_calamari $(BIN)/ocrd
+	@# workaround for Calamari#337:
+	$(PIP) install "protobuf<4"
 	$(pip_install)
 endif
 
