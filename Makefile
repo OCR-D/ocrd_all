@@ -688,7 +688,10 @@ show:
 	@echo OCRD_EXECUTABLES = $(OCRD_EXECUTABLES:$(BIN)/%=%)
 
 check: $(OCRD_EXECUTABLES:%=%-check) $(OCRD_MODULES:%=%-check)
+ifeq (0,$(MAKELEVEL))
 	. $(ACTIVATE_VENV) && pip check
+	. $(SUB_VENV_TF1)/bin/activate && pip check
+endif
 %-check: ;
 
 .PHONY: $(OCRD_EXECUTABLES:%=%-check)
