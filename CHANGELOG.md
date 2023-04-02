@@ -2,6 +2,10 @@
 
 ## [v2023-03-24](https://github.com/OCR-D/ocrd_all/releases/v2023-03-24)
 
+Fixed:
+
+  * Run `make check` only once per virtual environment,  #20
+
 ### [core](https://github.com/OCR-D/core) [cbe83ab](https://github.com/OCR-D/core/commits/cbe83ab)..[de08453](https://github.com/OCR-D/core/commits/de08453)
 
 > Release: [v2.49.0](https://github.com/OCR-D/core/releases/v2.49.0)
