@@ -239,6 +239,8 @@ OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-recognize
 $(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(BIN)/ocrd
 	$(pip_install)
+	@# workaround for kraken requiring broken shapely==1.8.5
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "shapely<2.0"
 endif
 
 ifneq ($(findstring ocrd_ocropy, $(OCRD_MODULES)),)
