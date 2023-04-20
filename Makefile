@@ -594,12 +594,15 @@ endef
 
 # Workaround for missing prebuilt versions of TF<2 for Python==3.8
 # todo: find another solution for 3.9, 3.10 etc
+# https://docs.nvidia.com/deeplearning/frameworks/tensorflow-wheel-release-notes/tf-wheel-rel.html
 # Nvidia has them, but under a different name, so let's rewrite that:
+# (hold at nv22.12, because newer releases require CUDA 12, which is not supported by TF2,
+#  and therefore not in our ocrd/core-cuda base image yet)
 define pip_install_tf1nvidia =
 . $(ACTIVATE_VENV) && if test $(PYTHON_VERSION) = 3.8 && ! pip show -q tensorflow-gpu; then \
 	$(SEMPIP) pip install nvidia-pyindex && \
 	pushd $$(mktemp -d) && \
-	$(SEMPIP) pip download --no-deps "nvidia-tensorflow!=1.15.5+nv23.3" && \
+	$(SEMPIP) pip download --no-deps "nvidia-tensorflow==1.15.5+nv22.12" && \
 	for name in nvidia_tensorflow-*.whl; do name=$${name%.whl}; done && \
 	$(PYTHON) -m wheel unpack $$name.whl && \
 	for name in nvidia_tensorflow-*/; do name=$${name%/}; done && \
