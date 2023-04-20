@@ -124,6 +124,7 @@ Targets:
 	clean: remove the virtual environment directory, and make clean-*
 	clean-tesseract: remove the build directory for tesseract
 	clean-olena: remove the build directory for ocrd_olena
+	tidy: clean, then deinit opencv-python and git-clean all submodules
 	deinit: clean, then deinit and rmdir all submodules
 	docker: (re)build a docker image including all executables
 	dockers: (re)build docker images for some pre-selected subsets of modules
@@ -165,11 +166,19 @@ $(OCRD_MODULES): always-update
 endif
 endif
 
-deinit: clean
 .PHONY: deinit
-deinit:
+deinit: clean
 	git submodule deinit --all # --force
 	git submodule status | while read stat dir ver; do rmdir $$dir; done
+
+.PHONY: tidy
+tidy: clean
+	git submodule status opencv-python | grep -q ^- || git submodule deinit opencv-python
+	git submodule foreach --recursive git clean -fxd
+# if you already have a clone with too many refs, consider the following recipe:
+#git submodule foreach 'for ref in $(git for-each-ref --no-contains=HEAD --format="%(refname)" refs/remotes/ | sed s,^refs/remotes/,,); do git branch -d -r $ref; done'
+	git gc
+
 
 # Get Python modules.
 
