@@ -74,7 +74,7 @@ jobs:
            sudo du -mscx /* 2>/dev/null || true
            df -h /
     - name: Make Docker image
-      run: make docker-${{ github.event.inputs.docker-image }}
+      run: make docker-${{ github.event.inputs.docker-image }} GIT_DEPTH=--single-branch
     - name: Generate ocrd-all-tool.json
       # the Docker build will set OCRD_MODULES inside the image, which we can re-use
       # regardless of whether we have /build, we can just use the Makefile from outside again

@@ -2,16 +2,17 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/base:stable-18.04
+      - image: cimg/base:stable-22.04
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
       - run:
           name: build image
-          command: make docker-maximum-cuda
+          command: make docker-maximum-cuda GIT_DEPTH=--single-branch
           no_output_timeout: 30m
       - when:
           # takes too long for 1h1m CircleCI timeout overall
+	  # also, storage is limited...
           condition: false
           steps:
             - run:
@@ -26,7 +27,7 @@ jobs:
                 destination: artifacts
   deploy:
     docker:
-      - image: cimg/base:stable-18.04
+      - image: cimg/base:stable-22.04
     environment:
       GIT_DEPTH: "--depth 1"
     parameters:
@@ -38,7 +39,7 @@ jobs:
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
       - run:
           name: Build Docker image
-          command: make docker-<< parameters.variant >>-git
+          command: make docker-<< parameters.variant >>-git GIT_DEPTH=--single-branch
           # fails due to pip races: DOCKER_PARALLEL=-j3
           no_output_timeout: 30m
       - run:
