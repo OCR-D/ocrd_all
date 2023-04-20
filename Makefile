@@ -277,16 +277,9 @@ endif
 ifneq ($(findstring ocrd_detectron2, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
 OCRD_DETECTRON2 += $(BIN)/ocrd-detectron2-segment
-$(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2 $(SUB_VENV_TF1)/bin/activate
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_DETECTRON2)) VIRTUAL_ENV=$(SUB_VENV_TF1)
-	$(call delegate_venv,$(OCRD_DETECTRON2),$(SUB_VENV_TF1))
-ocrd_detectron2-check:
-	$(MAKE) check OCRD_MODULES=ocrd_detectron2 VIRTUAL_ENV=$(SUB_VENV_TF1)
-else
+$(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2 $(BIN)/ocrd
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
-endif
 endif
 
 ifneq ($(findstring cor-asv-fst, $(OCRD_MODULES)),)
@@ -531,7 +524,7 @@ ifneq ($(findstring ocrd_typegroups_classifier, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
 OCRD_TYPECLASS := $(BIN)/ocrd-typegroups-classifier
 OCRD_TYPECLASS += $(BIN)/typegroups-classifier
-$(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier
+$(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier | $(OCRD_DETECTRON2)
 	$(pip_install)
 endif
 
