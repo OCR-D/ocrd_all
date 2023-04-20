@@ -869,6 +869,7 @@ docker%-cuda docker%-cuda-git: DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda
 # Build rule for all selections
 docker%: Dockerfile $(DOCKER_MODULES)
 	docker build \
+	--progress=plain \
 	--build-arg BASE_IMAGE=$(DOCKER_BASE_IMAGE) \
 	--build-arg VCS_REF=$$(git rev-parse --short HEAD) \
 	--build-arg BUILD_DATE=$$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
