@@ -175,10 +175,12 @@ deinit:
 
 $(BIN)/pip: $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(SEMPIP) pip install --upgrade pip setuptools
+	hash -r
 
 %/bin/activate:
 	$(PYTHON) -m venv $(subst /bin/activate,,$@)
 	. $@ && pip install --upgrade pip setuptools wheel
+	hash -r
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
