@@ -18,6 +18,7 @@
 # use OCR-D base container (from ubuntu:18.04)
 ARG BASE_IMAGE=ocrd/core
 FROM $BASE_IMAGE
+ARG BASE_IMAGE
 ARG VCS_REF
 ARG BUILD_DATE
 LABEL \
@@ -98,8 +99,6 @@ RUN echo "source $VIRTUAL_ENV/bin/activate" >> docker.sh
 RUN echo "pip install -U pip setuptools wheel" >> docker.sh
 # build/install all tools of the requested modules:
 RUN echo "make $PARALLEL all" >> docker.sh
-# check installation
-RUN echo "make -j check CHECK_HELP=1" >> docker.sh
 # remove unneeded automatic deps and clear pkg cache
 RUN echo "apt-get remove automake autoconf libtool pkg-config g++ && apt-get clean" >> docker.sh
 # remove source directories from image, unless using editable mode
@@ -111,6 +110,8 @@ RUN echo "if [[ '${PIP_OPTIONS}' =~ -e|--editable ]]; then make -i clean-olena c
 RUN set -a; bash docker.sh
 # update ld.so cache for new libs in /usr/local
 RUN ldconfig
+# check installation
+RUN make -j check CHECK_HELP=1
 
 # remove (dated) security workaround preventing use of
 # ImageMagick's convert on PDF/PS/EPS/XPS:
