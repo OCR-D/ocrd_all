@@ -106,7 +106,7 @@ RUN echo "apt-get remove automake autoconf libtool pkg-config g++ && apt-get cle
 # remove source directories from image, unless using editable mode
 # (in the latter case, the git repos are also the installation targets
 #  and must be kept; so merely clean-up some temporary files)
-RUN echo "if [[ '${PIP_OPTIONS}' =~ -e|--editable ]]; then make -i clean-olena clean-tesseract; else rm -fr /.cache /build; fi" >> docker.sh
+RUN echo "if [[ '${PIP_OPTIONS}' =~ -e|--editable ]]; then make -i clean-olena clean-tesseract; else rm -fr /build; fi; rm -fr /.cache" >> docker.sh
 # run the script in one layer/step (to minimise image size)
 # (and export all variables)
 RUN set -a; bash docker.sh
