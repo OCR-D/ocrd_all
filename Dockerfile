@@ -83,9 +83,6 @@ RUN rm $VIRTUAL_ENV/bin/pip* && apt-get purge -y python3-pip && python3 -m venv 
 #  so we must rely on .dockerignore here)
 COPY . .
 
-# deinit opencv-python (otherwise git submodule status can segfault) and remove copied junk
-RUN git submodule deinit opencv-python && git submodule foreach --recursive git clean -fxd
-
 # make apt system functional
 RUN apt-get -y update && apt-get install -y apt-utils
 
@@ -93,6 +90,8 @@ RUN apt-get -y update && apt-get install -y apt-utils
 RUN echo "set -ex" > docker.sh
 # get packages for build
 RUN echo "apt-get -y install automake autoconf libtool pkg-config g++" >> docker.sh
+# ensure no additional git actions happen after copying the checked out modules
+RUN echo "export NO_UPDATE=1" >> docker.sh
 # try to fetch all modules system requirements
 RUN echo "make deps-ubuntu" >> docker.sh
 RUN echo "source $VIRTUAL_ENV/bin/activate" >> docker.sh
