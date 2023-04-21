@@ -21,7 +21,7 @@ GIT = sudo -u $(SUDO_USER) git
 endif
 endif
 GIT_RECURSIVE = # --recursive
-GIT_DEPTH = # --depth 1
+GIT_DEPTH = # --depth 1 or --single-branch
 # Required and optional Tesseract models.
 ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
 
@@ -114,6 +114,7 @@ Targets:
 	help: show this message
 	show: list the venv path and all executables (to be) installed
 	check: verify that all executables are runnable and the venv is consistent
+	testcuda: verify that CUDA is available for Tensorflow and Pytorch
 	modules: download all submodules to the managed revision
 	ocrd-all-tool.json: generate union of ocrd-tool.json for all executables of all modules
 	all: install all executables of all modules
@@ -154,6 +155,8 @@ help: ;	@eval "$$HELP"
 # - then updates the time stamp of the module directory
 #   so the directory can be used as a dependency
 # - synchronize via mutex to avoid race for git lock file
+# - for minimal image sizes in Docker builds, avoid cloning all branches
+#   by using GIT_DEPTH="--depth 1" or GIT_DEPTH=--single-branch
 modules: $(OCRD_MODULES)
 # but bypass updates if we have no repo here (e.g. Docker build)
 ifneq (,$(wildcard .git))
@@ -704,6 +707,16 @@ show:
 check: $(OCRD_EXECUTABLES:%=%-check) $(OCRD_MODULES:%=%-check)
 	. $(ACTIVATE_VENV) && pip check
 %-check: ;
+
+# ensure shapely#1598 workaround works
+# ensure CUDA works for Torch and TF
+testcuda:
+	. $(ACTIVATE_VENV) && $(PYTHON) -c "from shapely.geometry import Polygon; import torch; torch.randn(10).cuda()"
+	. $(ACTIVATE_VENV) && $(PYTHON) -c "import torch, sys; sys.exit(0 if torch.cuda.is_available() else 1)"
+	. $(ACTIVATE_VENV) && $(PYTHON) -c "import tensorflow as tf, sys; sys.exit(0 if tf.test.is_gpu_available() else 1)"
+	. $(SUB_VENV_TF1)/bin/activate && $(PYTHON) -c "import tensorflow as tf, sys; sys.exit(0 if tf.test.is_gpu_available() else 1)"
+	@echo everything seems to be fine
+
 
 define tool-jsons-code =
 import json
