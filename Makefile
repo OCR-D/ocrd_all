@@ -425,6 +425,9 @@ deps-ubuntu-modules: ocrd_tesserocr
 # (does not work with names under script/ though)
 CUSTOM_DEPS += $(filter-out tesseract-ocr-equ,$(subst _,-,$(ALL_TESSERACT_MODELS:%=tesseract-ocr-%)))
 CUSTOM_DEPS += libarchive-dev
+else
+# tesserocr must wait for tesseract in parallel builds.
+$(SHARE)/tesserocr: $(BIN)/tesseract
 endif
 
 OCRD_TESSEROCR := $(BIN)/ocrd-tesserocr-binarize
@@ -438,11 +441,15 @@ OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-word
 $(call multirule,$(OCRD_TESSEROCR)): ocrd_tesserocr $(SHARE)/tesserocr $(BIN)/ocrd
 	$(pip_install)
 
-# tesserocr must wait for tesseract in parallel builds.
-ifneq ($(findstring tesseract, $(OCRD_MODULES)),)
-$(SHARE)/tesserocr: $(BIN)/tesseract
 endif
 
+ifneq ($(filter tesserocr, $(OCRD_MODULES)),)
+$(SHARE)/tesserocr: tesserocr | $(ACTIVATE_VENV) $(SHARE)
+	$(pip_install)
+else
+$(SHARE)/tesserocr: | $(ACTIVATE_VENV) $(SHARE)
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install $(PIP_OPTIONS_E) tesserocr
+	@touch $@
 endif
 
 ifneq ($(filter ocrd_cis, $(OCRD_MODULES)),)
@@ -655,12 +662,6 @@ $(foreach executable,$(1),$(call delegator,$(executable),$(2)))
 chmod +x $(1)
 endef
 endif
-
-# avoid making these .PHONY so they do not have to be repeated:
-# tesserocr
-$(SHARE)/%: % | $(ACTIVATE_VENV) $(SHARE)
-	. $(ACTIVATE_VENV) && cd $< && $(SEMPIP) pip install $(PIP_OPTIONS) .
-	@touch $@
 
 $(SHARE):
 	@mkdir -p "$@"
