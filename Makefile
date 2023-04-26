@@ -188,9 +188,15 @@ $(BIN)/wheel: | $(ACTIVATE_VENV)
 
 .PHONY: ocrd
 ocrd: $(BIN)/ocrd
+ifneq ($(filter core, $(OCRD_MODULES)),)
 deps-ubuntu-modules: core
 $(BIN)/ocrd: core
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP="$(SEMPIP) pip" PIP_INSTALL="$(SEMPIP) pip install $(PIP_OPTIONS)" && touch -c $@
+else
+CUSTOM_DEPS += python3 imagemagick libgeos-dev
+$(BIN)/ocrd: | $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install $(PIP_OPTIONS_E) ocrd ocrd_network
+endif
 
 # Convert the executable names (1) to a pattern rule,
 # so that the recipe will be used with single-recipe-
