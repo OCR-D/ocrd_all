@@ -184,11 +184,6 @@ wheel: $(BIN)/wheel
 $(BIN)/wheel: | $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(SEMPIP) pip install --force-reinstall $(PIP_OPTIONS_E) wheel
 
-# avoid making this .PHONY so it does not have to be repeated
-$(SHARE)/numpy: | $(ACTIVATE_VENV) $(SHARE)
-	. $(ACTIVATE_VENV) && $(SEMPIP) pip install $(PIP_OPTIONS_E) numpy
-	@touch $@
-
 # Install modules from source.
 
 .PHONY: ocrd
