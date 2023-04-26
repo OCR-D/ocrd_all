@@ -219,9 +219,9 @@ CUSTOM_DEPS += cmake gcc g++
 # libpng-dev libjpeg-dev libopenexr-dev libtiff-dev libwebp-dev libjasper-dev
 opencv-python: GIT_RECURSIVE = --recursive
 opencv-python/setup.py: opencv-python
-$(SHARE)/opencv-python: opencv-python/setup.py | $(ACTIVATE_VENV) $(SHARE) $(SHARE)/numpy
-	. $(ACTIVATE_VENV) && cd opencv-python && ENABLE_HEADLESS=1 $(PYTHON) setup.py bdist_wheel
-	. $(ACTIVATE_VENV) && $(SEMPIP) pip install $(<D)/dist/opencv_python_headless-*.whl
+$(SHARE)/opencv-python: opencv-python/setup.py | $(ACTIVATE_VENV) $(SHARE)
+	. $(ACTIVATE_VENV) && cd $(<D) && ENABLE_HEADLESS=1 pip wheel . --verbose
+	. $(ACTIVATE_VENV) && cd $(<D) && $(SEMPIP) pip install opencv_python_headless-*.whl
 	@touch $@
 $(BIN)/ocrd: $(SHARE)/opencv-python
 endif
