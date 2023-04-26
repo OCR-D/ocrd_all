@@ -579,12 +579,8 @@ $(call multirule,$(WORKFLOW_CONFIGURATION)): workflow-configuration $(BIN)/ocrd
 	$(MAKE) -C $< install
 endif
 
-# Build by entering subdir (first dependent), then
-# install gracefully with dependencies, and finally
-# install again forcefully without depds (to ensure
-# the binary itself updates):
 define pip_install
-. $(ACTIVATE_VENV) && cd $< && $(SEMPIP) pip install $(PIP_OPTIONS_E) . && touch -c $@
+. $(ACTIVATE_VENV) && cd $< && $(SEMPIP) pip install $(PIP_OPTIONS) . && touch -c $@
 endef
 
 # Workaround for missing prebuilt versions of TF<2 for Python==3.8
