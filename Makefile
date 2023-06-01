@@ -251,7 +251,7 @@ install-models-kraken:
 OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-recognize
-$(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(BIN)/ocrd
+$(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(BIN)/ocrd | $(OCRD_DETECTRON2)
 	$(pip_install)
 endif
 
