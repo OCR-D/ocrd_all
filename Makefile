@@ -126,6 +126,7 @@ Targets:
 	clean-tesseract: remove the build directory for tesseract
 	clean-olena: remove the build directory for ocrd_olena
 	tidy: clean, then deinit opencv-python and git-clean all submodules
+	      (WARNING: potential data loss; if unsure, try with `make -n` and `git clean -n`)
 	deinit: clean, then deinit and rmdir all submodules
 	docker: (re)build a docker image including all executables
 	dockers: (re)build docker images for some pre-selected subsets of modules
@@ -187,12 +188,10 @@ tidy: clean
 
 $(BIN)/pip: $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(SEMPIP) pip install --upgrade pip setuptools
-	hash -r
 
 %/bin/activate:
 	$(PYTHON) -m venv $(subst /bin/activate,,$@)
 	. $@ && pip install --upgrade pip setuptools wheel
-	hash -r
 
 .PHONY: wheel
 wheel: $(BIN)/wheel

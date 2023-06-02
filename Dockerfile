@@ -97,6 +97,7 @@ RUN echo "export NO_UPDATE=1" >> docker.sh
 RUN echo "make deps-ubuntu" >> docker.sh
 RUN echo "source $VIRTUAL_ENV/bin/activate" >> docker.sh
 RUN echo "pip install -U pip setuptools wheel" >> docker.sh
+RUN echo "hash -r" >> docker.sh
 # build/install all tools of the requested modules:
 RUN echo "make $PARALLEL all" >> docker.sh
 # remove unneeded automatic deps and clear pkg cache
