@@ -102,10 +102,8 @@ RUN echo "hash -r" >> docker.sh
 RUN echo "make $PARALLEL all" >> docker.sh
 # remove unneeded automatic deps and clear pkg cache
 RUN echo "apt-get remove automake autoconf libtool pkg-config g++ && apt-get clean" >> docker.sh
-# remove source directories from image, unless using editable mode
-# (in the latter case, the git repos are also the installation targets
-#  and must be kept; so merely clean-up some temporary files)
-RUN echo "if [[ '${PIP_OPTIONS}' =~ -e|--editable ]]; then make -i clean-olena clean-tesseract; else rm -fr /build; fi; rm -fr /.cache" >> docker.sh
+# clean-up some temporary files (git repos are also installation targets and must be kept)
+RUN echo "make -i clean-olena clean-tesseract; rm -fr /.cache" >> docker.sh
 # run the script in one layer/step (to minimise image size)
 # (and export all variables)
 RUN set -a; bash docker.sh

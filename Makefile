@@ -865,15 +865,13 @@ DOCKER_TAG ?= ocrd/all
 #  these variants won't share common layers / steps / data,
 #  so build-time and bandwidth are n-fold)
 .PHONY: dockers
-ifdef DOCKERS_WITHOUT_REPOS
 dockers: docker-minimum docker-minimum-cuda docker-medium docker-medium-cuda docker-maximum docker-maximum-cuda
-else
-dockers: docker-minimum-git docker-minimum-cuda-git docker-medium-git docker-medium-cuda-git docker-maximum-git docker-maximum-cuda-git
-endif
 
-# Selections which keep git repos and reference them for install
+# keep git repos and reference them for install
 # (so components can be updated via git from the container alone)
-docker-%-git: PIP_OPTIONS = -e
+docker-%: PIP_OPTIONS = -e
+# old non-git alias
+docke%um-git: docke%um
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from PPA
 docker-mini%: DOCKER_MODULES = core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap tesserocr workflow-configuration ocrd_olahd_client
@@ -883,9 +881,9 @@ docker-medi%: DOCKER_MODULES = core cor-asv-ann dinglehopper docstruct format-co
 docker-maxi%: DOCKER_MODULES = $(OCRD_MODULES)
 
 # DOCKER_BASE_IMAGE
-docker%um docke%um-git: DOCKER_BASE_IMAGE = docker.io/ocrd/core
+docker%um: DOCKER_BASE_IMAGE = docker.io/ocrd/core
 # CUDA variants
-docker%-cuda docker%-cuda-git: DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda
+docker%-cuda: DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda
 
 # Build rule for all selections
 docker%: Dockerfile $(DOCKER_MODULES)
