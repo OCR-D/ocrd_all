@@ -198,18 +198,19 @@ wheel: $(BIN)/wheel
 $(BIN)/wheel: | $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(SEMPIP) pip install --force-reinstall $(PIP_OPTIONS_E) wheel
 
-# avoid making this .PHONY so it does not have to be repeated
-$(SHARE)/numpy: | $(ACTIVATE_VENV) $(SHARE)
-	. $(ACTIVATE_VENV) && $(SEMPIP) pip install $(PIP_OPTIONS_E) numpy
-	@touch $@
-
 # Install modules from source.
 
 .PHONY: ocrd
 ocrd: $(BIN)/ocrd
+ifneq ($(filter core, $(OCRD_MODULES)),)
 deps-ubuntu-modules: core
 $(BIN)/ocrd: core
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install PIP="$(SEMPIP) pip" PIP_INSTALL="$(SEMPIP) pip install $(PIP_OPTIONS)" && touch -c $@
+else
+CUSTOM_DEPS += python3 imagemagick libgeos-dev
+$(BIN)/ocrd: | $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install $(PIP_OPTIONS_E) ocrd ocrd_network
+endif
 
 # Convert the executable names (1) to a pattern rule,
 # so that the recipe will be used with single-recipe-
@@ -217,7 +218,7 @@ $(BIN)/ocrd: core
 multirule = $(patsubst $(BIN)/%,\%/%,$(1))
 
 
-ifneq ($(findstring format-converters, $(OCRD_MODULES)),)
+ifneq ($(filter format-converters, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(PAGE2IMG)
 PAGE2IMG := $(BIN)/page2img
 format-converters/page2img.py: format-converters
@@ -227,20 +228,20 @@ $(PAGE2IMG): format-converters/page2img.py
 	chmod +x $@
 endif
 
-ifneq ($(findstring opencv-python, $(OCRD_MODULES)),)
+ifneq ($(filter opencv-python, $(OCRD_MODULES)),)
 CUSTOM_DEPS += cmake gcc g++
 # libavcodec-dev libavformat-dev libswscale-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev
 # libpng-dev libjpeg-dev libopenexr-dev libtiff-dev libwebp-dev libjasper-dev
 opencv-python: GIT_RECURSIVE = --recursive
 opencv-python/setup.py: opencv-python
-$(SHARE)/opencv-python: opencv-python/setup.py | $(ACTIVATE_VENV) $(SHARE) $(SHARE)/numpy
-	. $(ACTIVATE_VENV) && cd opencv-python && ENABLE_HEADLESS=1 $(PYTHON) setup.py bdist_wheel
-	. $(ACTIVATE_VENV) && $(SEMPIP) pip install $(<D)/dist/opencv_python_headless-*.whl
+$(SHARE)/opencv-python: opencv-python/setup.py | $(ACTIVATE_VENV) $(SHARE)
+	. $(ACTIVATE_VENV) && cd $(<D) && ENABLE_HEADLESS=1 pip wheel . --verbose
+	. $(ACTIVATE_VENV) && cd $(<D) && $(SEMPIP) pip install opencv_python_headless-*.whl
 	@touch $@
 $(BIN)/ocrd: $(SHARE)/opencv-python
 endif
 
-ifneq ($(findstring ocrd_kraken, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_kraken, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
 install-models: install-models-kraken
 .PHONY: install-models-kraken
@@ -254,14 +255,14 @@ $(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(BIN)/ocrd | $(OCRD_DETECTRON2)
 	$(pip_install)
 endif
 
-ifneq ($(findstring ocrd_ocropy, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_ocropy, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_OCROPY)
 OCRD_OCROPY := $(BIN)/ocrd-ocropy-segment
 $(OCRD_OCROPY): ocrd_ocropy $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(findstring cor-asv-ann, $(OCRD_MODULES)),)
+ifneq ($(filter cor-asv-ann, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_ANN)
 OCRD_COR_ASV_ANN := $(BIN)/ocrd-cor-asv-ann-evaluate
 OCRD_COR_ASV_ANN += $(BIN)/ocrd-cor-asv-ann-process
@@ -285,7 +286,7 @@ else
 endif
 endif
 
-ifneq ($(findstring ocrd_detectron2, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_detectron2, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
 OCRD_DETECTRON2 += $(BIN)/ocrd-detectron2-segment
 $(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2 $(BIN)/ocrd
@@ -293,7 +294,7 @@ $(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2 $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(findstring cor-asv-fst, $(OCRD_MODULES)),)
+ifneq ($(filter cor-asv-fst, $(OCRD_MODULES)),)
 deps-ubuntu-modules: cor-asv-fst
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
 OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
@@ -311,7 +312,7 @@ else
 endif
 endif
 
-ifneq ($(findstring ocrd_keraslm, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_keraslm, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KERASLM)
 OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
 OCRD_KERASLM += $(BIN)/keraslm-rate
@@ -327,14 +328,14 @@ else
 endif
 endif
 
-ifneq ($(findstring ocrd_im6convert, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_im6convert, $(OCRD_MODULES)),)
 deps-ubuntu-modules: ocrd_im6convert
 OCRD_EXECUTABLES += $(BIN)/ocrd-im6convert
 $(BIN)/ocrd-im6convert: ocrd_im6convert $(BIN)/ocrd
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
 endif
 
-ifneq ($(findstring ocrd_neat, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_neat, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_NEAT)
 OCRD_NEAT := $(BIN)/ocrd-neat-import
 OCRD_NEAT += $(BIN)/ocrd-neat-export
@@ -348,7 +349,7 @@ $(call multirule,$(OCRD_NEAT)): ocrd_neat $(BIN)/ocrd
 endif
 
 
-ifneq ($(findstring ocrd_wrap, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_wrap, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_WRAP)
 OCRD_WRAP := $(BIN)/ocrd-preprocess-image
 OCRD_WRAP += $(BIN)/ocrd-skimage-normalize
@@ -359,14 +360,14 @@ $(call multirule,$(OCRD_WRAP)): ocrd_wrap $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(findstring ocrd_fileformat, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_fileformat, $(OCRD_MODULES)),)
 ocrd_fileformat: GIT_RECURSIVE = --recursive
 OCRD_EXECUTABLES += $(BIN)/ocrd-fileformat-transform
 $(BIN)/ocrd-fileformat-transform: ocrd_fileformat $(BIN)/ocrd
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install-fileformat install
 endif
 
-ifneq ($(findstring ocrd_olena, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_olena, $(OCRD_MODULES)),)
 ocrd_olena: GIT_RECURSIVE = --recursive
 deps-ubuntu-modules: ocrd_olena
 OCRD_EXECUTABLES += $(BIN)/ocrd-olena-binarize
@@ -379,25 +380,25 @@ clean-olena:
 	test ! -f ocrd_olena/Makefile || \
 	$(MAKE) -C ocrd_olena clean-olena BUILD_DIR=$(VIRTUAL_ENV)/build/ocrd_olena
 
-ifneq ($(findstring dinglehopper, $(OCRD_MODULES)),)
+ifneq ($(filter dinglehopper, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(BIN)/ocrd-dinglehopper
 $(BIN)/ocrd-dinglehopper: dinglehopper $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(findstring docstruct, $(OCRD_MODULES)),)
+ifneq ($(filter docstruct, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(BIN)/ocrd-docstruct
 $(BIN)/ocrd-docstruct: docstruct $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(findstring nmalign, $(OCRD_MODULES)),)
+ifneq ($(filter nmalign, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(BIN)/ocrd-nmalign-merge
 $(BIN)/ocrd-nmalign-merge: nmalign $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(findstring ocrd_segment, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_segment, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_SEGMENT)
 OCRD_SEGMENT := $(BIN)/ocrd-segment-evaluate
 OCRD_SEGMENT += $(BIN)/ocrd-segment-from-masks
@@ -423,7 +424,7 @@ else
 endif
 endif
 
-ifneq ($(findstring ocrd_tesserocr, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_tesserocr, $(OCRD_MODULES)),)
 install-models: install-models-tesseract
 .PHONY: install-models-tesseract
 install-models-tesseract:
@@ -431,12 +432,15 @@ install-models-tesseract:
 
 OCRD_EXECUTABLES += $(OCRD_TESSEROCR)
 # only add custom PPA when not building tesseract from source
-ifeq ($(findstring tesseract, $(OCRD_MODULES)),)
+ifeq ($(filter tesseract, $(OCRD_MODULES)),)
 deps-ubuntu-modules: ocrd_tesserocr
 # convert Tesseract model names into Ubuntu/Debian pkg names
 # (does not work with names under script/ though)
 CUSTOM_DEPS += $(filter-out tesseract-ocr-equ,$(subst _,-,$(ALL_TESSERACT_MODELS:%=tesseract-ocr-%)))
 CUSTOM_DEPS += libarchive-dev
+else
+# tesserocr must wait for tesseract in parallel builds.
+$(SHARE)/tesserocr: $(BIN)/tesseract
 endif
 
 OCRD_TESSEROCR := $(BIN)/ocrd-tesserocr-binarize
@@ -450,14 +454,18 @@ OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-word
 $(call multirule,$(OCRD_TESSEROCR)): ocrd_tesserocr $(SHARE)/tesserocr $(BIN)/ocrd
 	$(pip_install)
 
-# tesserocr must wait for tesseract in parallel builds.
-ifneq ($(findstring tesseract, $(OCRD_MODULES)),)
-$(SHARE)/tesserocr: $(BIN)/tesseract
 endif
 
+ifneq ($(filter tesserocr, $(OCRD_MODULES)),)
+$(SHARE)/tesserocr: tesserocr | $(ACTIVATE_VENV) $(SHARE)
+	$(pip_install)
+else
+$(SHARE)/tesserocr: | $(ACTIVATE_VENV) $(SHARE)
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install $(PIP_OPTIONS_E) tesserocr
+	@touch $@
 endif
 
-ifneq ($(findstring ocrd_cis, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_cis, $(OCRD_MODULES)),)
 install-models: install-models-ocropus
 .PHONY: install-models-ocropus
 install-models-ocropus:
@@ -482,7 +490,7 @@ $(call multirule,$(OCRD_CIS)): ocrd_cis $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(findstring ocrd_pagetopdf, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_pagetopdf, $(OCRD_MODULES)),)
 deps-ubuntu-modules: ocrd_pagetopdf
 OCRD_EXECUTABLES += $(OCRD_PAGETOPDF)
 OCRD_PAGETOPDF := $(BIN)/ocrd-pagetopdf
@@ -490,7 +498,7 @@ $(OCRD_PAGETOPDF): ocrd_pagetopdf $(BIN)/ocrd
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
 endif
 
-ifneq ($(findstring ocrd_calamari, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_calamari, $(OCRD_MODULES)),)
 install-models: install-models-calamari
 .PHONY: install-models-calamari
 install-models-calamari: $(BIN)/ocrd
@@ -503,7 +511,7 @@ $(OCRD_CALAMARI): ocrd_calamari $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(findstring ocrd_pc_segmentation, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_pc_segmentation, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
 OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
 $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
@@ -511,7 +519,7 @@ $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
 	$(pip_install)
 endif
 
-ifneq ($(findstring ocrd_anybaseocr, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_anybaseocr, $(OCRD_MODULES)),)
 install-models: install-models-anybaseocr
 .PHONY: install-models-anybaseocr
 install-models-anybaseocr:
@@ -531,7 +539,7 @@ $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(findstring ocrd_typegroups_classifier, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_typegroups_classifier, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
 OCRD_TYPECLASS := $(BIN)/ocrd-typegroups-classifier
 OCRD_TYPECLASS += $(BIN)/typegroups-classifier
@@ -539,14 +547,14 @@ $(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier | $(OCRD_DETECTR
 	$(pip_install)
 endif
 
-ifneq ($(findstring ocrd_doxa, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_doxa, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_DOXA)
 OCRD_DOXA := $(BIN)/ocrd-doxa-binarize
 $(OCRD_DOXA): ocrd_doxa $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(findstring sbb_binarization, $(OCRD_MODULES)),)
+ifneq ($(filter sbb_binarization, $(OCRD_MODULES)),)
 install-models: install-models-sbb-binarization
 .PHONY: install-models-sbb-binarization
 install-models-sbb-binarization:
@@ -559,7 +567,7 @@ $(call multirule,$(SBB_BINARIZATION)): sbb_binarization $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(findstring eynollah, $(OCRD_MODULES)),)
+ifneq ($(filter eynollah, $(OCRD_MODULES)),)
 install-models: install-models-eynollah
 .PHONY: install-models-eynollah
 install-models-eynollah:
@@ -570,21 +578,21 @@ $(EYNOLLAH_SEGMENT): eynollah $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(findstring ocrd_repair_inconsistencies, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_repair_inconsistencies, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_REPAIR_INCONSISTENCIES)
 OCRD_REPAIR_INCONSISTENCIES := $(BIN)/ocrd-repair-inconsistencies
 $(OCRD_REPAIR_INCONSISTENCIES): ocrd_repair_inconsistencies $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(findstring ocrd_olahd_client, $(OCRD_MODULES)),)
+ifneq ($(filter ocrd_olahd_client, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_OLAHD_CLIENT)
 OCRD_OLAHD_CLIENT := $(BIN)/ocrd-olahd-client
 $(OCRD_OLAHD_CLIENT): ocrd_olahd_client $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(findstring workflow-configuration, $(OCRD_MODULES)),)
+ifneq ($(filter workflow-configuration, $(OCRD_MODULES)),)
 deps-ubuntu-modules: workflow-configuration
 OCRD_EXECUTABLES += $(WORKFLOW_CONFIGURATION)
 WORKFLOW_CONFIGURATION := $(BIN)/ocrd-make
@@ -595,12 +603,8 @@ $(call multirule,$(WORKFLOW_CONFIGURATION)): workflow-configuration $(BIN)/ocrd
 	$(MAKE) -C $< install
 endif
 
-# Build by entering subdir (first dependent), then
-# install gracefully with dependencies, and finally
-# install again forcefully without depds (to ensure
-# the binary itself updates):
 define pip_install
-. $(ACTIVATE_VENV) && cd $< && $(SEMPIP) pip install $(PIP_OPTIONS_E) . && touch -c $@
+. $(ACTIVATE_VENV) && cd $< && $(SEMPIP) pip install $(PIP_OPTIONS) . && touch -c $@
 endef
 
 # Workaround for missing prebuilt versions of TF<2 for Python==3.8
@@ -679,12 +683,6 @@ chmod +x $(1)
 endef
 endif
 
-# avoid making these .PHONY so they do not have to be repeated:
-# tesserocr
-$(SHARE)/%: % | $(ACTIVATE_VENV) $(SHARE)
-	. $(ACTIVATE_VENV) && cd $< && $(SEMPIP) pip install $(PIP_OPTIONS) .
-	@touch $@
-
 $(SHARE):
 	@mkdir -p "$@"
 
@@ -702,7 +700,10 @@ show:
 	@echo OCRD_EXECUTABLES = $(OCRD_EXECUTABLES:$(BIN)/%=%)
 
 check: $(OCRD_EXECUTABLES:%=%-check) $(OCRD_MODULES:%=%-check)
+ifeq (0,$(MAKELEVEL))
 	. $(ACTIVATE_VENV) && pip check
+	. $(SUB_VENV_TF1)/bin/activate && pip check
+endif
 %-check: ;
 
 # ensure shapely#1598 workaround works
@@ -742,7 +743,7 @@ $(OCRD_EXECUTABLES:%=%-check):
 .PHONY: $(OCRD_EXECUTABLES:$(BIN)/%=%)
 $(OCRD_EXECUTABLES:$(BIN)/%=%): %: $(BIN)/%
 
-ifneq ($(findstring tesseract, $(OCRD_MODULES)),)
+ifneq ($(filter tesseract, $(OCRD_MODULES)),)
 # Tesseract.
 
 # when not installing via PPA, we must cope without ocrd_tesserocr's deps-ubuntu-modules
