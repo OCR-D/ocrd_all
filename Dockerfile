@@ -111,18 +111,7 @@ RUN set -a; bash docker.sh
 RUN ldconfig
 # check installation
 RUN make -j check CHECK_HELP=1
-# workaround for clash between cuDNN of Tensorflow 2.12 (→8.6) and Pytorch 1.13 (→8.5)
-# the latter is explicit (but unnecessary), the former is implicit (and causes "DNN library not found" crashes at runtime)
-# so we have three potential options:
-# 1. revert to the version required by TF after pip overruled our choice via Torch dependency
-#    pip3 install nvidia-cudnn-cu11==8.6.0.*
-# 2. downgrade TF so there is no overt conflict
-#    pip3 install "tensorflow<2.12"
-# 3. upgrade Torch so there is no overt conflict
-#    pip install "torch>=2.0"
-# Since ATM we don't know whether Torch 2.x will work everywhere, we opt for 2:
-RUN if echo $BASE_IMAGE | fgrep -q cuda; then \
-    pip3 install "tensorflow<2.12"; fi
+RUN if echo $BASE_IMAGE | fgrep -q cuda; then make fix-cuda; fi
 
 # remove (dated) security workaround preventing use of
 # ImageMagick's convert on PDF/PS/EPS/XPS:

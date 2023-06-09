@@ -707,13 +707,13 @@ check: $(OCRD_EXECUTABLES:%=%-check) $(OCRD_MODULES:%=%-check)
 
 # ensure shapely#1598 workaround works
 # ensure CUDA works for Torch and TF
-testcuda:
+testcuda test-cuda: $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(PYTHON) -c "from shapely.geometry import Polygon; import torch; torch.randn(10).cuda()"
 	. $(ACTIVATE_VENV) && $(PYTHON) -c "import torch, sys; sys.exit(0 if torch.cuda.is_available() else 1)"
 	. $(ACTIVATE_VENV) && $(PYTHON) -c "import tensorflow as tf, sys; sys.exit(0 if tf.test.is_gpu_available() else 1)"
 	. $(SUB_VENV_TF1)/bin/activate && $(PYTHON) -c "import tensorflow as tf, sys; sys.exit(0 if tf.test.is_gpu_available() else 1)"
 	@echo everything seems to be fine
-
+.PHONY: testcuda test-cuda
 
 define tool-jsons-code =
 import json
@@ -856,6 +856,30 @@ deps-ubuntu-modules:
 	apt-get -y install $(CUSTOM_DEPS)
 
 .PHONY: deps-ubuntu deps-ubuntu-modules
+
+# For native (non-Docker) installations, install CUDA system dependencies
+deps-cuda: core
+	$(MAKE) -C $< $@
+
+# For standalone use ("just get me tensorflow-gpu<2.0")
+tf1nvidia: $(ACTIVATE_VENV)
+	$(pip_install_tf1nvidia)
+
+# post-fix workaround for clash between cuDNN of Tensorflow 2.12 (→8.6) and Pytorch 1.13 (→8.5)
+# the latter is explicit (but unnecessary), the former is implicit (and causes "DNN library not found" crashes at runtime)
+# so we have three potential options:
+# 1. revert to the version required by TF after pip overruled our choice via Torch dependency
+#    pip3 install nvidia-cudnn-cu11==8.6.0.*
+# 2. downgrade TF so there is no overt conflict
+#    pip3 install "tensorflow<2.12"
+# 3. upgrade Torch so there is no overt conflict
+#    pip install "torch>=2.0"
+# Since ATM we don't know whether Torch 2.x will work everywhere, we opt for 2:
+fix-cuda: $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "tensorflow<2.12"
+
+.PHONY: deps-cuda tf1nvidia fix-cuda
+
 
 # Docker builds.
 DOCKER_TAG ?= ocrd/all
