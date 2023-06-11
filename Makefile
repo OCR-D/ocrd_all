@@ -739,7 +739,6 @@ testcuda test-cuda: $(ACTIVATE_VENV)
 	@echo everything seems to be fine
 
 # download models and run some processors (not for result quality, only coverage)
-test-workflow: export CUDA_DEVICE ?= cpu # cuda:0
 test-workflow: test-assets core $(BIN)/ocrd $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && cd core/tests/assets/SBB0000F29300010000/data/ && bash -x $(CURDIR)/test-workflow.sh
 
