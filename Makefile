@@ -110,24 +110,41 @@ cat <<"EOF"
 Rules to download and install all OCR-D module processors
 from their source repositories into a single virtualenv.
 
-Targets:
+Targets (general):
 	help: show this message
 	show: list the venv path and all executables (to be) installed
-	check: verify that all executables are runnable and the venv is consistent
-	testcuda: verify that CUDA is available for Tensorflow and Pytorch
+
+Targets (module management):
 	modules: download all submodules to the managed revision
-	ocrd-all-tool.json: generate union of ocrd-tool.json for all executables of all modules
+	deinit: clean, then deinit and rmdir all submodules
+	tidy: clean, then deinit opencv-python and git-clean all submodules
+	      (WARNING: potential data loss; if unsure, try with `make -n` and `git clean -n`)
+
+Targets (system dependencies, may need root privileges):
+	deps-ubuntu: install all system dependencies of all modules
+	deps-cuda: install CUDA toolkit and libraries (via micromamba and nvidia-pyindex)
+
+Targets (build and installation into venv):
 	all: install all executables of all modules
 	ocrd: only install the virtual environment and OCR-D/core packages
 	install-tesseract: only build and install Tesseract (with TESSERACT_MODELS)
-	install-tesseract-training: build and install Tesseract training tools
-	install-models: download commonly used models to appropriate locations
+	install-tesseract-training: also build and install Tesseract training tools
+	fix-cuda: workaround for non-conflicting CUDA libs after installation
 	clean: remove the virtual environment directory, and make clean-*
 	clean-tesseract: remove the build directory for tesseract
 	clean-olena: remove the build directory for ocrd_olena
-	tidy: clean, then deinit opencv-python and git-clean all submodules
-	      (WARNING: potential data loss; if unsure, try with `make -n` and `git clean -n`)
-	deinit: clean, then deinit and rmdir all submodules
+
+Targets (testing):
+	check: verify that all executables are runnable and the venv is consistent
+	test-core: verify ocrd via core module regression tests
+	test-cuda: verify that CUDA is available for Tensorflow and Pytorch
+	test-workflow: verify that most executables work correctly via test runs on test data
+
+Targets (auxiliary data):
+	ocrd-all-tool.json: generate union of ocrd-tool.json for all executables of all modules
+	install-models: download commonly used models to appropriate locations
+
+Targets (build of container images):
 	docker: (re)build a docker image including all executables
 	dockers: (re)build docker images for some pre-selected subsets of modules
 
@@ -141,6 +158,7 @@ Variables:
 	TMPDIR: path to use for temporary storage instead of the system default
 	PYTHON: name of the Python binary
 	PIP_OPTIONS: extra options for the `pip install` command like `-q` or `-v` or `-e`
+	CHECK_HELP: set to `1` to also check each executable can generate help output
 	TESSERACT_MODELS: list of additional models/languages to download for Tesseract. Default: "$(ALL_TESSERACT_MODELS)"
 	TESSERACT_CONFIG: command line options for Tesseract `configure`. Default: "$(TESSERACT_CONFIG)"
 EOF
@@ -211,6 +229,10 @@ CUSTOM_DEPS += python3 imagemagick libgeos-dev
 $(BIN)/ocrd: | $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(SEMPIP) pip install $(PIP_OPTIONS_E) ocrd ocrd_network
 endif
+
+.PHONY: test-core
+test-core: core $(BIN)/ocrd
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps-test test
 
 # Convert the executable names (1) to a pattern rule,
 # so that the recipe will be used with single-recipe-
@@ -706,6 +728,7 @@ ifeq (0,$(MAKELEVEL))
 endif
 %-check: ;
 
+.PHONY: testcuda test-cuda test-assets test-workflow
 # ensure shapely#1598 workaround works
 # ensure CUDA works for Torch and TF
 testcuda test-cuda: $(ACTIVATE_VENV)
@@ -714,7 +737,16 @@ testcuda test-cuda: $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(PYTHON) -c "import tensorflow as tf, sys; sys.exit(0 if tf.test.is_gpu_available() else 1)"
 	. $(SUB_VENV_TF1)/bin/activate && $(PYTHON) -c "import tensorflow as tf, sys; sys.exit(0 if tf.test.is_gpu_available() else 1)"
 	@echo everything seems to be fine
-.PHONY: testcuda test-cuda
+
+# download models and run some processors (not for result quality, only coverage)
+test-workflow: export CUDA_DEVICE ?= cpu # cuda:0
+test-workflow: test-assets core $(BIN)/ocrd $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && cd core/tests/assets/SBB0000F29300010000/data/ && bash -x $(CURDIR)/test-workflow.sh
+
+test-assets:
+	$(MAKE) -C core assets
+
+clean:
 
 define tool-jsons-code =
 import json
@@ -859,10 +891,10 @@ deps-ubuntu-modules:
 .PHONY: deps-ubuntu deps-ubuntu-modules
 
 # For native (non-Docker) installations, install CUDA system dependencies
-deps-cuda: core
-	$(MAKE) -C $< $@
+deps-cuda: core $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< $@
 
-# For standalone use ("just get me tensorflow-gpu<2.0")
+# For standalone use ("just get me tensorflow-gpu<2.0 into the current venv")
 tf1nvidia: $(ACTIVATE_VENV)
 	$(pip_install_tf1nvidia)
 
