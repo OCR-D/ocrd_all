@@ -263,6 +263,14 @@ $(SHARE)/opencv-python: opencv-python/setup.py | $(ACTIVATE_VENV) $(SHARE)
 $(BIN)/ocrd: $(SHARE)/opencv-python
 endif
 
+ifneq ($(filter ocrd_detectron2, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
+OCRD_DETECTRON2 := $(BIN)/ocrd-detectron2-segment
+$(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2 $(BIN)/ocrd
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
+	$(pip_install)
+endif
+
 ifneq ($(filter ocrd_kraken, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
 install-models: install-models-kraken
@@ -306,14 +314,6 @@ else
 	$(pip_install_tf1nvidia)
 	$(pip_install)
 endif
-endif
-
-ifneq ($(filter ocrd_detectron2, $(OCRD_MODULES)),)
-OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
-OCRD_DETECTRON2 += $(BIN)/ocrd-detectron2-segment
-$(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2 $(BIN)/ocrd
-	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
-	$(pip_install)
 endif
 
 ifneq ($(filter cor-asv-fst, $(OCRD_MODULES)),)
@@ -927,22 +927,23 @@ dockers: docker-minimum docker-minimum-cuda docker-medium docker-medium-cuda doc
 # (so components can be updated via git from the container alone)
 docker-%: PIP_OPTIONS = -e
 # old non-git alias
-docke%um-git: docke%um
+docker-%um-git: docker-%um
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from PPA
-docker-mini%: DOCKER_MODULES = core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap tesserocr workflow-configuration ocrd_olahd_client
+docker-mini%: DOCKER_MODULES := core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap tesserocr workflow-configuration ocrd_olahd_client
 # Medium-size selection: add Olena binarization and Calamari, use Tesseract from git, add evaluation
-docker-medi%: DOCKER_MODULES = core cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm  ocrd_neat ocrd_olahd_client ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap tesseract tesserocr workflow-configuration
+docker-medi%: DOCKER_MODULES := core cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm  ocrd_neat ocrd_olahd_client ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap tesseract tesserocr workflow-configuration
 # Maximum-size selection: use all modules
-docker-maxi%: DOCKER_MODULES = $(OCRD_MODULES)
+docker-maxi%: DOCKER_MODULES := $(OCRD_MODULES)
 
 # DOCKER_BASE_IMAGE
-docker%um: DOCKER_BASE_IMAGE = docker.io/ocrd/core
+docker-%um: DOCKER_BASE_IMAGE = docker.io/ocrd/core
 # CUDA variants
-docker%-cuda: DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda
+docker-%-cuda: DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda
 
 # Build rule for all selections
-docker%: Dockerfile $(DOCKER_MODULES)
+# FIXME: $(DOCKER_MODULES) ref does not work at phase 1; workaround: all modules
+docker-%: Dockerfile modules
 	docker build \
 	--progress=plain \
 	--build-arg BASE_IMAGE=$(DOCKER_BASE_IMAGE) \
@@ -953,7 +954,7 @@ docker%: Dockerfile $(DOCKER_MODULES)
 	--build-arg PARALLEL="$(DOCKER_PARALLEL)" \
 	--build-arg PYTHON="$(PYTHON)" \
 	--network=host \
-	-t $(DOCKER_TAG):$(or $(*:-%=%),latest) .
+	-t $(DOCKER_TAG):$* .
 
 docker: DOCKER_MODULES ?= $(OCRD_MODULES)
 docker: DOCKER_PARALLEL ?= -j1
