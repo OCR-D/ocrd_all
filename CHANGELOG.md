@@ -1,5 +1,187 @@
 # Changelog
 
+## [v2023-06-12](https://github.com/OCR-D/ocrd_all/releases/v2023-06-12)
+
+Changed:
+
+  * All docker images now contain git checkouts and retain `/build`, i.e. behave like the `-git` variants
+
+Added:
+
+  * `make ocrd-all-tool.json`: Generate and upload a combination of all processors' `ocrd-tool.json`, #362
+  * `make test-workflow`: Run a workflow with most processors as a general smoke test
+  * `make test-cuda`: to test whether CUDA properly set up and has GPU available
+  * `make test-core`: Run OCR-D/core unit tests
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [006a70e](https://github.com/ASVLeipzig/cor-asv-ann/commits/006a70e)..[2c4b1ff](https://github.com/ASVLeipzig/cor-asv-ann/commits/2c4b1ff)
+
+> Release: [v0.1.14](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.14)
+
+  > * CI: use ocrd/core-cuda as base image
+  > * CI: dummy venv
+  > * CI: use proper tab character
+  > * CI: clone first
+  > * CI: mkdir first
+  > * CI: chdir to tmp location
+  > * CI: use /tmp for aux clone of ocrd_all
+  > * try getting tensorflow-gpu from Nvidia
+  > * use proper URLs for submodules
+  > * Merge pull request #6 from kba/init-report-dict
+  > * evaluate: skip pages with no results
+
+### [core](https://github.com/OCR-D/core) [de08453](https://github.com/OCR-D/core/commits/de08453)..[6708624](https://github.com/OCR-D/core/commits/6708624)
+
+> Release: [v2.51.0](https://github.com/OCR-D/core/releases/v2.51.0)
+
+  > * Merge pull request #1055 from bertsky/deps-cuda
+  > * ci: disable upterm for gh actions
+  > * readme: remove dockerhub/travis badge, add GH actions badge
+  > * debug gh actions
+  > * test bashlib: /usr/bin/env bash instead of /bin/bash
+  > * test_workspace_bagger: use ocr-d.de instead of google.com for testing
+  > * disable logging tests until properly fixed
+  > * docker-image: reuse local ghcr.io image instead of docker.io
+  > * :package: v2.51.0
+  > * :memo: changelog
+  > * make help: improve description
+  > * Revert "Merge remote-tracking branch 'hnesk/no-more-pkg_resources' into release-2.36.0"
+  > * remove out-dated processor resources
+  > * docker-cuda: improve (reduce size) again…
+  > * docker-cuda: rewrite…
+  > * core-cuda: use same CUDA libs as needed for Torch anyway
+  > * Merge branch 'pr-1008' into reduce-cuda
+  > * Merge branch 'master' of https://github.com/OCR-D/core into reduce-cuda
+  > * make install on py36: revert to prefer-binary via install
+  > * make install on py36: fix prefer-binary syntax
+  > * make install on py36: prefer binary OpenCV/Numpy via pip config instead of preinstall
+  > * core-cuda: install more CUDA libs via pip and ld.so.conf, simplify Dockerfile for that
+  > * core-cuda: use CUDA 11.8, install cuDNN via pip and make available system-wide via ld.so.conf
+  > * reinstate workaround for shapely, but more robust
+  > * docker-cuda: change base image, no multi-CUDA runtimes
+  > * keep gcc, no autoremove
+  > * rehash after pip upgrade
+  > * give up workaround for shapely-CUDA issue
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [0fd4ea1](https://github.com/qurator-spk/dinglehopper/commits/0fd4ea1)..[35be58c](https://github.com/qurator-spk/dinglehopper/commits/35be58c)
+
+  > * Merge pull request #83 from INL/feat/batch-processing
+  > * Merge pull request #82 from CircleCI-config-suggestions-bot/StoreTestResults
+  > * 🧹 .gitignore .python-version (for pyenv)
+  > * 🧹 Remove qurator. namespace prefix
+  > * 🐛 Fix installing by calling find_namespace_packages in setup.py
+  > * 🕸Do not use deprecated ID, pageId options
+  > * 🔧 Remove explicit namespace_packages
+  > * ✔ CircleCI: Explicitly install binary opencv-python-headless (dep of OCR-D?) to avoid compilation
+  > * 🐛 Remove deprecated declare_namespace call
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [ea792d1](https://github.com/qurator-spk/eynollah/commits/ea792d1)..[706433c](https://github.com/qurator-spk/eynollah/commits/706433c)
+
+> Release: [v0.2.0](https://github.com/qurator-spk/eynollah/releases/v0.2.0)
+
+  > * Revert "Merge pull request #97 from qurator-spk/420-namespace-package"
+  > * Merge pull request #100 from bertsky/patch-2
+  > * Merge pull request #97 from qurator-spk/420-namespace-package
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [c90b29f](https://github.com/cisocrgroup/ocrd_cis/commits/c90b29f)..[a0ea0a2](https://github.com/cisocrgroup/ocrd_cis/commits/a0ea0a2)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * Merge branch 'kba:typo' #91 into fix-alpha-shape
+  > * Merge branch 'kba:double-page-max-size' #96 into fix-alpha-shape
+  > * Merge branch 'kba:resolve-resources' #83 into fix-alpha-shape
+  > * segment: adapt to OpenCV changes
+  > * resegment (baseline/ccomps): improve handling of fg conflicts
+  > * resegment: add param baseline_only
+  > * check_page/region/line: skip assumptions on number of components
+  > * adapt to Shapely 2.0 deprecations
+  > * adapt to Numpy 1.24 dtypes
+  > * resegment: list instead of generator
+  > * re/segment: improve polygon simplification
+  > * re/segment: join_baselines: skip lines outside of polygon
+  > * re/segment: join_baselines: for complex subtypes, apply recursively
+  > * re/segment: join_polygons: connect touching neighbours, too
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [dacfa50](https://github.com/OCR-D/ocrd_fileformat/commits/dacfa50)..[4e7e0de](https://github.com/OCR-D/ocrd_fileformat/commits/4e7e0de)
+
+> Release: [v0.7.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.7.0)
+
+  > * :package: v0.7.0
+  > * update ocr-fileformat
+
+### [ocrd_kraken](https://github.com/OCR-D/ocrd_kraken) [802c6b0](https://github.com/OCR-D/ocrd_kraken/commits/802c6b0)..[b13dd8a](https://github.com/OCR-D/ocrd_kraken/commits/b13dd8a)
+
+> Release: [v0.3.0](https://github.com/OCR-D/ocrd_kraken/releases/v0.3.0)
+
+  > * segment/recognize: default to device=cuda:0 (now backed by safe fall-back)
+  > * segment/recognize: fall back to CPU if no CUDA device
+  > * fix typo
+  > * update changelog
+  > * recognize: project text upwards in order by concatenation
+  > * recognize: ensure baseline/boundary are consistent
+  > * recognize: ignore invalid baselines
+  > * setup metadata: update/improve
+  > * deps-ubuntu: update
+  > * improve/update readme
+  > * Dockerfile: use CUDA base image, improve labels
+  > * update changelog
+  > * recognize: pass lines in baseline format if any baselines are annotated
+  > * update blla.model URL (master→main)
+  > * recognize: workaround for empty/failed line records
+  > * recognize: workaround for better quality box cuts
+  > * recognize: avoid invalid polygons on single-glyph words
+  > * Revert "recognize: avoid invalid polygons on single-glyph words"
+  > * segment: also show tags/type prediction
+  > * recognize: avoid invalid polygons on single-glyph words
+  > * recognize: use proper data structures of rpred
+
+### [ocrd_pagetopdf](https://github.com/UB-Mannheim/ocrd_pagetopdf) [6155605](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/6155605)..[4f4a330](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/4f4a330)
+
+> Release: [v1.0.0](https://github.com/UB-Mannheim/ocrd_pagetopdf/releases/v1.0.0)
+
+  > * Merge pull request #22 from bertsky/fix-input-files
+
+### [ocrd_wrap](https://github.com/bertsky/ocrd_wrap) [63c04d5](https://github.com/bertsky/ocrd_wrap/commits/63c04d5)..[2cd800d](https://github.com/bertsky/ocrd_wrap/commits/2cd800d)
+
+> Release: [v0.1.8](https://github.com/bertsky/ocrd_wrap/releases/v0.1.8)
+
+  > * :package: 0.1.8
+  > * Merge pull request #10 from bertsky/update-numpy
+
+### [opencv-python](https://github.com/skvark/opencv-python) [6b73d90](https://github.com/skvark/opencv-python/commits/6b73d90)..[474a1cc](https://github.com/skvark/opencv-python/commits/474a1cc)
+
+> Release: [72](https://github.com/skvark/opencv-python/releases/72)
+
+  > * Merge pull request #849 from asmorkalov/as/python3_for_build
+  > * Fix: numpy version for python 3.11 (#839)
+  > * Merge pull request #852 from asmorkalov:as/ci_check
+  > * Merge pull request #837 from bertsky/fix-py38-build
+  > * Merge pull request #838 from henryiii/patch-2
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [39ef3fd](https://github.com/qurator-spk/sbb_binarization/commits/39ef3fd)..[010ec99](https://github.com/qurator-spk/sbb_binarization/commits/010ec99)
+
+> Release: [v0.1.0](https://github.com/qurator-spk/sbb_binarization/releases/v0.1.0)
+
+  > * :package: v0.1.0
+  > * Update README.md
+  > * update CI badge
+  > * Merge pull request #59 from bertsky/change-model-url
+  > * Merge pull request #56 from bertsky/non-verbose
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [cb923f7](https://github.com/bertsky/workflow-configuration/commits/cb923f7)..[5aff777](https://github.com/bertsky/workflow-configuration/commits/5aff777)
+
+  > * ocrd-import: add option --regex (positive path selector)
+  > * ocrd-import: fix skipping in subshell
+  > * add METS transforms to TOC
+  > * generalise standalone CLI for both PAGE and METS XSL, update documentation
+  > * mets-copy-agents.xsl: make path for other-mets relative to input mets (not stylesheet file)
+  > * (ocrd-)page-transform: add pretty-printing option
+  > * add page-ensure-readingorder.xsl
+  > * add page-ensure-textequiv-index.xsl
+  > * ocrd-import: also replace comma in IDs
+  > * Merge remote-tracking branch 'origin/master'
+  > * page-textequiv-*: ensure target TextEquiv exists
+
+
 ## [v2023-03-24](https://github.com/OCR-D/ocrd_all/releases/v2023-03-24)
 
 Fixed:
