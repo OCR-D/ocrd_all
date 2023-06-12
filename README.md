@@ -13,8 +13,8 @@ is a local user directory with shell scripts to load/unload itself
 in the current shell environment via PATH and PYTHONHOME.)
 
 > **Note**: If you are going to install ocrd_all, you may want to first consult
-the [OCR-D setup guide](https://ocr-d.de/en/setup) on the [OCR-D website](https://ocr-d.de).
-If you are a non-IT user, it is especially recommended you utilize the guide.
+> the [OCR-D setup guide](https://ocr-d.de/en/setup) on the [OCR-D website](https://ocr-d.de).
+> If you are a non-IT user, it is especially recommended you utilize the guide.
 
 * [Prerequisites](#prerequisites)
     * [Space](#space)
@@ -120,13 +120,13 @@ or newer, then just install its development package:
 * Other modules will have additional system dependencies.
 
 > **Note**: System dependencies **for all modules** on Ubuntu 20.04 (or similar)
-can also be installed **automatically** by running:
-
-        # on Debian / Ubuntu:
-	make modules
-        sudo apt install make
-        sudo make deps-ubuntu
-
+> can also be installed **automatically** by running:
+> 
+>         # on Debian / Ubuntu:
+>         make modules
+>         sudo apt install make
+>         sudo make deps-ubuntu
+> 
 > (And you can define the scope of _all modules_ by setting the `OCRD_MODULES`
 [variable](#Variables) as described below. If unsure, consider doing a dry-run
 first, by using `make -n`.)
@@ -142,11 +142,11 @@ libraries like [cuDNN](https://developer.nvidia.com/cudnn) for your system.
 The CUDA version currently supported is 11.8 (but other's may work as well).
 
 > **Note**: CUDA toolkit and libraries (in a  development version with CUDA compiler)
-can also be installed **automatically** by running:
-
-        make ocrd
-        sudo make deps-cuda
-
+> can also be installed **automatically** by running:
+> 
+>         make ocrd
+>         sudo make deps-cuda
+> 
 > This will deploy [Micromamba](https://mamba.readthedocs.io/en/latest/index.html)
 non-intrusively (without system packages or Conda environments), but also share some
 of the CUDA libraries installed as Python packages system-wide via ld.so.conf rules.
@@ -192,7 +192,13 @@ Install only the `core` module and its CLI `ocrd` into the venv.
 
 (Re-)build Docker images for some pre-selected subsets of modules/executables. (Depends on [_modules_](#modules).)
 
-(These are the very same variants published as [prebuilt images on Docker Hub](#docker-hub).)
+(These are the very same variants published as [prebuilt images on Docker Hub](#docker-hub),
+cf. [CI configuration](.circleci/config.yml#L27-L65).)
+
+> **Note**: The image will contain all refs and branches of all checked out modules,
+> which may not be actually needed. If you are planning on building and distributing
+> Docker images with minimal size, consider using `GIT_DEPTH=--single-branch`
+> before `modules` or running `make tidy` later-on.
 
 #### _clean_
 
@@ -258,7 +264,7 @@ Override the default path (`/tmp` on Unix) where temporary files during build ar
 Add extra options to the `pip install` command like `-q` or `-v` or `-e`.
 
 > **Note**: The latter option will install Python modules in __editable mode__,
-i.e. any update to the source would directly affect the executables.
+> i.e. any update to the source would directly affect the executables.
 
 #### _GIT_RECURSIVE_
 
@@ -268,8 +274,8 @@ Set to `--recursive` to checkout/update all modules recursively. (This usually i
 
 Add more models to the minimum required list of languages (`eng equ osd`) to install along with Tesseract.
 
-Note: this only affects `make install-tesseract` (or `all`), but is independent of the `install-models` step. 
-(The latter delegates to `ocrd resmgr download`, which fetches all registered resources.)
+> **Note**: this only affects `make install-tesseract` (or `all`), but is independent of the `install-models` step. 
+> (The latter delegates to `ocrd resmgr download`, which fetches all registered resources.)
 
 #### _TESSERACT_CONFIG_
 
@@ -349,10 +355,10 @@ tesseract: GIT_RECURSIVE = --recursive
 NO_UPDATE = 1
 ```
 
-Note: When `local.mk` exists, variables can still be overridden on the command line,
-(i.e. `make all OCRD_MODULES=` will build all executables for all modules again),
-but not from the shell environment
-(i.e. `OCRD_MODULES= make all` will still use the value from local.mk).
+> **Note**: When `local.mk` exists, variables can still be overridden on the command line,
+> (i.e. `make all OCRD_MODULES=` will build all executables for all modules again),
+> but not from the shell environment
+> (i.e. `OCRD_MODULES= make all` will still use the value from local.mk).
 
 ### Docker Hub
 
@@ -413,12 +419,12 @@ This table lists which tag contains which module:
 | ocrd_ocropy                 | -         | -        | -         |
 | ocrd_pc_segmentation        | -         | -        | -         |
 
-**Note**: The following modules have been disabled by default and can only be
-enabled by explicitly setting `OCRD_MODULES` or `DISABLED_MODULES`:
-
-* `cor-asv-fst` (runtime issues)
-* `ocrd_ocropy` (better implementation in ocrd_cis available)
-* `ocrd_pc_segmentation` (dependency and quality issues)
+> **Note**: The following modules have been disabled by default and can only be
+> enabled by explicitly setting `OCRD_MODULES` or `DISABLED_MODULES`:
+> 
+> * `cor-asv-fst` (runtime issues)
+> * `ocrd_ocropy` (better implementation in ocrd_cis available)
+> * `ocrd_pc_segmentation` (dependency and quality issues)
 
 ### Uninstall
 
