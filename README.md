@@ -8,22 +8,28 @@ This controls installation of all OCR-D modules from source (as git submodules).
 
 It includes a Makefile for their installation into a virtual environment (venv) or Docker container.
 
-(A venv is a local user directory with shell scripts to load/unload itself
+(A [venv](https://packaging.python.org/tutorials/installing-packages/#creating-virtual-environments)
+is a local user directory with shell scripts to load/unload itself
 in the current shell environment via PATH and PYTHONHOME.)
 
-(NOTE: If you are going to install ocrd_all, you may want to first reference the [OCR-D setup guide](https://ocr-d.de/en/setup) at the OCR-D website. If you are a non-IT user, it is especially recommended you utilize the guide.)
+> **Note**: If you are going to install ocrd_all, you may want to first consult
+the [OCR-D setup guide](https://ocr-d.de/en/setup) on the [OCR-D website](https://ocr-d.de).
+If you are a non-IT user, it is especially recommended you utilize the guide.
 
-* [Preconditions](#preconditions)
+* [Prerequisites](#prerequisites)
     * [Space](#space)
     * [Locale](#locale)
     * [System packages](#system-packages)
+    * [GPU support](#gpu-support)
  * [Usage](#usage)
     * [Targets](#targets)
        * [<em>deps-ubuntu</em>](#deps-ubuntu)
+       * [<em>deps-cuda</em>](#deps-cuda)
        * [<em>modules</em>](#modules)
        * [<em>ocrd</em>](#ocrd)
        * [<em>all</em>](#all)
        * [<em>docker</em>](#docker)
+       * [<em>dockers</em>](#dockers)
        * [<em>clean</em>](#clean)
        * [<em>show</em>](#show)
        * [<em>help</em> (default goal)](#help-default-goal)
@@ -31,6 +37,7 @@ in the current shell environment via PATH and PYTHONHOME.)
        * [<em>[any executable name]</em>](#any-executable-name)
     * [Variables](#variables)
        * [<em>OCRD_MODULES</em>](#ocrd_modules)
+       * [<em>NO_UPDATE</em>](#no_update)
        * [<em>PYTHON</em>](#python)
        * [<em>VIRTUAL_ENV</em>](#virtual_env)
        * [<em>TMPDIR</em>](#tmpdir)
@@ -48,24 +55,26 @@ in the current shell environment via PATH and PYTHONHOME.)
     * [System requirements](#system-requirements)
   * [Contributing](#contributing)
 
-## Preconditions
+## Prerequisites
 
 ### Space
 
-Make sure that there is enough free disk space. 7 GiB or more is recommended for
-the required submodules, build data, temporary data, installed virtual environment
-and pip cache.
+Make sure that there is enough free disk space. For a **full installation** including executables from all modules,
+around **22 GiB** will be needed (mostly on the same filesystem as the ocrd_all checkout). The same goes for the
+[`maximum-cuda`](#docker-hub) variant of the prebuilt Docker images (due on the filesystem harboring Docker, typically
+`/var/lib/docker`).
 
-If the `/tmp` directory has less than 5 GiB of free space, you can override the location
-of temporary files by setting the `TMPDIR` variable when calling make:
+Also, during build, an additional 5 GiB may be needed for temporary files, typically in the `/tmp` directory.
+To use a different location path with more free space, set the `TMPDIR` variable when calling `make`:
 
-```sh
-TMPDIR=/path/to/my/tempdir make all
-```
+    TMPDIR=/path/to/my/tempdir make all
+
 
 ### Locale
 
-Next, the (shell) environment must have a Unicode-based localization. (Otherwise Python code based on `click` will not work, i.e. most OCR-D CLIs.) This is true for most installations today, and can be verified by:
+The (shell) environment must have a Unicode-based localization.
+(Otherwise Python code based on `click` will not work, i.e. most OCR-D CLIs.)
+This is true for most installations today, and can be verified by:
 
     locale | fgrep .UTF-8
 
@@ -80,46 +89,72 @@ This should show several `LC_*` variables. Otherwise, either select another loca
 
 ### System packages
 
-Install GNU make, git and GNU parallel.
+* Install git, GNU make and GNU parallel.
 
-    # on Debian / Ubuntu:
-    sudo apt install make git parallel
+        # on Debian / Ubuntu:
+        sudo apt install make git parallel
 
-Install wget or curl if you want to download Tesseract models.
+* Install wget or curl if you want to download Tesseract models.
 
-    # on Debian / Ubuntu:
-    sudo apt install wget
+        # on Debian / Ubuntu:
+        sudo apt install wget
 
-Install the packages for Python3 development and for Python3 virtual environments
+* Install the packages for Python3 development and Python3 virtual environments
 for your operating system / distribution.
 
-    # on Debian / Ubuntu:
-    sudo apt install python3-dev python3-venv
+        # on Debian / Ubuntu:
+        sudo apt install python3-dev python3-venv
 
-Some modules use the Tesseract library. If your distribution provides Tesseract 4.1
-or newer, install the development package:
+* Some modules require [Tesseract](https://github.com/tesseract-ocr/tesseract).
+If your operating system / distribution already provides Tesseract 4.1
+or newer, then just install its development package:
 
-    # on Debian / Ubuntu:
-    sudo apt install libtesseract-dev
+        # on Debian / Ubuntu:
+        sudo apt install libtesseract-dev
 
-Ubuntu packages for Tesseract 5.0.0 (alpha) are available at the PPA
-https://launchpad.net/~alex-p/+archive/ubuntu/tesseract-ocr-devel.
+   Otherwise, recent Tesseract packages for Ubuntu are available via PPA
+   [alex-p](https://launchpad.net/~alex-p/+archive/ubuntu/tesseract-ocr-devel).
 
-Otherwise or for the latest Tesseract code it can also be built locally.
+   Alternatively, the latest version of Tesseract can also be built as a module locally.
 
-Other modules will have additional system dependencies.
+* Other modules will have additional system dependencies.
 
-System dependencies **for all modules** on Ubuntu 18.04 (or similar) can also be installed **automatically** by running:
+> **Note**: System dependencies **for all modules** on Ubuntu 20.04 (or similar)
+can also be installed **automatically** by running:
 
-    # on Debian / Ubuntu:
-    sudo apt install make
-    sudo make deps-ubuntu
+        # on Debian / Ubuntu:
+	make modules
+        sudo apt install make
+        sudo make deps-ubuntu
 
-(And you can define the scope of _all modules_ by setting the `OCRD_MODULES` [variable](#Variables).)
+> (And you can define the scope of _all modules_ by setting the `OCRD_MODULES`
+[variable](#Variables) as described below. If unsure, consider doing a dry-run
+first, by using `make -n`.)
+
+### GPU support
+
+Many executables can utilize Nvidia GPU for much faster computation, _if available_ (i.e. optionally).
+
+For that, as a further prerequisite you need an installation of
+[CUDA Toolkit](https://developer.nvidia.com/cuda-downloads) and additional optimised
+libraries like [cuDNN](https://developer.nvidia.com/cudnn) for your system.
+
+The CUDA version currently supported is 11.8 (but other's may work as well).
+
+> **Note**: CUDA toolkit and libraries (in a  development version with CUDA compiler)
+can also be installed **automatically** by running:
+
+        make ocrd
+        sudo make deps-cuda
+
+> This will deploy [Micromamba](https://mamba.readthedocs.io/en/latest/index.html)
+non-intrusively (without system packages or Conda environments), but also share some
+of the CUDA libraries installed as Python packages system-wide via ld.so.conf rules.
+If unsure, consider doing a dry-run first, by using `make -n`.)
 
 ## Usage
 
-Run `make` with optional parameters for _variables_ and _targets_ like so:
+Run `make` with optional parameters for __variables__ and __targets__ like so:
 
     make [PYTHON=python3] [VIRTUAL_ENV=./venv] [OCRD_MODULES="..."] [TARGET...]
 
@@ -129,9 +164,17 @@ Run `make` with optional parameters for _variables_ and _targets_ like so:
 
 Install system packages for all modules. (Depends on [_modules_](#modules).)
 
+See [system package prerequisites](#system-packages) above.
+
+#### _deps-cuda_
+
+Install CUDA toolkit and libraries. (Depends on [_ocrd_](#ocrd).)
+
+See (optional) [GPU support prerequisites](#gpu-support) above.
+
 #### _modules_
 
-Download/update all modules, but do not install anything.
+Checkout/update all modules, but do not install anything.
 
 #### _all_
 
@@ -139,11 +182,17 @@ Install executables from all modules into the venv. (Depends on [_modules_](#mod
 
 #### _ocrd_
 
-Install only OCR-D/core and its CLI `ocrd` into the venv.
+Install only the `core` module and its CLI `ocrd` into the venv.
 
 #### _docker_
 
-(Re-)build a docker image for all modules/executables. (Depends on [_modules_](#modules).)
+(Re-)build a Docker image for all modules/executables. (Depends on [_modules_](#modules).)
+
+#### _dockers_
+
+(Re-)build Docker images for some pre-selected subsets of modules/executables. (Depends on [_modules_](#modules).)
+
+(These are the very same variants published as [prebuilt images on Docker Hub](#docker-hub).)
 
 #### _clean_
 
@@ -151,7 +200,7 @@ Remove the venv and the modules' build directories.
 
 #### _show_
 
-Print the venv directory, the module directories, and the executable names.
+Print the venv directory, the module directories, and the executable names – as configured by the current variables.
 
 #### _check_
 
@@ -183,6 +232,12 @@ Override the list of git submodules to include. Targets affected by this include
 - [docker](#docker) (reducing the list of executables and modules to install)
 - [show](#show) (reducing the list of `OCRD_MODULES` and of `OCRD_EXECUTABLES` to print)
 
+#### _NO_UPDATE_
+
+If set to `1`, then when installing executables, does not attempt to `git submodule update`
+any currently checked out modules. (Useful for development when testing different module version
+prior to a commit.)
+
 #### _PYTHON_
 
 Name of the Python binary to use (at least python3 required).
@@ -191,7 +246,8 @@ Name of the Python binary to use (at least python3 required).
 
 Directory prefix to use for local installation. 
 
-(This is set automatically when activating a virtual environment on the shell. The build system will re-use the venv if one already exists here, or create one.)
+(This is set automatically when activating a virtual environment on the shell.
+The build system will re-use the venv if one already exists here, or create one otherwise.)
 
 #### _TMPDIR_
 
@@ -201,7 +257,8 @@ Override the default path (`/tmp` on Unix) where temporary files during build ar
 
 Add extra options to the `pip install` command like `-q` or `-v` or `-e`.
 
-(The latter will install Python modules in _editable mode_, i.e. any update to the source will directly affect the executables.)
+> **Note**: The latter option will install Python modules in __editable mode__,
+i.e. any update to the source would directly affect the executables.
 
 #### _GIT_RECURSIVE_
 
@@ -220,11 +277,10 @@ Set `configure` options for building Tesseract from source (`--disable-openmp --
 
 ### Examples
 
-The following examples assume a working development installation of Tesseract.
 To build the latest Tesseract locally, run this command first:
 
     # Get code, build and install Tesseract with the default English model.
-    make tesseract
+    make install-tesseract
 
 Optionally install additional Tesseract models.
 
@@ -288,6 +344,9 @@ TESSERACT_MODELS = deu frk script/Fraktur script/Latin
 
 # install all of Tesseract's submodules to support unit tests and training tools, too
 tesseract: GIT_RECURSIVE = --recursive
+
+# avoid automatic submodule updates
+NO_UPDATE = 1
 ```
 
 Note: When `local.mk` exists, variables can still be overridden on the command line,
@@ -297,23 +356,27 @@ but not from the shell environment
 
 ### Docker Hub
 
-The project is available as prebuilt Docker images from [Docker Hub as
-`ocrd/all`](https://hub.docker.com/r/ocrd/all). You can choose from three tags,
-`minimum`, `medium` and `maximum`. These differ in which modules are included,
-with `maximum` being the equivalent of doing `make all` with the default (unset) value for `OCRD_MODULES`. To download the images
-on the command line:
+Besides native installation, `ocrd_all` is also available as prebuilt Docker images
+from [Docker Hub as `ocrd/all`](https://hub.docker.com/r/ocrd/all). You can choose from three tags,
+`minimum`, `medium` and `maximum`. These differ w.r.t. which modules are included,
+with `maximum` being the equivalent of doing `make all` with the default (unset) value for `OCRD_MODULES`.
 
-```sh
-docker pull ocrd/all:minimum
-# or
-docker pull ocrd/all:medium
-# or
-docker pull ocrd/all:maximum
-```
+To download the images on the command line:
 
-In addition to these base variants, there are `minimum-cuda`, `medium-cuda` and `maximum-cuda` with GPU support. (Also needs [nvidia-docker](https://github.com/NVIDIA/nvidia-docker), which adds the `docker --gpus` option.)
+    docker pull ocrd/all:minimum
+    # or
+    docker pull ocrd/all:medium
+    # or
+    docker pull ocrd/all:maximum
 
-Usage is the same [as if you had built the image yourself](#results).
+In addition to these base variants, there are `minimum-cuda`, `medium-cuda` and `maximum-cuda` with GPU support.
+(These also need [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) runtime, which will add the
+`docker --gpus` option.)
+
+These tags will be overwritten with every new release of ocrd_all. However, the `maximum` variant of each release
+will also be aliased to a permanent tag by ISO date, e.g. `2023-04-02`.
+
+Usage of the prebuilt Docker image is the same [as if you had built the image yourself](#results).
 
 This table lists which tag contains which module:
 | Module                      | `minimum` | `medium` | `maximum` |
@@ -353,8 +416,9 @@ This table lists which tag contains which module:
 **Note**: The following modules have been disabled by default and can only be
 enabled by explicitly setting `OCRD_MODULES` or `DISABLED_MODULES`:
 
-* cor-asv-fst (runtime issues)
-* ocrd_ocropy (better implementation in ocrd_cis available)
+* `cor-asv-fst` (runtime issues)
+* `ocrd_ocropy` (better implementation in ocrd_cis available)
+* `ocrd_pc_segmentation` (dependency and quality issues)
 
 ### Uninstall
 
