@@ -5,13 +5,26 @@
 Changed:
 
   * All docker images now contain git checkouts and retain `/build`, i.e. behave like the `-git` variants
+  * No more git updates within docker build, but fix git module dependency outside
+  * Reduce docker image size (by reinstating all-in-one layer, removing cache, avoiding duplicate CUDA libraries...)
+  * Use `git submodule update --single-branch` on CI to reduce docker image size
 
 Added:
 
+  * `make deps-cuda`: non-intrusively support CUDA system dependencies (in docker or native)
   * `make ocrd-all-tool.json`: Generate and upload a combination of all processors' `ocrd-tool.json`, #362
   * `make test-workflow`: Run a workflow with most processors as a general smoke test
   * `make test-cuda`: to test whether CUDA properly set up and has GPU available
   * `make test-core`: Run OCR-D/core unit tests
+
+Fixed:
+
+  * dependencies between modules, esp. with custom `OCRD_MODULES` selection
+  * editable mode (`pip install -e`)
+  * OpenCV build
+  * get `tesserocr` from PyPI if disabled as a module
+  * get `ocrd` from PyPI if core disabled as a module
+  * consistent interoperable module versions (esp. Numpy/OpenCV/Shapely/Protobuf/Torch/TF Python dependencies)
 
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [006a70e](https://github.com/ASVLeipzig/cor-asv-ann/commits/006a70e)..[2c4b1ff](https://github.com/ASVLeipzig/cor-asv-ann/commits/2c4b1ff)
 
