@@ -263,14 +263,6 @@ $(SHARE)/opencv-python: opencv-python/setup.py | $(ACTIVATE_VENV) $(SHARE)
 $(BIN)/ocrd: $(SHARE)/opencv-python
 endif
 
-ifneq ($(filter ocrd_detectron2, $(OCRD_MODULES)),)
-OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
-OCRD_DETECTRON2 := $(BIN)/ocrd-detectron2-segment
-$(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2 $(BIN)/ocrd
-	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
-	$(pip_install)
-endif
-
 ifneq ($(filter ocrd_kraken, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KRAKEN)
 install-models: install-models-kraken
@@ -281,7 +273,15 @@ install-models-kraken:
 OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-recognize
-$(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(BIN)/ocrd | $(OCRD_DETECTRON2)
+$(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(BIN)/ocrd
+	$(pip_install)
+endif
+
+ifneq ($(filter ocrd_detectron2, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
+OCRD_DETECTRON2 := $(BIN)/ocrd-detectron2-segment
+$(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2 $(BIN)/ocrd | $(OCRD_KRAKEN)
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
 endif
 
