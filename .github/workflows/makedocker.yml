@@ -77,6 +77,10 @@ jobs:
            sudo rm -rf "$AGENT_TOOLSDIRECTORY"
            sudo du -mscx /* 2>/dev/null || true
            df -h /
+    - name: Setup upterm session
+      # interactive SSH logins for debugging
+      if: github.event.inputs.upterm-session == true
+      uses: lhotari/action-upterm@v1
     - name: Make Docker image
       run: make docker-${{ github.event.inputs.docker-image }} GIT_DEPTH=--single-branch
     - name: Generate ocrd-all-tool.json
@@ -86,10 +90,6 @@ jobs:
            export OCRD_MODULES=$(docker run --rm ocrd/all:${{ github.event.inputs.docker-image }} bash -c 'echo $OCRD_MODULES')
            make ocrd-all-tool.json
            wc -l ocrd-all-tool.json
-    - name: Setup upterm session
-      # interactive SSH logins for debugging
-      if: github.event.inputs.upterm-session == true
-      uses: lhotari/action-upterm@v1
     - name: Upload ocrd-all-tool.json
       uses: actions/upload-artifact@v3
       with:
