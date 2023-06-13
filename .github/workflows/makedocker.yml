@@ -33,6 +33,10 @@ on:
         description: 'Upload Docker image Github Container Registry'
         default: False
         type: boolean
+      upterm-session:
+        description: 'Run SSH login server for debugging'
+        default: False
+        type: boolean
   # not yet:
   #push:
   #  branches: [ "master" ]
@@ -83,7 +87,8 @@ jobs:
            make ocrd-all-tool.json
            wc -l ocrd-all-tool.json
     - name: Setup upterm session
-      if: false # interactive SSH logins for debugging
+      # interactive SSH logins for debugging
+      if: github.event.inputs.upterm-session == true
       uses: lhotari/action-upterm@v1
     - name: Upload ocrd-all-tool.json
       uses: actions/upload-artifact@v3
