@@ -101,7 +101,7 @@ RUN echo "hash -r" >> docker.sh
 # build/install all tools of the requested modules:
 RUN echo "make $PARALLEL all" >> docker.sh
 # remove unneeded automatic deps and clear pkg cache
-RUN echo "apt-get remove automake autoconf libtool pkg-config g++ && apt-get clean" >> docker.sh
+RUN echo "apt-get -y remove automake autoconf libtool pkg-config g++ && apt-get -y clean" >> docker.sh
 # clean-up some temporary files (git repos are also installation targets and must be kept)
 RUN echo "make -i clean-olena clean-tesseract; rm -fr /.cache" >> docker.sh
 # run the script in one layer/step (to minimise image size)
@@ -110,7 +110,7 @@ RUN set -a; bash docker.sh
 # update ld.so cache for new libs in /usr/local
 RUN ldconfig
 # check installation
-RUN make -j check CHECK_HELP=1
+RUN make -j4 check CHECK_HELP=1
 RUN if echo $BASE_IMAGE | fgrep -q cuda; then make fix-cuda; fi
 
 # remove (dated) security workaround preventing use of
