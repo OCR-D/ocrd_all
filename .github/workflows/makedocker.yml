@@ -79,7 +79,7 @@ jobs:
            df -h /
     - name: Setup upterm session
       # interactive SSH logins for debugging
-      if: github.event.inputs.upterm-session == true
+      if: github.event.inputs.upterm-session == 'true'
       uses: lhotari/action-upterm@v1
     - name: Make Docker image
       run: make docker-${{ github.event.inputs.docker-image }} GIT_DEPTH=--single-branch
@@ -97,10 +97,10 @@ jobs:
         path: ./ocrd-all-tool.json
         # if-no-files-found: error
     - name: Login to Docker Hub
-      if: github.event.inputs.upload-dockerhub == true
+      if: github.event.inputs.upload-dockerhub == 'true'
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
     - name: Push to Docker Hub
-      if: github.event.inputs.upload-dockerhub == true
+      if: github.event.inputs.upload-dockerhub == 'true'
       run: |
            docker push ocrd/all:${{ github.event.inputs.docker-image }}
            if test ${{ github.event.inputs.docker-image }} = maximum-git; then
@@ -109,14 +109,14 @@ jobs:
              docker push ocrd/all:latest
            fi
     - name: Login to GitHub Container Registry
-      if: github.event.inputs.upload-github == true
+      if: github.event.inputs.upload-github == 'true'
       uses: docker/login-action@v2
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Push to Github Container Registry
-      if: github.event.inputs.upload-github == true
+      if: github.event.inputs.upload-github == 'true'
       run: |
            docker tag ocrd/all:${{ github.event.inputs.docker-image }} ghcr.io/ocr-d/all:${{ github.event.inputs.docker-image }}
            docker push ghcr.io/ocr-d/all:${{ github.event.inputs.docker-image }}
