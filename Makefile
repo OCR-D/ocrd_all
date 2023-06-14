@@ -926,8 +926,6 @@ dockers: docker-minimum docker-minimum-cuda docker-medium docker-medium-cuda doc
 # keep git repos and reference them for install
 # (so components can be updated via git from the container alone)
 docker-%: PIP_OPTIONS = -e
-# old non-git alias
-docker-%um-git: docker-%um
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from PPA
 docker-mini%: DOCKER_MODULES := core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap tesserocr workflow-configuration ocrd_olahd_client
