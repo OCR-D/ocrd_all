@@ -39,12 +39,12 @@ jobs:
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
       - run:
           name: Build Docker image
-          command: make docker-<< parameters.variant >>-git GIT_DEPTH=--single-branch
+          command: make docker-<< parameters.variant >> GIT_DEPTH=--single-branch
           # fails due to pip races: DOCKER_PARALLEL=-j3
           no_output_timeout: 30m
       - run:
           name: Alias Docker images
-          command: docker tag ocrd/all:<< parameters.variant >>-git ocrd/all:<< parameters.variant >>
+          command: docker tag ocrd/all:<< parameters.variant >> ocrd/all:<< parameters.variant >>-git
       - run:
           name: Login to Docker Hub
           command: echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
