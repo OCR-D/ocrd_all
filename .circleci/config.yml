@@ -28,8 +28,6 @@ jobs:
   deploy:
     docker:
       - image: cimg/base:current-22.04
-    environment:
-      GIT_DEPTH: "--depth 1"
     parameters:
       variant:
         type:
