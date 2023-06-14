@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/base:stable-22.04
+      - image: cimg/base:current-22.04
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
@@ -27,7 +27,7 @@ jobs:
                 destination: artifacts
   deploy:
     docker:
-      - image: cimg/base:stable-22.04
+      - image: cimg/base:current-22.04
     environment:
       GIT_DEPTH: "--depth 1"
     parameters:
