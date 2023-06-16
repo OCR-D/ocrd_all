@@ -12,7 +12,7 @@ PIP_OPTIONS_E = $(filter-out -e,$(PIP_OPTIONS))
 # Set to 1 to skip all submodule updates. For development.
 NO_UPDATE ?= 0
 # Set to non-empty to try running all executables with --help / -h during make check
-CHECK_HELP ?=
+CHECK_HELP ?= -h
 GIT = git
 ifdef SUDO_USER
 ifneq ($(USER),$(SUDO_USER))
