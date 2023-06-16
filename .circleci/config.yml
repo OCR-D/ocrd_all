@@ -54,10 +54,10 @@ jobs:
             docker push ocrd/all:<< parameters.variant >>-git
       - when:
           condition:
-            equal: [ maximum, << parameters.variant >> ]
+            equal: [ maximum-cuda, << parameters.variant >> ]
           steps:
             - run:
-                name: Create a date-versioned mirror of ocrd/all:maximum
+                name: Create a date-versioned mirror of ocrd/all:maximum-cuda
                 command: bash release.sh release-dockerhub
             - run:
                 name: Update badge

@@ -2,7 +2,7 @@
 
 [![Built on CircleCI](https://circleci.com/gh/OCR-D/ocrd_all.svg?style=svg)](https://circleci.com/gh/OCR-D/ocrd_all)
 [![MIT licensed](https://img.shields.io/github/license/OCR-D/ocrd_all)](https://github.com/OCR-D/ocrd_all/blob/master/LICENSE)
-[![](https://images.microbadger.com/badges/image/ocrd/all:maximum.svg)](https://hub.docker.com/r/ocrd/all)
+[![](https://images.microbadger.com/badges/image/ocrd/all:latest.svg)](https://hub.docker.com/r/ocrd/all)
 
 This controls installation of all OCR-D modules from source (as git submodules).
 
@@ -362,10 +362,11 @@ NO_UPDATE = 1
 
 ### Docker Hub
 
-Besides native installation, `ocrd_all` is also available as prebuilt Docker images
-from [Docker Hub as `ocrd/all`](https://hub.docker.com/r/ocrd/all). You can choose from three tags,
-`minimum`, `medium` and `maximum`. These differ w.r.t. which modules are included,
-with `maximum` being the equivalent of doing `make all` with the default (unset) value for `OCRD_MODULES`.
+Besides native installation, `ocrd_all` is also available as **prebuilt** Docker images
+from [Docker Hub as `ocrd/all`](https://hub.docker.com/r/ocrd/all), backed by CI/CD.
+You can choose from three tags, `minimum`, `medium` and `maximum`. These differ w.r.t.
+which modules are included, with `maximum` being the equivalent of doing `make all`
+with the default (unset) value for `OCRD_MODULES`.
 
 To download the images on the command line:
 
@@ -379,8 +380,12 @@ In addition to these base variants, there are `minimum-cuda`, `medium-cuda` and 
 (These also need [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) runtime, which will add the
 `docker --gpus` option.)
 
-These tags will be overwritten with every new release of ocrd_all. However, the `maximum` variant of each release
-will also be aliased to a permanent tag by ISO date, e.g. `2023-04-02`.
+The `maximum-cuda` variant will be aliased to `latest` as well.
+
+These tags will be _overwritten_ with every new release of ocrd_all (i.e. rolling release).
+(You can still differentiate and reference them by their sha256 digest if necessary.)
+
+However, the `maximum-cuda` variant of each release will also be aliased to a _permanent_ tag by ISO **date**, e.g. `2023-04-02`.
 
 Usage of the prebuilt Docker image is the same [as if you had built the image yourself](#results).
 
