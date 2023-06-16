@@ -25,7 +25,7 @@ usage () {
     echo "  update              Update all submodules to most recent default branch"
     echo "  changelog           Generate a changelog for all modified submodules"
     echo "  release-github      Release to GitHub as $version"
-    echo "  release-dockerhub   Release ocrd/all:maximum as ocrd/all:${version#v} to DockerHub"
+    echo "  release-dockerhub   Release ocrd/all:maximum-cuda as ocrd/all:${version#v} to DockerHub"
 }
 
 main () {
@@ -162,8 +162,10 @@ release_github () {
 }
 
 release_dockerhub () {
-    docker tag ocrd/all:maximum ocrd/all:${version#v}
+    docker tag ocrd/all:maximum-cuda ocrd/all:${version#v}
     docker push ocrd/all:${version#v}
+    docker tag ocrd/all:maximum-cuda ocrd/all:latest
+    docker push ocrd/all:latest
 }
 
 
