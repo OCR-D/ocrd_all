@@ -82,6 +82,10 @@ ifeq ($(PYTHON_VERSION),3.10)
 # Python 3.10.x does not work with current kraken.
 DEFAULT_DISABLED_MODULES += ocrd_kraken
 endif
+ifeq ($(PYTHON_VERSION),3.11)
+# Python 3.11.x does not work with current kraken.
+DEFAULT_DISABLED_MODULES += ocrd_kraken
+endif
 endif
 DISABLED_MODULES ?= $(DEFAULT_DISABLED_MODULES)
 
