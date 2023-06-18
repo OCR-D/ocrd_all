@@ -15,7 +15,7 @@
 # - danger of running into inconsistent dependencies
 #   between modules (just as ocrd_all for local installation)
 
-# use OCR-D base container (from ubuntu:18.04)
+# use OCR-D base container
 ARG BASE_IMAGE=ocrd/core
 FROM $BASE_IMAGE
 ARG BASE_IMAGE
