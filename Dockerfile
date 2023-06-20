@@ -36,6 +36,9 @@ ENV VIRTUAL_ENV $PREFIX
 # so let XDG_DATA_HOME coincide with fixed system location
 # (can still be overridden by derived stages)
 ENV XDG_DATA_HOME /usr/local/share
+# avoid the need for an extra volume for persistent resource user db
+# (i.e. XDG_CONFIG_HOME/ocrd/resources.yml)
+ENV XDG_CONFIG_HOME /usr/local/share/ocrd-resources
 # declaring volumes prevents derived stages
 # from placing data there (cannot be undeclared),
 # preventing the use-case of images bundled with models;
@@ -125,6 +128,9 @@ RUN sed -i '/width\|height/s/value="16KP"/value="64KP"/' /etc/ImageMagick-6/poli
 ENV DEBIAN_FRONTEND teletype
 
 WORKDIR /data
+# make writable for any user that logs in
+RUN chmod 777 /data
+# will usually be mounted over
 VOLUME /data
 
 # no fixed entrypoint
