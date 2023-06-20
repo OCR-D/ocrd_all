@@ -781,7 +781,14 @@ ifneq ($(filter tesseract, $(OCRD_MODULES)),)
 # Tesseract.
 
 # when not installing via PPA, we must cope without ocrd_tesserocr's deps-ubuntu-modules
-CUSTOM_DEPS += automake ca-certificates g++ libtool make pkg-config
+CUSTOM_DEPS += automake ca-certificates g++ libtool make
+ifeq ($(shell apt-cache search --names-only '^pkgconf$$'),)
+# Debian 11, Ubuntu 22.04 or other old distributions.
+CUSTOM_DEPS += pkg-config
+else
+# Debian 12, Ubuntu 23.04 or other new distributions.
+CUSTOM_DEPS += pkgconf
+endif
 # Required library.
 CUSTOM_DEPS += libleptonica-dev
 # Optional libraries for enhanced functionality.
