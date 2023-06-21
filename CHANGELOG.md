@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+Changed:
+
+  * Bash prompt excludes user name undefined in docker container, #376, #366
+  * Docker: `ocrd-all-tool.json` is built during container build, #379
+  * Docker: `XDG_CONFIG_HOME` is set to `XDG_DATA_HOME/ocrd-resources`, so `resources.yml` is in usually-mounted location, #377, #252
+  * Docker: `/data` is world-writeable now, so log files can be written there, #377, #252
+
 ## [v2023-06-14](https://github.com/OCR-D/ocrd_all/releases/v2023-06-12)
 
 Changed:
