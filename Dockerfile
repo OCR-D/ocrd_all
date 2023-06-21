@@ -124,6 +124,10 @@ RUN sed -i 's/name="disk" value="1GiB"/name="disk" value="8GiB"/g' /etc/ImageMag
 # relax overly restrictive maximum resolution
 RUN sed -i '/width\|height/s/value="16KP"/value="64KP"/' /etc/ImageMagick-6/policy.xml || true
 
+# avoid default prompt with user name, because likely we will use host UID without host /etc/passwd
+# cannot just set ENV, because internal bashrc will override it anyway
+RUN echo "PS1='\w\$ '" >> /etc/bash.bashrc
+
 # reset to interactive
 ENV DEBIAN_FRONTEND teletype
 
