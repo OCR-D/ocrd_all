@@ -108,6 +108,7 @@ clean: # add more prerequisites for clean below
 	$(RM) -r $(SUB_VENV)
 	$(RM) -r $(CURDIR)/venv # deliberately not using VIRTUAL_ENV here
 	$(RM) -r $(HOME)/.parallel/semaphores/id-ocrd_*
+	$(RM) ocrd-all-tool.json ocrd-all-module-dir.json
 
 define HELP
 cat <<"EOF"
@@ -147,6 +148,7 @@ Targets (testing):
 
 Targets (auxiliary data):
 	ocrd-all-tool.json: generate union of ocrd-tool.json for all executables of all modules
+	ocrd-all-module-dir.json: mapping of module locations for all executables of all modules
 	install-models: download commonly used models to appropriate locations
 
 Targets (build of container images):
@@ -750,21 +752,11 @@ test-workflow: test-assets core $(BIN)/ocrd $(ACTIVATE_VENV)
 test-assets:
 	$(MAKE) -C core assets
 
-clean:
-
-define tool-jsons-code =
-import json
-import sys
-all = dict()
-for path in sys.argv[1:]:
-    all.update(json.load(open(path))['tools'])
-print(json.dumps(all, indent=2))
-endef
-tool-jsons-file != mktemp -u
 ocrd-all-tool.json: modules $(ACTIVATE_VENV)
-	$(file >$(tool-jsons-file),$(tool-jsons-code))
-	. $(ACTIVATE_VENV) && $(PYTHON) $(tool-jsons-file) $(wildcard $(OCRD_MODULES:%=%/ocrd-tool.json)) > $@
-	$(RM) $(tool-jsons-file)
+	. $(ACTIVATE_VENV) && $(PYTHON) ocrd-all-tool.py $(wildcard $(OCRD_MODULES:%=%/ocrd-tool.json)) > $@
+
+ocrd-all-module-dir.json: ocrd-all-tool.json $(OCRD_EXECUTABLES) $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && TF_CPP_MIN_LOG_LEVEL=3 $(PYTHON) ocrd-all-module-dir.py $< > $@
 
 .PHONY: $(OCRD_EXECUTABLES:%=%-check)
 $(OCRD_EXECUTABLES:%=%-check):
