@@ -117,6 +117,7 @@ from their source repositories into a single virtualenv.
 Targets (general):
 	help: show this message
 	show: list the venv path and all executables (to be) installed
+	show-VAR: print the value of make variable VAR
 
 Targets (module management):
 	modules: download all submodules to the managed revision
@@ -725,6 +726,8 @@ show:
 	@echo VIRTUAL_ENV = $(VIRTUAL_ENV)
 	@echo OCRD_MODULES = $(OCRD_MODULES)
 	@echo OCRD_EXECUTABLES = $(OCRD_EXECUTABLES:$(BIN)/%=%)
+
+show-%: ; @echo $($*)
 
 check: $(OCRD_EXECUTABLES:%=%-check) $(OCRD_MODULES:%=%-check)
 	. $(ACTIVATE_VENV) && pip check
