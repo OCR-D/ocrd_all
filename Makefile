@@ -792,11 +792,7 @@ CUSTOM_DEPS += libpango1.0-dev
 
 XDG_DATA_HOME ?= $(if $(HOME),$(HOME)/.local/share,/usr/local/share)
 DEFAULT_RESLOC ?= $(XDG_DATA_HOME)/ocrd-resources
-#TESSDATA = $(VIRTUAL_ENV)/share/tessdata/
-# as discussed in #378, we do not want to manage more than one resource location
-# to mount for model persistence; with named volumes, the preinstalled models
-# will be copied to the host and complemented by downloaded models:
-TESSDATA = $(DEFAULT_RESLOC)
+TESSDATA = $(VIRTUAL_ENV)/share/tessdata/
 TESSDATA_RELEASE = 4.1.0
 TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast/raw/$(TESSDATA_RELEASE)
 TESSERACT_TRAINEDDATA = $(ALL_TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
