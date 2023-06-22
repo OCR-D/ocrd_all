@@ -436,6 +436,7 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-regions
 OCRD_SEGMENT += $(BIN)/ocrd-segment-extract-pages
 OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-original
 OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-page
+OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-text
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 OCRD_SEGMENT += $(BIN)/ocrd-segment-project
 $(call multirule,$(OCRD_SEGMENT)): ocrd_segment $(SUB_VENV_TF1)/bin/activate
