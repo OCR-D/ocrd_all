@@ -116,8 +116,9 @@ RUN ldconfig
 RUN make -j4 check CHECK_HELP=1
 RUN if echo $BASE_IMAGE | fgrep -q cuda; then make fix-cuda; fi
 
-# preinstall ocrd-all-tool.json
+# preinstall ocrd-all-tool.json and ocrd-all-module-dir.json
 RUN make ocrd-all-tool.json
+RUN make ocrd-all-module-dir.json
 
 # remove (dated) security workaround preventing use of
 # ImageMagick's convert on PDF/PS/EPS/XPS:

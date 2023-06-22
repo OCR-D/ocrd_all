@@ -1,2 +1,4 @@
 /venv
 local.mk
+ocrd-all-tool.json
+ocrd-all-module-dir.json
