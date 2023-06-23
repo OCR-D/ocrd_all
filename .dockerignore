@@ -1,3 +1,5 @@
+# prevent invalidating the build cache
+Dockerfile
 # only for host-local installation
 venv
 local.mk
@@ -9,7 +11,8 @@ ocrd-all-module-dir.json
 # not needed in Ubuntu:
 opencv-python
 # only needed for testing:
-**/assets/*
+# (but we may want that, only 169 MB)
+# **/assets/*
 # avoid interference with host-local builds:
 **/build/*
 */.eggs/*
