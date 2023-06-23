@@ -119,8 +119,15 @@ RUN make -j4 check CHECK_HELP=1
 RUN if echo $BASE_IMAGE | fgrep -q cuda; then make fix-cuda; fi
 
 # preinstall ocrd-all-tool.json and ocrd-all-module-dir.json
-RUN make ocrd-all-tool.json
-RUN make ocrd-all-module-dir.json
+RUN make ocrd-all-tool.json ocrd-all-module-dir.json
+
+# as discussed in #378, we do not want to manage more than one resource location
+# to mount for model persistence; with named volumes, the preinstalled models
+# will be copied to the host and complemented by downloaded models; tessdata
+# is the only problematic module location
+RUN mkdir -p  $XDG_DATA_HOME/tessdata
+RUN mv $XDG_DATA_HOME/tessdata $XDG_CONFIG_HOME/ocrd-tesserocr-recognize
+RUN ln -s $XDG_CONFIG_HOME/ocrd-tesserocr-recognize $XDG_DATA_HOME/tessdata
 
 # remove (dated) security workaround preventing use of
 # ImageMagick's convert on PDF/PS/EPS/XPS:
