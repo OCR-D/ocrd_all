@@ -311,9 +311,9 @@ OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-proc
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-eval
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-compare
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
-$(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann $(SUB_VENV_TF1)/bin/activate
+$(call multirule,$(OCRD_COR_ASV_ANN)): cor-asv-ann $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_ANN)) VIRTUAL_ENV=$(SUB_VENV_TF1)
+	$(MAKE) -o $< $(notdir $(OCRD_COR_ASV_ANN)) VIRTUAL_ENV=$(SUB_VENV_TF1)
 	$(call delegate_venv,$(OCRD_COR_ASV_ANN),$(SUB_VENV_TF1))
 cor-asv-ann-check:
 	$(MAKE) check OCRD_MODULES=cor-asv-ann VIRTUAL_ENV=$(SUB_VENV_TF1)
@@ -328,9 +328,9 @@ deps-ubuntu-modules: cor-asv-fst
 OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
 OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-process
 OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
-$(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst $(SUB_VENV_TF1)/bin/activate
+$(call multirule,$(OCRD_COR_ASV_FST)): cor-asv-fst $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_COR_ASV_FST)) VIRTUAL_ENV=$(SUB_VENV_TF1)
+	$(MAKE) -o $< $(notdir $(OCRD_COR_ASV_FST)) VIRTUAL_ENV=$(SUB_VENV_TF1)
 	$(call delegate_venv,$(OCRD_COR_ASV_FST),$(SUB_VENV_TF1))
 cor-asv-fst-check:
 	$(MAKE) check OCRD_MODULES=cor-asv-fst VIRTUAL_ENV=$(SUB_VENV_TF1)
@@ -345,9 +345,9 @@ ifneq ($(filter ocrd_keraslm, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_KERASLM)
 OCRD_KERASLM := $(BIN)/ocrd-keraslm-rate
 OCRD_KERASLM += $(BIN)/keraslm-rate
-$(call multirule,$(OCRD_KERASLM)): ocrd_keraslm $(SUB_VENV_TF1)/bin/activate
+$(call multirule,$(OCRD_KERASLM)): ocrd_keraslm $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_KERASLM)) VIRTUAL_ENV=$(SUB_VENV_TF1)
+	$(MAKE) -o $< $(notdir $(OCRD_KERASLM)) VIRTUAL_ENV=$(SUB_VENV_TF1)
 	$(call delegate_venv,$(OCRD_KERASLM),$(SUB_VENV_TF1))
 ocrd_keraslm-check:
 	$(MAKE) check OCRD_MODULES=ocrd_keraslm VIRTUAL_ENV=$(SUB_VENV_TF1)
@@ -442,9 +442,9 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-page
 OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-text
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 OCRD_SEGMENT += $(BIN)/ocrd-segment-project
-$(call multirule,$(OCRD_SEGMENT)): ocrd_segment $(SUB_VENV_TF1)/bin/activate
+$(call multirule,$(OCRD_SEGMENT)): ocrd_segment $(BIN)/ocrd
 ifeq (0,$(MAKELEVEL))
-	$(MAKE) -B -o $< $(notdir $(OCRD_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV_TF1)
+	$(MAKE) -o $< $(notdir $(OCRD_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV_TF1)
 	$(call delegate_venv,$(OCRD_SEGMENT),$(SUB_VENV_TF1))
 ocrd_segment-check:
 	$(MAKE) check OCRD_MODULES=ocrd_segment VIRTUAL_ENV=$(SUB_VENV_TF1)
@@ -666,14 +666,14 @@ define pip_install_tf1nvidia =
 endef
 
 # pattern for recursive make:
-# $(executables...): module...
+# $(executables...): module... $(BIN)/ocrd
 # ifeq (0,$(MAKELEVEL))
-# 	$(MAKE) -B -o $< $(notdir $(executables...)) VIRTUAL_ENV=$(SUB_VENV_name)
+# 	$(MAKE) -o $< $(notdir $(executables...)) VIRTUAL_ENV=$(SUB_VENV_name)
 # 	$(call delegate_venv,$(executables...),$(SUB_VENV_name))
 # else
 # 	actual recipe...
 # fi
-# -- calls make with -B to ensure the nested recipe is run as well,
+# -- adds ocrd as dependency to ensure the venv gets created first,
 #    but also with -o $< to avoid updating the submodule twice);
 #    overrides the venv path for nested make via target-specific var
 
@@ -752,7 +752,7 @@ test-workflow: test-assets core $(BIN)/ocrd $(ACTIVATE_VENV)
 test-assets:
 	$(MAKE) -C core assets
 
-ocrd-all-tool.json: modules $(ACTIVATE_VENV)
+ocrd-all-tool.json: $(OCRD_MODULES) $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(PYTHON) ocrd-all-tool.py $(wildcard $(OCRD_MODULES:%=%/ocrd-tool.json)) > $@
 
 ocrd-all-module-dir.json: ocrd-all-tool.json $(OCRD_EXECUTABLES) $(ACTIVATE_VENV)
