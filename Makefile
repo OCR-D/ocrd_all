@@ -657,7 +657,7 @@ define pip_install_tf1nvidia =
 	sed -i s/nvidia_tensorflow/tensorflow_gpu/g $$name/tensorflow_core/tools/pip_package/setup.py && \
 	pushd $$name && for path in $$name*; do mv $$path $${path/$$name/$$newname}; done && popd && \
 	$(PYTHON) -m wheel pack $$name && \
-	$(SEMPIP) pip install $$newname*.whl && popd && rm -fr $$OLDPWD; fi
+	$(SEMPIP) pip install --no-cache-dir $$newname*.whl && popd && rm -fr $$OLDPWD; fi
 # - preempt conflict over numpy between scikit-image and tensorflow
 # - preempt conflict over numpy between tifffile and tensorflow (and allow py36)
 . $(ACTIVATE_VENV) && $(SEMPIP) pip install imageio==2.14.1 "tifffile<2022"
