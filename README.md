@@ -319,9 +319,10 @@ To use the built executables, simply activate the virtual environment:
     ocrd --help
     ocrd-...
 
-For the Docker image, run it with your data path mounted as a user:
+For the Docker image, run it with your data path mounted as a user,
+and the processor resources as named volume (for model persistency):
 
-    docker run -it -u $(id -u):$(id -g) -v $PWD:/data ocrd/all
+    docker run -it -u $(id -u):$(id -g) -v $PWD:/data -v ocrd-models:/models ocrd/all
     ocrd --help
     ocrd-...
 
