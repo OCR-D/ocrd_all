@@ -90,12 +90,14 @@ COPY . .
 # make apt system functional
 RUN apt-get -y update && apt-get install -y apt-utils
 
+# avoid git submodule update (keep at build context)
+ENV NO_UPDATE=1
+
 # start a shell script (so we can comment individual steps here)
 RUN echo "set -ex" > docker.sh
 # get packages for build
 RUN echo "apt-get -y install automake autoconf libtool pkg-config g++" >> docker.sh
 # ensure no additional git actions happen after copying the checked out modules
-RUN echo "export NO_UPDATE=1" >> docker.sh
 # try to fetch all modules system requirements
 RUN echo "make deps-ubuntu" >> docker.sh
 RUN echo "source $VIRTUAL_ENV/bin/activate" >> docker.sh
