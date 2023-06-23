@@ -44,6 +44,7 @@ ENV XDG_CONFIG_HOME /usr/local/share/ocrd-resources
 # preventing the use-case of images bundled with models;
 # also, this adds little value over runtime --mount
 # VOLUME $XDG_DATA_HOME/ocrd-resources
+# see below (after make all) for an ex-post symlink to /models
 ENV HOME /
 
 # make apt run non-interactive during build
@@ -128,6 +129,10 @@ RUN make ocrd-all-tool.json ocrd-all-module-dir.json
 RUN mkdir -p  $XDG_DATA_HOME/tessdata
 RUN mv $XDG_DATA_HOME/tessdata $XDG_CONFIG_HOME/ocrd-tesserocr-recognize
 RUN ln -s $XDG_CONFIG_HOME/ocrd-tesserocr-recognize $XDG_DATA_HOME/tessdata
+
+# finally, alias/symlink all ocrd-resources to /models for shorter mount commands
+RUN mkdir -p $XDG_CONFIG_HOME
+RUN mv $XDG_CONFIG_HOME /models && ln -s /models $XDG_CONFIG_HOME
 
 # remove (dated) security workaround preventing use of
 # ImageMagick's convert on PDF/PS/EPS/XPS:
