@@ -1,5 +1,107 @@
 # Changelog
 
+## [v2023-06-26](https://github.com/OCR-D/ocrd_all/releases/v2023-06-26)
+
+### [core](https://github.com/OCR-D/core) [6708624](https://github.com/OCR-D/core/commits/6708624)..[0f0d08b](https://github.com/OCR-D/core/commits/0f0d08b)
+
+> Release: [v2.52.0](https://github.com/OCR-D/core/releases/v2.52.0)
+
+  > * :package: v2.52.0
+  > * :memo: changelog
+  > * ci: debug macos
+  > * Makefile: PIP_INSTALL from environment via ?=
+  > * ci: try fixing macos
+  > * Merge branch 'master' into improve-packaging
+  > * Makefile: trailing whitespace
+  > * update gitignore
+  > * add ocrd.processor.builtin.dummy pkg (needed for resource discovery)
+  > * add requirements.txt to manifest (so it's available at build time)
+  > * make pypi: use build module instead of setuptools CLI
+  > * make uninstall: run in reverse BUILD_ORDER
+  > * make install: run conjunctively in BUILD_ORDER
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [3a029ca](https://github.com/OCR-D/ocrd_calamari/commits/3a029ca)..[ed7a926](https://github.com/OCR-D/ocrd_calamari/commits/ed7a926)
+
+> Release: [v1.0.6](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.6)
+
+  > * v1.0.6
+  > * 🐛 Fix installation by keeping protobuf < 4.0
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [43a356a](https://github.com/cisocrgroup/ocrd_cis/commits/43a356a)..[1abc3b7 (rewind)](https://github.com/cisocrgroup/ocrd_cis/commits/1abc3b7 (rewind))
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > postcorrect: improve/update OCR-D wrapper…
+  > ocropy-train: improve/update OCR-D wrapper…
+  > ocrd-tool: rm old ocrd-cis-ocropy-rec (gone in 9e20991)
+  > Merge branch 'kba:typo' #91 into fix-alpha-shape
+  > Merge branch 'kba:double-page-max-size' #96 into fix-alpha-shape
+  > Merge branch 'kba:resolve-resources' #83 into fix-alpha-shape
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [04bf4c6](https://github.com/bertsky/ocrd_detectron2/commits/04bf4c6)..[118b3b6](https://github.com/bertsky/ocrd_detectron2/commits/118b3b6)
+
+> Release: [v0.1.7](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.7)
+
+  > * requirements.txt: avoid pkg names in comments
+  > * requirements.txt: add pycocotools as explicit dependency
+  > * require wheel (since pip does not pull it anymore)
+  > * deps: no build isolation so Detectron2 compilation can use Torch
+  > * Docker: add badges and basic description
+  > * Docker username: vars, not env
+  > * Docker: use underscore in tagname, alright
+  > * add Dockerfile and GH Action to publish at Dockerhub and GHCR
+
+### [ocrd_repair_inconsistencies](https://github.com/qurator-spk/ocrd_repair_inconsistencies) [c898d6c](https://github.com/qurator-spk/ocrd_repair_inconsistencies/commits/c898d6c)..[cf879c1](https://github.com/qurator-spk/ocrd_repair_inconsistencies/commits/cf879c1)
+
+  > * Merge pull request #13 from stweil/master
+
+### [opencv-python](https://github.com/skvark/opencv-python) [474a1cc](https://github.com/skvark/opencv-python/commits/474a1cc)..[b534ea2](https://github.com/skvark/opencv-python/commits/b534ea2)
+
+> Release: [72](https://github.com/skvark/opencv-python/releases/72)
+
+  > * Merge pull request #853 from asmorkalov/as/add_pyi_to_package
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [010ec99](https://github.com/qurator-spk/sbb_binarization/commits/010ec99)..[f3c6ac8](https://github.com/qurator-spk/sbb_binarization/commits/f3c6ac8)
+
+> Release: [v0.1.0](https://github.com/qurator-spk/sbb_binarization/releases/v0.1.0)
+
+  > * Update test.yml
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [1569e50](https://github.com/tesseract-ocr/tesseract/commits/1569e50)..[bb8803a](https://github.com/tesseract-ocr/tesseract/commits/bb8803a)
+
+> Release: [5.3.1](https://github.com/tesseract-ocr/tesseract/releases/5.3.1)
+
+  > * Update .mailmap
+  > * Create config.yml
+  > * Remove old broken GitHub action vcpkg-4.1.1 (fixes issue #4078)
+  > * cmake: check if leptonica was build with tiff support
+  > * cmake: provide info about disabled LibArchive and CURL
+  > * cmake: allow to disable tiff (-DDISABLE_TIFF=ON)
+  > * Merge pull request #4073 from stweil/osd
+  > * Merge pull request #4071 from stweil/clean
+  > * Merge pull request #4066 from stweil/lstmtraining
+  > * Merge pull request #4068 from stweil/sprintf
+  > * Remove unused code in function fix_rep_char
+  > * Merge pull request #4067 from stweil/misc
+  > * Support for Sgaw and W Pwo Karen languages in the Myanmar validator. (#4065)
+  > * issue-bug.yml:  Windows versions 7, 8, 8.1 are not supported anymore
+  > * snap: Update from leptonica 1.74.2 to latest 1.83.1
+  > * fix: Fix snap package building
+  > * Create new release 5.3.1
+  > * Remove whitespace at line endings
+  > * Fix issue #4010 (#4041)
+  > * cmake: add missing HAVE_NEON to config_auto.h
+  > * Merge branch 'main' of https://github.com/tesseract-ocr/tesseract
+  > * cmake: adjust build to autotool settings
+  > * Merge branch 'main' of https://github.com/tesseract-ocr/tesseract
+  > * cmake: improve NEON build
+
+### [tesserocr](https://github.com/sirfz/tesserocr) [e184c62](https://github.com/sirfz/tesserocr/commits/e184c62)..[3c9519b](https://github.com/sirfz/tesserocr/commits/3c9519b)
+
+> Release: [v2.6.0](https://github.com/sirfz/tesserocr/releases/v2.6.0)
+
+  > * add github-workflow building wheels
+
 ## Unreleased
 
 Changed:
