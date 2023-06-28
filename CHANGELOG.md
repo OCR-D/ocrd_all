@@ -1,11 +1,21 @@
 # Changelog
 
-## [v2023-06-26](https://github.com/OCR-D/ocrd_all/releases/v2023-06-26)
+## Unreleased
 
-### [core](https://github.com/OCR-D/core) [6708624](https://github.com/OCR-D/core/commits/6708624)..[0f0d08b](https://github.com/OCR-D/core/commits/0f0d08b)
+## [v2023-06-28](https://github.com/OCR-D/ocrd_all/releases/v2023-06-28)
+
+Changed:
+
+  * Bash prompt excludes user name undefined in docker container, #376, #366
+  * Docker: `ocrd-all-tool.json` is built during container build, #379
+  * Docker: `XDG_CONFIG_HOME` is set to `XDG_DATA_HOME/ocrd-resources`, so `resources.yml` is in usually-mounted location, #377, #252
+  * Docker: `/data` is world-writeable now, so log files can be written there, #377, #252
+
+### [core](https://github.com/OCR-D/core) [6708624](https://github.com/OCR-D/core/commits/6708624)..[552cfcd](https://github.com/OCR-D/core/commits/552cfcd)
 
 > Release: [v2.52.0](https://github.com/OCR-D/core/releases/v2.52.0)
 
+  > * Dockerfile: install wheel before make install
   > * :package: v2.52.0
   > * :memo: changelog
   > * ci: debug macos
@@ -27,21 +37,22 @@
   > * v1.0.6
   > * 🐛 Fix installation by keeping protobuf < 4.0
 
-### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [43a356a](https://github.com/cisocrgroup/ocrd_cis/commits/43a356a)..[1abc3b7 (rewind)](https://github.com/cisocrgroup/ocrd_cis/commits/1abc3b7 (rewind))
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [a0ea0a2](https://github.com/cisocrgroup/ocrd_cis/commits/a0ea0a2)..[43a356a](https://github.com/cisocrgroup/ocrd_cis/commits/43a356a)
 
 > Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
 
-  > postcorrect: improve/update OCR-D wrapper…
-  > ocropy-train: improve/update OCR-D wrapper…
-  > ocrd-tool: rm old ocrd-cis-ocropy-rec (gone in 9e20991)
+  > * postcorrect: improve/update OCR-D wrapper…
+  > * ocropy-train: improve/update OCR-D wrapper…
+  > * ocrd-tool: rm old ocrd-cis-ocropy-rec (gone in 9e20991)
   > Merge branch 'kba:typo' #91 into fix-alpha-shape
   > Merge branch 'kba:double-page-max-size' #96 into fix-alpha-shape
   > Merge branch 'kba:resolve-resources' #83 into fix-alpha-shape
 
-### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [04bf4c6](https://github.com/bertsky/ocrd_detectron2/commits/04bf4c6)..[118b3b6](https://github.com/bertsky/ocrd_detectron2/commits/118b3b6)
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [04bf4c6](https://github.com/bertsky/ocrd_detectron2/commits/04bf4c6)..[5f8bdcb](https://github.com/bertsky/ocrd_detectron2/commits/5f8bdcb)
 
 > Release: [v0.1.7](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.7)
 
+  > * update model URLs to GH release archive
   > * requirements.txt: avoid pkg names in comments
   > * requirements.txt: add pycocotools as explicit dependency
   > * require wheel (since pip does not pull it anymore)
@@ -50,6 +61,13 @@
   > * Docker username: vars, not env
   > * Docker: use underscore in tagname, alright
   > * add Dockerfile and GH Action to publish at Dockerhub and GHCR
+
+### [ocrd_kraken](https://github.com/OCR-D/ocrd_kraken) [b13dd8a](https://github.com/OCR-D/ocrd_kraken/commits/b13dd8a)..[1e71324](https://github.com/OCR-D/ocrd_kraken/commits/1e71324)
+
+> Release: [v0.3.0](https://github.com/OCR-D/ocrd_kraken/releases/v0.3.0)
+
+  > * recognize: ignore 'one_channel_mode' unless model has 1 input channel
+  > * segment/recognize: warn if no GPU available
 
 ### [ocrd_repair_inconsistencies](https://github.com/qurator-spk/ocrd_repair_inconsistencies) [c898d6c](https://github.com/qurator-spk/ocrd_repair_inconsistencies/commits/c898d6c)..[cf879c1](https://github.com/qurator-spk/ocrd_repair_inconsistencies/commits/cf879c1)
 
@@ -60,6 +78,7 @@
 > Release: [72](https://github.com/skvark/opencv-python/releases/72)
 
   > * Merge pull request #853 from asmorkalov/as/add_pyi_to_package
+
 
 ### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [010ec99](https://github.com/qurator-spk/sbb_binarization/commits/010ec99)..[f3c6ac8](https://github.com/qurator-spk/sbb_binarization/commits/f3c6ac8)
 
@@ -102,14 +121,6 @@
 
   > * add github-workflow building wheels
 
-## Unreleased
-
-Changed:
-
-  * Bash prompt excludes user name undefined in docker container, #376, #366
-  * Docker: `ocrd-all-tool.json` is built during container build, #379
-  * Docker: `XDG_CONFIG_HOME` is set to `XDG_DATA_HOME/ocrd-resources`, so `resources.yml` is in usually-mounted location, #377, #252
-  * Docker: `/data` is world-writeable now, so log files can be written there, #377, #252
 
 ## [v2023-06-14](https://github.com/OCR-D/ocrd_all/releases/v2023-06-12)
 
