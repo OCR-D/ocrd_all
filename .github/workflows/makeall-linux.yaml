@@ -43,6 +43,11 @@ jobs:
       run: echo ${{ inputs.os }}
     - name: Show environment
       run: echo "OS=${{ env.OS }}, PYTHON_VERSION=${{ env.PYTHON_VERSION }} ($(python --version))"
+    - name: Remove Docker images
+      run: |
+           df -h
+           docker rmi $(docker images -q)
+           df -h
     - name: update apt repositories
       run: sudo apt-get update
     - name: Install dependencies
