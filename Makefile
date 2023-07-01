@@ -515,9 +515,11 @@ OCRD_CIS += $(BIN)/ocrd-cis-ocropy-segment
 #OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
 OCRD_CIS += $(BIN)/ocrd-cis-postcorrect
 $(call multirule,$(OCRD_CIS)): ocrd_cis $(BIN)/ocrd
+ifneq ($(PYTHON_VERSION),3.10)
 ifneq ($(PYTHON_VERSION),3.11)
 	@# workaround against breaking changes in Numpy and OpenCV
 	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "numpy<1.24" "opencv-python-headless<4.5"
+endif
 endif
 	$(pip_install)
 endif
