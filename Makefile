@@ -880,6 +880,7 @@ clean-tesseract:
 # install git and parallel first (which is required for the module updates)
 deps-ubuntu:
 	apt-get -y install git parallel
+ifneq ($(PYTHON),python)
 ifneq ($(suffix $(PYTHON)),)
 # install specific Python version in system via PPA
 	apt-get install -y software-properties-common
@@ -887,6 +888,7 @@ ifneq ($(suffix $(PYTHON)),)
 	apt-get update
 endif
 	apt-get install -y --no-install-recommends $(notdir $(PYTHON))-dev $(notdir $(PYTHON))-venv
+endif
 	$(MAKE) deps-ubuntu-modules
 
 deps-ubuntu-modules:

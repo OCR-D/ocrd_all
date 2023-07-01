@@ -42,12 +42,12 @@ jobs:
     - name: Show inputs.os
       run: echo ${{ inputs.os }}
     - name: Show environment
-      run: echo OS=${{ env.OS }}, PYTHON_VERSION=${{ env.PYTHON_VERSION }}
+      run: echo "OS=${{ env.OS }}, PYTHON_VERSION=${{ env.PYTHON_VERSION }} ($(python --version))"
     - name: update apt repositories
       run: sudo apt-get update
     - name: Install dependencies
-      run: sudo make deps-ubuntu PYTHON=python${{ env.PYTHON_VERSION}}
+      run: sudo make deps-ubuntu PYTHON=python
     - name: Make all
-      run: make all PYTHON=python${{ env.PYTHON_VERSION }}
+      run: make all PYTHON=python
     - name: Run check
       run: make check
