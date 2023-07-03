@@ -19,12 +19,6 @@ on:
           - 'medium-cuda'
           - 'maximum'
           - 'maximum-cuda'
-          - 'minimum-git'
-          - 'minimum-cuda-git'
-          - 'medium-git'
-          - 'medium-cuda-git'
-          - 'maximum-git'
-          - 'maximum-cuda-git'
       upload-dockerhub:
         description: 'Upload Docker image to Dockerhub'
         default: False
@@ -103,9 +97,9 @@ jobs:
       if: github.event.inputs.upload-dockerhub == 'true'
       run: |
            docker push ocrd/all:${{ github.event.inputs.docker-image }}
-           if test ${{ github.event.inputs.docker-image }} = maximum-git; then
+           if test ${{ github.event.inputs.docker-image }} = maximum; then
              # Alias Docker image.
-             docker tag ocrd/all:maximum-git ocrd/all:latest
+             docker tag ocrd/all:maximum ocrd/all:latest
              docker push ocrd/all:latest
            fi
     - name: Login to GitHub Container Registry
@@ -120,9 +114,9 @@ jobs:
       run: |
            docker tag ocrd/all:${{ github.event.inputs.docker-image }} ghcr.io/ocr-d/all:${{ github.event.inputs.docker-image }}
            docker push ghcr.io/ocr-d/all:${{ github.event.inputs.docker-image }}
-           if test ${{ github.event.inputs.docker-image }} = maximum-git; then
+           if test ${{ github.event.inputs.docker-image }} = maximum; then
              # Alias Docker image.
-             docker tag ocrd/all:maximum-git ghcr.io/ocr-d/all:latest
+             docker tag ocrd/all:maximum ghcr.io/ocr-d/all:latest
              docker push ghcr.io/ocr-d/all:latest
            fi
 
