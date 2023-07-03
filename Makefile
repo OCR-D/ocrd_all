@@ -163,7 +163,7 @@ Variables:
 	NO_UPDATE: set to `1` to omit git submodule sync and update
 	VIRTUAL_ENV: absolute path to (re-)use for the virtual environment
 	TMPDIR: path to use for temporary storage instead of the system default
-	PYTHON: name of the Python binary
+	PYTHON: name of the Python binary (also used for target `deps-ubuntu` unless set to `python`)
 	PIP_OPTIONS: extra options for the `pip install` command like `-q` or `-v` or `-e`
 	CHECK_HELP: set to `1` to also check each executable can generate help output
 	TESSERACT_MODELS: list of additional models/languages to download for Tesseract. Default: "$(ALL_TESSERACT_MODELS)"

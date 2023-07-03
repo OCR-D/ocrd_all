@@ -247,6 +247,8 @@ prior to a commit.)
 #### _PYTHON_
 
 Name of the Python binary to use (at least python3 required).
+It is also used for the target `deps-ubuntu` to select the required packages
+unless it was set to `python`.
 
 #### _VIRTUAL_ENV_
 
