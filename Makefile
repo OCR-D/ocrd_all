@@ -163,7 +163,7 @@ Variables:
 	NO_UPDATE: set to `1` to omit git submodule sync and update
 	VIRTUAL_ENV: absolute path to (re-)use for the virtual environment
 	TMPDIR: path to use for temporary storage instead of the system default
-	PYTHON: name of the Python binary
+	PYTHON: name of the Python binary (also used for target `deps-ubuntu` unless set to `python`)
 	PIP_OPTIONS: extra options for the `pip install` command like `-q` or `-v` or `-e`
 	CHECK_HELP: set to `1` to also check each executable can generate help output
 	TESSERACT_MODELS: list of additional models/languages to download for Tesseract. Default: "$(ALL_TESSERACT_MODELS)"
@@ -515,8 +515,6 @@ OCRD_CIS += $(BIN)/ocrd-cis-ocropy-segment
 #OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
 OCRD_CIS += $(BIN)/ocrd-cis-postcorrect
 $(call multirule,$(OCRD_CIS)): ocrd_cis $(BIN)/ocrd
-	@# workaround against breaking changes in Numpy and OpenCV
-	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "numpy<1.24" "opencv-python-headless<4.5"
 	$(pip_install)
 endif
 
@@ -878,6 +876,7 @@ clean-tesseract:
 # install git and parallel first (which is required for the module updates)
 deps-ubuntu:
 	apt-get -y install git parallel
+ifneq ($(PYTHON),python)
 ifneq ($(suffix $(PYTHON)),)
 # install specific Python version in system via PPA
 	apt-get install -y software-properties-common
@@ -885,6 +884,7 @@ ifneq ($(suffix $(PYTHON)),)
 	apt-get update
 endif
 	apt-get install -y --no-install-recommends $(notdir $(PYTHON))-dev $(notdir $(PYTHON))-venv
+endif
 	$(MAKE) deps-ubuntu-modules
 
 deps-ubuntu-modules:

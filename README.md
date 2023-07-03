@@ -248,6 +248,8 @@ prior to a commit.)
 
 Name of the Python binary to use (at least python3 required).
 
+If set to just `python`, then for the target `deps-ubuntu` it is assumed that Python is already installed.
+
 #### _VIRTUAL_ENV_
 
 Directory prefix to use for local installation. 

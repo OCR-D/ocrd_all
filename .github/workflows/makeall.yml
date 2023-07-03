@@ -18,23 +18,24 @@ on:
       os:
         description: 'Operating system'
         required: true
-        default: any
+        default: 'any'
         type: choice
         options:
-          - any
-          - ubuntu-20.04
-          - ubuntu-22.04
+          - 'any'
+          - 'ubuntu-20.04'
+          - 'ubuntu-22.04'
       python-version:
         description: 'Python version'
         required: true
-        default: any
+        default: 'any'
         type: choice
         options:
-          - any
+          - 'any'
           - '3.7'
           - '3.8'
           - '3.9'
           - '3.10'
+          - '3.11'
 
 jobs:
   # Run builds for all Ubuntu and Python versions.
@@ -43,29 +44,29 @@ jobs:
     if: ${{ (github.event.inputs.os == 'any') && (github.event.inputs.python-version == 'any') || (github.event.inputs.os == '') }}
     uses: ./.github/workflows/makeall-linux.yaml
     with:
-      os: "[\'ubuntu-20.04\', \'ubuntu-22.04\']"
-      python-version: "['3.7', '3.8', '3.9', '3.10']"
+      os: "['ubuntu-20.04', 'ubuntu-22.04']"
+      python-version: "['3.7', '3.8', '3.9', '3.10', '3.11']"
 
   # Run builds for all Ubuntu versions and selected Python version.
   build-any-os:
     if: ${{ (github.event.inputs.os == 'any') && (github.event.inputs.python-version != 'any') }}
     uses: ./.github/workflows/makeall-linux.yaml
     with:
-      os: "[\'ubuntu-20.04\', \'ubuntu-22.04\']"
-      python-version: "[\'${{ github.event.inputs.python-version }}\']"
+      os: "['ubuntu-20.04', 'ubuntu-22.04']"
+      python-version: "['${{ github.event.inputs.python-version }}']"
 
   # Run builds for selected Ubuntu version and all Python versions.
   build-any-python:
     if: ${{ (github.event.inputs.os != 'any') && (github.event.inputs.python-version == 'any') }}
     uses: ./.github/workflows/makeall-linux.yaml
     with:
-      os: "[\'${{ github.event.inputs.os }}\']"
-      python-version: "['3.7', '3.8', '3.9', '3.10']"
+      os: "['${{ github.event.inputs.os }}']"
+      python-version: "['3.7', '3.8', '3.9', '3.10', '3.11']"
 
   # Run builds for selected Ubuntu and Python versions.
   build:
     if: ${{ (github.event.inputs.os != 'any') && (github.event.inputs.python-version != 'any') && (github.event.inputs.os != '') }}
     uses: ./.github/workflows/makeall-linux.yaml
     with:
-      os: "[\'${{ github.event.inputs.os }}\']"
-      python-version: "[\'${{ github.event.inputs.python-version }}\']"
+      os: "['${{ github.event.inputs.os }}']"
+      python-version: "['${{ github.event.inputs.python-version }}']"
