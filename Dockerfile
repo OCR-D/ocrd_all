@@ -47,6 +47,9 @@ ENV XDG_CONFIG_HOME /usr/local/share/ocrd-resources
 # see below (after make all) for an ex-post symlink to /models
 ENV HOME /
 
+# enable caching in OcrdMets for better performance
+ENV OCRD_METS_CACHING=1
+
 # make apt run non-interactive during build
 ENV DEBIAN_FRONTEND noninteractive
 
