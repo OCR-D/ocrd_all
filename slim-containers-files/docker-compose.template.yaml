@@ -1,0 +1,34 @@
+networks:
+  default:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: ${OCRD_PS_MTU}
+
+services:
+  ocrd-processing-server:
+    build:
+      # later real ocrd-core image should be referenced here
+      dockerfile: slim-containers-files/Dummy-Core-Dockerfile
+      args:
+        BASE_IMAGE: ubuntu:20.04
+    ports:
+      - ${OCRD_PS_PORT}:8000
+    volumes:
+      - "./slim-containers-files/ps-config.yaml:/ocrd-processing-server-config.yaml"
+    command: ocrd network processing-server -a 0.0.0.0:8000 /ocrd-processing-server-config.yaml
+
+  ocrd-mongodb:
+    image: mongo
+    # Ports are only needed during the implementation phase to test. To be removed later
+    ports:
+      - "27018:27017"
+
+  ocrd-rabbitmq:
+    image: rabbitmq:3-management
+    # Ports are only needed during the implementation phase to test. To be removed later
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - "RABBITMQ_DEFAULT_USER=admin"
+      - "RABBITMQ_DEFAULT_PASS=admin"

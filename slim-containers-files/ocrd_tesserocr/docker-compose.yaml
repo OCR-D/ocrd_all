@@ -1,0 +1,14 @@
+services:
+  ocrd-tesserocr-recognize:
+    build:
+      context: ../../ocrd_tesserocr
+      dockerfile: ../slim-containers-files/ocrd_tesserocr/Dockerfile
+    command:
+      ocrd network processing-worker ocrd-tesseroc-recognize --database $MONGODB_URL --queue $RABBITMQ_URL --create-queue
+
+  ocrd-tesserocr-segment-region:
+    build:
+      context: ../../ocrd_tesserocr
+      dockerfile: ../slim-containers-files/ocrd_tesserocr/Dockerfile
+    command:
+      ocrd network processing-worker ocrd-tesserocr-segment-region --database $MONGODB_URL --queue $RABBITMQ_URL --create-queue

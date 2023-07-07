@@ -1,0 +1,41 @@
+export PYTHON ?= python3
+VIRTUAL_ENV = $(CURDIR)/venv2
+BIN = $(VIRTUAL_ENV)/bin
+ACTIVATE_VENV = $(BIN)/activate
+OCRD_MODULES = OCRD_CIS OCRD_TESSEROCR
+OCRD_CIS = ocrd-cis-ocropy-binarize ocrd-cis-ocropy-dewarp
+OCRD_TESSEROCR = ocrd-tesserocr-recognize ocrd-tesserocr-segment-region
+PROCESSORS = $(foreach mod,$(OCRD_MODULES),$(foreach proc,$($(mod)), $(proc) ))
+DELEGATORS = $(foreach proc,$(PROCESSORS),$(BIN)/$(proc))
+
+slim-venv: docker-compose.yaml .env $(DELEGATORS) | $(VIRTUAL_ENV)
+
+
+# create a delegator to the processing server for the processor
+$(BIN)/ocrd-%: | $(VIRTUAL_ENV)
+	@sed "s/{{\s*processor_name\s*}}/$(subst $(BIN)/,,$@)/" slim-containers-files/delegator_template.py > $@;
+	@chmod u+x $@
+
+
+$(VIRTUAL_ENV): $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && $(MAKE) -C core install
+
+%/bin/activate:
+	$(PYTHON) -m venv $(subst /bin/activate,,$@)
+	. $@ && pip install --upgrade pip setuptools wheel
+
+# append the service to docker-compose for a processor
+add_proc = sed -e "s/{{\s*processor_name\s*}}/$1/" -e "s/{{\s*processor_group_name\s*}}/\L$2/" \
+            slim-containers-files/docker-compose.processor.template.yaml >> docker-compose.yaml;
+
+docker-compose.yaml:
+	@cat slim-containers-files/docker-compose.template.yaml > docker-compose.yaml
+	@$(foreach mod,$(OCRD_MODULES),$(foreach proc,$($(mod)),$(call add_proc,$(proc),$(mod))))
+
+.env:
+	@rm -rf .env
+	@echo OCRD_PS_PORT=8000 >> .env
+	@echo OCRD_PS_MTU=1300 >> .env
+	@echo MONGODB_URL=mongodb://ocrd-mongodb:27017 >> .env
+	@echo RABBITMQ_URL=amqp://admin:admin@ocrd-rabbitmq:5672 >> .env
+
