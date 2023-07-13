@@ -7,13 +7,14 @@ OCRD_CIS = ocrd-cis-ocropy-binarize ocrd-cis-ocropy-dewarp
 OCRD_TESSEROCR = ocrd-tesserocr-recognize ocrd-tesserocr-segment-region
 PROCESSORS = $(foreach mod,$(OCRD_MODULES),$(foreach proc,$($(mod)), $(proc) ))
 DELEGATORS = $(foreach proc,$(PROCESSORS),$(BIN)/$(proc))
+OCRD_PS_PORT = 8000
 
 slim-venv: docker-compose.yaml .env $(DELEGATORS) | $(VIRTUAL_ENV)
 
 
 # create a delegator to the processing server for the processor
 $(BIN)/ocrd-%: | $(VIRTUAL_ENV)
-	@sed "s/{{\s*processor_name\s*}}/$(subst $(BIN)/,,$@)/" slim-containers-files/delegator_template.py > $@;
+	@sed -e "s/{{\s*processor_name\s*}}/$(subst $(BIN)/,,$@)/" -e "s/{{\s*OCRD_PS_PORT\s*}}/$(OCRD_PS_PORT)/" slim-containers-files/delegator_template.py > $@;
 	@chmod u+x $@
 
 
@@ -34,7 +35,7 @@ docker-compose.yaml:
 
 .env:
 	@rm -rf .env
-	@echo OCRD_PS_PORT=8000 >> .env
+	@echo OCRD_PS_PORT=$(OCRD_PS_PORT) >> .env
 	@echo OCRD_PS_MTU=1300 >> .env
 	@echo MONGODB_URL=mongodb://ocrd-mongodb:27017 >> .env
 	@echo RABBITMQ_URL=amqp://admin:admin@ocrd-rabbitmq:5672 >> .env

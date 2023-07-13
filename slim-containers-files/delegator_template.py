@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 import sys
-from pathlib import Path
 import subprocess
 
 # Later the address (or rather the port) should be dynamic
-processing_server_address = "http://localhost:8000"
+processing_server_address = "http://localhost:{{ OCRD_PS_PORT }}"
 processor_name = "{{ processor_name }}"
 
 args = list(sys.argv)
