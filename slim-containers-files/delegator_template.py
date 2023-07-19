@@ -2,9 +2,10 @@
 import sys
 import subprocess
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from os.path import basename
 
 processing_server_address = "http://localhost:{{ OCRD_PS_PORT }}"
-processor_name = "{{ processor_name }}"
+processor_name = basename(sys.argv[0])
 
 STOP_WAITING_SERVER = False
 

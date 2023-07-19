@@ -14,7 +14,7 @@ slim-venv: docker-compose.yaml .env $(DELEGATORS) | $(VIRTUAL_ENV)
 
 # create a delegator to the processing server for the processor
 $(BIN)/ocrd-%: | $(VIRTUAL_ENV)
-	@sed -e "s/{{\s*processor_name\s*}}/$(subst $(BIN)/,,$@)/" -e "s/{{\s*OCRD_PS_PORT\s*}}/$(OCRD_PS_PORT)/" slim-containers-files/delegator_template.py > $@;
+	@sed -e "s/{{\s*OCRD_PS_PORT\s*}}/$(OCRD_PS_PORT)/" slim-containers-files/delegator_template.py > $@;
 	@chmod u+x $@
 
 
