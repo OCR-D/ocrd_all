@@ -34,7 +34,6 @@ docker-compose.yaml:
 	@$(foreach mod,$(OCRD_MODULES),$(foreach proc,$($(mod)),$(call add_proc,$(proc),$(mod))))
 
 .env:
-	@rm -rf .env
 	@echo OCRD_PS_PORT=$(OCRD_PS_PORT) >> .env
 	@echo OCRD_PS_MTU=1300 >> .env
 	@echo MONGODB_URL=mongodb://ocrd-mongodb:27017 >> .env
