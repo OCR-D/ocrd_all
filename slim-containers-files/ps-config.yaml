@@ -9,4 +9,7 @@ database:
   address: ocrd-mongodb
   port: 27017
   skip_deployment: true
+  credentials:
+    username: admin
+    password: admin
 hosts: []
