@@ -22,5 +22,6 @@ services:
   ocrd-rabbitmq:
     image: rabbitmq:3-management
     environment:
-      - "RABBITMQ_DEFAULT_USER=admin"
-      - "RABBITMQ_DEFAULT_PASS=admin"
+      environment:
+        RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-admin}
+        RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS:-admin}
