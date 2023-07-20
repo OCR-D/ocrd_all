@@ -17,7 +17,10 @@ services:
     command: ocrd network processing-server -a 0.0.0.0:8000 /ocrd-processing-server-config.yaml
 
   ocrd-mongodb:
-    image: mongo
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASS:-admin}
 
   ocrd-rabbitmq:
     image: rabbitmq:3-management
