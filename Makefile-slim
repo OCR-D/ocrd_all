@@ -37,5 +37,7 @@ docker-compose.yaml:
 	@echo OCRD_PS_PORT=$(OCRD_PS_PORT) >> .env
 	@echo OCRD_PS_MTU=1300 >> .env
 	@echo MONGODB_URL=mongodb://ocrd-mongodb:27017 >> .env
-	@echo RABBITMQ_URL=amqp://admin:admin@ocrd-rabbitmq:5672 >> .env
+	@echo RABBITMQ_USER=admin >> .env
+	@echo RABBITMQ_PASS=admin >> .env
+	@echo 'RABBITMQ_URL=amqp://$${RABBITMQ_USER}:$${RABBITMQ_PASS}@ocrd-rabbitmq:5672' >> .env
 
