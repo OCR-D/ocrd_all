@@ -12,9 +12,29 @@ services:
         BASE_IMAGE: ubuntu:20.04
     ports:
       - ${OCRD_PS_PORT}:8000
-    volumes:
-      - "./slim-containers-files/ps-config.yaml:/ocrd-processing-server-config.yaml"
-    command: ocrd network processing-server -a 0.0.0.0:8000 /ocrd-processing-server-config.yaml
+    environment:
+      MONGODB_USER: ${MONGODB_USER:-admin}
+      MONGODB_PASS: ${MONGODB_PASS:-admin}
+      RABBITMQ_USER: ${RABBITMQ_USER:-admin}
+      RABBITMQ_PASS: ${RABBITMQ_PASS:-admin}
+    command: |
+      /bin/bash -c "echo -e \"
+        process_queue:
+          address: ocrd-rabbitmq
+          port: 5672
+          skip_deployment: true
+          credentials:
+            username: ${RABBITMQ_USER}
+            password: ${RABBITMQ_PASS}
+        database:
+          address: ocrd-mongodb
+          port: 27017
+          skip_deployment: true
+          credentials:
+            username: ${MONGODB_USER}
+            password: ${MONGODB_PASS}
+        hosts: []\" > /ocrd-processing-server-config.yaml && \
+        ocrd network processing-server -a 0.0.0.0:8000 /ocrd-processing-server-config.yaml"
 
   ocrd-mongodb:
     image: mongo:latest
