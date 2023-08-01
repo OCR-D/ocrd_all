@@ -3,8 +3,9 @@ import sys
 import subprocess
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from os.path import basename
+from os import environ
 
-processing_server_address = "http://localhost:{{ OCRD_PS_PORT }}"
+processing_server_address = f"http://localhost:{environ['OCRD_PS_PORT']}"
 processor_name = basename(sys.argv[0])
 
 STOP_WAITING_SERVER = False

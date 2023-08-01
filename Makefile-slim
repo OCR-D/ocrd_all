@@ -24,6 +24,7 @@ $(VIRTUAL_ENV): $(ACTIVATE_VENV)
 %/bin/activate:
 	$(PYTHON) -m venv $(subst /bin/activate,,$@)
 	. $@ && pip install --upgrade pip setuptools wheel
+	@echo "set -a; source $(CURDIR)/.env; set +a" >> $@
 
 # append the service to docker-compose for a processor
 add_proc = sed -e "s/{{\s*processor_name\s*}}/$1/" -e "s/{{\s*processor_group_name\s*}}/\L$2/" \
