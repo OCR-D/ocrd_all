@@ -3,17 +3,8 @@ import sys
 import subprocess
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from os.path import basename
-import re
-from pathlib import Path
 
-env_path = "{{ OCRD_SLIM_ENV_PATH }}"
-try:
-    port = re.search(r"OCRD_PS_PORT=(?P<port>[0-9]+)",
-                     Path(f'{env_path}').read_text()).group('port')
-except:
-    raise ValueError("Variable OCRD_PS_PORT not found in .env")
-
-processing_server_address = f"http://localhost:{port}"
+processing_server_address = "http://localhost:{{ OCRD_PS_PORT }}"
 processor_name = basename(sys.argv[0])
 
 STOP_WAITING_SERVER = False
