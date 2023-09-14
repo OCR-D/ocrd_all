@@ -774,7 +774,7 @@ ifneq ($(filter tesseract, $(OCRD_MODULES)),)
 
 # when not installing via PPA, we must cope without ocrd_tesserocr's deps-ubuntu-modules
 CUSTOM_DEPS += automake ca-certificates g++ libtool make
-ifeq ($(shell apt-cache search --names-only '^pkgconf$$'),)
+ifeq ($(shell type apt-cache >/dev/null 2>&1 && apt-cache search --names-only '^pkgconf$$'),)
 # Debian 11, Ubuntu 22.04 or other old distributions.
 CUSTOM_DEPS += pkg-config
 else
