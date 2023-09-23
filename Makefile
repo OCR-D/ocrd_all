@@ -85,6 +85,10 @@ ifeq ($(PYTHON_VERSION),3.11)
 DEFAULT_DISABLED_MODULES += ocrd_kraken
 endif
 endif
+ifeq ($(shell uname -s),Darwin)
+# Disable ocrd_olena for macOS because build is broken.
+DEFAULT_DISABLED_MODULES += ocrd_olena
+endif
 DISABLED_MODULES ?= $(DEFAULT_DISABLED_MODULES)
 
 # Default to all submodules, but allow overriding by user
