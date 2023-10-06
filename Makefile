@@ -277,6 +277,9 @@ $(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(BIN)/ocrd
 endif
 
 ifneq ($(filter ocrd_detectron2, $(OCRD_MODULES)),)
+# ocrd_detectron patches detectron2 until there is a new detectron2 release.
+# See https://github.com/facebookresearch/detectron2/pull/5011 for details.
+CUSTOM_DEPS += patch
 OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
 OCRD_DETECTRON2 := $(BIN)/ocrd-detectron2-segment
 $(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2 $(BIN)/ocrd | $(OCRD_KRAKEN)
