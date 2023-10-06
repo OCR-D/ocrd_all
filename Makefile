@@ -77,6 +77,10 @@ DEFAULT_DISABLED_MODULES += cor-asv-ann ocrd_keraslm
 endif
 endif
 endif
+ifeq ($(shell uname -s),Darwin)
+# Disable ocrd_olena for macOS because build is broken.
+DEFAULT_DISABLED_MODULES += ocrd_olena
+endif
 DISABLED_MODULES ?= $(DEFAULT_DISABLED_MODULES)
 
 # Default to all submodules, but allow overriding by user
