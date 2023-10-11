@@ -1,0 +1,14 @@
+
+  {{ processor_name }}:
+    extends:
+      file: slim-containers-files/{{ processor_group_name}}/docker-compose.yaml
+      service: {{ processor_name }}
+    command: ocrd network processing-worker --database $MONGODB_URL --queue $RABBITMQ_URL --create-queue {{ processor_name }}
+    depends_on:
+      - ocrd-processing-server
+      - ocrd-mongodb
+      - ocrd-rabbitmq
+    # restart: The worker creates its queue but rabbitmq needs a few seconds to be available
+    restart: on-failure:3
+    volumes:
+      - "$PWD/data:/data"

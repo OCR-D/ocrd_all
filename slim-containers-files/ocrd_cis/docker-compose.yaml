@@ -1,0 +1,14 @@
+services:
+  ocrd-cis-ocropy-binarize:
+    build:
+      context: ../../ocrd_cis
+      dockerfile: ../slim-containers-files/ocrd_cis/Dockerfile
+    command:
+      ocrd network processing-worker ocrd-cis-ocropy-binarize --database $MONGODB_URL --queue $RABBITMQ_URL --create-queue
+
+  ocrd-cis-ocropy-dewarp:
+    build:
+      context: ../../ocrd_cis
+      dockerfile: ../slim-containers-files/ocrd_cis/Dockerfile
+    command:
+      ocrd network processing-worker ocrd-cis-ocropy-dewarp --database $MONGODB_URL --queue $RABBITMQ_URL --create-queue

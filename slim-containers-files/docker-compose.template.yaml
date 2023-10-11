@@ -1,0 +1,49 @@
+networks:
+  default:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: ${OCRD_PS_MTU}
+
+services:
+  ocrd-processing-server:
+    build:
+      context: core
+      args:
+        BASE_IMAGE: ubuntu:20.04
+    ports:
+      - ${OCRD_PS_PORT}:8000
+    environment:
+      MONGODB_USER: ${MONGODB_USER:-admin}
+      MONGODB_PASS: ${MONGODB_PASS:-admin}
+      RABBITMQ_USER: ${RABBITMQ_USER:-admin}
+      RABBITMQ_PASS: ${RABBITMQ_PASS:-admin}
+    command: |
+      /bin/bash -c "echo -e \"
+        process_queue:
+          address: ocrd-rabbitmq
+          port: 5672
+          skip_deployment: true
+          credentials:
+            username: ${RABBITMQ_USER}
+            password: ${RABBITMQ_PASS}
+        database:
+          address: ocrd-mongodb
+          port: 27017
+          skip_deployment: true
+          credentials:
+            username: ${MONGODB_USER}
+            password: ${MONGODB_PASS}
+        hosts: []\" > /ocrd-processing-server-config.yaml && \
+        ocrd network processing-server -a 0.0.0.0:8000 /ocrd-processing-server-config.yaml"
+
+  ocrd-mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASS:-admin}
+
+  ocrd-rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-admin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS:-admin}
