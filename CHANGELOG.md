@@ -2,6 +2,432 @@
 
 ## Unreleased
 
+## [v2023-10-13](https://github.com/OCR-D/ocrd_all/releases/v2023-10-13)
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [006a70e](https://github.com/ASVLeipzig/cor-asv-ann/commits/006a70e)..[4216c16](https://github.com/ASVLeipzig/cor-asv-ann/commits/4216c16)
+
+> Release: [v0.1.14](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.14)
+
+  > * adapt to Numpy deprecations
+  > * CI: use ocrd/core-cuda as base image
+  > * CI: dummy venv
+  > * CI: use proper tab character
+  > * CI: clone first
+  > * CI: mkdir first
+  > * CI: chdir to tmp location
+  > * CI: use /tmp for aux clone of ocrd_all
+  > * try getting tensorflow-gpu from Nvidia
+  > * use proper URLs for submodules
+  > * Merge pull request #6 from kba/init-report-dict
+  > * evaluate: skip pages with no results
+
+### [core](https://github.com/OCR-D/core) [de08453](https://github.com/OCR-D/core/commits/de08453)..[3b0307a](https://github.com/OCR-D/core/commits/3b0307a)
+
+> Release: [v2.56.0](https://github.com/OCR-D/core/releases/v2.56.0)
+
+  > * :package: v2.56.0
+  > * :memo: changelog
+  > * Merge branch 'network-log-refactoring'
+  > * :package: v2.55.2
+  > * :memo: changelog
+  > * :bug: pydantic fields must not start with underscore
+  > * :package: v2.55.1
+  > * :memo: changelog
+  > * Merge pull request #1113 from OCR-D/bulk-add-url-local-filename
+  > * :package: v2.55.0
+  > * :memo: changelog
+  > * Merge branch 'workflow-endpoint'
+  > * :memo: changelog
+  > * generate_page_range: verify single-page range based on start
+  > * generate_page_range: warn, not raise, if start==end, fix #1106
+  > * :memo: changelog
+  > * logging: remove custom logging in ocrd_network, use explicit logger name
+  > * logging remove hard-coded setLevel in decorators/ocrd_network
+  > * helpers.ruin_processor: setOverrideLogLevel if log_level is provided
+  > * ocrd log: default to ocrd.log_cli logger name
+  > * METS Server: add basic logging of operations
+  > * logging: use ocrd.{utils,models,exif} not ocrd_{utils,models,exif}
+  > * ocrd_utils.logging.getLogger: no more initLogging
+  > * :memo: changelog
+  > * Merge branch 'master' into mets-server-fixes-2023-09-15
+  > * mets server: remove socket file on shutdown
+  > * mets server: do the chmod before server start, not before connection
+  > * :memo: changelog
+  > * METS server: make socket world-readable/-writable
+  > * :package: v2.54.0
+  > * Merge pull request #1095 from OCR-D/run-cli-mets-server-url
+  > * :memo: changelog
+  > * Merge branch 'revise-logging'
+  > * Merge pull request #1093 from OCR-D/create-default-queue
+  > * Merge pull request #1080 from OCR-D/revise-logging
+  > * bashlib: fix --help output
+  > * :memo: changelog
+  > * Merge branch 'keep-remote-links'
+  > * :memo: changelog
+  > * downgrade ValueError to log.warning about inconsistent pageId for processor calls
+  > * Merge branch 'master' into warn-empty-page
+  > * raise ValueError if --page-id is provided but leads to empty result
+  > * :memo: changelog
+  > * Merge pull request #1069 from OCR-D/processing_server_ext_1046
+  > * Merge branch 'mets-server'
+  > * :memo: changelog
+  > * ci: localhost -> 127.0.0.1
+  > * pin requests < 2.30, OCR-D/core#1082
+  > * mets server: forbid local/remote workspace with different directories
+  > * mets server: allow both local_filename and url to be None
+  > * Merge branch 'master' into mets-server
+  > * mets server: test both UDS and TCP variant
+  > * ClientSideOcrdFile et al need url too
+  > * pass mets_server_url from run_processor
+  > * typo: -{,-}mets-server-url
+  > * move ClientSideOcrd{Agent,File} to ocrd_models
+  > * METS server: support -U for processor options
+  > * workspace server start: pass workspace context
+  > * mets server: single option --mets-server-url/-U
+  > * mets server will never pass content to workspace.add_file
+  > * mets server: no content will pass through it
+  > * mets server: clean up is_remote muddle
+  > * mets server: support unique_identifier
+  > * mets server: __str__ handlers
+  > * mets server: provide fallback for non-wrapped OcrdFile methods
+  > * mets server: remove XXX HACK comments, they are not;
+  > * mets server: improve docs
+  > * mets server: add stop
+  > * Update ocrd/ocrd/cli/workspace.py
+  > * ocrd workspace CLI: reference METS server option
+  > * METS server: consistently use local_filename
+  > * Update ocrd/ocrd/cli/workspace.py
+  > * METS Server: equivalent functionality to files for agents
+  > * finish implementation / test mets server
+  > * Merge remote-tracking branch 'origin/master' into mets-server
+  > * workspace: save content to file only if not remote
+  > * Merge branch 'mets-server' of https://github.com/kba/ocrd-core into mets-server
+  > * mets_server: file search/adding on /file not /
+  > * mets_server: missed mimetype kwarg
+  > * mets_server: different loggers for socket/host-port
+  > * Merge branch 'mets-server' of https://github.com/kba/ocrd-core into mets-server
+  > * mets_server: replace Model constructor with static create calls
+  > * --port must be int
+  > * resolver: shorten mets_server_{host,port} check
+  > * mets_server: only save_mets on PUT and DELETE
+  > * OcrdWorkspace.is_remote should be a bool
+  > * ClientSideOcrdMets: fix signature of self.file_groups
+  > * mets-server: bashlib should take same args
+  > * remove noise from makefile
+  > * slowly but determinedly
+  > * getting there
+  > * .
+  > * wip
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [0fd4ea1](https://github.com/qurator-spk/dinglehopper/commits/0fd4ea1)..[dbaccdd](https://github.com/qurator-spk/dinglehopper/commits/dbaccdd)
+
+> Release: [v0.9.4](https://github.com/qurator-spk/dinglehopper/releases/v0.9.4)
+
+  > * ✒ README: Minor whitespace cleanup
+  > * ✒ README: Recommend installing via pip and from PyPI
+  > * 📦 v0.9.4
+  > * 🎨 editorconfig: *.json should have a final newline
+  > * 🧹 pyproject: Remove extra *.json
+  > * 🧹 Remove empty setup.cfg
+  > * 📦 v0.9.3
+  > * 🐛 Remove MANIFEST.in workaround, now that setuptools_ocrd is fixed
+  > * 📦 v0.9.2
+  > * 🧹 .gitignore dist/
+  > * 🐛 Workaround sdist not containing top-level ocrd-tool.json
+  > * ⚙ GitHub Actions: Call test workflow when (before) deploying
+  > * 🎨 Release: Make installing setuptools-ocrd conditional on ocrd-tool.json
+  > * 🐛 Release: Try fixing getting the version (install setuptools-ocrd)
+  > * 📦 v0.9.1
+  > * ✒ README: Update badges
+  > * Revert "🚧 GitHub Actions: Try testing on Python 3.12"
+  > * 🚧 GitHub Actions: Try testing on Python 3.12
+  > * 🚧 GitHub Actions/CircleCI: Remove testing from CircleCI config
+  > * 🚧 GitHub Actions: Do no try installing ruff on Python 3.6
+  > * 🚧 GitHub Actions: Do no try installing pytest-ruff on Python 3.6
+  > * 🚧 GitHub Actions: Avoid compiling OpenCV and NumPy on Python 3.6
+  > * 🚧 GitHub Actions: Fix testing for Python 3.6
+  > * 🚧 GitHub Actions: Disable matrix fail-fast
+  > * 🚧 GitHub Actions: Test on multiple Python versions
+  > * 🚧 GitHub Actions: Test report
+  > * 🚧 GitHub Actions: Try shell for loop to install from all requirements*.txt
+  > * 🚧 GitHub Actions: Rework test, run in src/
+  > * 🚧 GitHub Actions: Allow running test manually
+  > * 🚧 GitHub Actions: Rename test workflow, also run on schedule
+  > * 🚧 GitHub Actions: Add test worklow
+  > * 🚧 GitHub Actions: Add release workflow
+  > * 🧹 Make dinglehopper.* exports explicit
+  > * ⚙ ruff: Ignore F811 (no redefinitions) for now, as ruff considers the multimethods redefinitions
+  > * 🎨 Reformat comments + strings manually (not auto-fixed by Black)
+  > * ⬆ Use f-strings
+  > * 🎨 Reformat using Black
+  > * 🎨 Sort imports (auto-fixed by ruff)
+  > * ⚙ Add pre-commit
+  > * 🛠 Replace flake8 + pylint with ruff
+  > * ⚙ Move mypy settings to pyproject.toml
+  > * ⚙ pytest.ini → pyproject.toml
+  > * 🐛 Detect encoding (incl BOM) when reading files
+  > * 🐛 Move source into src/ to fix install
+  > * ⚙ Migrate to pyproject.toml
+  > * 🚧 CircleCI: Run black
+  > * Merge pull request #83 from INL/feat/batch-processing
+  > * Merge pull request #82 from CircleCI-config-suggestions-bot/StoreTestResults
+  > * 🧹 .gitignore .python-version (for pyenv)
+  > * 🧹 Remove qurator. namespace prefix
+  > * 🐛 Fix installing by calling find_namespace_packages in setup.py
+  > * 🕸Do not use deprecated ID, pageId options
+  > * 🔧 Remove explicit namespace_packages
+  > * ✔ CircleCI: Explicitly install binary opencv-python-headless (dep of OCR-D?) to avoid compilation
+  > * 🐛 Remove deprecated declare_namespace call
+
+### [nmalign](https://github.com/bertsky/nmalign) [cf7c60f](https://github.com/bertsky/nmalign/commits/cf7c60f)..[7832c90](https://github.com/bertsky/nmalign/commits/7832c90)
+
+> Release: [v0.0.3](https://github.com/bertsky/nmalign/releases/v0.0.3)
+
+  > * adapt to Numpy deprecations
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [3a029ca](https://github.com/OCR-D/ocrd_calamari/commits/3a029ca)..[c0a4dfd](https://github.com/OCR-D/ocrd_calamari/commits/c0a4dfd)
+
+> Release: [v1.0.6](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.6)
+
+  > * Merge pull request #90 from OCR-D/tf_disable_interactive_logs
+  > * ✒ README: Use backtick syntax for code block
+  > * ✔ CircleCI: Do not test on Python 3.6 anymore (EOL since 2021-12-23)
+  > * v1.0.6
+  > * 🐛 Fix installation by keeping protobuf < 4.0
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [c90b29f](https://github.com/cisocrgroup/ocrd_cis/commits/c90b29f)..[1abc3b7](https://github.com/cisocrgroup/ocrd_cis/commits/1abc3b7)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * segment: adapt to OpenCV changes
+  > * resegment (baseline/ccomps): improve handling of fg conflicts
+  > * resegment: add param baseline_only
+  > * check_page/region/line: skip assumptions on number of components
+  > * adapt to Shapely 2.0 deprecations
+  > * adapt to Numpy 1.24 dtypes
+  > * resegment: list instead of generator
+  > * re/segment: improve polygon simplification
+  > * re/segment: join_baselines: skip lines outside of polygon
+  > * re/segment: join_baselines: for complex subtypes, apply recursively
+  > * re/segment: join_polygons: connect touching neighbours, too
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [04bf4c6](https://github.com/bertsky/ocrd_detectron2/commits/04bf4c6)..[a8402d8](https://github.com/bertsky/ocrd_detectron2/commits/a8402d8)
+
+> Release: [v0.1.8](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.8)
+
+  > * Merge pull request #28 from bertsky/pillow-workaround
+  > * allow running build
+  > * :package: v0.1.8
+  > * set page pcGtsId from file ID
+  > * update model URLs to GH release archive
+  > * requirements.txt: avoid pkg names in comments
+  > * requirements.txt: add pycocotools as explicit dependency
+  > * require wheel (since pip does not pull it anymore)
+  > * deps: no build isolation so Detectron2 compilation can use Torch
+  > * Docker: add badges and basic description
+  > * Docker username: vars, not env
+  > * Docker: use underscore in tagname, alright
+  > * add Dockerfile and GH Action to publish at Dockerhub and GHCR
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [dacfa50](https://github.com/OCR-D/ocrd_fileformat/commits/dacfa50)..[4e7e0de](https://github.com/OCR-D/ocrd_fileformat/commits/4e7e0de)
+
+> Release: [v0.7.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.7.0)
+
+  > * :package: v0.7.0
+  > * update ocr-fileformat
+
+### [ocrd_keraslm](https://github.com/OCR-D/ocrd_keraslm) [9e3f5a0](https://github.com/OCR-D/ocrd_keraslm/commits/9e3f5a0)..[dd78976](https://github.com/OCR-D/ocrd_keraslm/commits/dd78976)
+
+> Release: [v0.4.1](https://github.com/OCR-D/ocrd_keraslm/releases/v0.4.1)
+
+  > * CI: download deu-frak tessdata via resmgr
+  > * adapt to numpy deprecations
+
+### [ocrd_kraken](https://github.com/OCR-D/ocrd_kraken) [802c6b0](https://github.com/OCR-D/ocrd_kraken/commits/802c6b0)..[a5c72be](https://github.com/OCR-D/ocrd_kraken/commits/a5c72be)
+
+> Release: [v0.3.1](https://github.com/OCR-D/ocrd_kraken/releases/v0.3.1)
+
+  > * CI: disable Python 3.10 and 3.11 tests
+  > * CI: drop 3.6 and 3.7, try 3.10 and 3.11
+  > * :package: 0.3.1
+  > * Merge pull request #38 from bertsky/fix-recognize-coords
+
+### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [dbef534](https://github.com/OCR-D/ocrd_olena/commits/dbef534)..[a2e2520](https://github.com/OCR-D/ocrd_olena/commits/a2e2520)
+
+> Release: [v1.4.0](https://github.com/OCR-D/ocrd_olena/releases/v1.4.0)
+
+  > * :package: v1.4.0
+  > * require ocrd >= 2.55.2
+  > * require ocrd >= 2.55.1
+  > * update assets
+  > * :memo: changelog
+  > * require ocrd >= 2.55.0
+  > * Merge branch 'url-to-local_filename'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'stweil/travis'
+  > * :memo: changelog
+  > * Update olena to include OCR-D/olena#8
+  > * Merge pull request #90 from stweil/license
+
+### [ocrd_pagetopdf](https://github.com/UB-Mannheim/ocrd_pagetopdf) [6155605](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/6155605)..[4f4a330](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/4f4a330)
+
+> Release: [v1.0.0](https://github.com/UB-Mannheim/ocrd_pagetopdf/releases/v1.0.0)
+
+  > * Merge pull request #22 from bertsky/fix-input-files
+
+### [ocrd_repair_inconsistencies](https://github.com/qurator-spk/ocrd_repair_inconsistencies) [c898d6c](https://github.com/qurator-spk/ocrd_repair_inconsistencies/commits/c898d6c)..[cf879c1](https://github.com/qurator-spk/ocrd_repair_inconsistencies/commits/cf879c1)
+
+  > * Merge pull request #13 from stweil/master
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [3c63e21](https://github.com/OCR-D/ocrd_segment/commits/3c63e21)..[ebc7e1f](https://github.com/OCR-D/ocrd_segment/commits/ebc7e1f)
+
+> Release: [v0.1.22](https://github.com/OCR-D/ocrd_segment/releases/v0.1.22)
+
+  > * Merge pull request #65 from M3ssman/feat/extend-readme
+  > * adapt to Numpy deprecations
+  > * replace-text: fall back to file ID if no matches for page ID in glob results
+  > * :package: 0.1.22
+  > * set page pcGtsId from file ID
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [09d1e13](https://github.com/OCR-D/ocrd_tesserocr/commits/09d1e13)..[f1036e3](https://github.com/OCR-D/ocrd_tesserocr/commits/f1036e3)
+
+> Release: [v0.17.0](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.17.0)
+
+  > * require OCR-D/core >= 2.53
+  > * CI: allow triggering Docker deploy manually
+  > * Dockerfile: just use module location from apt (but make writable)
+  > * Dockerfile: mirror res data location to module location
+
+### [ocrd_wrap](https://github.com/bertsky/ocrd_wrap) [63c04d5](https://github.com/bertsky/ocrd_wrap/commits/63c04d5)..[2cd800d](https://github.com/bertsky/ocrd_wrap/commits/2cd800d)
+
+> Release: [v0.1.8](https://github.com/bertsky/ocrd_wrap/releases/v0.1.8)
+
+  > * :package: 0.1.8
+  > * Merge pull request #10 from bertsky/update-numpy
+
+### [opencv-python](https://github.com/skvark/opencv-python) [6b73d90](https://github.com/skvark/opencv-python/commits/6b73d90)..[ca13925](https://github.com/skvark/opencv-python/commits/ca13925)
+
+> Release: [78](https://github.com/skvark/opencv-python/releases/78)
+
+  > * Update to OpenCV 4.8.1.
+  > * Merge pull request #882 from engnadeau/docs/readme-toc
+  > * Merge pull request #870 from asmorkalov/as/typing_runtime
+  > * Merge pull request #865 from asmorkalov/as/3rdparty_license_update
+  > * Merge pull request #866 from asmorkalov/as/dist_location
+  > * Merge pull request #864 from asmorkalov/as/opencv_4.8.0
+  > * Merge pull request #831 from henryiii/patch-1
+  > * Merge pull request #862 from asmorkalov/as/deps_update
+  > * Merge pull request #853 from asmorkalov/as/add_pyi_to_package
+  > * Merge pull request #849 from asmorkalov/as/python3_for_build
+  > * Fix: numpy version for python 3.11 (#839)
+  > * Merge pull request #852 from asmorkalov:as/ci_check
+  > * Merge pull request #837 from bertsky/fix-py38-build
+  > * Merge pull request #838 from henryiii/patch-2
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [39ef3fd](https://github.com/qurator-spk/sbb_binarization/commits/39ef3fd)..[f3c6ac8](https://github.com/qurator-spk/sbb_binarization/commits/f3c6ac8)
+
+> Release: [v0.1.0](https://github.com/qurator-spk/sbb_binarization/releases/v0.1.0)
+
+  > * Update test.yml
+  > * :package: v0.1.0
+  > * Update README.md
+  > * update CI badge
+  > * Merge pull request #59 from bertsky/change-model-url
+  > * Merge pull request #56 from bertsky/non-verbose
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [1569e50](https://github.com/tesseract-ocr/tesseract/commits/1569e50)..[dc228ed](https://github.com/tesseract-ocr/tesseract/commits/dc228ed)
+
+> Release: [5.3.3](https://github.com/tesseract-ocr/tesseract/releases/5.3.3)
+
+  > * Update cmake-win64.yml
+  > * Create new release 5.3.3
+  > * Fix loading of sublangs (regression)
+  > * Update SVPopupMenu.java
+  > * Update SVImageHandler.java
+  > * Update SVEventHandler.java
+  > * Update ScrollView.java
+  > * Update test submodule
+  > * Fix regression in layout detection since 5.0.0 (fixes issue #4014)
+  > * Fix typo in stepblob.h
+  > * initDSProfile: correct std::vector usage (#4124)
+  > * sw.yml: Remove Ubuntu 20.04
+  > * Update autotools.yml
+  > * Update cmake.yml
+  > * fix typos
+  > * add missing commas
+  > * fix citation links
+  > * Merge pull request #4115 from stweil/citations
+  > * Optimize function ImageFind::FindImages
+  > * Fix comment for function UNICHARSET::set_black_and_whitelist
+  > * Fix comment for function HOcrEscape
+  > * Fix comment
+  > * Provide more disk space for GitHub action unittest
+  > * Update ScrollView.java
+  > * cmake: check_leptonica_tiff_support() works with cmake>=3.25
+  > * Remove whitespace at line endings
+  > * Merge pull request #4097 from UB-Mannheim/main
+  > * Merge pull request #4099 from pkubaj/patch-1
+  > * Merge pull request #4098 from hesmar/main
+  > * Create new release 5.3.2
+  > * Fix typos
+  > * Update issue-bug.yml
+  > * Update .mailmap
+  > * Create config.yml
+  > * Remove old broken GitHub action vcpkg-4.1.1 (fixes issue #4078)
+  > * cmake: check if leptonica was build with tiff support
+  > * cmake: provide info about disabled LibArchive and CURL
+  > * cmake: allow to disable tiff (-DDISABLE_TIFF=ON)
+  > * Merge pull request #4073 from stweil/osd
+  > * Merge pull request #4071 from stweil/clean
+  > * Merge pull request #4066 from stweil/lstmtraining
+  > * Merge pull request #4068 from stweil/sprintf
+  > * Remove unused code in function fix_rep_char
+  > * Merge pull request #4067 from stweil/misc
+  > * Support for Sgaw and W Pwo Karen languages in the Myanmar validator. (#4065)
+  > * issue-bug.yml:  Windows versions 7, 8, 8.1 are not supported anymore
+  > * snap: Update from leptonica 1.74.2 to latest 1.83.1
+  > * fix: Fix snap package building
+  > * Create new release 5.3.1
+  > * Remove whitespace at line endings
+  > * Fix issue #4010 (#4041)
+  > * cmake: add missing HAVE_NEON to config_auto.h
+  > * Merge branch 'main' of https://github.com/tesseract-ocr/tesseract
+  > * cmake: adjust build to autotool settings
+  > * Merge branch 'main' of https://github.com/tesseract-ocr/tesseract
+  > * cmake: improve NEON build
+
+### [tesserocr](https://github.com/sirfz/tesserocr) [e184c62](https://github.com/sirfz/tesserocr/commits/e184c62)..[94c8b73](https://github.com/sirfz/tesserocr/commits/94c8b73)
+
+> Release: [v2.6.2](https://github.com/sirfz/tesserocr/releases/v2.6.2)
+
+  > * updated cython dependency + version bump
+  > * add aarch64 wheels
+  > * wheels: use tesseract 5.3.3
+  > * Add Python 3.12 wheels
+  > * Added github actions build badge
+  > * upper limit on Cython < 3 (for the time being)
+  > * add github-workflow building wheels
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [cb923f7](https://github.com/bertsky/workflow-configuration/commits/cb923f7)..[f574f82](https://github.com/bertsky/workflow-configuration/commits/f574f82)
+
+> Release: [0.1.3](https://github.com/bertsky/workflow-configuration/releases/0.1.3)
+
+  > * :package: 0.1.3
+  > * ocrd-page-transform: add MetadataItem for tool params and version
+  > * ocrd-page-transform: set pc:Page/@pcGtsId to output mets:file/@ID
+  > * ocrd-import: add option --regex (positive path selector)
+  > * ocrd-import: fix skipping in subshell
+  > * add METS transforms to TOC
+  > * generalise standalone CLI for both PAGE and METS XSL, update documentation
+  > * mets-copy-agents.xsl: make path for other-mets relative to input mets (not stylesheet file)
+  > * (ocrd-)page-transform: add pretty-printing option
+  > * add page-ensure-readingorder.xsl
+  > * add page-ensure-textequiv-index.xsl
+  > * ocrd-import: also replace comma in IDs
+  > * Merge remote-tracking branch 'origin/master'
+  > * page-textequiv-*: ensure target TextEquiv exists
+
+
 ## [v2023-06-28](https://github.com/OCR-D/ocrd_all/releases/v2023-06-28)
 
 Changed:
