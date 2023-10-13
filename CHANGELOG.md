@@ -229,10 +229,13 @@
   > * Docker: use underscore in tagname, alright
   > * add Dockerfile and GH Action to publish at Dockerhub and GHCR
 
-### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [dacfa50](https://github.com/OCR-D/ocrd_fileformat/commits/dacfa50)..[4e7e0de](https://github.com/OCR-D/ocrd_fileformat/commits/4e7e0de)
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [4e7e0de](https://github.com/OCR-D/ocrd_fileformat/commits/4e7e0de)..[cfb24ec](https://github.com/OCR-D/ocrd_fileformat/commits/cfb24ec)
 
-> Release: [v0.7.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.7.0)
+> Release: [v0.8.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.8.0)
 
+  > * :package: v0.8.0
+  > * :memo: changelog
+  > * Update ocr-fileformat
   > * :package: v0.7.0
   > * update ocr-fileformat
 
