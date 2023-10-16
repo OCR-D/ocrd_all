@@ -252,10 +252,11 @@
   > * CI: download deu-frak tessdata via resmgr
   > * adapt to numpy deprecations
 
-### [ocrd_kraken](https://github.com/OCR-D/ocrd_kraken) [802c6b0](https://github.com/OCR-D/ocrd_kraken/commits/802c6b0)..[a5c72be](https://github.com/OCR-D/ocrd_kraken/commits/a5c72be)
+### [ocrd_kraken](https://github.com/OCR-D/ocrd_kraken) [1e71324](https://github.com/OCR-D/ocrd_kraken/commits/1e71324)..[bdbe6fc](https://github.com/OCR-D/ocrd_kraken/commits/bdbe6fc)
 
 > Release: [v0.3.1](https://github.com/OCR-D/ocrd_kraken/releases/v0.3.1)
 
+  > * Merge pull request #42 from OCR-D/fixing-tests
   > * CI: disable Python 3.10 and 3.11 tests
   > * CI: drop 3.6 and 3.7, try 3.10 and 3.11
   > * :package: 0.3.1
