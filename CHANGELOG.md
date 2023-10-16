@@ -1,5 +1,9 @@
 # Changelog
 
+## [v2023-10-16](https://github.com/OCR-D/ocrd_all/releases/v2023-10-16)
+
+
+
 ## Unreleased
 
 ## [v2023-10-13](https://github.com/OCR-D/ocrd_all/releases/v2023-10-13)
@@ -195,10 +199,12 @@
   > * v1.0.6
   > * 🐛 Fix installation by keeping protobuf < 4.0
 
-### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [c90b29f](https://github.com/cisocrgroup/ocrd_cis/commits/c90b29f)..[1abc3b7](https://github.com/cisocrgroup/ocrd_cis/commits/1abc3b7)
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [43a356a](https://github.com/cisocrgroup/ocrd_cis/commits/43a356a)..[fcc02fd](https://github.com/cisocrgroup/ocrd_cis/commits/fcc02fd)
 
 > Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
 
+  > * adapt to Numpy and Pillow deprecations
+  > * segment: fix baseline extraction
   > * segment: adapt to OpenCV changes
   > * resegment (baseline/ccomps): improve handling of fg conflicts
   > * resegment: add param baseline_only
