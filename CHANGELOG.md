@@ -1,12 +1,8 @@
 # Changelog
 
-## [v2023-10-16](https://github.com/OCR-D/ocrd_all/releases/v2023-10-16)
-
-
-
 ## Unreleased
 
-## [v2023-10-13](https://github.com/OCR-D/ocrd_all/releases/v2023-10-13)
+## [v2023-10-17](https://github.com/OCR-D/ocrd_all/releases/v2023-10-17)
 
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [006a70e](https://github.com/ASVLeipzig/cor-asv-ann/commits/006a70e)..[4216c16](https://github.com/ASVLeipzig/cor-asv-ann/commits/4216c16)
 
