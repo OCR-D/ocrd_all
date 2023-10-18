@@ -44,6 +44,9 @@ ACTIVATE_VENV = $(BIN)/activate
 # Get Python major and minor versions for some conditional rules.
 PYTHON_VERSION := $(shell $(PYTHON) -c 'import sys; print("%u.%u" % (sys.version_info.major, sys.version_info.minor))')
 
+# core version to ensure docker images are based on the latest tagged release
+CORE_VERSION := $(shell git -C core describe --tags --abbrev=0)
+
 define SEMGIT
 $(if $(shell sem --version 2>/dev/null),sem -q --will-cite --fg --id ocrd_all_git,$(error cannot find package GNU parallel))
 endef
@@ -938,9 +941,9 @@ docker-medi%: DOCKER_MODULES := core cor-asv-ann dinglehopper docstruct format-c
 docker-maxi%: DOCKER_MODULES := $(OCRD_MODULES)
 
 # DOCKER_BASE_IMAGE
-docker-%um: DOCKER_BASE_IMAGE = docker.io/ocrd/core
+docker-%um: DOCKER_BASE_IMAGE = docker.io/ocrd/core:$(CORE_VERSION)
 # CUDA variants
-docker-%-cuda: DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda
+docker-%-cuda: DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda:$(CORE_VERSION)
 
 # Build rule for all selections
 # FIXME: $(DOCKER_MODULES) ref does not work at phase 1; workaround: all modules
