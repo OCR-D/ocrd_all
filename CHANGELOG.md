@@ -1,5 +1,28 @@
 # Changelog
 
+## [v2023-10-18](https://github.com/OCR-D/ocrd_all/releases/v2023-10-18)
+
+### [core](https://github.com/OCR-D/core) [3b0307a](https://github.com/OCR-D/core/commits/3b0307a)..[00cb968](https://github.com/OCR-D/core/commits/00cb968)
+
+> Release: [v2.57.1](https://github.com/OCR-D/core/releases/v2.57.1)
+
+  > * :package: v2.57.1
+  > * ci: typo in circle config
+  > * :package: v2.57.0
+  > * :memo: changelog
+  > * Merge pull request #1117 from OCR-D/logging-2023-10-18
+  > * Merge pull request #1118 from OCR-D/circleci-tag-docker
+  > * :memo: changelog
+  > * Merge pull request #1116 from OCR-D/network-log-refactoring
+
+### [opencv-python](https://github.com/skvark/opencv-python) [ca13925](https://github.com/skvark/opencv-python/commits/ca13925)..[7cfd1ee](https://github.com/skvark/opencv-python/commits/7cfd1ee)
+
+> Release: [78](https://github.com/skvark/opencv-python/releases/78)
+
+  > * Merge pull request #907 from dkurt:patch-1
+  > * Merge pull request #905 from asmorkalov/as/docker_update_python3.12
+
+
 ## Unreleased
 
 ## [v2023-10-17](https://github.com/OCR-D/ocrd_all/releases/v2023-10-17)
