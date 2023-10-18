@@ -1,11 +1,16 @@
 # Changelog
 
+## Unreleased
+
 ## [v2023-10-18](https://github.com/OCR-D/ocrd_all/releases/v2023-10-18)
 
-### [core](https://github.com/OCR-D/core) [3b0307a](https://github.com/OCR-D/core/commits/3b0307a)..[00cb968](https://github.com/OCR-D/core/commits/00cb968)
+### [core](https://github.com/OCR-D/core) [3b0307a](https://github.com/OCR-D/core/commits/3b0307a)..[caa7ac3](https://github.com/OCR-D/core/commits/caa7ac3)
 
-> Release: [v2.57.1](https://github.com/OCR-D/core/releases/v2.57.1)
+> Release: [v2.57.2](https://github.com/OCR-D/core/releases/v2.57.2)
 
+  > * :package: v2.57.2
+  > * :memo: changelog
+  > * Merge pull request #1120 from OCR-D/fix-1119
   > * :package: v2.57.1
   > * ci: typo in circle config
   > * :package: v2.57.0
@@ -22,8 +27,6 @@
   > * Merge pull request #907 from dkurt:patch-1
   > * Merge pull request #905 from asmorkalov/as/docker_update_python3.12
 
-
-## Unreleased
 
 ## [v2023-10-17](https://github.com/OCR-D/ocrd_all/releases/v2023-10-17)
 
