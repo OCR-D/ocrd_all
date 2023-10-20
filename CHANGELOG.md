@@ -1,5 +1,82 @@
 # Changelog
 
+## [v2023-10-20](https://github.com/OCR-D/ocrd_all/releases/v2023-10-20)
+
+### [core](https://github.com/OCR-D/core) [caa7ac3](https://github.com/OCR-D/core/commits/caa7ac3)..[d8c5813](https://github.com/OCR-D/core/commits/d8c5813)
+
+> Release: [v2.58.1](https://github.com/OCR-D/core/releases/v2.58.1)
+
+  > * :package: v2.58.1
+  > * :memo: changelog
+  > * bashlib: set empty string as default value for ocrd__argv[mets_server_url], OCR-D/olena#95
+  > * :package: v2.58.0
+  > * :memo: changelog
+  > * Merge pull request #1127 from OCR-D/fix-bashlib-log3
+  > * :memo: changelog
+  > * ocrd workspace bulk-add now supports --mets-server-url
+  > * bashlib: short option -U for --mets-server-url
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/fix-bashlib-log2'
+  > * :memo: changelog
+  > * Merge branch 'mets-server-reload'
+  > * :memo: changelog
+  > * Merge pull request #1121 from OCR-D/fix-bashlib-log
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [cfb24ec](https://github.com/OCR-D/ocrd_fileformat/commits/cfb24ec)..[7364265](https://github.com/OCR-D/ocrd_fileformat/commits/7364265)
+
+> Release: [v0.9.1](https://github.com/OCR-D/ocrd_fileformat/releases/v0.9.1)
+
+  > * :package: v0.9.1
+  > * :memo: changelog
+  > * require ocrd >= 2.58.1
+  > * :package: v0.9.0
+  > * :memo: changelog
+  > * require ocrd >= 2.58
+  > * Support --mets-server-url; get local_filename not url
+
+### [ocrd_im6convert](https://github.com/OCR-D/ocrd_im6convert) [105697f](https://github.com/OCR-D/ocrd_im6convert/commits/105697f)..[db18917](https://github.com/OCR-D/ocrd_im6convert/commits/db18917)
+
+> Release: [v0.1.1](https://github.com/OCR-D/ocrd_im6convert/releases/v0.1.1)
+
+  > * :package: v0.1.1
+  > * :memo: changelog
+  > * require ocrd >= 2.58.1
+  > * :package: v0.1.0
+  > * :memo: changelog
+  > * minversion must be MAJOR.MINOR.PATCH
+  > * require ocrd >= 2.58
+  > * add --mets-server-url support
+
+### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [a2e2520](https://github.com/OCR-D/ocrd_olena/commits/a2e2520)..[c1f7cab](https://github.com/OCR-D/ocrd_olena/commits/c1f7cab)
+
+> Release: [v1.5.0](https://github.com/OCR-D/ocrd_olena/releases/v1.5.0)
+
+  > * :package: v1.5.0
+  > * :memo: changelog
+  > * require ocrd >= 2.58.1
+  > * debug
+  > * minversion must be MAJOR.MINOR.PATCH
+  > * require ocrd >= 2.58
+  > * support --mets-server-url
+
+### [ocrd_pagetopdf](https://github.com/UB-Mannheim/ocrd_pagetopdf) [4f4a330](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/4f4a330)..[7368f51](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/7368f51)
+
+> Release: [v1.0.0](https://github.com/UB-Mannheim/ocrd_pagetopdf/releases/v1.0.0)
+
+  > * require ocrd >= 2.58.1
+  > * require ocrd >= 2.58
+  > * Use local_filename, not url
+  > * restore $zeros assignment
+  > * Support --mets-server-url
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [f574f82](https://github.com/bertsky/workflow-configuration/commits/f574f82)..[d0d208c](https://github.com/bertsky/workflow-configuration/commits/d0d208c)
+
+> Release: [0.1.3](https://github.com/bertsky/workflow-configuration/releases/0.1.3)
+
+  > * require ocrd >= 2.58
+  > * ocrd-page-transform: support --mets-server-url
+
+
 ## Unreleased
 
 ## [v2023-10-18](https://github.com/OCR-D/ocrd_all/releases/v2023-10-18)
