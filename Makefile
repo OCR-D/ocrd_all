@@ -66,7 +66,7 @@ PKG_CONFIG_PATH := $(VIRTUAL_ENV)/lib/pkgconfig:$(PKG_CONFIG_PATH)
 endif
 export PKG_CONFIG_PATH
 
-SHELL = /bin/bash
+SHELL := $(shell which bash)
 
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_DEPS = unzip wget parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
@@ -691,7 +691,7 @@ endef
 ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),4)
 # make >=4 has file function
 define delegator
-#!/bin/bash
+#!/usr/bin/env bash
 . $(2)/bin/activate && $(2)/bin/$(notdir $(1)) "$$@"
 endef
 # create shell scripts that relay to
@@ -703,7 +703,7 @@ endef
 else
 # make <4 needs to echo (third recipe line must be empty!)
 define delegator
-@echo '#!/bin/bash' > $(1)
+@echo '#!/usr/bin/env bash' > $(1)
 @echo '. $(2)/bin/activate && $(2)/bin/$(notdir $(1)) "$$@"' >> $(1)
 
 endef
