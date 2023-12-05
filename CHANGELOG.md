@@ -1,5 +1,136 @@
 # Changelog
 
+## [v2023-12-06](https://github.com/OCR-D/ocrd_all/releases/v2023-12-06)
+
+### [core](https://github.com/OCR-D/core) [d8c5813](https://github.com/OCR-D/core/commits/d8c5813)..[742906e](https://github.com/OCR-D/core/commits/742906e)
+
+> Release: [v2.59.1](https://github.com/OCR-D/core/releases/v2.59.1)
+
+  > * :package: v2.59.1
+  > * :memo: changelog
+  > * Merge pull request #1142 from OCR-D/fix-ws-locks
+  > * :memo: changelog
+  > * fix ranges, use numpy
+  > * :package: v2.59.0
+  > * :memo: changelog
+  > * Merge branch 'network-workflow-api'
+  > * :memo: changelog
+  > * Merge pull request #1139 from OCR-D/bagger-filegrp-filter
+  > * :memo: changelog
+  > * Merge branch 'list-page-extended'
+  > * :memo: changelog
+  > * Merge pull request #1136 from OCR-D/network-processor-api
+  > * :memo: changelog
+  > * bagger: fallback to ID-derived filename to avoid filename conflicts
+  > * test bagger: sample workflow with conflicting basenames
+  > * bagger test: rewrite as pytest
+  > * :memo: changelog
+  > * Merge pull request #1134 from OCR-D/page-update
+  > * :memo: changelog
+  > * Merge branch 'update-apidocs'
+  > * OcrdMets: remove dead code __exit__ method, #1130
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [dbaccdd](https://github.com/qurator-spk/dinglehopper/commits/dbaccdd)..[f077ce2](https://github.com/qurator-spk/dinglehopper/commits/f077ce2)
+
+> Release: [v0.9.4](https://github.com/qurator-spk/dinglehopper/releases/v0.9.4)
+
+  > * 🐛 dinglehopper-summarize: Handle reports without difference stats
+  > * Merge pull request #97 from qurator-spk/clean-remove-six-dep-again
+  > * Merge pull request #96 from qurator-spk/test-on-pr-but-really
+  > * Merge pull request #94 from qurator-spk/test-on-pr
+  > * Merge pull request #93 from qurator-spk/update-dep-multimethod
+  > * Merge pull request #92 from qurator-spk/update-pre-commit
+  > * Merge pull request #91 from qurator-spk/test-remove-circleci
+  > * Merge pull request #90 from qurator-spk/test-on-python-3.12
+  > * ✔ Add mets:FLocat's @LOCTYPE/OTHERLOCTYPE to test data
+
+### [format-converters](https://github.com/OCR-D/format-converters) [9615db1](https://github.com/OCR-D/format-converters/commits/9615db1)..[fa8b4b5](https://github.com/OCR-D/format-converters/commits/fa8b4b5)
+
+  > * Merge pull request #24 from stweil/orientation
+  > * Merge pull request #18 from stweil/rotate
+  > * Merge pull request #23 from stweil/TextEquivNone
+  > * Merge pull request #22 from stweil/image
+  > * Merge pull request #19 from stweil/page_version
+  > * Merge pull request #21 from stweil/image_dimensions
+  > * Merge pull request #20 from stweil/close_statement
+  > * Merge pull request #17 from stweil/update
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [c0a4dfd](https://github.com/OCR-D/ocrd_calamari/commits/c0a4dfd)..[ad8febd](https://github.com/OCR-D/ocrd_calamari/commits/ad8febd)
+
+> Release: [v1.0.6](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.6)
+
+  > * ⚙ pre-commit: update config (using pre-commit-update hook)
+  > * 🎨 Remove extra whitespace in CircleCI confg
+  > * ✔ CircleCI: Update codecov orb
+  > * Merge pull request #102 from OCR-D/review-test-base
+  > * Merge pull request #106 from OCR-D/setup-update-description
+  > * ✔ CircleCI: Try to fix caching of pip cache
+  > * Merge pull request #107 from OCR-D/circleci-pip-cache-1
+  > * Merge pull request #101 from OCR-D/use-ruff-config-like-dinglehoppers
+  > * Merge pull request #100 from OCR-D/fix/set-default-MODEL-for-bare-pytest
+  > * 🐛 Fix importing + exporting test.base.assets
+  > * 🐛 pre-commit/mypy: Install missing types-setuptools depedency
+  > * 🧹 Remove unused exports (done by ruff --fix .)
+  > * 🛠Add pre-commit configuration
+  > * 🐛 Require ocrd >= 2.54.0 for tf_disable_interactive_logs
+  > * ✒ README: Minor changes
+  > * ✒ README: Fix and simplify example instructions
+  > * 🎨 Reformat using Black + ruff
+  > * 🧹 Remove protobuf restriction (→ calamari-ocr 1.0.6 has it now)
+  > * Merge pull request #78 from mikegerber/test-python-3.11
+  > * 💩 Add a script fix-calamari1-model to fix regexen in 1.0 models
+  > * ✒ README: Wrap long line
+  > * 🧹 Remove workaround for fixed np.str problem in Calamari
+
+### [ocrd_neat](https://github.com/qurator-spk/page2tsv) [0f64f07](https://github.com/qurator-spk/page2tsv/commits/0f64f07)..[2f7d01c](https://github.com/qurator-spk/page2tsv/commits/2f7d01c)
+
+> Release: [v0.0.1](https://github.com/qurator-spk/page2tsv/releases/v0.0.1)
+
+  > * fix alto2tsv bug
+  > * Merge pull request #15 from stweil/typo
+  > * Merge pull request #14 from stweil/gitignore
+  > * add alto2tsv
+
+### [ocrd_pagetopdf](https://github.com/UB-Mannheim/ocrd_pagetopdf) [7368f51](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/7368f51)..[24f77d3](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/24f77d3)
+
+> Release: [v1.1.0](https://github.com/UB-Mannheim/ocrd_pagetopdf/releases/v1.1.0)
+
+  > * Use first bash from PATH (allows running on macOS)
+  > * Merge pull request #23 from kba/mets-server-url-support
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [dc228ed](https://github.com/tesseract-ocr/tesseract/commits/dc228ed)..[ea0b245](https://github.com/tesseract-ocr/tesseract/commits/ea0b245)
+
+> Release: [5.3.3](https://github.com/tesseract-ocr/tesseract/releases/5.3.3)
+
+  > * Update status badge for GitHub workflow sw (add missing line break)
+  > * Update status badge for GitHub workflow sw
+  > * Correct indefinite articles before vowels
+  > * Update issue-bug.yml
+  > * Merge pull request #4162 from tfmorris/3000-tcp-scrollview
+  > * Avoid conversions from std::string to char* to std::string
+  > * Remove unnecessary conversions from std::string to C string
+  > * Remove whitespace at line endings
+  > * Update sw.yml
+  > * Update README.md
+  > * Update sw.yml
+  > * Fail on curl download errors
+  > * Add new parameter curl_cookiefile for curl_easy_setopt
+  > * ci: Fix clang build for Ubuntu 22.04
+  > * ci: Allow manual trigger of unittest
+  > * Move bail_out function before libtoolize check
+  > * Merge pull request #4150 from tfmorris/4149-directory-to-stdout
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [d0d208c](https://github.com/bertsky/workflow-configuration/commits/d0d208c)..[cbc3234](https://github.com/bertsky/workflow-configuration/commits/cbc3234)
+
+  > * add page-ensure-textequiv-conf.xsl
+  > * add page-rename-id-clashes.xsl
+  > * PAGE CLIs: allow combining --pretty and --diff
+  > * new pair of XSLTs: un/flatten table cells
+  > * require ocrd >= 2.58.1
+  > * require ocrd >= 2.58
+  > * ocrd-page-transform: support --mets-server-url
+
+
 ## [v2023-10-20](https://github.com/OCR-D/ocrd_all/releases/v2023-10-20)
 
 ### [core](https://github.com/OCR-D/core) [caa7ac3](https://github.com/OCR-D/core/commits/caa7ac3)..[d8c5813](https://github.com/OCR-D/core/commits/d8c5813)
