@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2023-12-06](https://github.com/OCR-D/ocrd_all/releases/v2023-12-06)
+## [v2023-12-07](https://github.com/OCR-D/ocrd_all/releases/v2023-12-07)
 
 ### [core](https://github.com/OCR-D/core) [d8c5813](https://github.com/OCR-D/core/commits/d8c5813)..[742906e](https://github.com/OCR-D/core/commits/742906e)
 
@@ -153,10 +153,11 @@
   > * :memo: changelog
   > * Merge pull request #1121 from OCR-D/fix-bashlib-log
 
-### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [cfb24ec](https://github.com/OCR-D/ocrd_fileformat/commits/cfb24ec)..[7364265](https://github.com/OCR-D/ocrd_fileformat/commits/7364265)
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [7364265](https://github.com/OCR-D/ocrd_fileformat/commits/7364265)..[c5f0c52](https://github.com/OCR-D/ocrd_fileformat/commits/c5f0c52)
 
 > Release: [v0.9.1](https://github.com/OCR-D/ocrd_fileformat/releases/v0.9.1)
 
+  > * update ocr-fileformat to include UB-Mannheim/ocr-fileformat#171
   > * :package: v0.9.1
   > * :memo: changelog
   > * require ocrd >= 2.58.1
