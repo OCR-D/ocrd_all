@@ -4,10 +4,12 @@
 
 ## [v2023-12-15](https://github.com/OCR-D/ocrd_all/releases/v2023-12-15)
 
-### [core](https://github.com/OCR-D/core) [742906e](https://github.com/OCR-D/core/commits/742906e)..[4684d48](https://github.com/OCR-D/core/commits/4684d48)
+### [core](https://github.com/OCR-D/core) [742906e](https://github.com/OCR-D/core/commits/742906e)..[ac1f15b](https://github.com/OCR-D/core/commits/ac1f15b)
 
-> Release: [v2.60.0](https://github.com/OCR-D/core/releases/v2.60.0)
+> Release: [v2.60.1](https://github.com/OCR-D/core/releases/v2.60.1)
 
+  > * :package: v2.60.1
+  > * docker: we need .git during build for setuptools_scm
   > * :memo: changelog
   > * Merge branch 'git-versioning'
   > * :memo: changelog
