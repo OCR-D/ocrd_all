@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased
+
+## [v2023-12-15](https://github.com/OCR-D/ocrd_all/releases/v2023-12-15)
+
+### [core](https://github.com/OCR-D/core) [742906e](https://github.com/OCR-D/core/commits/742906e)..[4684d48](https://github.com/OCR-D/core/commits/4684d48)
+
+> Release: [v2.60.0](https://github.com/OCR-D/core/releases/v2.60.0)
+
+  > * :memo: changelog
+  > * Merge branch 'git-versioning'
+  > * :memo: changelog
+  > * defaults for mets_basename and mets_server_url
+  > * Merge branch 'master' of https://github.com/OCR-D/core
+  > * :memo: changelog
+  > * ocrd workpace list-page: ignore files without pageId, fix #1148
+
 ## [v2023-12-07](https://github.com/OCR-D/ocrd_all/releases/v2023-12-07)
 
 ### [core](https://github.com/OCR-D/core) [d8c5813](https://github.com/OCR-D/core/commits/d8c5813)..[742906e](https://github.com/OCR-D/core/commits/742906e)
@@ -208,8 +224,6 @@
   > * require ocrd >= 2.58
   > * ocrd-page-transform: support --mets-server-url
 
-
-## Unreleased
 
 ## [v2023-10-18](https://github.com/OCR-D/ocrd_all/releases/v2023-10-18)
 
