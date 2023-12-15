@@ -163,7 +163,11 @@ release_github () {
 
 release_dockerhub () {
     docker tag ocrd/all:maximum-cuda ocrd/all:${version#v}
+    docker tag ocrd/all:maximum ocrd/all:maximum-${version#v}
+    docker tag ocrd/all:maximum-cuda ocrd/all:maximum-cuda-${version#v}
     docker push ocrd/all:${version#v}
+    docker push ocrd/all:maximum-${version#v}
+    docker push ocrd/all:maximum-cuda-${version#v}
     docker tag ocrd/all:maximum-cuda ocrd/all:latest
     docker push ocrd/all:latest
 }
