@@ -569,11 +569,10 @@ $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(filter ocrd_typegroups_classifier, $(OCRD_MODULES)),)
-OCRD_EXECUTABLES += $(OCRD_TYPECLASS)
-OCRD_TYPECLASS := $(BIN)/ocrd-typegroups-classifier
-OCRD_TYPECLASS += $(BIN)/typegroups-classifier
-$(call multirule,$(OCRD_TYPECLASS)): ocrd_typegroups_classifier | $(OCRD_DETECTRON2)
+ifneq ($(filter ocrd_froc, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(OCRD_FROC)
+OCRD_FROC := $(BIN)/ocrd-olahd-client
+$(OCRD_FROC): ocrd_froc $(BIN)/ocrd
 	$(pip_install)
 endif
 
