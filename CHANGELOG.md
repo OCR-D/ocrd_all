@@ -2,6 +2,135 @@
 
 ## Unreleased
 
+## [v2024-01-31](https://github.com/OCR-D/ocrd_all/releases/v2024-01-31)
+
+### [cor-asv-fst](https://github.com/ASVLeipzig/cor-asv-fst) [076e04e](https://github.com/ASVLeipzig/cor-asv-fst/commits/076e04e)..[4211371](https://github.com/ASVLeipzig/cor-asv-fst/commits/4211371)
+
+  > * Merge pull request #4 from stweil/master
+
+### [core](https://github.com/OCR-D/core) [ac1f15b](https://github.com/OCR-D/core/commits/ac1f15b)..[b94b185](https://github.com/OCR-D/core/commits/b94b185)
+
+> Release: [v2.62.0](https://github.com/OCR-D/core/releases/v2.62.0)
+
+  > * reenable circle because docker failed to build on ghcr.io
+  > * :package: v2.62.0
+  > * {pypi,build}-workaround: missed a commit, s/get_distribution(...).version/dist_version(...)
+  > * Merge branch 'circle-to-gha'
+  > * :memo: changelog
+  > * Merge branch 'master' into ocrd-tool-json-root
+  > * expose ocrd-tool.json for ocrd-dummy in root like processors
+  > * :package: v2.60.3
+  > * :memo: changelog
+  > * Fix --editable install for setuptools>=64, setuptools#3548
+  > * :package: v2.60.2
+  > * :memo: changelog
+  > * Merge pull request #1161 from OCR-D/logging-downgrade-level
+  > * Merge pull request #1160 from OCR-D/is-oai-content-loglevel-debug
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [f077ce2](https://github.com/qurator-spk/dinglehopper/commits/f077ce2)..[f8e3108](https://github.com/qurator-spk/dinglehopper/commits/f8e3108)
+
+> Release: [v0.9.4](https://github.com/qurator-spk/dinglehopper/releases/v0.9.4)
+
+  > * 🚧 GitLab CI Test: Push after pulling
+  > * 🚧 GitLab CI Test: Trigger only on default branch (and do not hardcode it)
+  > * 🚧 GitLab CI Test
+  > * 🔍 ruff: Remove ignore configuration, we use multimethods in a compatible way now
+  > * ⚙ pre-commit: Update hooks
+  > * 🚧 GitLab CI Test
+  > * 🔍 mypy: Use an almost strict mypy configuration, and fix any issues
+  > * 🔍 mypy: Use a compatible syntax for multimethod
+  > * 🔍 mypy: Remove ExtractedText.segments converter
+  > * 🔍 mypy: Avoid using check() for all attr validators
+  > * 🔍 mypy: Make cli.process() typed so mypy checks it (and issues no warning)
+  > * Merge branch 'pr103'
+  > * ⚙ Update ruff+mypy dependencies
+  > * ⚙ pre-commit: Update hooks
+  > * ⬆ Move on to supporting Python >= 3.8 only
+  > * 🐛 Use typing.List instead of list, for Python <3.9
+  > * 🐛 Use Optional instead of | none, for Python <3.10
+  > * ⚙ pre-commit: Update hooks
+  > * 🐛 Fix generating word differences
+  > * ⚙ pre-commit: Update hooks
+  > * Merge branch 'master' of https://github.com/qurator-spk/dinglehopper
+  > * Merge branch 'master' into performance
+  > * ⬆ Update uniseg dependency
+  > * ❎ Make joining grapheme clusters more robust by checking joiner and handling an empty joiner
+  > * 🐛 Fix score_hint call in cli_line_dirs
+  > * 🐛 Fix docstring of distance() for grapheme clusters
+  > * 🐛 Fix calculation of score_hint for edge cases, e.g. when CER is infinite
+  > * 🕸Do not use deprecated ID, pageId options
+  > * ✔ Add mets:FLocat's @LOCTYPE/OTHERLOCTYPE to test data
+  > * ⬆ Update multimethod dependency
+  > * 🐛 Update tests for ExtractedText
+  > * use uniseg again
+  > * update rapidfuzz version
+  > * replace uniseg with uniseg2
+  > * apply black
+  > * move grapheme clusters to ExtractedText
+  > * remove python2.7 futures
+  > * remove unused includes
+  > * only call `words_normalized` once
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [706433c](https://github.com/qurator-spk/eynollah/commits/706433c)..[032a99e](https://github.com/qurator-spk/eynollah/commits/032a99e)
+
+> Release: [v0.2.0](https://github.com/qurator-spk/eynollah/releases/v0.2.0)
+
+  > * adapt to OcrdFile.local_filename now :Path
+  > * adapt to ocrd>=2.54 url vs local_filename
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [c5f0c52](https://github.com/OCR-D/ocrd_fileformat/commits/c5f0c52)..[ba79de9](https://github.com/OCR-D/ocrd_fileformat/commits/ba79de9)
+
+> Release: [v0.10.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.10.0)
+
+  > * :package: v0.10.0
+  > * :memo: changelog
+  > * Update ocr-fileformat to include UB-Mannheim/ocr-fileformat#172
+  > * Merge branch 'fix-textract2page'
+  > * update ocr-fileformat to latest
+  > * Update ocr-fileformat to v0.6.0
+
+### [ocrd_repair_inconsistencies](https://github.com/qurator-spk/ocrd_repair_inconsistencies) [cf879c1](https://github.com/qurator-spk/ocrd_repair_inconsistencies/commits/cf879c1)..[94c482f](https://github.com/qurator-spk/ocrd_repair_inconsistencies/commits/94c482f)
+
+  > * 🕸 README: Mention archival of the project
+
+### [opencv-python](https://github.com/skvark/opencv-python) [7cfd1ee](https://github.com/skvark/opencv-python/commits/7cfd1ee)..[8ad8ec1](https://github.com/skvark/opencv-python/commits/8ad8ec1)
+
+> Release: [80](https://github.com/skvark/opencv-python/releases/80)
+
+  > * Merge branch 'as/4.9.0-readme-update' into 4.x
+  > * Merge pull request #941 from asmorkalov/as/mac_m1_venv_for_test
+  > * Merge pull request #940 from asmorkalov:as/donation
+  > * Merge pull request #938 from asmorkalov"as/4.9.0-pre
+  > * Merge pull request #934 from asmorkalov/as/native_mac_m1_runner
+  > * Merge pull request #936 from asmorkalov:as/mac_intel_update
+  > * Merge pull request #932 from asmorkalov/as/pre-4.9.0_linux_upgrade
+  > * Merge pull request #931 from asmorkalov:as/ipp_icv_license
+  > * Merge pull request #904 from asmorkalov:as/python_3.12
+  > * Merge pull request #927 from dkurt:try_enable_dependents
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [f3c6ac8](https://github.com/qurator-spk/sbb_binarization/commits/f3c6ac8)..[b89ec49](https://github.com/qurator-spk/sbb_binarization/commits/b89ec49)
+
+> Release: [v0.1.0](https://github.com/qurator-spk/sbb_binarization/releases/v0.1.0)
+
+  > * Merge pull request #65 from rettinghaus/update-tests
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [ea0b245](https://github.com/tesseract-ocr/tesseract/commits/ea0b245)..[8ee020e](https://github.com/tesseract-ocr/tesseract/commits/8ee020e)
+
+> Release: [5.3.4](https://github.com/tesseract-ocr/tesseract/releases/5.3.4)
+
+  > * Create new release 5.3.4
+  > * Set User-Agent: header field in HTTP request for curl downloads
+  > * Merge pull request #4178 from sadra-barikbin/patch-1
+  > * Merge pull request #4174 from stweil/warnings
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [cbc3234](https://github.com/bertsky/workflow-configuration/commits/cbc3234)..[f54c91a](https://github.com/bertsky/workflow-configuration/commits/f54c91a)
+
+> Release: [0.1.3](https://github.com/bertsky/workflow-configuration/releases/0.1.3)
+
+  > * ocrd-page-transform: local_filename instead of url
+  > * ocrd-page-transform: fix unbound variable
+
+
 ## [v2023-12-15](https://github.com/OCR-D/ocrd_all/releases/v2023-12-15)
 
 ### [core](https://github.com/OCR-D/core) [742906e](https://github.com/OCR-D/core/commits/742906e)..[ac1f15b](https://github.com/OCR-D/core/commits/ac1f15b)
