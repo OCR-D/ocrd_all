@@ -52,9 +52,6 @@
 [submodule "ocrd_pc_segmentation"]
 	path = ocrd_pc_segmentation
 	url = https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation.git
-[submodule "ocrd_typegroups_classifier"]
-	path = ocrd_typegroups_classifier
-	url = https://github.com/OCR-D/ocrd_typegroups_classifier.git
 [submodule "opencv-python"]
 	path = opencv-python
 	url = https://github.com/skvark/opencv-python.git
@@ -97,3 +94,6 @@
 [submodule "nmalign"]
 	path = nmalign
 	url = https://github.com/bertsky/nmalign.git
+[submodule "ocrd_froc"]
+	path = ocrd_froc
+	url = https://github.com/OCR-D/ocrd_froc
