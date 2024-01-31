@@ -71,7 +71,7 @@ SHELL := $(shell which bash)
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_DEPS = unzip wget parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
-DEFAULT_DISABLED_MODULES = cor-asv-fst opencv-python ocrd_ocropy ocrd_pc_segmentation
+DEFAULT_DISABLED_MODULES = cor-asv-fst opencv-python ocrd_ocropy ocrd_pc_segmentation ocrd_neat
 ifeq ($(filter docker-%,$(MAKECMDGOALS)),)
 ifneq ($(PYTHON_VERSION),3.7)
 ifneq ($(PYTHON_VERSION),3.8)
