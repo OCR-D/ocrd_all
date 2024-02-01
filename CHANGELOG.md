@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+Added:
+
+    - https://github.com/OCR-D/ocrd_froc
+
 ## [v2024-01-31](https://github.com/OCR-D/ocrd_all/releases/v2024-01-31)
 
 ### [cor-asv-fst](https://github.com/ASVLeipzig/cor-asv-fst) [076e04e](https://github.com/ASVLeipzig/cor-asv-fst/commits/076e04e)..[4211371](https://github.com/ASVLeipzig/cor-asv-fst/commits/4211371)
