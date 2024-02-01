@@ -571,7 +571,7 @@ endif
 
 ifneq ($(filter ocrd_froc, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_FROC)
-OCRD_FROC := $(BIN)/ocrd-olahd-client
+OCRD_FROC := $(BIN)/ocrd-froc-recognize
 $(OCRD_FROC): ocrd_froc $(BIN)/ocrd
 	$(pip_install)
 endif
