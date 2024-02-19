@@ -2,9 +2,139 @@
 
 ## Unreleased
 
+## [v2024-02-20](https://github.com/OCR-D/ocrd_all/releases/v2024-02-20)
+
 Added:
 
-    - https://github.com/OCR-D/ocrd_froc
+  - https://github.com/OCR-D/ocrd_froc
+
+Removed:
+
+  - https://github.com/OCR-D/ocrd_typegroups_classifier
+
+### [core](https://github.com/OCR-D/core) [60dcd7e](https://github.com/OCR-D/core/commits/60dcd7e)..[3a1b3a2](https://github.com/OCR-D/core/commits/3a1b3a2)
+
+> Release: [v2.63.0](https://github.com/OCR-D/core/releases/v2.63.0)
+
+  > * :package: v2.63.0
+  > * :memo: changelog
+  > * Merge branch 'master' into lxml-stubs
+  > * clean up lxml code
+  > * use lxml-stubs/types-lxml for typing support of lxml.etree
+  > * :memo: changelog
+  > * Merge branch 'local-filename-path-to-str'
+  > * :memo: changelog
+  > * Merge pull request #1181 from OCR-D/downgrade-log-msg-debug
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [0a4f684](https://github.com/ASVLeipzig/cor-asv-ann/commits/0a4f684)..[4216c16](https://github.com/ASVLeipzig/cor-asv-ann/commits/4216c16)
+
+> Release: [v0.1.15](https://github.com/ASVLeipzig/cor-asv-ann/releases/tag/v0.1.15)
+
+  > * readme: add Dockerhub badge
+  > * add CD to Dockerhub
+  > * update readme
+  > * join: add param add-filegrp-index
+  > * process: adapt to Numpy changes
+  > * add dockerfile
+  > * compare/evaluate: reverse order of pair (to match actual order in confusion and history)
+  > * align: clarify that 1st fileGrp is privileged
+  > * evaluate: add param match_on, allow comparing across @index of same fileGrp, too
+  > * downgrade plotting to optional dependency
+  > * adopt word splitting from dinglehopper
+  > * edits, compare/evaluate: micro- (per char) instead of macro-average (per line), fix num-lines vs num-chars
+  > * join: add param match-on, offer baseline and coords as alternative to id
+  > adapt to Numpy deprecations
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [5978a1f](https://github.com/OCR-D/ocrd_anybaseocr/commits/5978a1f)..[eb6ea8e](https://github.com/OCR-D/ocrd_anybaseocr/commits/eb6ea8e)
+
+> Release: [v1.10.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.10.0)
+
+  > * :package: v1.10.0
+  > * docker: build on top of 2.63
+  > * Base Docker on core-cuda
+  > * Set docker metadata with makefile
+  > * Add things required by spec to Dockerfile
+  > * Clear pip cache after installing in Dockerfile
+  > * Rename build folder to not interfere with core-img
+  > * Update dockerfile
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [fcc02fd](https://github.com/cisocrgroup/ocrd_cis/commits/fcc02fd)..[1d2e858](https://github.com/cisocrgroup/ocrd_cis/commits/1d2e858)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * Merge pull request #4 from joschrew/update-dockerfile
+
+### [ocrd_im6convert](https://github.com/OCR-D/ocrd_im6convert) [db18917](https://github.com/OCR-D/ocrd_im6convert/commits/db18917)..[be794f6](https://github.com/OCR-D/ocrd_im6convert/commits/be794f6)
+
+> Release: [v0.1.1](https://github.com/OCR-D/ocrd_im6convert/releases/v0.1.1)
+
+  > * Create LICENSE
+
+### [ocrd_keraslm](https://github.com/OCR-D/ocrd_keraslm) [dd78976](https://github.com/OCR-D/ocrd_keraslm/commits/dd78976)..[759805b](https://github.com/OCR-D/ocrd_keraslm/commits/759805b)
+
+> Release: [v0.4.1](https://github.com/OCR-D/ocrd_keraslm/releases/v0.4.1)
+
+  > * Updated config.yml
+  > * Dockerfile: forgot to cp makefile
+  > * CD: fix syntax
+  > * add CD via Dockerhub
+  > * docker: defer to makefile for TF1 recipe
+  > * CI: try to fix ocrd/tesserocr TESSDATA_PREFIX
+  > * add dockerfile
+  > * improve augmentation and modes:
+  > * vectorize: fix final batch if stateless and steps>1 during training
+
+### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [c1f7cab](https://github.com/OCR-D/ocrd_olena/commits/c1f7cab)..[4d4aded](https://github.com/OCR-D/ocrd_olena/commits/4d4aded)
+
+> Release: [v1.6.0](https://github.com/OCR-D/ocrd_olena/releases/v1.6.0)
+
+  > * :package: v1.6.0
+  > * Dockerfile: Be explicit about the source image repository
+  > * Set docker metadata with makefile
+  > * Dockerfile: Adhere to spec
+  > * Base dockerfile on concrete core version
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [ebc7e1f](https://github.com/OCR-D/ocrd_segment/commits/ebc7e1f)..[3993139](https://github.com/OCR-D/ocrd_segment/commits/3993139)
+
+> Release: [v0.1.22](https://github.com/OCR-D/ocrd_segment/releases/v0.1.22)
+
+  > * README.md: add CircleCI badge
+  > * README.md: add Dockerhub badge
+  > * Merge pull request #66 from joschrew/dockerfile
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [f1036e3](https://github.com/OCR-D/ocrd_tesserocr/commits/f1036e3)..[08a020f](https://github.com/OCR-D/ocrd_tesserocr/commits/08a020f)
+
+> Release: [v0.18.0](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.18.0)
+
+  > * :package: v0.18.0
+  > * ci/gha: checkout git submodules, too
+  > * conftest: simplify workspace fixtures
+  > * ci: make deps-test for coverage
+  > * convert tests to pytest, make coverage works again
+  > * CD: depends on subrepos, too
+  > * docker build depends on subrepos, too
+  > * Merge pull request #197 from joschrew/dockerfile-update
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [8ee020e](https://github.com/tesseract-ocr/tesseract/commits/8ee020e)..[becd395](https://github.com/tesseract-ocr/tesseract/commits/becd395)
+
+> Release: [5.3.4](https://github.com/tesseract-ocr/tesseract/releases/5.3.4)
+
+  > * Merge pull request #4189 from sjbronner/main
+  > * Merge pull request #4188 from softwaretirol/main
+
+### [tesserocr](https://github.com/sirfz/tesserocr) [94c8b73](https://github.com/sirfz/tesserocr/commits/94c8b73)..[1f960e9](https://github.com/sirfz/tesserocr/commits/1f960e9)
+
+> Release: [v2.6.2](https://github.com/sirfz/tesserocr/releases/v2.6.2)
+
+  > * mentioned about the version dependencies
+  > * Clarified the comments for tesserdata path
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [f54c91a](https://github.com/bertsky/workflow-configuration/commits/f54c91a)..[cb0ef1a](https://github.com/bertsky/workflow-configuration/commits/cb0ef1a)
+
+> Release: [0.1.3](https://github.com/bertsky/workflow-configuration/releases/0.1.3)
+
+  > * add page-remove-textequiv.xsl
+
 
 ## [v2024-01-31](https://github.com/OCR-D/ocrd_all/releases/v2024-01-31)
 
