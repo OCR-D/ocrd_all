@@ -16,12 +16,14 @@
 [submodule "ocrd_olena"]
 	path = ocrd_olena
 	url = https://github.com/OCR-D/ocrd_olena.git
+        shallow = true
 [submodule "ocrd_segment"]
 	path = ocrd_segment
 	url = https://github.com/OCR-D/ocrd_segment.git
 [submodule "ocrd_tesserocr"]
 	path = ocrd_tesserocr
 	url = https://github.com/OCR-D/ocrd_tesserocr.git
+        shallow = true
 [submodule "dinglehopper"]
 	path = dinglehopper
 	url = https://github.com/qurator-spk/dinglehopper.git
@@ -49,6 +51,7 @@
 [submodule "opencv-python"]
 	path = opencv-python
 	url = https://github.com/skvark/opencv-python.git
+        shallow = true
 [submodule "workflow-configuration"]
 	path = workflow-configuration
 	url = https://github.com/bertsky/workflow-configuration.git
