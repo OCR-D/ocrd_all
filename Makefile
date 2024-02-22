@@ -22,8 +22,6 @@ endif
 endif
 GIT_RECURSIVE = # --recursive
 GIT_DEPTH = # --depth 1 or --single-branch
-# Required and optional Tesseract models.
-ALL_TESSERACT_MODELS = eng equ osd $(TESSERACT_MODELS)
 
 # directory for virtual Python environment
 # (but re-use if already active); overridden
@@ -132,12 +130,8 @@ Targets (system dependencies, may need root privileges):
 Targets (build and installation into venv):
 	all: install all executables of all modules
 	ocrd: only install the virtual environment and OCR-D/core packages
-	install-tesseract: only build and install Tesseract (with TESSERACT_MODELS)
-	install-tesseract-training: also build and install Tesseract training tools
 	fix-cuda: workaround for non-conflicting CUDA libs after installation
 	clean: remove the virtual environment directory, and make clean-*
-	clean-tesseract: remove the build directory for tesseract
-	clean-olena: remove the build directory for ocrd_olena
 
 Targets (testing):
 	check: verify that all executables are runnable and the venv is consistent
@@ -165,8 +159,6 @@ Variables:
 	PYTHON: name of the Python binary (also used for target `deps-ubuntu` unless set to `python`)
 	PIP_OPTIONS: extra options for the `pip install` command like `-q` or `-v` or `-e`
 	CHECK_HELP: set to `1` to also check each executable can generate help output
-	TESSERACT_MODELS: list of additional models/languages to download for Tesseract. Default: "$(ALL_TESSERACT_MODELS)"
-	TESSERACT_CONFIG: command line options for Tesseract `configure`. Default: "$(TESSERACT_CONFIG)"
 EOF
 endef
 export HELP
@@ -457,24 +449,14 @@ endif
 endif
 
 ifneq ($(filter ocrd_tesserocr, $(OCRD_MODULES)),)
+ocrd_tesserocr: GIT_RECURSIVE = --recursive
 install-models: install-models-tesseract
 .PHONY: install-models-tesseract
 install-models-tesseract:
 	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-tesserocr-recognize '*'
 
 OCRD_EXECUTABLES += $(OCRD_TESSEROCR)
-# only add custom PPA when not building tesseract from source
-ifeq ($(filter tesseract, $(OCRD_MODULES)),)
 deps-ubuntu-modules: ocrd_tesserocr
-# convert Tesseract model names into Ubuntu/Debian pkg names
-# (does not work with names under script/ though)
-CUSTOM_DEPS += $(filter-out tesseract-ocr-equ,$(subst _,-,$(ALL_TESSERACT_MODELS:%=tesseract-ocr-%)))
-CUSTOM_DEPS += libarchive-dev
-else
-# tesserocr must wait for tesseract in parallel builds.
-$(SHARE)/tesserocr: $(BIN)/tesseract
-endif
-
 OCRD_TESSEROCR := $(BIN)/ocrd-tesserocr-binarize
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-crop
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-deskew
@@ -483,19 +465,36 @@ OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-line
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-region
 OCRD_TESSEROCR += $(BIN)/ocrd-tesserocr-segment-word
-$(call multirule,$(OCRD_TESSEROCR)): ocrd_tesserocr $(SHARE)/tesserocr $(BIN)/ocrd
-	$(pip_install)
+OCRD_TESSEROCR += $(BIN)/tesseract
+TESSTRAIN_EXECUTABLES =
+TESSTRAIN_EXECUTABLES += $(BIN)/ambiguous_words
+TESSTRAIN_EXECUTABLES += $(BIN)/classifier_tester
+TESSTRAIN_EXECUTABLES += $(BIN)/cntraining
+TESSTRAIN_EXECUTABLES += $(BIN)/combine_lang_model
+TESSTRAIN_EXECUTABLES += $(BIN)/combine_tessdata
+TESSTRAIN_EXECUTABLES += $(BIN)/dawg2wordlist
+TESSTRAIN_EXECUTABLES += $(BIN)/lstmeval
+TESSTRAIN_EXECUTABLES += $(BIN)/lstmtraining
+TESSTRAIN_EXECUTABLES += $(BIN)/merge_unicharsets
+TESSTRAIN_EXECUTABLES += $(BIN)/mftraining
+TESSTRAIN_EXECUTABLES += $(BIN)/set_unicharset_properties
+TESSTRAIN_EXECUTABLES += $(BIN)/shapeclustering
+TESSTRAIN_EXECUTABLES += $(BIN)/text2image
+TESSTRAIN_EXECUTABLES += $(BIN)/unicharset_extractor
+TESSTRAIN_EXECUTABLES += $(BIN)/wordlist2dawg
+$(call multirule,$(OCRD_TESSEROCR)): ocrd_tesserocr $(BIN)/ocrd
+	$(MAKE) -C $< install # install-tesseract-training
 
 endif
-
-ifneq ($(filter tesserocr, $(OCRD_MODULES)),)
-$(SHARE)/tesserocr: tesserocr | $(ACTIVATE_VENV) $(SHARE)
-	$(pip_install)
-else
-$(SHARE)/tesserocr: | $(ACTIVATE_VENV) $(SHARE)
-	. $(ACTIVATE_VENV) && $(SEMPIP) pip install $(PIP_OPTIONS_E) tesserocr
-	@touch $@
-endif
+clean: clean-tesseract
+clean-tesseract: ocrd_tesserocr
+	-$(MAKE) -C $< $@ clean-assets
+# (keep these rules merely for backwards compatibility)
+install-tesseract: ocrd_tesserocr $(BIN)/tesseract
+install-tesseract-training: ocrd_tesserocr $(TESSTRAIN_EXECUTABLES)
+install-tesseract install-tesseract-training:
+	$(MAKE) -C $< $@
+.PHONY: clean-tesseract install-tesseract install-tesseract-training
 
 ifneq ($(filter ocrd_cis, $(OCRD_MODULES)),)
 install-models: install-models-ocropus
@@ -770,99 +769,8 @@ $(OCRD_EXECUTABLES:%=%-check):
 .PHONY: $(OCRD_EXECUTABLES:$(BIN)/%=%)
 $(OCRD_EXECUTABLES:$(BIN)/%=%): %: $(BIN)/%
 
-ifneq ($(filter tesseract, $(OCRD_MODULES)),)
-# Tesseract.
-
-# when not installing via PPA, we must cope without ocrd_tesserocr's deps-ubuntu-modules
-CUSTOM_DEPS += automake ca-certificates g++ libtool make
-ifeq ($(shell type apt-cache >/dev/null 2>&1 && apt-cache search --names-only '^pkgconf$$'),)
-# Debian 11, Ubuntu 22.04 or other old distributions.
-CUSTOM_DEPS += pkg-config
-else
-# Debian 12, Ubuntu 23.04 or other new distributions.
-CUSTOM_DEPS += pkgconf
-endif
-# Required library.
-CUSTOM_DEPS += libleptonica-dev
-# Optional libraries for enhanced functionality.
-CUSTOM_DEPS += libarchive-dev libcurl4-nss-dev
-# Optional library for training tools.
-CUSTOM_DEPS += libpango1.0-dev
-
 XDG_DATA_HOME ?= $(if $(HOME),$(HOME)/.local/share,/usr/local/share)
 DEFAULT_RESLOC ?= $(XDG_DATA_HOME)/ocrd-resources
-TESSDATA = $(VIRTUAL_ENV)/share/tessdata/
-TESSDATA_RELEASE = 4.1.0
-TESSDATA_URL := https://github.com/tesseract-ocr/tessdata_fast/raw/$(TESSDATA_RELEASE)
-TESSERACT_TRAINEDDATA = $(ALL_TESSERACT_MODELS:%=$(TESSDATA)/%.traineddata)
-
-stripdir = $(patsubst %/,%,$(dir $(1)))
-
-# Install Tesseract with models.
-.PHONY: install-tesseract
-install-tesseract: $(BIN)/tesseract $(TESSERACT_TRAINEDDATA)
-all: install-tesseract
-
-# Convenience shortcut without the full path:
-%.traineddata: $(TESSDATA)/%.traineddata
-	$(MAKE) $^
-script/%.traineddata: $(TESSDATA)/script/%.traineddata
-	$(MAKE) $^
-
-# Default rule for traineddata models.
-$(TESSDATA)/%.traineddata:
-	@mkdir -p $(dir $@)
-	$(call WGET,$@,$(TESSDATA_URL)/$(notdir $@)) || \
-	$(call WGET,$@,$(TESSDATA_URL)/$(notdir $(call stripdir,$@))/$(notdir $@)) || \
-		{ $(RM) $@; false; }
-
-tesseract/Makefile.in: tesseract
-	cd tesseract && ./autogen.sh
-
-# Build and install Tesseract.
-TESSERACT_CONFIG ?= --disable-openmp --disable-shared CXXFLAGS="-g -O2 -fPIC"
-$(BIN)/tesseract: tesseract/Makefile.in
-	mkdir -p $(VIRTUAL_ENV)/build/tesseract
-	cd $(VIRTUAL_ENV)/build/tesseract && $(CURDIR)/tesseract/configure --prefix="$(VIRTUAL_ENV)" $(TESSERACT_CONFIG)
-	cd $(VIRTUAL_ENV)/build/tesseract && $(MAKE) install
-
-# Build and install Tesseract training tools.
-
-TESSTRAIN_EXECUTABLES =
-TESSTRAIN_EXECUTABLES += $(BIN)/ambiguous_words
-TESSTRAIN_EXECUTABLES += $(BIN)/classifier_tester
-TESSTRAIN_EXECUTABLES += $(BIN)/cntraining
-TESSTRAIN_EXECUTABLES += $(BIN)/combine_lang_model
-TESSTRAIN_EXECUTABLES += $(BIN)/combine_tessdata
-TESSTRAIN_EXECUTABLES += $(BIN)/dawg2wordlist
-TESSTRAIN_EXECUTABLES += $(BIN)/lstmeval
-TESSTRAIN_EXECUTABLES += $(BIN)/lstmtraining
-TESSTRAIN_EXECUTABLES += $(BIN)/merge_unicharsets
-TESSTRAIN_EXECUTABLES += $(BIN)/mftraining
-TESSTRAIN_EXECUTABLES += $(BIN)/set_unicharset_properties
-TESSTRAIN_EXECUTABLES += $(BIN)/shapeclustering
-TESSTRAIN_EXECUTABLES += $(BIN)/text2image
-TESSTRAIN_EXECUTABLES += $(BIN)/unicharset_extractor
-TESSTRAIN_EXECUTABLES += $(BIN)/wordlist2dawg
-
-.PHONY: install-tesseract-training
-install-tesseract-training: $(TESSTRAIN_EXECUTABLES)
-
-$(call multirule,$(TESSTRAIN_EXECUTABLES)): tesseract/Makefile.in
-	mkdir -p $(VIRTUAL_ENV)/build/tesseract
-	$(MAKE) -C $(VIRTUAL_ENV)/build/tesseract training-install
-
-# offer abbreviated forms (just the CLI name in the PATH,
-# without its directory):
-.PHONY: $(TESSTRAIN_EXECUTABLES:$(BIN)/%=%)
-$(TESSTRAIN_EXECUTABLES:$(BIN)/%=%): %: $(BIN)/%
-
-endif
-
-clean: clean-tesseract
-.PHONY: clean-tesseract
-clean-tesseract:
-	$(RM) -r $(VIRTUAL_ENV)/build/tesseract
 
 # do not delete intermediate targets:
 .SECONDARY:
@@ -932,10 +840,10 @@ dockers: docker-minimum docker-minimum-cuda docker-medium docker-medium-cuda doc
 # (so components can be updated via git from the container alone)
 docker-%: PIP_OPTIONS = -e
 
-# Minimum-size selection: use Ocropy binarization, use Tesseract from PPA
-docker-mini%: DOCKER_MODULES := core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap tesserocr workflow-configuration ocrd_olahd_client
-# Medium-size selection: add Olena binarization and Calamari, use Tesseract from git, add evaluation
-docker-medi%: DOCKER_MODULES := core cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olahd_client ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap tesseract tesserocr workflow-configuration
+# Minimum-size selection: use Ocropy binarization, use Tesseract from git
+docker-mini%: DOCKER_MODULES := core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap workflow-configuration ocrd_olahd_client
+# Medium-size selection: add Olena binarization and Calamari, add evaluation
+docker-medi%: DOCKER_MODULES := core cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olahd_client ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap workflow-configuration
 # Maximum-size selection: use all modules
 docker-maxi%: DOCKER_MODULES := $(OCRD_MODULES)
 
