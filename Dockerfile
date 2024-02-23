@@ -109,6 +109,8 @@ RUN echo "pip install -U pip setuptools wheel" >> docker.sh
 RUN echo "hash -r" >> docker.sh
 # build/install all tools of the requested modules:
 RUN echo "make $PARALLEL all" >> docker.sh
+# preinstall ocrd-all-tool.json and ocrd-all-module-dir.json
+RUN echo "make ocrd-all-tool.json ocrd-all-module-dir.json" >> docker.sh
 # remove unneeded automatic deps and clear pkg cache
 RUN echo "apt-get -y remove automake autoconf libtool pkg-config g++ && apt-get -y clean" >> docker.sh
 # clean-up some temporary files (git repos are also installation targets and must be kept)
@@ -123,9 +125,6 @@ RUN ldconfig
 # check installation
 RUN make -j4 check CHECK_HELP=1
 RUN if echo $BASE_IMAGE | fgrep -q cuda; then make fix-cuda; fi
-
-# preinstall ocrd-all-tool.json and ocrd-all-module-dir.json
-RUN make ocrd-all-tool.json ocrd-all-module-dir.json
 
 # as discussed in #378, we do not want to manage more than one resource location
 # to mount for model persistence; with named volumes, the preinstalled models
