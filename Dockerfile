@@ -137,6 +137,8 @@ RUN ln -s $XDG_CONFIG_HOME/ocrd-tesserocr-recognize $XDG_DATA_HOME/tessdata
 # finally, alias/symlink all ocrd-resources to /models for shorter mount commands
 RUN mkdir -p $XDG_CONFIG_HOME
 RUN mv $XDG_CONFIG_HOME /models && ln -s /models $XDG_CONFIG_HOME
+# ensure unprivileged users can download models, too
+RUN chmod go+rwx /models
 
 # remove (dated) security workaround preventing use of
 # ImageMagick's convert on PDF/PS/EPS/XPS:
