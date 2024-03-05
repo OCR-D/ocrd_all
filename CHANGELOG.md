@@ -2,6 +2,69 @@
 
 ## Unreleased
 
+## [v2024-03-05](https://github.com/OCR-D/ocrd_all/releases/v2024-03-05)
+
+### [core](https://github.com/OCR-D/core) [3a1b3a2](https://github.com/OCR-D/core/commits/3a1b3a2)..[f54b002](https://github.com/OCR-D/core/commits/f54b002)
+
+> Release: [v2.63.2](https://github.com/OCR-D/core/releases/v2.63.2)
+
+  > * :package: v2.63.2
+  > * :package: v2.63.1
+  > * Merge branch 'fix-get-physical-pages'
+  > * make coverage: omit generateDS code
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [0a4f684](https://github.com/ASVLeipzig/cor-asv-ann/commits/0a4f684)..[f7ebb74](https://github.com/ASVLeipzig/cor-asv-ann/commits/f7ebb74)
+  > * compare/evaluate: ensure lines are shown verbatim on single file level
+  > * compare/evaluate: do not record worst lines verbatim
+  > * compare/evaluate: also record 1% worst lines
+
+### [ocrd_keraslm](https://github.com/OCR-D/ocrd_keraslm) [759805b](https://github.com/OCR-D/ocrd_keraslm/commits/759805b)..[472197f](https://github.com/OCR-D/ocrd_keraslm/commits/472197f)
+
+> Release: [v0.4.2](https://github.com/OCR-D/ocrd_keraslm/releases/v0.4.2)
+
+  > * update assets
+  > * :package: v0.4.2
+  > * generators: do not require input length > window size
+  > * train: allow passing directory for training data, too
+  > * add checkpointing, allow continuing from ckpt
+  > * suppress TF gibberish
+
+### [tesseract](https://github.com/tesseract-ocr/tesseract) [becd395](https://github.com/tesseract-ocr/tesseract/commits/becd395)..[8690d5a](https://github.com/tesseract-ocr/tesseract/commits/8690d5a)
+
+> Release: [5.3.4](https://github.com/tesseract-ocr/tesseract/releases/5.3.4)
+
+  > * Remove unneeded constant kNumSingleQuoteUnicodes
+  > * Remove unneeded constant kNumDoubleQuoteUnicodes
+  > * Remove unneeded constant kNumHyphenPuncUnicodes
+  > * fix initializer syntax
+  > * normstrngs: add more hyphens and quotes
+  > * Update unittest-disablelegacy.yml
+  > * cmake.yml: Remove the clang++ 14 on Linux job
+  > * autotools.yml: Remove the clang++ 14 on Linux job
+  > * Update msys2.yml: Drop the 32-bit job
+  > * Update GitHub actions/checkout to v4
+  > * [pdfrenderer] Add some debugging capabilities. Do not compress symbol table and text data during debug.
+  > * [pdfrenderer] Do not include space symbol into the word pdf box.
+  > * Move include line.
+  > * Fix some typos
+  > * [ci][appveyor] Switch to VS2022.
+
+### [tesserocr](https://github.com/sirfz/tesserocr) [1f960e9](https://github.com/sirfz/tesserocr/commits/1f960e9)..[f900cbd](https://github.com/sirfz/tesserocr/commits/f900cbd)
+
+> Release: [v2.6.2](https://github.com/sirfz/tesserocr/releases/v2.6.2)
+
+  > * skip unit test for GetComponentImages if Pillow is missing
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [cb0ef1a](https://github.com/bertsky/workflow-configuration/commits/cb0ef1a)..[8418b3f](https://github.com/bertsky/workflow-configuration/commits/8418b3f)
+
+> Release: [0.1.3](https://github.com/bertsky/workflow-configuration/releases/0.1.3)
+
+  > * ocrd-import: use coproc instead of handcrafted FIFOs for loggers
+  > * ocrd-import: rewrite (no parallel jobs, but parallel logging)…
+  > * ocrd-import: add option --basename, default to using directory as well
+  > * ocrd-import: simplify+speedup…
+
+
 ## [v2024-02-20](https://github.com/OCR-D/ocrd_all/releases/v2024-02-20)
 
 Added:
