@@ -1,5 +1,16 @@
 # Changelog
 
+## [v2024-03-05](https://github.com/OCR-D/ocrd_all/releases/v2024-03-05)
+
+### [core](https://github.com/OCR-D/core) [3a1b3a2](https://github.com/OCR-D/core/commits/3a1b3a2)..[f54b002](https://github.com/OCR-D/core/commits/f54b002)
+
+> Release: [v2.63.0](https://github.com/OCR-D/core/releases/v2.63.0)
+
+  > * :package: v2.63.2
+  > * :package: v2.63.1
+  > * Merge branch 'fix-get-physical-pages'
+  > * make coverage: omit generateDS code
+
 ## Unreleased
 
 ## [v2024-02-20](https://github.com/OCR-D/ocrd_all/releases/v2024-02-20)
