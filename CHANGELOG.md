@@ -4,6 +4,10 @@
 
 ## [v2024-03-07](https://github.com/OCR-D/ocrd_all/releases/v2024-03-07)
 
+Removed:
+
+  - tesserocr and tesseract (which are now submodules of ocrd_tesserocr)
+
 ### [core](https://github.com/OCR-D/core) [f54b002](https://github.com/OCR-D/core/commits/f54b002)..[c5b5580](https://github.com/OCR-D/core/commits/c5b5580)
 
 > Release: [v2.63.3](https://github.com/OCR-D/core/releases/v2.63.3)
