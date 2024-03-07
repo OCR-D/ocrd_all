@@ -2,12 +2,17 @@
 
 ## Unreleased
 
-## [v2024-03-05](https://github.com/OCR-D/ocrd_all/releases/v2024-03-05)
+## [v2024-03-07](https://github.com/OCR-D/ocrd_all/releases/v2024-03-07)
 
-### [core](https://github.com/OCR-D/core) [3a1b3a2](https://github.com/OCR-D/core/commits/3a1b3a2)..[f54b002](https://github.com/OCR-D/core/commits/f54b002)
+### [core](https://github.com/OCR-D/core) [f54b002](https://github.com/OCR-D/core/commits/f54b002)..[c5b5580](https://github.com/OCR-D/core/commits/c5b5580)
 
-> Release: [v2.63.2](https://github.com/OCR-D/core/releases/v2.63.2)
+> Release: [v2.63.3](https://github.com/OCR-D/core/releases/v2.63.3)
 
+  > * :package: v2.63.3
+  > * :memo: changelog
+  > * OcrdMets.add_file: fix finding existing el_pagediv
+  > * :memo: changelog
+  > * expose uninstall-workaround
   > * :package: v2.63.2
   > * :package: v2.63.1
   > * Merge branch 'fix-get-physical-pages'
@@ -29,36 +34,30 @@
   > * add checkpointing, allow continuing from ckpt
   > * suppress TF gibberish
 
-### [tesseract](https://github.com/tesseract-ocr/tesseract) [becd395](https://github.com/tesseract-ocr/tesseract/commits/becd395)..[8690d5a](https://github.com/tesseract-ocr/tesseract/commits/8690d5a)
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [08a020f](https://github.com/OCR-D/ocrd_tesserocr/commits/08a020f)..[ed73d96](https://github.com/OCR-D/ocrd_tesserocr/commits/ed73d96)
 
-> Release: [5.3.4](https://github.com/tesseract-ocr/tesseract/releases/5.3.4)
+> Release: [v0.18.1](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.18.1)
 
-  > * Remove unneeded constant kNumSingleQuoteUnicodes
-  > * Remove unneeded constant kNumDoubleQuoteUnicodes
-  > * Remove unneeded constant kNumHyphenPuncUnicodes
-  > * fix initializer syntax
-  > * normstrngs: add more hyphens and quotes
-  > * Update unittest-disablelegacy.yml
-  > * cmake.yml: Remove the clang++ 14 on Linux job
-  > * autotools.yml: Remove the clang++ 14 on Linux job
-  > * Update msys2.yml: Drop the 32-bit job
-  > * Update GitHub actions/checkout to v4
-  > * [pdfrenderer] Add some debugging capabilities. Do not compress symbol table and text data during debug.
-  > * [pdfrenderer] Do not include space symbol into the word pdf box.
-  > * Move include line.
-  > * Fix some typos
-  > * [ci][appveyor] Switch to VS2022.
+  > * :package v0.18.1
+  > * :memo: changelog
+  > * update tesseract/tesserocr to most recent
+  > * update/improve readme
+  > * simplify dockerfile
+  > * CI: add make test
+  > * add repo/assets as proper submodule, rename *-clean → clean-*
+  > * make Tesseract build configurable
+  > * also install minimal needed models
+  > * explify dependencies install ← install-tesserocr ← install-tesseract
+  > * test: download files of data assets
+  > * test: also set up logging system during tests
 
-### [tesserocr](https://github.com/sirfz/tesserocr) [1f960e9](https://github.com/sirfz/tesserocr/commits/1f960e9)..[f900cbd](https://github.com/sirfz/tesserocr/commits/f900cbd)
-
-> Release: [v2.6.2](https://github.com/sirfz/tesserocr/releases/v2.6.2)
-
-  > * skip unit test for GetComponentImages if Pillow is missing
-
-### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [cb0ef1a](https://github.com/bertsky/workflow-configuration/commits/cb0ef1a)..[8418b3f](https://github.com/bertsky/workflow-configuration/commits/8418b3f)
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [8418b3f](https://github.com/bertsky/workflow-configuration/commits/8418b3f)..[bd149f8](https://github.com/bertsky/workflow-configuration/commits/bd149f8)
 
 > Release: [0.1.3](https://github.com/bertsky/workflow-configuration/releases/0.1.3)
 
+  > * unprefix regex paths by directory argument, if any
+  > * forgot to convert exit to continue in 6fe3c6b3
+  > * no need to close logger FDs on exit
   > * ocrd-import: use coproc instead of handcrafted FIFOs for loggers
   > * ocrd-import: rewrite (no parallel jobs, but parallel logging)…
   > * ocrd-import: add option --basename, default to using directory as well
