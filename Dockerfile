@@ -109,10 +109,14 @@ RUN echo "pip install -U pip setuptools wheel" >> docker.sh
 RUN echo "hash -r" >> docker.sh
 # build/install all tools of the requested modules:
 RUN echo "make $PARALLEL all" >> docker.sh
+# preinstall ocrd-all-tool.json and ocrd-all-module-dir.json
+RUN echo "make ocrd-all-tool.json ocrd-all-module-dir.json" >> docker.sh
 # remove unneeded automatic deps and clear pkg cache
 RUN echo "apt-get -y remove automake autoconf libtool pkg-config g++ && apt-get -y clean" >> docker.sh
 # clean-up some temporary files (git repos are also installation targets and must be kept)
-RUN echo "make -i clean-olena clean-tesseract; rm -fr /.cache" >> docker.sh
+RUN echo "make -i clean-tesseract" >> docker.sh
+RUN echo "make -i clean-olena" >> docker.sh
+RUN echo "rm -fr /.cache" >> docker.sh
 # run the script in one layer/step (to minimise image size)
 # (and export all variables)
 RUN set -a; bash docker.sh
@@ -121,9 +125,6 @@ RUN ldconfig
 # check installation
 RUN make -j4 check CHECK_HELP=1
 RUN if echo $BASE_IMAGE | fgrep -q cuda; then make fix-cuda; fi
-
-# preinstall ocrd-all-tool.json and ocrd-all-module-dir.json
-RUN make ocrd-all-tool.json ocrd-all-module-dir.json
 
 # as discussed in #378, we do not want to manage more than one resource location
 # to mount for model persistence; with named volumes, the preinstalled models
@@ -136,6 +137,8 @@ RUN ln -s $XDG_CONFIG_HOME/ocrd-tesserocr-recognize $XDG_DATA_HOME/tessdata
 # finally, alias/symlink all ocrd-resources to /models for shorter mount commands
 RUN mkdir -p $XDG_CONFIG_HOME
 RUN mv $XDG_CONFIG_HOME /models && ln -s /models $XDG_CONFIG_HOME
+# ensure unprivileged users can download models, too
+RUN chmod go+rwx /models
 
 # remove (dated) security workaround preventing use of
 # ImageMagick's convert on PDF/PS/EPS/XPS:

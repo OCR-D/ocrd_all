@@ -12,7 +12,10 @@ ocrd-all-module-dir.json
 opencv-python
 # only needed for testing:
 # (but we may want that, only 169 MB)
-# **/assets/*
+**/assets/*
+# recursive submodules, too deep
+ocrd_tesserocr/repo/tesseract/test/*
+ocrd_tesserocr/repo/tesseract/unittest/third_party/googletest/*
 # avoid interference with host-local builds:
 **/build/*
 */.eggs/*

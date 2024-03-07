@@ -43,8 +43,6 @@ in the current shell environment via PATH and PYTHONHOME.)
        * [<em>TMPDIR</em>](#tmpdir)
        * [<em>PIP_OPTIONS</em>](#pip_options)
        * [<em>GIT_RECURSIVE</em>](#git_recursive)
-       * [<em>TESSERACT_MODELS</em>](#tesseract_models)
-       * [<em>TESSERACT_CONFIG</em>](#tesseract_config)
     * [Examples](#examples)
     * [Results](#results)
     * [Persistent configuration](#persistent-configuration)
@@ -115,7 +113,8 @@ or newer, then just install its development package:
    Otherwise, recent Tesseract packages for Ubuntu are available via PPA
    [alex-p](https://launchpad.net/~alex-p/+archive/ubuntu/tesseract-ocr-devel).
 
-   Alternatively, the latest version of Tesseract can also be built as a module locally.
+   If no Tesseract is installed, a recent version will be downloaded and built as part
+   of the `ocrd_tesserocr` module rules.
 
 * Other modules will have additional system dependencies.
 
@@ -272,30 +271,20 @@ Add extra options to the `pip install` command like `-q` or `-v` or `-e`.
 
 Set to `--recursive` to checkout/update all modules recursively. (This usually installs additional tests and models.)
 
-#### _TESSERACT_MODELS_
-
-Add more models to the minimum required list of languages (`eng equ osd`) to install along with Tesseract.
-
-> **Note**: this only affects `make install-tesseract` (or `all`), but is independent of the `install-models` step. 
-> (The latter delegates to `ocrd resmgr download`, which fetches all registered resources.)
-
-#### _TESSERACT_CONFIG_
-
-Set `configure` options for building Tesseract from source (`--disable-openmp --disable-shared CXXFLAGS="-g -O2 -fPIC"`).
-
 ### Examples
 
 To build the latest Tesseract locally, run this command first:
 
     # Get code, build and install Tesseract with the default English model.
     make install-tesseract
+    make ocrd-tesserocr-recognize
 
 Optionally install additional Tesseract models.
 
     # Download models from tessdata_fast into the venv's tessdata directory.
-    make frk.traineddata
-    make script/Latin.traineddata
-    make script/Fraktur.traineddata
+    ocrd resmgr download ocrd-tesserocr-recognize frk.traineddata
+    ocrd resmgr download ocrd-tesserocr-recognize Latin.traineddata
+    ocrd resmgr download ocrd-tesserocr-recognize Fraktur.traineddata
 
 Optionally install Tesseract training tools.
 
@@ -311,7 +300,7 @@ Running `make modules` downloads/updates all modules.
 
 Running `make all` additionally installs the executables from all modules.
 
-Running `make all OCRD_MODULES="core tesseract ocrd_tesserocr ocrd_cis"` installs only the executables from these modules.
+Running `make all OCRD_MODULES="core ocrd_tesserocr ocrd_cis"` installs only the executables from these modules.
 
 ### Results
 
@@ -337,7 +326,7 @@ So you don't have to type (and memorise) them on the command line or shell envir
 For example, its content could be:
 ```make
 # restrict everything to a subset of modules
-OCRD_MODULES = core ocrd_im6convert ocrd_cis ocrd_tesserocr tesserocr tesseract
+OCRD_MODULES = core ocrd_im6convert ocrd_cis ocrd_tesserocr
 
 # use a non-default path for the virtual environment
 VIRTUAL_ENV = $(CURDIR)/.venv
@@ -347,12 +336,6 @@ PIP_OPTIONS = -e
 
 # use non-default temporary storage
 TMPDIR = $(CURDIR)/.tmp
-
-# install more languages/models for Tesseract
-TESSERACT_MODELS = deu frk script/Fraktur script/Latin
-
-# install all of Tesseract's submodules to support unit tests and training tools, too
-tesseract: GIT_RECURSIVE = --recursive
 
 # avoid automatic submodule updates
 NO_UPDATE = 1
@@ -404,7 +387,6 @@ This table lists which tag contains which module:
 | ocrd_repair_inconsistencies | ☑         | ☑        | ☑         |
 | ocrd_tesserocr              | ☑         | ☑        | ☑         |
 | ocrd_wrap                   | ☑         | ☑        | ☑         |
-| tesserocr                   | ☑         | ☑        | ☑         |
 | workflow-configuration      | ☑         | ☑        | ☑         |
 | cor-asv-ann                 | -         | ☑        | ☑         |
 | dinglehopper                | -         | ☑        | ☑         |
@@ -416,12 +398,11 @@ This table lists which tag contains which module:
 | ocrd_neat                   | -         | ☑        | ☑         |
 | ocrd_olena                  | -         | ☑        | ☑         |
 | ocrd_segment                | -         | ☑        | ☑         |
-| tesseract                   | -         | ☑        | ☑         |
 | ocrd_anybaseocr             | -         | -        | ☑         |
 | ocrd_detectron2             | -         | -        | ☑         |
 | ocrd_doxa                   | -         | -        | ☑         |
 | ocrd_kraken                 | -         | -        | ☑         |
-| ocrd_typegroups_classifier  | -         | -        | ☑         |
+| ocrd_froc                   | -         | -        | ☑         |
 | sbb_binarization            | -         | -        | ☑         |
 | cor-asv-fst                 | -         | -        | -         |
 | ocrd_ocropy                 | -         | -        | -         |
@@ -452,12 +433,7 @@ This repo offers solutions to the following problems with OCR-D integration.
 
 ### No published/recent version on PyPI
 
-The following Python modules need an installation from code for different reasons:
-
-- cor-asv-ann (not available in PyPI)
-- cor-asv-fst (not available in PyPI)
-- dinglehopper (not available in PyPI)
-- tesserocr (too old in PyPI)
+Python modules which are not available in PyPI:
 
 _(Solved by installation from source.)_
 
@@ -469,14 +445,14 @@ Modules may require mutually exclusive sets of dependent packages.
 `pip` does not even stop or resolve conflicts – it merely warns!
 
 - Tensorflow:
-   * version 2 (required by ocrd_calamari, ocrd_anybaseocr and ocrd_pc_segmentation)
-   * version 1 (required by cor-asv-ann and ocrd_keraslm)
+   * version 2 (required by `ocrd_calamari`, `ocrd_anybaseocr` and `eynollah`)
+   * version 1 (required by `cor-asv-ann`, `ocrd_segment` and  `ocrd_keraslm`)
    
    The temporary solution is to require different package names:
    - `tensorflow>=2`
    - `tensorflow-gpu==1.15.*`
    
-   Both cannot be installed in parallel in different versions, and usually also depend on different versions of CUDA toolkit.)
+   Both cannot be installed in parallel in different versions, and usually also depend on different versions of CUDA toolkit.
    
 - OpenCV:
    * `opencv-python-headless` (required by core and others, avoids pulling in X11 libraries)
@@ -495,9 +471,7 @@ _(Solved by managing and delegating to different subsets of venvs.)_
 
 ### System requirements
 
-Not all modules advertise their system package requirements via `make deps-ubuntu`.
-
-- `tesseract` (when installing from source not PPA): depends on `libleptonica-dev` etc
+Modules which do not advertise their system package requirements via `make deps-ubuntu`:
 
 _(Solved by maintaining these requirements under `deps-ubuntu` here.)_
 
