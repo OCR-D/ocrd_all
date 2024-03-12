@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## [v2024-03-07](https://github.com/OCR-D/ocrd_all/releases/v2024-03-07)
+## [v2024-03-08](https://github.com/OCR-D/ocrd_all/releases/v2024-03-08)
 
 Removed:
 
