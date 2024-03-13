@@ -88,8 +88,8 @@ services:
 
 
   ocrd-cis-ocropy-segment:
-    image: ocrd/segment
-    container_name: ocrd-cis-ocropy-segment
+    build:
+      context: ../../../ocrd_cis
     depends_on:
       ocrd_network_processing_server:
         condition: service_healthy
