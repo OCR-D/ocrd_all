@@ -1,0 +1,189 @@
+volumes:
+  ocrd-test-workspace: {}
+
+services:
+  ocrd_network_processing_server:
+    image: ocrd/core
+    volumes:
+      - "ocrd-test-workspace:/data"
+
+  ocrd_network_core_test:
+    image: my-ocrd-core-test
+    volumes:
+      - "${PWD}/tests/network/test-workflow-1.txt:/ocrd-data/assets/ocrd_all-test-workflow.txt"
+
+  ocrd_dummy_processing_worker:
+    image: my-ocrd-core-test
+
+  ocrd-olena-binarize:
+    build:
+      context: ../../../ocrd_olena
+    container_name: ocrd-olena-binarize
+    depends_on:
+      ocrd_network_processing_server:
+        condition: service_healthy
+    networks:
+      - ${DOCKER_OCRD_NETWORK_NAME}
+    environment:
+      - OCRD_NETWORK_LOGS_ROOT_DIR=/ocrd-data/ocrd_network_logs
+      - OCRD_LOGGING_DEBUG=true
+    volumes:
+      - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
+      - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
+      - "ocrd-test-workspace:/data"
+    command: ocrd-olena-binarize worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
+
+
+  ocrd-anybaseocr-crop:
+    build:
+      context: ../../../ocrd_anybaseocr
+    container_name: ocrd-anybaseocr-crop
+    depends_on:
+      ocrd_network_processing_server:
+        condition: service_healthy
+    networks:
+      - ${DOCKER_OCRD_NETWORK_NAME}
+    environment:
+      - OCRD_NETWORK_LOGS_ROOT_DIR=/ocrd-data/ocrd_network_logs
+      - OCRD_LOGGING_DEBUG=true
+    volumes:
+      - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
+      - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
+      - "ocrd-test-workspace:/data"
+    command: ocrd-anybaseocr-crop worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
+
+
+  ocrd-cis-ocropy-denoise:
+    build:
+      context: ../../../ocrd_cis
+    container_name: ocrd-cis-ocropy-denoise
+    depends_on:
+      ocrd_network_processing_server:
+        condition: service_healthy
+    networks:
+      - ${DOCKER_OCRD_NETWORK_NAME}
+    environment:
+      - OCRD_NETWORK_LOGS_ROOT_DIR=/ocrd-data/ocrd_network_logs
+      - OCRD_LOGGING_DEBUG=true
+    volumes:
+      - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
+      - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
+      - "ocrd-test-workspace:/data"
+    command: ocrd-cis-ocropy-denoise worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
+
+
+  ocrd-cis-ocropy-clip:
+    build:
+      context: ../../../ocrd_cis
+    container_name: ocrd-cis-ocropy-clip
+    depends_on:
+      ocrd_network_processing_server:
+        condition: service_healthy
+    networks:
+      - ${DOCKER_OCRD_NETWORK_NAME}
+    environment:
+      - OCRD_NETWORK_LOGS_ROOT_DIR=/ocrd-data/ocrd_network_logs
+      - OCRD_LOGGING_DEBUG=true
+    volumes:
+      - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
+      - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
+      - "ocrd-test-workspace:/data"
+    command: ocrd-cis-ocropy-clip worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
+
+
+  ocrd-cis-ocropy-segment:
+    build:
+      context: ../../../ocrd_cis
+    container_name: ocrd-cis-ocropy-segment
+    depends_on:
+      ocrd_network_processing_server:
+        condition: service_healthy
+    networks:
+      - ${DOCKER_OCRD_NETWORK_NAME}
+    environment:
+      - OCRD_NETWORK_LOGS_ROOT_DIR=/ocrd-data/ocrd_network_logs
+      - OCRD_LOGGING_DEBUG=true
+    volumes:
+      - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
+      - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
+      - "ocrd-test-workspace:/data"
+    command: ocrd-cis-ocropy-segment worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
+
+
+  ocrd-cis-ocropy-dewarp:
+    build:
+      context: ../../../ocrd_cis
+    container_name: ocrd-cis-ocropy-dewarp
+    depends_on:
+      ocrd_network_processing_server:
+        condition: service_healthy
+    networks:
+      - ${DOCKER_OCRD_NETWORK_NAME}
+    environment:
+      - OCRD_NETWORK_LOGS_ROOT_DIR=/ocrd-data/ocrd_network_logs
+      - OCRD_LOGGING_DEBUG=true
+    volumes:
+      - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
+      - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
+      - "ocrd-test-workspace:/data"
+    command: ocrd-cis-ocropy-dewarp worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
+
+
+  ocrd-tesserocr-segment-region:
+    build:
+      context: ../../../ocrd_tesserocr
+    container_name: ocrd-tesserocr-segment-region
+    depends_on:
+      ocrd_network_processing_server:
+        condition: service_healthy
+    networks:
+      - ${DOCKER_OCRD_NETWORK_NAME}
+    environment:
+      - TESSDATA_PREFIX=/usr/local/share/tessdata
+      - OCRD_NETWORK_LOGS_ROOT_DIR=/ocrd-data/ocrd_network_logs
+      - OCRD_LOGGING_DEBUG=true
+    volumes:
+      - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
+      - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
+      - "ocrd-test-workspace:/data"
+    command: ocrd-tesserocr-segment-region worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
+
+
+  ocrd-tesserocr-recognize:
+    build:
+      context: ../../../ocrd_tesserocr
+    container_name: ocrd-tesserocr-recognize
+    depends_on:
+      ocrd_network_processing_server:
+        condition: service_healthy
+    networks:
+      - ${DOCKER_OCRD_NETWORK_NAME}
+    environment:
+      - TESSDATA_PREFIX=/usr/local/share/tessdata
+      - OCRD_NETWORK_LOGS_ROOT_DIR=/ocrd-data/ocrd_network_logs
+      - OCRD_LOGGING_DEBUG=true
+    volumes:
+      - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
+      - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
+      - "ocrd-test-workspace:/data"
+    command: ocrd-tesserocr-recognize worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
+
+
+  ocrd-segment-repair:
+    build:
+      context: ../../../ocrd_segment
+    container_name: ocrd-segment-repair
+    depends_on:
+      ocrd_network_processing_server:
+        condition: service_healthy
+    networks:
+      - ${DOCKER_OCRD_NETWORK_NAME}
+    environment:
+      - OCRD_NETWORK_LOGS_ROOT_DIR=/ocrd-data/ocrd_network_logs
+      - OCRD_LOGGING_DEBUG=true
+    volumes:
+      - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
+      - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
+      - "ocrd-test-workspace:/data"
+    command: ocrd-segment-repair worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
+
