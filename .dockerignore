@@ -16,6 +16,7 @@ opencv-python
 # recursive submodules, too deep
 ocrd_tesserocr/repo/tesseract/test/*
 ocrd_tesserocr/repo/tesseract/unittest/third_party/googletest/*
+ocrd_tesserocr/build_tesseract
 # avoid interference with host-local builds:
 **/build/*
 */.eggs/*
