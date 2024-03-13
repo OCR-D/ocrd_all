@@ -3,17 +3,26 @@ volumes:
 
 services:
   ocrd_network_processing_server:
-    image: ocrd/core
+    image: ocrd/core:v2.62.0
+    build: !reset null
     volumes:
       - "ocrd-test-workspace:/data"
 
   ocrd_network_core_test:
-    image: my-ocrd-core-test
+    build:
+      context: ../../../core
+      args:
+        BASE_IMAGE: ubuntu:20.04
+        SKIP_ASSETS: 1
     volumes:
       - "${PWD}/tests/network/test-workflow-1.txt:/ocrd-data/assets/ocrd_all-test-workflow.txt"
 
   ocrd_dummy_processing_worker:
-    image: my-ocrd-core-test
+    build:
+      context: ../../../core
+      args:
+        BASE_IMAGE: ubuntu:20.04
+        SKIP_ASSETS: 1
 
   ocrd-olena-binarize:
     build:
