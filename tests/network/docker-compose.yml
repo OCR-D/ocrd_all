@@ -1,20 +1,14 @@
 services:
   ocrd_network_processing_server:
-    image: ocrd/core
-    build: !reset null
+    image: processing-server
+    build:
+      context: ../../../core
+      target: ocrd_core_base
 
   ocrd_network_core_test:
     build:
       context: ../../../core
       args:
-        BASE_IMAGE: ubuntu:20.04
-        SKIP_ASSETS: 1
-
-  ocrd_dummy_processing_worker:
-    build:
-      context: ../../../core
-      args:
-        BASE_IMAGE: ubuntu:20.04
         SKIP_ASSETS: 1
 
   ocrd-olena-binarize:
@@ -94,8 +88,7 @@ services:
 
 
   ocrd-cis-ocropy-segment:
-    build:
-      context: ../../../ocrd_cis
+    image: ocrd/segment
     container_name: ocrd-cis-ocropy-segment
     depends_on:
       ocrd_network_processing_server:
@@ -132,8 +125,7 @@ services:
 
 
   ocrd-tesserocr-segment-region:
-    build:
-      context: ../../../ocrd_tesserocr
+    image: ocrd/tesserocr
     container_name: ocrd-tesserocr-segment-region
     depends_on:
       ocrd_network_processing_server:
@@ -152,8 +144,7 @@ services:
 
 
   ocrd-tesserocr-recognize:
-    build:
-      context: ../../../ocrd_tesserocr
+    image: ocrd/tesserocr
     container_name: ocrd-tesserocr-recognize
     depends_on:
       ocrd_network_processing_server:
@@ -172,8 +163,7 @@ services:
 
 
   ocrd-segment-repair:
-    build:
-      context: ../../../ocrd_segment
+    image: ocrd/segment
     container_name: ocrd-segment-repair
     depends_on:
       ocrd_network_processing_server:
