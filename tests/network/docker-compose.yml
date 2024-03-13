@@ -1,12 +1,7 @@
-volumes:
-  ocrd-test-workspace: {}
-
 services:
   ocrd_network_processing_server:
-    image: ocrd/core:v2.62.0
+    image: ocrd/core
     build: !reset null
-    volumes:
-      - "ocrd-test-workspace:/data"
 
   ocrd_network_core_test:
     build:
@@ -14,8 +9,6 @@ services:
       args:
         BASE_IMAGE: ubuntu:20.04
         SKIP_ASSETS: 1
-    volumes:
-      - "${PWD}/tests/network/test-workflow-1.txt:/ocrd-data/assets/ocrd_all-test-workflow.txt"
 
   ocrd_dummy_processing_worker:
     build:
@@ -39,7 +32,7 @@ services:
     volumes:
       - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
       - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
-      - "ocrd-test-workspace:/data"
+      - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-olena-binarize worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
 
 
@@ -58,7 +51,7 @@ services:
     volumes:
       - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
       - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
-      - "ocrd-test-workspace:/data"
+      - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-anybaseocr-crop worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
 
 
@@ -77,7 +70,7 @@ services:
     volumes:
       - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
       - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
-      - "ocrd-test-workspace:/data"
+      - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-cis-ocropy-denoise worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
 
 
@@ -96,7 +89,7 @@ services:
     volumes:
       - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
       - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
-      - "ocrd-test-workspace:/data"
+      - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-cis-ocropy-clip worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
 
 
@@ -115,7 +108,7 @@ services:
     volumes:
       - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
       - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
-      - "ocrd-test-workspace:/data"
+      - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-cis-ocropy-segment worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
 
 
@@ -134,7 +127,7 @@ services:
     volumes:
       - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
       - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
-      - "ocrd-test-workspace:/data"
+      - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-cis-ocropy-dewarp worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
 
 
@@ -154,7 +147,7 @@ services:
     volumes:
       - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
       - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
-      - "ocrd-test-workspace:/data"
+      - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-tesserocr-segment-region worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
 
 
@@ -174,7 +167,7 @@ services:
     volumes:
       - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
       - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
-      - "ocrd-test-workspace:/data"
+      - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-tesserocr-recognize worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
 
 
@@ -193,6 +186,6 @@ services:
     volumes:
       - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
       - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
-      - "ocrd-test-workspace:/data"
+      - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-segment-repair worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
 
