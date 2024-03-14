@@ -1,0 +1,77 @@
+# Run "make all" on selected macOS and Python versions.
+
+name: make all (macOS)
+
+# https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
+on:
+  # Trigger workflow on push event.
+  #push:
+  #   branches: [ ci ]
+
+  # Trigger workflow on pull request.
+  # pull_request:
+  #   branches: [ ci ]
+
+  # Trigger workflow in GitHub web frontend or from API.
+  workflow_dispatch:
+    inputs:
+      os:
+        # https://docs.github.com/de/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners
+        description: 'Operating system'
+        required: true
+        default: 'macos-14'
+        type: choice
+        options:
+          - 'macos-11'
+          - 'macos-12'
+          - 'macos-13'
+          - 'macos-14'
+      python-version:
+        description: 'Python version'
+        required: true
+        default: 'default'
+        type: choice
+        options:
+          - 'default'
+          - '3.8'
+          - '3.9'
+          - '3.10'
+          - '3.11'
+          - '3.12'
+
+jobs:
+  # Run builds for selected OS and Python versions.
+  build:
+    if: ${{ (github.event.inputs.os != '') && (github.event.inputs.python-version != '') }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['${{ github.event.inputs.os }}']
+        python-version: ['${{ github.event.inputs.python-version }}']
+
+    runs-on: ${{ matrix.os }}
+
+    env:
+      #  macos-14 sets LC_ALL=en_US.UTF-8 which causes lots of warnings from perl.
+      LC_ALL: 'C'
+      # LC_CTYPE: 'C.UTF-8'
+      OS: ${{ matrix.os }}
+      PYTHON_VERSION: ${{ matrix.python-version }}
+
+    steps:
+    - name: Show inputs.os
+      run: echo ${{ inputs.os }}
+    - name: Show environment
+      run: export && echo "OS=${{ env.OS }}, PYTHON_VERSION=${{ env.PYTHON_VERSION }} ($(python3 --version)), $HOMEBREW_PREFIX"
+    - name: Show Python executables
+      run: ls -l /usr/bin/python* /usr/local/bin/p*
+    - uses: actions/checkout@v4
+    - name: Install dependencies
+      # curl and icu4c are already installed
+      run: brew install automake bash cabextract geos leptonica libarchive libtool pango parallel
+    - name: Make all
+      if: runner.os == 'macOS'
+      run: LC_ALL=C PKG_CONFIG_PATH=$HOMEBREW_PREFIX/opt/icu4c/lib/pkgconfig:$HOMEBREW_PREFIX/opt/libarchive/lib/pkgconfig make all GIT_DEPTH="--depth 1"
+    - name: Make check
+      run: make check
