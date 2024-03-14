@@ -489,7 +489,7 @@ TESSTRAIN_EXECUTABLES += $(BIN)/text2image
 TESSTRAIN_EXECUTABLES += $(BIN)/unicharset_extractor
 TESSTRAIN_EXECUTABLES += $(BIN)/wordlist2dawg
 $(call multirule,$(OCRD_TESSEROCR)): ocrd_tesserocr $(BIN)/ocrd
-	$(MAKE) -C $< install # install-tesseract-training
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< install # install-tesseract-training
 
 endif
 clean: clean-tesseract
