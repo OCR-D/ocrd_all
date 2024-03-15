@@ -1,19 +1,111 @@
+networks:
+  ocrd_network_test:
+    name: ${DOCKER_OCRD_NETWORK_NAME}
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: ${DOCKER_OCRD_NETWORK_MTU}
+
+volumes:
+  ocrd-test-workspace: {}
+
 services:
   ocrd_network_processing_server:
-    image: processing-server
-    build:
-      context: ../../../core
-      target: ocrd_core_base
+    image: "ocrd/core"
+    hostname: ${OCRD_PS_HOST}
+    container_name: ocrd_network_processing_server
+    depends_on:
+      ocrd_network_mongo_db:
+        condition: service_healthy
+      ocrd_network_rabbit_mq:
+        condition: service_healthy
+    networks:
+      - ${DOCKER_OCRD_NETWORK_NAME}
+    ports:
+      - ${OCRD_PS_PORT}:8000
+    environment:
+      DB_NAME: ${MONGODB_NAME}
+      DB_URL: ${MONGODB_URL}
+      RABBITMQ_URL: ${RABBITMQ_URL}
+      OCRD_NETWORK_LOGS_ROOT_DIR: /ocrd-data/ocrd_network_logs
+      OCRD_NETWORK_SOCKETS_ROOT_DIR: /ocrd-data/ocrd_network_sockets
+    healthcheck:
+      test: curl -f ${OCRD_PS_URL}/
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    volumes:
+      - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
+      - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
+      - "./ocrd_logging.conf:/etc/ocrd_logging.conf"
+      - "./ps_config.yml:/ocrd-data/ps_config.yml"
+      - "${OCRD_NETWORK_DATA}:/data"
+    command: ocrd network processing-server -a 0.0.0.0:8000 /ocrd-data/ps_config.yml
+
+  ocrd_network_mongo_db:
+    image: "mongo"
+    hostname: ${MONGODB_HOST}
+    container_name: ocrd_network_mongo_db
+    networks:
+      - ${DOCKER_OCRD_NETWORK_NAME}
+    ports:
+      - ${MONGODB_PORT}:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASS}
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 1s
+      timeout: 3s
+      retries: 30
+
+  ocrd_network_rabbit_mq:
+    image: "rabbitmq:3.12-management"
+    hostname: ${RABBITMQ_HOST}
+    container_name: ocrd_network_rabbit_mq
+    networks:
+      - ${DOCKER_OCRD_NETWORK_NAME}
+    ports:
+      - ${RABBITMQ_PORT}:5672
+      - 15672:15672
+      - 25672:25672
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
+      - RABBITMQ_FEATURE_FLAGS=${RABBITMQ_FEATURE_FLAGS}
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 1s
+      timeout: 3s
+      retries: 30
 
   ocrd_network_core_test:
     build:
-      context: ../../../core
+      context: ../../core
       args:
+        BASE_IMAGE: 'ubuntu:22.04'
         SKIP_ASSETS: 1
+      target: ocrd_core_test
+    container_name: core_test
+    depends_on:
+      ocrd_network_processing_server:
+        condition: service_healthy
+    networks:
+      - ${DOCKER_OCRD_NETWORK_NAME}
+    environment:
+      DB_NAME: ${MONGODB_NAME}
+      DB_URL: ${MONGODB_URL}
+      PROCESSING_SERVER_URL: ${OCRD_PS_URL}
+      RABBITMQ_URL: ${RABBITMQ_URL}
+      OCRD_NETWORK_LOGS_ROOT_DIR: /ocrd-data/ocrd_network_logs
+      OCRD_NETWORK_SOCKETS_ROOT_DIR: /ocrd-data/ocrd_network_sockets
+    volumes:
+      - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
+      - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
+      - "./test-workflow-1.txt:/ocrd-data/assets/test-workflow-1.txt"
+      - "./ocrd_logging.conf:/etc/ocrd_logging.conf"
 
   ocrd-olena-binarize:
-    build:
-      context: ../../../ocrd_olena
+    image: ocrd/olena
     container_name: ocrd-olena-binarize
     depends_on:
       ocrd_network_processing_server:
@@ -29,10 +121,8 @@ services:
       - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-olena-binarize worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
 
-
   ocrd-anybaseocr-crop:
-    build:
-      context: ../../../ocrd_anybaseocr
+    image: ocrd/anybaseocr
     container_name: ocrd-anybaseocr-crop
     depends_on:
       ocrd_network_processing_server:
@@ -48,10 +138,8 @@ services:
       - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-anybaseocr-crop worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
 
-
   ocrd-cis-ocropy-denoise:
-    build:
-      context: ../../../ocrd_cis
+    image: ocrd/cis
     container_name: ocrd-cis-ocropy-denoise
     depends_on:
       ocrd_network_processing_server:
@@ -67,10 +155,8 @@ services:
       - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-cis-ocropy-denoise worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
 
-
   ocrd-cis-ocropy-clip:
-    build:
-      context: ../../../ocrd_cis
+    image: ocrd/cis
     container_name: ocrd-cis-ocropy-clip
     depends_on:
       ocrd_network_processing_server:
@@ -86,10 +172,8 @@ services:
       - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-cis-ocropy-clip worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
 
-
   ocrd-cis-ocropy-segment:
-    build:
-      context: ../../../ocrd_cis
+    image: ocrd/cis
     depends_on:
       ocrd_network_processing_server:
         condition: service_healthy
@@ -104,10 +188,8 @@ services:
       - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-cis-ocropy-segment worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
 
-
   ocrd-cis-ocropy-dewarp:
-    build:
-      context: ../../../ocrd_cis
+    image: ocrd/cis
     container_name: ocrd-cis-ocropy-dewarp
     depends_on:
       ocrd_network_processing_server:
@@ -122,7 +204,6 @@ services:
       - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
       - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-cis-ocropy-dewarp worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
-
 
   ocrd-tesserocr-segment-region:
     image: ocrd/tesserocr
@@ -142,7 +223,6 @@ services:
       - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-tesserocr-segment-region worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
 
-
   ocrd-tesserocr-recognize:
     image: ocrd/tesserocr
     container_name: ocrd-tesserocr-recognize
@@ -160,7 +240,6 @@ services:
       - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
       - ${OCRD_NETWORK_DATA}:/data
     command: ocrd-tesserocr-recognize worker --database ${MONGODB_URL} --queue ${RABBITMQ_URL}
-
 
   ocrd-segment-repair:
     image: ocrd/segment
