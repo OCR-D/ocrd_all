@@ -78,6 +78,12 @@ DEFAULT_DISABLED_MODULES += cor-asv-ann ocrd_keraslm
 endif
 endif
 endif
+ifeq ($(PYTHON_VERSION),3.12)
+# The required tensorflow is not available for Python 3.12.
+DEFAULT_DISABLED_MODULES += eynollah ocrd_anybaseocr ocrd_calamari sbb_binarization
+# The required coremltools does not support Python 3.12.
+DEFAULT_DISABLED_MODULES += ocrd_kraken
+endif
 ifeq ($(shell uname -s),Darwin)
 # Disable ocrd_olena for macOS because build is broken.
 DEFAULT_DISABLED_MODULES += ocrd_olena
@@ -483,7 +489,7 @@ TESSTRAIN_EXECUTABLES += $(BIN)/text2image
 TESSTRAIN_EXECUTABLES += $(BIN)/unicharset_extractor
 TESSTRAIN_EXECUTABLES += $(BIN)/wordlist2dawg
 $(call multirule,$(OCRD_TESSEROCR)): ocrd_tesserocr $(BIN)/ocrd
-	$(MAKE) -C $< install # install-tesseract-training
+	. $(ACTIVATE_VENV) && $(MAKE) -C $< install # install-tesseract-training
 
 endif
 clean: clean-tesseract
