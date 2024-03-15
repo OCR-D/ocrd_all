@@ -53,6 +53,6 @@ jobs:
     - name: Install dependencies
       run: sudo make deps-ubuntu PYTHON=python
     - name: Make all
-      run: make all PYTHON=python
+      run: make all GIT_DEPTH="--depth 1" PYTHON=python
     - name: Run check
       run: make check
