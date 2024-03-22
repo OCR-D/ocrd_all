@@ -30,6 +30,9 @@
 [submodule "cor-asv-ann"]
 	path = cor-asv-ann
 	url = https://github.com/ASVLeipzig/cor-asv-ann.git
+[submodule "tesseract"]
+	path = tesseract
+	url = https://github.com/tesseract-ocr/tesseract.git
 [submodule "format-converters"]
 	path = format-converters
 	url = https://github.com/OCR-D/format-converters.git

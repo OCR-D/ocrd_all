@@ -1,0 +1,9 @@
+olena-binarize           -I OCR-D-IMG -O O-1
+anybaseocr-crop          -I O-1       -O O-2
+cis-ocropy-denoise       -I O-2       -O O-3  -P dpi 300 -P level-of-operation page -P noise_maxsize 3.0
+tesserocr-segment-region -I O-3       -O O-4  -P padding 5 -P find_tables false -P dpi 300
+segment-repair           -I O-4       -O O-5  -P plausibilize true -P plausibilize_merge_min_overlap 0.7
+cis-ocropy-clip          -I O-5       -O O-6
+cis-ocropy-segment       -I O-6       -O O-7  -P spread 2.4 -P dpi 300
+cis-ocropy-dewarp        -I O-7       -O O-8
+tesserocr-recognize      -I O-8       -O PAGE -P textequiv_level word -P model Fraktur
