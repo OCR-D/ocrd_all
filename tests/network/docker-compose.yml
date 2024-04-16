@@ -101,7 +101,7 @@ services:
     volumes:
       - ${OCRD_NETWORK_LOGS_ROOT}:/ocrd-data/ocrd_network_logs
       - ${OCRD_NETWORK_SOCKETS_ROOT}:/ocrd-data/ocrd_network_sockets
-      - "./test-workflow-1.txt:/ocrd-data/assets/test-workflow-1.txt"
+      - "./ocrd_all-test-workflow.txt:/ocrd-data/assets/ocrd_all-test-workflow.txt"
       - "./ocrd_logging.conf:/etc/ocrd_logging.conf"
 
   ocrd-olena-binarize:

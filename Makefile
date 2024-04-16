@@ -750,7 +750,7 @@ test-workflow: test-assets core $(BIN)/ocrd $(ACTIVATE_VENV)
 DOCKER_COMPOSE = docker compose
 INTEGRATION_TEST_IN_DOCKER = docker exec core_test
 
-integration-test: test-assets
+network-integration-test: test-assets
 	$(DOCKER_COMPOSE) --file tests/network/docker-compose.yml up -d
 	docker cp core/tests/assets/kant_aufklaerung_1784/data/. ocrd_network_processing_server:/data
 	# Queues must exists and it takes time until they are created by the workers. We might need
@@ -758,6 +758,16 @@ integration-test: test-assets
 	# here for now
 	sleep 10
 	-$(INTEGRATION_TEST_IN_DOCKER) pytest 'tests/network/test_ocrd_all_workflow.py' -v
+	$(DOCKER_COMPOSE) --file tests/network/docker-compose.yml down -v --remove-orphans
+
+network-integration-test-cicd:
+	$(DOCKER_COMPOSE) --file tests/network/docker-compose.yml up -d
+	docker cp core/tests/assets/kant_aufklaerung_1784/data/. ocrd_network_processing_server:/data
+	# Queues must exists and it takes time until they are created by the workers. We might need
+	# a mechanism to test if all queues are there but that is not available yet. So sleeping
+	# here for now
+	sleep 10
+	$(INTEGRATION_TEST_IN_DOCKER) pytest 'tests/network/test_ocrd_all_workflow.py' -v
 	$(DOCKER_COMPOSE) --file tests/network/docker-compose.yml down -v --remove-orphans
 
 test-assets:
