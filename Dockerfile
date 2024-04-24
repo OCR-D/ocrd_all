@@ -152,6 +152,9 @@ RUN sed -i '/width\|height/s/value="16KP"/value="64KP"/' /etc/ImageMagick-6/poli
 # cannot just set ENV, because internal bashrc will override it anyway
 RUN echo "PS1='\w\$ '" >> /etc/bash.bashrc
 
+# clean possibly created log-files & -folders of ocrd_network logger to prevent permission problems
+RUN rm -rf /tmp/ocrd_*
+
 # reset to interactive
 ENV DEBIAN_FRONTEND teletype
 
