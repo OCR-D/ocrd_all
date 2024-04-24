@@ -148,7 +148,9 @@ RUN mkdir -p $XDG_CONFIG_HOME; \
     chmod go+rwx /models
 
 # smoke-test resmgr
-RUN ocrd resmgr list-installed
+RUN ocrd resmgr list-installed && \
+    # clean possibly created log-files/dirs of ocrd_network logger to prevent permission problems
+    rm -rf /tmp/ocrd_*
 
 # remove (dated) security workaround preventing use of
 # ImageMagick's convert on PDF/PS/EPS/XPS:
