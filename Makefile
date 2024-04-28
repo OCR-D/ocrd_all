@@ -71,11 +71,9 @@ CUSTOM_DEPS = unzip wget parallel git less # add more packages for deps-ubuntu b
 
 DEFAULT_DISABLED_MODULES = cor-asv-fst opencv-python ocrd_ocropy ocrd_pc_segmentation ocrd_neat
 ifeq ($(filter docker-%,$(MAKECMDGOALS)),)
-ifneq ($(PYTHON_VERSION),3.7)
 ifneq ($(PYTHON_VERSION),3.8)
 # Disable modules which require tensorflow-gpu 1.15 unless running a Python version which provides it.
 DEFAULT_DISABLED_MODULES += cor-asv-ann ocrd_keraslm
-endif
 endif
 endif
 ifeq ($(PYTHON_VERSION),3.12)
