@@ -31,7 +31,6 @@ on:
         type: choice
         options:
           - 'any'
-          - '3.7'
           - '3.8'
           - '3.9'
           - '3.10'
@@ -45,7 +44,7 @@ jobs:
     uses: ./.github/workflows/makeall-linux.yaml
     with:
       os: "['ubuntu-20.04', 'ubuntu-22.04']"
-      python-version: "['3.7', '3.8', '3.9', '3.10', '3.11']"
+      python-version: "['3.8', '3.9', '3.10', '3.11']"
 
   # Run builds for all Ubuntu versions and selected Python version.
   build-any-os:
@@ -61,7 +60,7 @@ jobs:
     uses: ./.github/workflows/makeall-linux.yaml
     with:
       os: "['${{ github.event.inputs.os }}']"
-      python-version: "['3.7', '3.8', '3.9', '3.10', '3.11']"
+      python-version: "['3.8', '3.9', '3.10', '3.11']"
 
   # Run builds for selected Ubuntu and Python versions.
   build:
