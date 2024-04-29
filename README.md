@@ -282,7 +282,7 @@ To build the latest Tesseract locally, run this command first:
 Optionally install additional Tesseract models.
 
     # Download models from tessdata_fast into the venv's tessdata directory.
-    ocrd resmgr download ocrd-tesserocr-recognize frk.traineddata
+    ocrd resmgr download ocrd-tesserocr-recognize deu_latf.traineddata
     ocrd resmgr download ocrd-tesserocr-recognize Latin.traineddata
     ocrd resmgr download ocrd-tesserocr-recognize Fraktur.traineddata
 
