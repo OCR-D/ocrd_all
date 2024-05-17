@@ -751,6 +751,29 @@ testcuda test-cuda: $(ACTIVATE_VENV)
 test-workflow: test-assets core $(BIN)/ocrd $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && cd core/tests/assets/SBB0000F29300010000/data/ && bash -x $(CURDIR)/test-workflow.sh
 
+DOCKER_COMPOSE = docker compose
+INTEGRATION_TEST_IN_DOCKER = docker exec core_test
+
+network-integration-test: test-assets
+	$(DOCKER_COMPOSE) --file tests/network/docker-compose.yml up -d
+	docker cp core/tests/assets/kant_aufklaerung_1784/data/. ocrd_network_processing_server:/data
+	# Queues must exists and it takes time until they are created by the workers. We might need
+	# a mechanism to test if all queues are there but that is not available yet. So sleeping
+	# here for now
+	sleep 10
+	-$(INTEGRATION_TEST_IN_DOCKER) pytest 'tests/network/test_ocrd_all_workflow.py' -v
+	$(DOCKER_COMPOSE) --file tests/network/docker-compose.yml down -v --remove-orphans
+
+network-integration-test-cicd:
+	$(DOCKER_COMPOSE) --file tests/network/docker-compose.yml up -d
+	docker cp core/tests/assets/kant_aufklaerung_1784/data/. ocrd_network_processing_server:/data
+	# Queues must exists and it takes time until they are created by the workers. We might need
+	# a mechanism to test if all queues are there but that is not available yet. So sleeping
+	# here for now
+	sleep 10
+	$(INTEGRATION_TEST_IN_DOCKER) pytest 'tests/network/test_ocrd_all_workflow.py' -v
+	$(DOCKER_COMPOSE) --file tests/network/docker-compose.yml down -v --remove-orphans
+
 test-assets:
 	$(MAKE) -C core assets
 
