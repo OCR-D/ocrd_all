@@ -441,15 +441,7 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-text
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 OCRD_SEGMENT += $(BIN)/ocrd-segment-project
 $(call multirule,$(OCRD_SEGMENT)): ocrd_segment $(BIN)/ocrd
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -o $< $(notdir $(OCRD_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV_TF1)
-	$(call delegate_venv,$(OCRD_SEGMENT),$(SUB_VENV_TF1))
-ocrd_segment-check:
-	$(MAKE) check OCRD_MODULES=ocrd_segment VIRTUAL_ENV=$(SUB_VENV_TF1)
-else
-	$(pip_install_tf1nvidia)
 	$(pip_install)
-endif
 endif
 
 ifneq ($(filter ocrd_tesserocr, $(OCRD_MODULES)),)
