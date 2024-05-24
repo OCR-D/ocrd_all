@@ -832,6 +832,7 @@ fix-cuda: $(ACTIVATE_VENV)
 
 # Docker builds.
 DOCKER_TAG ?= ocrd/all
+DOCKER_BASE_IMAGE ?= ocrd/core:$(CORE_VERSION)
 
 # Several predefined selections
 # (note: to arrive at smallest possible image size individually,
@@ -845,16 +846,25 @@ dockers: docker-minimum docker-minimum-cuda docker-medium docker-medium-cuda doc
 docker-%: PIP_OPTIONS = -e
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from git
-docker-mini%: DOCKER_MODULES := core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap workflow-configuration ocrd_olahd_client
+docker-mini%: DOCKER_MODULES := ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap workflow-configuration ocrd_olahd_client
 # Medium-size selection: add Olena binarization and Calamari, add evaluation
-docker-medi%: DOCKER_MODULES := core cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olahd_client ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap workflow-configuration
+docker-medi%: DOCKER_MODULES := cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olahd_client ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap workflow-configuration
 # Maximum-size selection: use all modules
 docker-maxi%: DOCKER_MODULES := $(OCRD_MODULES)
 
 # DOCKER_BASE_IMAGE
-docker-%um: DOCKER_BASE_IMAGE = docker.io/ocrd/core:$(CORE_VERSION)
+docker-minimum: DOCKER_BASE_IMAGE = ocrd/core:$(CORE_VERSION)
+docker-medium: DOCKER_BASE_IMAGE = $(DOCKER_TAG):minimum
+docker-maximum: DOCKER_BASE_IMAGE = $(DOCKER_TAG):medium
 # CUDA variants
-docker-%-cuda: DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda:$(CORE_VERSION)
+docker-minimum-cuda: DOCKER_BASE_IMAGE = ocrd/core-cuda:$(CORE_VERSION)
+docker-medium-cuda: DOCKER_BASE_IMAGE = $(DOCKER_TAG):minimum-cuda
+docker-maximum-cuda: DOCKER_BASE_IMAGE = $(DOCKER_TAG):medium-cuda
+# explicit interdependencies
+docker-medium: docker-minimum
+docker-maximum: docker-medium
+docker-medium-cuda: docker-minimum-cuda
+docker-maximum-cuda: docker-medium-cuda
 
 # Build rule for all selections
 # FIXME: $(DOCKER_MODULES) ref does not work at phase 1; workaround: all modules
