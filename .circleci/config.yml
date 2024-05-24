@@ -54,6 +54,19 @@ jobs:
             docker push ocrd/all:<< parameters.variant >>-git
       - when:
           condition:
+            equal: [ maximum, << parameters.variant >> ]
+          steps:
+            - run:
+                name: Alias and push intermediate variants
+                command: |
+                  docker tag ocrd/all:medium ocrd/all:medium-git
+                  docker tag ocrd/all:minimum ocrd/all:minimum-git
+                  docker push ocrd/all:minimum
+                  docker push ocrd/all:minimum-git
+                  docker push ocrd/all:medium
+                  docker push ocrd/all:medium-git
+      - when:
+          condition:
             equal: [ maximum-cuda, << parameters.variant >> ]
           steps:
             - run:
@@ -69,7 +82,7 @@ workflows:
       - deploy:
           matrix:
             parameters:
-              variant: [minimum, medium, maximum, maximum-cuda]
+              variant: [maximum, maximum-cuda]
           filters:
             branches:
               only: master
