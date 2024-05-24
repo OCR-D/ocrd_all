@@ -14,7 +14,7 @@ jobs:
           name: store ocrd-all-tool.json
           command: |
             id=`docker create ocrd/all:maximum-cuda`
-	    docker cp $id:/build/ocrd-all-tool.json .
+            docker cp $id:/build/ocrd-all-tool.json .
       - store_artifacts:
           path: ocrd-all-tool.json
           destination: artifacts
