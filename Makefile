@@ -276,7 +276,15 @@ OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-recognize
 $(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(BIN)/ocrd
+# now needs to be in sub-venv because shapely<2 clashes with shapely>=2 in other modules
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -o $< $(notdir $(OCRD_KRAKEN)) VIRTUAL_ENV=$(SUB_VENV_TF1)
+	$(call delegate_venv,$(OCRD_KRAKEN),$(SUB_VENV_TF1))
+ocrd_kraken-check:
+	$(MAKE) check OCRD_MODULES=ocrd_kraken VIRTUAL_ENV=$(SUB_VENV_TF1)
+else
 	$(pip_install)
+endif
 endif
 
 ifneq ($(filter ocrd_detectron2, $(OCRD_MODULES)),)
