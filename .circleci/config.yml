@@ -10,22 +10,6 @@ jobs:
           name: build image
           command: make docker-maximum-cuda GIT_DEPTH=--single-branch
           no_output_timeout: 30m
-      - run:
-          name: store ocrd-all-tool.json
-          command: |
-            id=`docker create ocrd/all:maximum-cuda`
-            docker cp $id:/build/ocrd-all-tool.json .
-      - store_artifacts:
-          path: ocrd-all-tool.json
-          destination: artifacts
-      - run:
-          name: store ocrd-all-module-dir.json
-          command: |
-            id=`docker create ocrd/all:maximum-cuda`
-            docker cp $id:/build/ocrd-all-module-dir.json .
-      - store_artifacts:
-          path: ocrd-all-module-dir.json
-          destination: artifacts
       - when:
           # takes too long for 1h1m CircleCI timeout overall
           # also, storage is limited...
@@ -81,6 +65,22 @@ jobs:
                   docker push ocrd/all:minimum-git
                   docker push ocrd/all:medium
                   docker push ocrd/all:medium-git
+            - run:
+                name: store ocrd-all-tool.json
+                command: |
+                  id=`docker create ocrd/all:maximum`
+                  docker cp $id:/build/ocrd-all-tool.json .
+            - store_artifacts:
+                path: ocrd-all-tool.json
+                destination: ocrd-all-tool.json
+            - run:
+                name: store ocrd-all-module-dir.json
+                command: |
+                  id=`docker create ocrd/all:maximum`
+                  docker cp $id:/build/ocrd-all-module-dir.json .
+            - store_artifacts:
+                path: ocrd-all-module-dir.json
+                destination: ocrd-all-module-dir.json
       - when:
           condition:
             equal: [ maximum-cuda, << parameters.variant >> ]
