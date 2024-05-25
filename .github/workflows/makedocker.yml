@@ -46,7 +46,6 @@ jobs:
            df -h
            docker images
            docker rmi $(docker images --filter=reference="alpine:*" -q)
-           docker rmi $(docker images --filter=reference="buildpack-deps:*" -q)
            docker rmi $(docker images --filter=reference="debian:*" -q)
            docker rmi $(docker images --filter=reference="node:*" -q)
            df -h /

@@ -54,6 +54,35 @@ jobs:
             docker push ocrd/all:<< parameters.variant >>-git
       - when:
           condition:
+            equal: [ maximum, << parameters.variant >> ]
+          steps:
+            - run:
+                name: Alias and push intermediate variants
+                command: |
+                  docker tag ocrd/all:medium ocrd/all:medium-git
+                  docker tag ocrd/all:minimum ocrd/all:minimum-git
+                  docker push ocrd/all:minimum
+                  docker push ocrd/all:minimum-git
+                  docker push ocrd/all:medium
+                  docker push ocrd/all:medium-git
+            - run:
+                name: store ocrd-all-tool.json
+                command: |
+                  id=`docker create ocrd/all:maximum`
+                  docker cp $id:/build/ocrd-all-tool.json .
+            - store_artifacts:
+                path: ocrd-all-tool.json
+                destination: ocrd-all-tool.json
+            - run:
+                name: store ocrd-all-module-dir.json
+                command: |
+                  id=`docker create ocrd/all:maximum`
+                  docker cp $id:/build/ocrd-all-module-dir.json .
+            - store_artifacts:
+                path: ocrd-all-module-dir.json
+                destination: ocrd-all-module-dir.json
+      - when:
+          condition:
             equal: [ maximum-cuda, << parameters.variant >> ]
           steps:
             - run:
@@ -69,7 +98,7 @@ workflows:
       - deploy:
           matrix:
             parameters:
-              variant: [minimum, medium, maximum, maximum-cuda]
+              variant: [maximum, maximum-cuda]
           filters:
             branches:
               only: master

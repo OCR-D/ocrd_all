@@ -282,7 +282,15 @@ OCRD_KRAKEN := $(BIN)/ocrd-kraken-binarize
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-recognize
 $(call multirule,$(OCRD_KRAKEN)): ocrd_kraken $(BIN)/ocrd
+# now needs to be in sub-venv because shapely<2 clashes with shapely>=2 in other modules
+ifeq (0,$(MAKELEVEL))
+	$(MAKE) -o $< $(notdir $(OCRD_KRAKEN)) VIRTUAL_ENV=$(SUB_VENV_TF1)
+	$(call delegate_venv,$(OCRD_KRAKEN),$(SUB_VENV_TF1))
+ocrd_kraken-check:
+	$(MAKE) check OCRD_MODULES=ocrd_kraken VIRTUAL_ENV=$(SUB_VENV_TF1)
+else
 	$(pip_install)
+endif
 endif
 
 ifneq ($(filter ocrd_detectron2, $(OCRD_MODULES)),)
@@ -447,15 +455,7 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-text
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 OCRD_SEGMENT += $(BIN)/ocrd-segment-project
 $(call multirule,$(OCRD_SEGMENT)): ocrd_segment $(BIN)/ocrd
-ifeq (0,$(MAKELEVEL))
-	$(MAKE) -o $< $(notdir $(OCRD_SEGMENT)) VIRTUAL_ENV=$(SUB_VENV_TF1)
-	$(call delegate_venv,$(OCRD_SEGMENT),$(SUB_VENV_TF1))
-ocrd_segment-check:
-	$(MAKE) check OCRD_MODULES=ocrd_segment VIRTUAL_ENV=$(SUB_VENV_TF1)
-else
-	$(pip_install_tf1nvidia)
 	$(pip_install)
-endif
 endif
 
 ifneq ($(filter ocrd_tesserocr, $(OCRD_MODULES)),)
@@ -838,6 +838,7 @@ fix-cuda: $(ACTIVATE_VENV)
 
 # Docker builds.
 DOCKER_TAG ?= ocrd/all
+DOCKER_BASE_IMAGE ?= ocrd/core:$(CORE_VERSION)
 
 # Several predefined selections
 # (note: to arrive at smallest possible image size individually,
@@ -851,16 +852,25 @@ dockers: docker-minimum docker-minimum-cuda docker-medium docker-medium-cuda doc
 docker-%: PIP_OPTIONS = -e
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from git
-docker-mini%: DOCKER_MODULES := core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap workflow-configuration ocrd_olahd_client
+docker-mini%: DOCKER_MODULES := ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap workflow-configuration ocrd_olahd_client
 # Medium-size selection: add Olena binarization and Calamari, add evaluation
-docker-medi%: DOCKER_MODULES := core cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olahd_client ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap workflow-configuration
+docker-medi%: DOCKER_MODULES := cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olahd_client ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap workflow-configuration
 # Maximum-size selection: use all modules
 docker-maxi%: DOCKER_MODULES := $(OCRD_MODULES)
 
 # DOCKER_BASE_IMAGE
-docker-%um: DOCKER_BASE_IMAGE = docker.io/ocrd/core:$(CORE_VERSION)
+docker-minimum: DOCKER_BASE_IMAGE = ocrd/core:$(CORE_VERSION)
+docker-medium: DOCKER_BASE_IMAGE = $(DOCKER_TAG):minimum
+docker-maximum: DOCKER_BASE_IMAGE = $(DOCKER_TAG):medium
 # CUDA variants
-docker-%-cuda: DOCKER_BASE_IMAGE = docker.io/ocrd/core-cuda:$(CORE_VERSION)
+docker-minimum-cuda: DOCKER_BASE_IMAGE = ocrd/core-cuda:$(CORE_VERSION)
+docker-medium-cuda: DOCKER_BASE_IMAGE = $(DOCKER_TAG):minimum-cuda
+docker-maximum-cuda: DOCKER_BASE_IMAGE = $(DOCKER_TAG):medium-cuda
+# explicit interdependencies
+docker-medium: docker-minimum
+docker-maximum: docker-medium
+docker-medium-cuda: docker-minimum-cuda
+docker-maximum-cuda: docker-medium-cuda
 
 # Build rule for all selections
 # FIXME: $(DOCKER_MODULES) ref does not work at phase 1; workaround: all modules
