@@ -76,17 +76,11 @@ ifneq ($(PYTHON_VERSION),3.8)
 DEFAULT_DISABLED_MODULES += cor-asv-ann ocrd_keraslm
 endif
 endif
-ifeq ($(PYTHON_VERSION),3.11)
-# Detectron2 relies on Pytorch 1 which still uses pkg_resources
-DEFAULT_DISABLED_MODULES += ocrd_detectron2
-endif
 ifeq ($(PYTHON_VERSION),3.12)
 # The required tensorflow is not available for Python 3.12.
 DEFAULT_DISABLED_MODULES += eynollah ocrd_anybaseocr ocrd_calamari sbb_binarization
 # The required coremltools does not support Python 3.12.
 DEFAULT_DISABLED_MODULES += ocrd_kraken
-# Detectron2 relies on Pytorch 1 which still uses pkg_resources
-DEFAULT_DISABLED_MODULES += ocrd_detectron2
 endif
 ifeq ($(shell uname -s),Darwin)
 # Disable ocrd_olena for macOS because build is broken.
