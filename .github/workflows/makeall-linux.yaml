@@ -48,6 +48,27 @@ jobs:
            df -h
            docker rmi $(docker images -q)
            df -h
+    - name: Remove unneeded Debian packages
+      run: |
+           sudo apt-get install -y deborphan
+           sudo apt-get purge -y $(deborphan -a | fgrep -e main/cli-mono -e main/database -e main/devel -e main/httpd -e main/php -e main/vcs | while read _ pkg; do echo $package; done)
+           deborphan | sort
+           sudo du -mscx /* 2>/dev/null || true
+           sudo du -mscx /opt/* 2>/dev/null || true
+           sudo du -mscx /usr/* 2>/dev/null || true
+           df -h /
+    - name: Remove Homebrew, Android and .NET
+      run: |
+           # https://github.com/actions/virtual-environments/issues/2606#issuecomment-772683150
+           # NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
+           sudo rm -rf /home/linuxbrew # will release Homebrew
+           sudo rm -rf /usr/local/lib/android # will release about 10 GB if you don't need Android
+           sudo rm -rf /usr/share/dotnet # will release about 20GB if you don't need .NET
+           sudo rm -rf /opt/ghc
+           sudo rm -rf /usr/local/share/boost
+           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+           sudo du -mscx /* 2>/dev/null || true
+           df -h /
     - name: update apt repositories
       run: sudo apt-get update
     - name: Install dependencies
