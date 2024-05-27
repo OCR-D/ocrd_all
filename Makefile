@@ -76,17 +76,11 @@ ifneq ($(PYTHON_VERSION),3.8)
 DEFAULT_DISABLED_MODULES += cor-asv-ann ocrd_keraslm
 endif
 endif
-ifeq ($(PYTHON_VERSION),3.11)
-# Detectron2 relies on Pytorch 1 which still uses pkg_resources
-DEFAULT_DISABLED_MODULES += ocrd_detectron2
-endif
 ifeq ($(PYTHON_VERSION),3.12)
 # The required tensorflow is not available for Python 3.12.
 DEFAULT_DISABLED_MODULES += eynollah ocrd_anybaseocr ocrd_calamari sbb_binarization
 # The required coremltools does not support Python 3.12.
 DEFAULT_DISABLED_MODULES += ocrd_kraken
-# Detectron2 relies on Pytorch 1 which still uses pkg_resources
-DEFAULT_DISABLED_MODULES += ocrd_detectron2
 endif
 ifeq ($(shell uname -s),Darwin)
 # Disable ocrd_olena for macOS because build is broken.
@@ -666,9 +660,6 @@ define pip_install_tf1nvidia =
 	pushd $$name && for path in $$name*; do mv $$path $${path/$$name/$$newname}; done && popd && \
 	$(PYTHON) -m wheel pack $$name && \
 	$(SEMPIP) pip install --no-cache-dir $$newname*.whl && popd && rm -fr $$OLDPWD; fi
-# - preempt conflict over numpy between scikit-image and tensorflow
-# - preempt conflict over numpy between tifffile and tensorflow (and allow py36)
-. $(ACTIVATE_VENV) && $(SEMPIP) pip install imageio==2.14.1 "tifffile<2022"
 # - preempt conflict over numpy between h5py and tensorflow
 . $(ACTIVATE_VENV) && $(SEMPIP) pip install "numpy<1.24"
 endef
