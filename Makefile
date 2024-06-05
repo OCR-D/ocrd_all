@@ -70,6 +70,10 @@ OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_DEPS = unzip wget parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
 DEFAULT_DISABLED_MODULES = cor-asv-fst opencv-python ocrd_ocropy ocrd_pc_segmentation ocrd_neat
+
+# See https://github.com/cisocrgroup/ocrd_cis/issues/101.
+DEFAULT_DISABLED_MODULES += ocrd_cis
+
 ifeq ($(filter docker-%,$(MAKECMDGOALS)),)
 ifneq ($(PYTHON_VERSION),3.8)
 # Disable modules which require tensorflow-gpu 1.15 unless running a Python version which provides it.
