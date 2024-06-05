@@ -71,6 +71,9 @@ CUSTOM_DEPS = unzip wget parallel git less # add more packages for deps-ubuntu b
 
 DEFAULT_DISABLED_MODULES = cor-asv-fst opencv-python ocrd_ocropy ocrd_pc_segmentation ocrd_neat
 
+# See https://github.com/OCR-D/ocrd_anybaseocr/issues/96.
+DEFAULT_DISABLED_MODULES += ocrd_anybaseocr
+
 # See https://github.com/cisocrgroup/ocrd_cis/issues/101.
 DEFAULT_DISABLED_MODULES += ocrd_cis
 
