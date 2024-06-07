@@ -82,12 +82,6 @@
   > * 🚧 GitLab CI Test: Depend on child pipeline
   > * 🚧 GitLab CI Test: Push after pulling
 
-### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [eb6ea8e](https://github.com/OCR-D/ocrd_anybaseocr/commits/eb6ea8e)..[e09324f](https://github.com/OCR-D/ocrd_anybaseocr/commits/e09324f)
-
-> Release: [v1.10.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.10.0)
-
-  > * adapt to Numpy and Pillow deprecations
-
 ### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [a8402d8](https://github.com/bertsky/ocrd_detectron2/commits/a8402d8)..[1f56273](https://github.com/bertsky/ocrd_detectron2/commits/1f56273)
 
 > Release: [v0.1.8](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.8)
