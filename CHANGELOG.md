@@ -2,6 +2,234 @@
 
 ## Unreleased
 
+## [v2024-06-08](https://github.com/OCR-D/ocrd_all/releases/v2024-06-08)
+
+### [core](https://github.com/OCR-D/core) [c5b5580](https://github.com/OCR-D/core/commits/c5b5580)..[f6f2a6e](https://github.com/OCR-D/core/commits/f6f2a6e)
+
+> Release: [v2.66.0](https://github.com/OCR-D/core/releases/v2.66.0)
+
+  > * :package: v2.66.0
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/download-file-no-absolute-urls'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/param-preset-resolve-anew'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/workspace-clean'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/utilize-ps-proxy-to-ms'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/add-docker-tf1'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/fix-ci-no37'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/ocrd-logging-debug-true'
+  > * :memo: changelog
+  > * cli.workspace.find --undo-download: add --keep-files
+  > * cli.workspace.find --undo-download: only if .url exists
+  > * :memo: changelog
+  > * Merge branch 'master' of https://github.com/OCR-D/core
+  > * Merge branch 'rm-coverage'
+  > * :memo: changelog
+  > * Merge pull request #1225 from bertsky/docker-editable
+  > * :memo: changelog;
+  > * Merge pull request #1227 from OCR-D/fix-ocrd-file-remove-url
+  > * fix CD by fetching tags, too
+  > * :package: v2.65.0
+  > * :memo: changelog
+  > * ci: fix integration test
+  > * Merge branch 'master' into test-workflow
+  > * make network-integration-test: disable ocrd_all test
+  > * disable ocrd all test in core
+  > * ci: disable scrutinizer build
+  > * Remove ocrd_all-tests from core makefile
+  > * make ocrd all tests callable from Makefile
+  > * merge master
+  > * Merge branch 'test-workflow' of github.com:OCR-D/core into test-workflow merge master
+  > * Make make assets in Dockerfile skipable
+  > * remove duplicates
+  > * Add a test for workflow run in ocrd_all
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [f8e3108](https://github.com/qurator-spk/dinglehopper/commits/f8e3108)..[bc5818d](https://github.com/qurator-spk/dinglehopper/commits/bc5818d)
+
+> Release: [v0.9.6](https://github.com/qurator-spk/dinglehopper/releases/v0.9.6)
+
+  > * ✔ GitHub Actions: Update used actions
+  > * ⚙ pre-commit: Update hooks
+  > * 🐛 Fix reading plain text files
+  > * 📦 v0.9.6
+  > * Revert "✔ Test on Python 3.13"
+  > * 🐛 GHA: Install possible shapely build requirements (if building from source)
+  > * Merge pull request #111 from stweil/typos
+  > * 🐛 GHA: Install possible lxml build requirements (if building from source)
+  > * ✔ Test on Python 3.13
+  > * 🐛 Fix Python 3.12 support by requiring ocrd >= 2.65.0
+  > * ⚙ pre-commit: Update hooks
+  > * ✔ Test using empty files
+  > * ⚙ pre-commit: Update hooks
+  > * 🧹 tests: Move comment out of the code (bad style + weird formatting)
+  > * ⚙ cli: Annotate types in process_dir()
+  > * ⚙ pre-commit: Update hooks
+  > * 🧹 Make from_text_segment()'s textequiv_level keyword-only
+  > * 🧹 Make process_dir() keyword arguments keyword-only
+  > * ✒ README-DEV: Releasing a new version
+  > * 📦 v0.9.5
+  > * ⚙ pre-commit: Add mypy dependencies
+  > * 🐛 Check that we always get a valid ALTO namespace (satifies mypy)
+  > * 🎨 Reformat (Black)
+  > * ⚙ pre-commit: Update hooks
+  > * Merge branch 'master' of https://github.com/qurator-spk/dinglehopper
+  > * 🐛 Fix word segmentation with uniseg 0.8.0
+  > * 🚧 GitLab CI Test: Depend on child pipeline
+  > * 🚧 GitLab CI Test: Push after pulling
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [eb6ea8e](https://github.com/OCR-D/ocrd_anybaseocr/commits/eb6ea8e)..[e09324f](https://github.com/OCR-D/ocrd_anybaseocr/commits/e09324f)
+
+> Release: [v1.10.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.10.0)
+
+  > * adapt to Numpy and Pillow deprecations
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [a8402d8](https://github.com/bertsky/ocrd_detectron2/commits/a8402d8)..[1f56273](https://github.com/bertsky/ocrd_detectron2/commits/1f56273)
+
+> Release: [v0.1.8](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.8)
+
+  > * patch -f instead of -t
+  > * suppress question if patch detectron2#5010 already applied
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [ba79de9](https://github.com/OCR-D/ocrd_fileformat/commits/ba79de9)..[048d924](https://github.com/OCR-D/ocrd_fileformat/commits/048d924)
+
+> Release: [v0.10.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.10.0)
+
+  > * CI: add Dockerhub CD
+  > * update textract2page again
+  > * forgot to add AWS-Textract→PAGE
+  > * update ocr-fileformat (with newer textract2page)
+  > * Merge pull request #53 from OCR-D/osx-cp
+
+### [ocrd_froc](https://github.com/OCR-D/ocrd_froc) [45d5dcd](https://github.com/OCR-D/ocrd_froc/commits/45d5dcd)..[42f1ce0](https://github.com/OCR-D/ocrd_froc/commits/42f1ce0)
+
+> Release: [v0.6.1](https://github.com/OCR-D/ocrd_froc/releases/v0.6.1)
+
+  > * :package: v0.6.1
+  > * Merge pull request #16 from stweil/typos
+  > * :package: v0.6.0
+  > * :memo: changelog
+  > * Merge branch 'main' into pr-8-feedback
+  > * add parameter min_score_style to filter low-confidence font classification results
+  > * don't replace textstyle, only fontFamily if overwrite_style
+  > * add parameter "overwrite_text" (default: false): whether to add or replace TextEquiv
+  > * rename parameter network -> model
+  > * rename parameter replace_textstyle -> overwrite_style
+
+### [ocrd_keraslm](https://github.com/OCR-D/ocrd_keraslm) [472197f](https://github.com/OCR-D/ocrd_keraslm/commits/472197f)..[ea79b2a](https://github.com/OCR-D/ocrd_keraslm/commits/ea79b2a)
+
+> Release: [v0.4.3](https://github.com/OCR-D/ocrd_keraslm/releases/v0.4.3)
+
+  > * test: with initLogging
+  > * test: allow running with published model_dta_full instead of training model_dta_test
+  > * improve/update readme
+  > * wrapper.rate: improve/update docstring
+  > * wrapper.rate: use resolve_resource for model file path, split off setup()
+  > * save training history (metrics), add cmd to print them
+  > * train: allow passing single file for val_data, too
+  > * fix continuing from chkpt
+  > * update readme
+  > * add model_dta_full.h5 ref
+  > * chlog
+  > * :package: 0.4.3
+  > * generate: add option --variants (nr of nbest seqs)
+  > * plot_context_embeddings_projection: add years
+  > * test: allow passing directory for data, too
+
+### [ocrd_kraken](https://github.com/OCR-D/ocrd_kraken) [bdbe6fc](https://github.com/OCR-D/ocrd_kraken/commits/bdbe6fc)..[a6160ce](https://github.com/OCR-D/ocrd_kraken/commits/a6160ce)
+
+> Release: [v0.4.1](https://github.com/OCR-D/ocrd_kraken/releases/v0.4.1)
+
+  > * Merge pull request #40 from stweil/python
+  > * fix/add build
+  > * :package: 0.4.1
+  > * Merge pull request #43 from bertsky/segment-regions
+
+### [ocrd_neat](https://github.com/qurator-spk/page2tsv) [2f7d01c](https://github.com/qurator-spk/page2tsv/commits/2f7d01c)..[06c8b38](https://github.com/qurator-spk/page2tsv/commits/06c8b38)
+
+> Release: [v0.0.1](https://github.com/qurator-spk/page2tsv/releases/v0.0.1)
+
+  > * character normalization based on aletheia mapping
+  > * Merge pull request #13 from qurator-spk/fix-ppn-xpath
+
+### [ocrd_pagetopdf](https://github.com/UB-Mannheim/ocrd_pagetopdf) [24f77d3](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/24f77d3)..[7c5ab70](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/7c5ab70)
+
+> Release: [v1.1.0](https://github.com/UB-Mannheim/ocrd_pagetopdf/releases/v1.1.0)
+
+  > * Merge pull request #26 from UB-Mannheim/clean
+  > * Fix typos in README.md and in ocrd-tool.json (#25)
+  > * Fix typo in LICENSE
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [3993139](https://github.com/OCR-D/ocrd_segment/commits/3993139)..[de824e9](https://github.com/OCR-D/ocrd_segment/commits/de824e9)
+
+> Release: [v0.1.24](https://github.com/OCR-D/ocrd_segment/releases/v0.1.24)
+
+  > * :package: v0.1.24
+  > * repair: add params spread / spread_level, update/improve docs
+  > * repair: validate/repair polygons with 0 px tolerance
+  > * project/repair join_polygons: fix rare case of adjacent rings
+  > * from_masks: skip if no seg file
+  > * :package: v0.1.23
+  > * Merge pull request #67 from OCR-D/project-parent
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [ed73d96](https://github.com/OCR-D/ocrd_tesserocr/commits/ed73d96)..[b93a084](https://github.com/OCR-D/ocrd_tesserocr/commits/b93a084)
+
+> Release: [v0.18.1](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.18.1)
+
+  > * Merge pull request #213 from OCR-D/osx-cp
+  > * Merge pull request #212 from stweil/tesseract
+  > * Merge pull request #211 from stweil/libcurl-dev
+  > * model resources: fix frak2021 description
+  > * recognize models: use _best instead of _fast
+  > * sanitise loggers: no points, but warnings
+  > * update changelog
+  > * recognize: more robust polygon handling
+  > * Merge pull request #208 from bertsky/subclass-docstrings
+  > * Merge pull request #205 from stweil/update
+  > * Merge pull request #203 from stweil/build
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [b89ec49](https://github.com/qurator-spk/sbb_binarization/commits/b89ec49)..[978f425](https://github.com/qurator-spk/sbb_binarization/commits/978f425)
+
+> Release: [v0.1.0](https://github.com/qurator-spk/sbb_binarization/releases/v0.1.0)
+
+  > * document tested Python+TF2 versions
+  > * remove Python 3.11 from test
+  > * Update README.md
+  > * Update tensorflow version requirements
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [bd149f8](https://github.com/bertsky/workflow-configuration/commits/bd149f8)..[f161245](https://github.com/bertsky/workflow-configuration/commits/f161245)
+
+> Release: [0.1.3](https://github.com/bertsky/workflow-configuration/releases/0.1.3)
+
+  > * refactor remote/parallel opts
+  > * ocrd-make -X: fix passing on parallel options
+  > * ocrd-make METSSERV sequentially: fix exitcode
+  > * ocrd-make PAGEWISE: fix enumerating pages
+  > * ocrd-make: have page-parallel preclude document-parallel (but still use parallel)
+  > * ocrd-make: have page-parallel preclude document-parallel (to prevent oversubscription)
+  > * add FAILRETRY variable, logic and docs
+  > * Update README.md
+  > * CI: less verbose ocrd_logging.conf
+  > * CI: override prefix
+  > * ocrd-import: replace mkfifo / bulk-add with METS Server
+  > * ocrd-import: attempt to convert all non-XML and non-image files
+  > * add CI/CD
+  > * add Docker
+  > * add tests
+  > * ocrd-make: add PAGEWISE and METSSERV modes
+  > * add workflow with model variable
+  > * ocrd-make info|show: delegate other make options, too
+  > * fix exitcode logging in sequential case
+  > * add TIMEOUT (processor timeout) and FAILDUMMY (ocrd-dummy fallback)
+  > * ocrd-make: add -X for computation on remote host (with OCR-D installed)
+  > * toolrecipe: revert f3083f85 (:fire: no more support for multiple output fileGrps)
+  > * update readme
+
+
 ## [v2024-03-08](https://github.com/OCR-D/ocrd_all/releases/v2024-03-08)
 
 Removed:
