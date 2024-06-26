@@ -4,10 +4,14 @@
 
 ## [v2024-06-08](https://github.com/OCR-D/ocrd_all/releases/v2024-06-08)
 
-### [core](https://github.com/OCR-D/core) [c5b5580](https://github.com/OCR-D/core/commits/c5b5580)..[f6f2a6e](https://github.com/OCR-D/core/commits/f6f2a6e)
+### [core](https://github.com/OCR-D/core) [c5b5580](https://github.com/OCR-D/core/commits/c5b5580)..[79c61e3](https://github.com/OCR-D/core/commits/79c61e3)
 
-> Release: [v2.66.0](https://github.com/OCR-D/core/releases/v2.66.0)
+> Release: [v2.66.1](https://github.com/OCR-D/core/releases/v2.66.1)
 
+  > * :package: v2.66.1
+  > * :memo: changelog
+  > * GHA Docker: build docker.io first, then tag ghcr.io
+  > * Dockerfile.cuda*: adapt to #1225 cc6ea57
   > * :package: v2.66.0
   > * :memo: changelog
   > * Merge remote-tracking branch 'origin/download-file-no-absolute-urls'
@@ -89,7 +93,7 @@
   > * patch -f instead of -t
   > * suppress question if patch detectron2#5010 already applied
 
-### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [ba79de9](https://github.com/OCR-D/ocrd_fileformat/commits/ba79de9)..[048d924](https://github.com/OCR-D/ocrd_fileformat/commits/048d924)
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [ba79de9](https://github.com/OCR-D/ocrd_fileformat/commits/ba79de9)..[fb769ff](https://github.com/OCR-D/ocrd_fileformat/commits/fb769ff)
 
 > Release: [v0.10.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.10.0)
 
@@ -195,10 +199,12 @@
   > * Update README.md
   > * Update tensorflow version requirements
 
-### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [bd149f8](https://github.com/bertsky/workflow-configuration/commits/bd149f8)..[f161245](https://github.com/bertsky/workflow-configuration/commits/f161245)
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [bd149f8](https://github.com/bertsky/workflow-configuration/commits/bd149f8)..[eeea260](https://github.com/bertsky/workflow-configuration/commits/eeea260)
 
 > Release: [0.1.3](https://github.com/bertsky/workflow-configuration/releases/0.1.3)
 
+  > * ocrd-make -X: no --cleanup to prevent race for --bf
+  > * ocrd-make: add JOBDB option
   > * refactor remote/parallel opts
   > * ocrd-make -X: fix passing on parallel options
   > * ocrd-make METSSERV sequentially: fix exitcode
@@ -346,10 +352,18 @@ Removed:
   > * Rename build folder to not interfere with core-img
   > * Update dockerfile
 
-### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [fcc02fd](https://github.com/cisocrgroup/ocrd_cis/commits/fcc02fd)..[1d2e858](https://github.com/cisocrgroup/ocrd_cis/commits/1d2e858)
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [1d2e858](https://github.com/cisocrgroup/ocrd_cis/commits/1d2e858)..[38ce45b](https://github.com/cisocrgroup/ocrd_cis/commits/38ce45b)
 
 > Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
 
+  > * CircleCI: install JRE
+  > * test assets: workaround for core#1189 / gt_structure_text#2
+  > * resegment: expose parameter spread (analogous to segment)
+  > * tests: update data_url (after force-push upstream)
+  > * resegment (lineest): use new polygons instead of intersections but ignore extend_margins
+  > * resegment (lineest): fix/improve matching
+  > * re/segment join_baselines: adapt to Shapely, improve
+  > * re/segment join_polygons: fix rare case of adjacent rings
   > * Merge pull request #4 from joschrew/update-dockerfile
 
 ### [ocrd_im6convert](https://github.com/OCR-D/ocrd_im6convert) [db18917](https://github.com/OCR-D/ocrd_im6convert/commits/db18917)..[be794f6](https://github.com/OCR-D/ocrd_im6convert/commits/be794f6)
