@@ -89,6 +89,7 @@ RUN rm $VIRTUAL_ENV/bin/pip* && apt-get purge -y python3-pip && python3 -m venv 
 # copy (sub)module directories to build
 # (ADD/COPY cannot copy a list of directories,
 #  so we must rely on .dockerignore here)
+RUN rm -rf /build/core/.git
 COPY . .
 
 # make apt system functional
