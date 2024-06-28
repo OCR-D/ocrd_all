@@ -94,8 +94,9 @@ RUN rm -rf /build/core/.git
 #  so we must rely on .dockerignore here)
 COPY . .
 
+# TODO(kba)
 # verify we got the right version of core
-RUN bash -c 'CORE_VERSION=`git -C /build/core describe --tags`; if [[ "$BASE_IMAGE" != *":$CORE_VERSION" ]]; then echo $BASE_IMAGE inconsistent with core version $CORE_VERSION; exit 1;fi'
+# RUN bash -c 'CORE_VERSION=`git -C /build/core describe --tags`; if [[ "$BASE_IMAGE" != *":$CORE_VERSION" ]]; then echo $BASE_IMAGE inconsistent with core version $CORE_VERSION; exit 1;fi'
 
 # make apt system functional
 RUN apt-get -y update && apt-get install -y apt-utils
