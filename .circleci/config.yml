@@ -3,6 +3,7 @@ jobs:
   build:
     docker:
       - image: cimg/base:current-22.04
+    resource_class: large
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
