@@ -1,5 +1,8 @@
 # Changelog
 
+## [v2024-07-01](https://github.com/OCR-D/ocrd_all/releases/v2024-07-01)
+
+
 ## Unreleased
 
 ## [v2024-07-01](https://github.com/OCR-D/ocrd_all/releases/v2024-07-01)
@@ -174,10 +177,14 @@
   > * :package: v0.1.23
   > * Merge pull request #67 from OCR-D/project-parent
 
-### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [ed73d96](https://github.com/OCR-D/ocrd_tesserocr/commits/ed73d96)..[b93a084](https://github.com/OCR-D/ocrd_tesserocr/commits/b93a084)
 
-> Release: [v0.18.1](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.18.1)
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [ed73d96](https://github.com/OCR-D/ocrd_tesserocr/commits/ed73d96)..[d23992b](https://github.com/OCR-D/ocrd_tesserocr/commits/d23992b)
 
+> Release: [v0.19.1](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.19.1)
+
+  > * :package: v0.19.1
+  > * :package: v0.19.0
+  > * Update submodule tesseract
   > * Merge pull request #213 from OCR-D/osx-cp
   > * Merge pull request #212 from stweil/tesseract
   > * Merge pull request #211 from stweil/libcurl-dev
