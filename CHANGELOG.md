@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-## [v2024-06-08](https://github.com/OCR-D/ocrd_all/releases/v2024-06-08)
+## [v2024-07-01](https://github.com/OCR-D/ocrd_all/releases/v2024-07-01)
 
 ### [core](https://github.com/OCR-D/core) [c5b5580](https://github.com/OCR-D/core/commits/c5b5580)..[79c61e3](https://github.com/OCR-D/core/commits/79c61e3)
 
