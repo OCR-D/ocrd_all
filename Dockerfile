@@ -86,10 +86,17 @@ WORKDIR /build
 # create virtual environment
 RUN rm $VIRTUAL_ENV/bin/pip* && apt-get purge -y python3-pip && python3 -m venv $VIRTUAL_ENV && python3 -m pip install --force pip
 
+# from-stage already contains a clone clashing with build context
+RUN rm -rf /build/core/.git
+
 # copy (sub)module directories to build
 # (ADD/COPY cannot copy a list of directories,
 #  so we must rely on .dockerignore here)
 COPY . .
+
+# TODO(kba)
+# verify we got the right version of core
+# RUN bash -c 'CORE_VERSION=`git -C /build/core describe --tags`; if [[ "$BASE_IMAGE" != *":$CORE_VERSION" ]]; then echo $BASE_IMAGE inconsistent with core version $CORE_VERSION; exit 1;fi'
 
 # make apt system functional
 RUN apt-get -y update && apt-get install -y apt-utils
