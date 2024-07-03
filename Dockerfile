@@ -138,12 +138,16 @@ RUN if echo $BASE_IMAGE | fgrep -q cuda; then make fix-cuda; fi
 # will be copied to the host and complemented by downloaded models; tessdata
 # is the only problematic module location
 RUN mkdir -p  $XDG_DATA_HOME/tessdata
-RUN mv $XDG_DATA_HOME/tessdata $XDG_CONFIG_HOME/ocrd-tesserocr-recognize
-RUN ln -s $XDG_CONFIG_HOME/ocrd-tesserocr-recognize $XDG_DATA_HOME/tessdata
+# as seen in #394, this must never be repeated
+RUN if ! test -d $XDG_CONFIG_HOME/ocrd-tesserocr-recognize; then \
+    mv $XDG_DATA_HOME/tessdata $XDG_CONFIG_HOME/ocrd-tesserocr-recognize && \
+    ln -s $XDG_CONFIG_HOME/ocrd-tesserocr-recognize $XDG_DATA_HOME/tessdata; fi
 
 # finally, alias/symlink all ocrd-resources to /models for shorter mount commands
 RUN mkdir -p $XDG_CONFIG_HOME
-RUN mv $XDG_CONFIG_HOME /models && ln -s /models $XDG_CONFIG_HOME
+# as seen in #394, this must never be repeated
+RUN if ! test -d /models; then \
+    mv $XDG_CONFIG_HOME /models && ln -s /models $XDG_CONFIG_HOME; fi
 # ensure unprivileged users can download models, too
 RUN chmod go+rwx /models
 
