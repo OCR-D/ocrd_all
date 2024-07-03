@@ -140,16 +140,20 @@ RUN if echo $BASE_IMAGE | fgrep -q cuda; then make fix-cuda; fi
 RUN mkdir -p  $XDG_DATA_HOME/tessdata
 # as seen in #394, this must never be repeated
 RUN if ! test -d $XDG_CONFIG_HOME/ocrd-tesserocr-recognize; then \
-    mv $XDG_DATA_HOME/tessdata $XDG_CONFIG_HOME/ocrd-tesserocr-recognize && \
-    ln -s $XDG_CONFIG_HOME/ocrd-tesserocr-recognize $XDG_DATA_HOME/tessdata; fi
+    mv -v $XDG_DATA_HOME/tessdata $XDG_CONFIG_HOME/ocrd-tesserocr-recognize && \
+    ln -vs $XDG_CONFIG_HOME/ocrd-tesserocr-recognize $XDG_DATA_HOME/tessdata; fi
 
 # finally, alias/symlink all ocrd-resources to /models for shorter mount commands
 RUN mkdir -p $XDG_CONFIG_HOME
 # as seen in #394, this must never be repeated
 RUN if ! test -d /models; then \
-    mv $XDG_CONFIG_HOME /models && ln -s /models $XDG_CONFIG_HOME; fi
+    mv -v $XDG_CONFIG_HOME /models && \
+    ln -vs /models $XDG_CONFIG_HOME; fi
 # ensure unprivileged users can download models, too
 RUN chmod go+rwx /models
+
+# smoke-test resmgr
+RUN ocrd resmgr list-installed
 
 # remove (dated) security workaround preventing use of
 # ImageMagick's convert on PDF/PS/EPS/XPS:
