@@ -229,7 +229,7 @@ $(BIN)/ocrd: core
 else
 CUSTOM_DEPS += python3 imagemagick libgeos-dev
 $(BIN)/ocrd: | $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && $(SEMPIP) pip install $(PIP_OPTIONS_E) ocrd ocrd_network
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install $(PIP_OPTIONS_E) ocrd
 endif
 
 .PHONY: test-core
