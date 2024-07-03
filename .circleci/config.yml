@@ -9,7 +9,7 @@ jobs:
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
       - run:
           name: build image
-          command: make docker-maximum-cuda GIT_DEPTH=--single-branch PARALLEL=-j4
+          command: make docker-maximum-cuda GIT_DEPTH=--single-branch DOCKER_PARALLEL=-j4
           no_output_timeout: 30m
       - run:
           name: test image
