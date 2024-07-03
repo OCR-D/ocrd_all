@@ -77,9 +77,9 @@ ARG PARALLEL=""
 
 # increase default network timeouts (so builds don't fail because of small bandwidth)
 ENV PIP_OPTIONS="--timeout=3000 ${PIP_OPTIONS}"
-RUN echo "Acquire::http::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
-RUN echo "Acquire::https::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
-RUN echo "Acquire::ftp::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
+RUN echo "Acquire::http::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network && \
+    echo "Acquire::https::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network && \
+    echo "Acquire::ftp::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network
 
 WORKDIR /build
 
@@ -104,31 +104,29 @@ RUN apt-get -y update && apt-get install -y apt-utils
 # avoid git submodule update (keep at build context)
 ENV NO_UPDATE=1
 
-# start a shell script (so we can comment individual steps here)
-RUN echo "set -ex" > docker.sh
+# run build in one layer/step (to minimise image size)
+RUN set -ex && \
 # get packages for build
-RUN echo "apt-get -y install automake autoconf libtool pkg-config g++" >> docker.sh
+    apt-get -y install automake autoconf libtool pkg-config g++ && \
 # ensure no additional git actions happen after copying the checked out modules
 # try to fetch all modules system requirements
-RUN echo "make deps-ubuntu" >> docker.sh
-RUN echo "source $VIRTUAL_ENV/bin/activate" >> docker.sh
-RUN echo "pip install -U pip setuptools wheel" >> docker.sh
-RUN echo "hash -r" >> docker.sh
+    make deps-ubuntu && \
+    source $VIRTUAL_ENV/bin/activate && \
+    pip install -U pip setuptools wheel && \
+    hash -r && \
 # build/install all tools of the requested modules:
-RUN echo "make $PARALLEL all" >> docker.sh
+    make $PARALLEL all && \
 # preinstall ocrd-all-tool.json and ocrd-all-module-dir.json
-RUN echo "make ocrd-all-tool.json ocrd-all-module-dir.json" >> docker.sh
+    make ocrd-all-tool.json ocrd-all-module-dir.json && \
 # remove unneeded automatic deps and clear pkg cache
-RUN echo "apt-get -y remove automake autoconf libtool pkg-config g++ && apt-get -y clean" >> docker.sh
+    apt-get -y remove automake autoconf libtool pkg-config g++ && \
+    apt-get -y clean && \
 # clean-up some temporary files (git repos are also installation targets and must be kept)
-RUN echo "make -i clean-tesseract" >> docker.sh
-RUN echo "make -i clean-olena" >> docker.sh
-RUN echo "rm -fr /.cache" >> docker.sh
-# run the script in one layer/step (to minimise image size)
-# (and export all variables)
-RUN set -a; bash docker.sh
+    make -i clean-tesseract && \
+    make -i clean-olena && \
+    rm -fr /.cache && \
 # update ld.so cache for new libs in /usr/local
-RUN ldconfig
+    ldconfig
 # check installation
 RUN make -j4 check CHECK_HELP=1
 RUN if echo $BASE_IMAGE | fgrep -q cuda; then make fix-cuda; fi
@@ -137,31 +135,31 @@ RUN if echo $BASE_IMAGE | fgrep -q cuda; then make fix-cuda; fi
 # to mount for model persistence; with named volumes, the preinstalled models
 # will be copied to the host and complemented by downloaded models; tessdata
 # is the only problematic module location
-RUN mkdir -p  $XDG_DATA_HOME/tessdata
+RUN mkdir -p  $XDG_DATA_HOME/tessdata; \
 # as seen in #394, this must never be repeated
-RUN if ! test -d $XDG_CONFIG_HOME/ocrd-tesserocr-recognize; then \
+    if ! test -d $XDG_CONFIG_HOME/ocrd-tesserocr-recognize; then \
     mv -v $XDG_DATA_HOME/tessdata $XDG_CONFIG_HOME/ocrd-tesserocr-recognize && \
     ln -vs $XDG_CONFIG_HOME/ocrd-tesserocr-recognize $XDG_DATA_HOME/tessdata; fi
 
 # finally, alias/symlink all ocrd-resources to /models for shorter mount commands
-RUN mkdir -p $XDG_CONFIG_HOME
+RUN mkdir -p $XDG_CONFIG_HOME; \
 # as seen in #394, this must never be repeated
-RUN if ! test -d /models; then \
+    if ! test -d /models; then \
     mv -v $XDG_CONFIG_HOME /models && \
-    ln -vs /models $XDG_CONFIG_HOME; fi
+    ln -vs /models $XDG_CONFIG_HOME; fi; \
 # ensure unprivileged users can download models, too
-RUN chmod go+rwx /models
+    chmod go+rwx /models
 
 # smoke-test resmgr
 RUN ocrd resmgr list-installed
 
 # remove (dated) security workaround preventing use of
 # ImageMagick's convert on PDF/PS/EPS/XPS:
-RUN sed -i 's/rights="none"/rights="read|write"/g' /etc/ImageMagick-6/policy.xml || true
+RUN sed -i 's/rights="none"/rights="read|write"/g' /etc/ImageMagick-6/policy.xml; \
 # prevent cache resources exhausted errors
-RUN sed -i 's/name="disk" value="1GiB"/name="disk" value="8GiB"/g' /etc/ImageMagick-6/policy.xml || true
+    sed -i 's/name="disk" value="1GiB"/name="disk" value="8GiB"/g' /etc/ImageMagick-6/policy.xml; \
 # relax overly restrictive maximum resolution
-RUN sed -i '/width\|height/s/value="16KP"/value="64KP"/' /etc/ImageMagick-6/policy.xml || true
+    sed -i '/width\|height/s/value="16KP"/value="64KP"/' /etc/ImageMagick-6/policy.xml; true
 
 # avoid default prompt with user name, because likely we will use host UID without host /etc/passwd
 # cannot just set ENV, because internal bashrc will override it anyway
