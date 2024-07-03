@@ -75,19 +75,22 @@ jobs:
       if: github.event.inputs.upterm-session == 'true'
       uses: lhotari/action-upterm@v1
     - name: Make Docker image
-      run: make docker-${{ github.event.inputs.docker-image }} GIT_DEPTH=--single-branch
+      run: make docker-${{ github.event.inputs.docker-image }} GIT_DEPTH=--single-branch DOCKER_PARALLEL=-j4
     - name: Generate ocrd-all-tool.json
-      # the Docker build will set OCRD_MODULES inside the image, which we can re-use
-      # regardless of whether we have /build, we can just use the Makefile from outside again
+      # the Docker build will already have created this internally
+      # so just extract and store it here
       run: |
-           export OCRD_MODULES=$(docker run --rm ocrd/all:${{ github.event.inputs.docker-image }} bash -c 'echo $OCRD_MODULES')
-           make ocrd-all-tool.json
-           wc -l ocrd-all-tool.json
+           id=$(docker create ocrd/all:${{ github.event.inputs.docker-image }})
+           docker cp $id:/build/ocrd-all-tool.json .
+           docker cp $id:/build/ocrd-all-module-dir.json .
+           wc -l ocrd-all-tool.json ocrd-all-module-dir.json
     - name: Upload ocrd-all-tool.json
       uses: actions/upload-artifact@v4
       with:
         name: ${{ github.event.inputs.docker-image }}_ocrd-all-tool.json
-        path: ./ocrd-all-tool.json
+        path: |
+          ./ocrd-all-tool.json
+          ./ocrd-all-module-dir.json
         # if-no-files-found: error
     - name: Login to Docker Hub
       if: github.event.inputs.upload-dockerhub == 'true'
