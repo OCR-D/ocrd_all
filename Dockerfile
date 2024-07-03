@@ -111,7 +111,7 @@ RUN set -ex && \
 # ensure no additional git actions happen after copying the checked out modules
 # try to fetch all modules system requirements
     make deps-ubuntu && \
-    source $VIRTUAL_ENV/bin/activate && \
+    . $VIRTUAL_ENV/bin/activate && \
     pip install -U pip setuptools wheel && \
     hash -r && \
 # build/install all tools of the requested modules:
