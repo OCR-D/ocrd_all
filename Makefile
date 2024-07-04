@@ -722,7 +722,11 @@ $(OCRD_EXECUTABLES): | $(BIN)/wheel
 $(filter-out $(BIN)/ocrd,$(OCRD_EXECUTABLES)): $(BIN)/ocrd
 
 # At last, we know what all OCRD_EXECUTABLES are:
-all: $(OCRD_MODULES) $(OCRD_EXECUTABLES)
+# (json targets depend on OCRD_MODULES and OCRD_EXECUTABLES)
+all: ocrd-all-tool.json ocrd-all-module-dir.json
+	. $(ACTIVATE_VENV) && cp -f $^ `python -c "import ocrd; print(ocrd.__path__[0])"`
+	. $(SUB_VENV_TF1)/bin/activate && cp -f $^ `python -c "import ocrd; print(ocrd.__path__[0])"`
+
 show:
 	@echo VIRTUAL_ENV = $(VIRTUAL_ENV)
 	@echo OCRD_MODULES = $(OCRD_MODULES)
