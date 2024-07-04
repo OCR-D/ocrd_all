@@ -116,9 +116,6 @@ RUN set -ex && \
     hash -r && \
 # build/install all tools of the requested modules:
     make $PARALLEL all && \
-# preinstall ocrd-all-tool.json and ocrd-all-module-dir.json
-    make ocrd-all-tool.json ocrd-all-module-dir.json && \
-    cp -f ocrd-all-tool.json ocrd-all-module-dir.json core/src/ocrd && \
 # remove unneeded automatic deps and clear pkg cache
     apt-get -y remove automake autoconf libtool pkg-config g++ && \
     apt-get -y clean && \
