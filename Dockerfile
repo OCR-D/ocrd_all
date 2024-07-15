@@ -113,7 +113,6 @@ RUN set -ex && \
     make deps-ubuntu && \
     . $VIRTUAL_ENV/bin/activate && \
     pip install -U pip setuptools wheel && \
-    hash -r && \
 # build/install all tools of the requested modules:
     make $PARALLEL all && \
 # remove unneeded automatic deps and clear pkg cache
