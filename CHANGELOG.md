@@ -1,9 +1,95 @@
 # Changelog
 
-## [v2024-07-01](https://github.com/OCR-D/ocrd_all/releases/v2024-07-01)
-
-
 ## Unreleased
+
+## [v2024-07-17](https://github.com/OCR-D/ocrd_all/releases/v2024-07-17)
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [f7ebb74](https://github.com/ASVLeipzig/cor-asv-ann/commits/f7ebb74)..[ff6bf3f](https://github.com/ASVLeipzig/cor-asv-ann/commits/ff6bf3f)
+
+> Release: [v0.1.15](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.15)
+
+  > * mark: try de-hyphenation; also log mismatch rate
+
+### [core](https://github.com/OCR-D/core) [79c61e3](https://github.com/OCR-D/core/commits/79c61e3)..[92b217e](https://github.com/OCR-D/core/commits/92b217e)
+
+> Release: [v2.67.1](https://github.com/OCR-D/core/releases/v2.67.1)
+
+  > * :package: v2.67.1
+  > * disable arm64 build for now
+  > * :bug: missed dbg stmt
+  > * :fire: make docker: use only one base image
+  > * ci: gha: disable ppc build b/c it hangs on dependencies
+  > * ci: gha env var quote fix
+  > * ci: workaround env interpolation issue
+  > * makefile: missing ;then
+  > * :package: v2.67.0
+  > * :memo: changelog
+  > * disable scrutinizer
+  > * :fire: bashlib: quote output of parameter preset resolve result
+  > * logging: extract get_logging_config_files function, use to skip tests if logging.conf present
+  > * test_ocrd_mets: tests in docker have OCRD_METS_CACHING=1 always, unset
+  > * test_os: don't dehomify root
+  > * ci: try fixing scrutinizer
+  > * unpin requests version (< 2.30)
+  > * circleci: use schema v2.1
+  > * switch to active fork requests_unixsocket2, msabramo/requests-unixsocket#72
+  > * tests: disable resmgr --overwrite tests, #1246
+  > * tests: missing import stmt
+  > * Merge remote-tracking branch 'origin/fix-1245'
+  > * Merge remote-tracking branch 'origin/fix-1237'
+  > * :memo: changelog
+  > * Merge branch 'resmgr-use-ocrd-all-json'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/fix-1218'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/fix-1203'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/fix-1245'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/metsserver-startup'
+  > * Merge remote-tracking branch 'origin/fix-docker-compose-service-retries'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/fix-processor-resolve-preset'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/process-via-mets-server' into HEAD
+  > * Merge remote-tracking branch 'origin/cd-docker-cuda-ml-variants' into HEAD
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [bc5818d](https://github.com/qurator-spk/dinglehopper/commits/bc5818d)..[129e6eb](https://github.com/qurator-spk/dinglehopper/commits/129e6eb)
+
+> Release: [v0.9.7](https://github.com/qurator-spk/dinglehopper/releases/v0.9.7)
+
+  > * 📦 v0.9.7
+  > * ⚙ ruff: Update settings (select → lint.select)
+  > * Merge branch 'master' of https://github.com/qurator-spk/dinglehopper
+  > * 🎨 Sort imports
+  > * ⚙ pre-commit: Update hooks
+  > * 🐛 Fix loading ocrd-tool.json for Python 3.12
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [ad8febd](https://github.com/OCR-D/ocrd_calamari/commits/ad8febd)..[caac953](https://github.com/OCR-D/ocrd_calamari/commits/caac953)
+
+> Release: [v1.0.6](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.6)
+
+  > * Merge pull request #112 from bertsky/patch-3
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [fb769ff](https://github.com/OCR-D/ocrd_fileformat/commits/fb769ff)..[ff46bd7](https://github.com/OCR-D/ocrd_fileformat/commits/ff46bd7)
+
+> Release: [v0.11.1](https://github.com/OCR-D/ocrd_fileformat/releases/v0.11.1)
+
+  > * circleci: check out submodules in deploy
+  > * :package: v0.11.1
+  > * fix docker build
+  > * :package: v0.11.0
+  > * require ocrd >= 2.67.0 for the -p fix
+  > * Merge remote-tracking branch 'stweil/master'
+  > * Merge remote-tracking branch 'bertsky/update-ocr-fileformat-textract2page'
+  > * Merge pull request #55 from bertsky/update-ocr-fileformat-textract2page-layout
+
+### [opencv-python](https://github.com/skvark/opencv-python) [3276dc6](https://github.com/skvark/opencv-python/commits/3276dc6)..[cce7c99](https://github.com/skvark/opencv-python/commits/cce7c99)
+
+> Release: [84](https://github.com/skvark/opencv-python/releases/84)
+
+  > * Merge pull request #1002 from asmorkalov:as/numpy_2.0_v2
+
 
 ## [v2024-07-01](https://github.com/OCR-D/ocrd_all/releases/v2024-07-01)
 
