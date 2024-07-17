@@ -4,6 +4,20 @@
 
 ## [v2024-07-17](https://github.com/OCR-D/ocrd_all/releases/v2024-07-17)
 
+Changes:
+
+  - docker: fix /models/tessdata symlink loop (by avoiding re-linking during build)
+  - docker: verify that resmgr works
+  - docker: reduce number of build steps / layers
+  - docker: build parallel (again), fully utilising CI resources
+  - docker: no ocrd_network if core is not a module
+  - docker: do include core as a module in all variants (needed for sub-venvs)
+  - CI/CD: run core test and store its results
+  - CI/CD: extract and store JSON files in Github Actions, too
+  - update ocrd_fileformat / ocr-fileformat / textract2page (to avoid broken ocrd_utils dependency)
+  - make all: :fire: also build `ocrd-all-tool.json` and `ocrd-all-module-dir.json`
+  - make all: :fire: install `ocrd-all-tool.json` and `ocrd-all-module-dir.json` into `ocrd` distribution
+
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [f7ebb74](https://github.com/ASVLeipzig/cor-asv-ann/commits/f7ebb74)..[ff6bf3f](https://github.com/ASVLeipzig/cor-asv-ann/commits/ff6bf3f)
 
 > Release: [v0.1.15](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.15)
