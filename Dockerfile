@@ -59,7 +59,7 @@ ENV TF_FORCE_GPU_ALLOW_GROWTH=true
 
 # allow passing build-time parameter for list of tools to be installed
 # (defaults to medium, which also requires those modules to be present)
-ARG OCRD_MODULES="core dinglehopper format-converters ocrd_calamari ocrd_cis ocrd_im6convert ocrd_keraslm ocrd_olena ocrd_segment ocrd_tesserocr tesseract tesserocr cor-asv-ann workflow-configuration"
+ARG OCRD_MODULES="core cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olahd_client ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap workflow-configuration"
 # persist that variable for build-time make to pick it up and run-time users to know what to expect
 ENV OCRD_MODULES="${OCRD_MODULES}"
 
