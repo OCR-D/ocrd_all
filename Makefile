@@ -76,6 +76,10 @@ ifneq ($(PYTHON_VERSION),3.8)
 DEFAULT_DISABLED_MODULES += cor-asv-ann ocrd_keraslm
 endif
 endif
+ifeq ($(PYTHON_VERSION),3.11)
+# Build fails for these modules with Python 3.11.
+DEFAULT_DISABLED_MODULES += ocrd_anybaseocr sbb_binarization
+endif
 ifeq ($(PYTHON_VERSION),3.12)
 # The required tensorflow is not available for Python 3.12.
 DEFAULT_DISABLED_MODULES += eynollah ocrd_anybaseocr ocrd_calamari sbb_binarization
