@@ -886,6 +886,13 @@ docker: DOCKER_MODULES ?= $(OCRD_MODULES)
 docker: DOCKER_PARALLEL ?= -j1
 docker: docker-latest
 
+OCRD_NETWORK_CONFIG ?= run-network/odem-workflow-config.yaml
+.PHONY: run-network
+run-network:
+	@run-network/creator.py create-docker $(OCRD_NETWORK_CONFIG)
+	@run-network/creator.py create-env $(OCRD_NETWORK_CONFIG)
+	@run-network/creator.py start $(OCRD_NETWORK_CONFIG)
+
 # do not search for implicit rules here:
 Makefile: ;
 local.mk: ;

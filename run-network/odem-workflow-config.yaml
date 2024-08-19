@@ -1,0 +1,62 @@
+dest: docker-compose.yaml
+processors:
+    - name: ocrd-cis-ocropy-binarize
+      image: ocrd/all:maximum
+      volumes:
+        - "/tmp/path-to-my-assets/my_ocrd_logging.conf:/ocrd_logging.conf"
+    - name: ocrd-cis-ocropy-denoise
+      image: ocrd/all:maximum
+      volumes:
+        - "/tmp/path-to-my-assets/my_ocrd_logging.conf:/ocrd_logging.conf"
+    - name: ocrd-cis-ocropy-deskew
+      image: ocrd/all:maximum
+      volumes:
+        - "/tmp/path-to-my-assets/my_ocrd_logging.conf:/ocrd_logging.conf"
+    - name: ocrd-cis-ocropy-clip
+      image: ocrd/all:maximum
+      volumes:
+        - "/tmp/path-to-my-assets/my_ocrd_logging.conf:/ocrd_logging.conf"
+    - name: ocrd-cis-ocropy-segment
+      image: ocrd/all:maximum
+      volumes:
+        - "/tmp/path-to-my-assets/my_ocrd_logging.conf:/ocrd_logging.conf"
+    - name: ocrd-cis-ocropy-dewarp
+      image: ocrd/all:maximum
+      volumes:
+        - "/tmp/path-to-my-assets/my_ocrd_logging.conf:/ocrd_logging.conf"
+    - name: ocrd-fileformat-transform
+      image: ocrd/all:maximum
+      volumes:
+        - "/tmp/path-to-my-assets/my_ocrd_logging.conf:/ocrd_logging.conf"
+    - name: ocrd-fileformat-transform
+      image: ocrd/all:maximum
+      volumes:
+        - "/tmp/path-to-my-assets/my_ocrd_logging.conf:/ocrd_logging.conf"
+    - name: ocrd-segment-repair
+      image: ocrd/segment
+      volumes:
+        - "/tmp/path-to-my-assets/my_ocrd_logging.conf:/ocrd_logging.conf"
+    - name: ocrd-tesserocr-segment-region
+      image: ocrd/all:maximum
+      # TODO: this may not be needed with newes tesseract image. But good as showcase for how to
+      # get resources into the containers
+      volumes:
+        - "/tmp/path-to-my-assets/Fraktur.traineddata:/usr/local/share/tessdata/Fraktur.traineddata"
+        - "/tmp/path-to-my-assets/my_ocrd_logging.conf:/ocrd_logging.conf"
+      environment:
+        - "TESSDATA_PREFIX=/usr/local/share/tessdata"
+    - name: ocrd-tesserocr-recognize
+      image: ocrd/all:maximum
+      volumes:
+        - "/tmp/path-to-my-assets/Fraktur.traineddata:/usr/local/share/tessdata/Fraktur.traineddata"
+        - "/tmp/path-to-my-assets/my_ocrd_logging.conf:/ocrd_logging.conf"
+      environment:
+        - "TESSDATA_PREFIX=/usr/local/share/tessdata"
+    - name: ocrd-anybaseocr-crop
+      image: ocrd/all:maximum
+      volumes:
+        - "/tmp/path-to-my-assets/my_ocrd_logging.conf:/ocrd_logging.conf"
+environment:
+    # this folder contains the workspaces and must be created by the user
+    data_dir_host: /tmp/mydata
+    mtu: 1300
