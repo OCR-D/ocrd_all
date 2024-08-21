@@ -1,15 +1,14 @@
-#!/usr/bin/python3
 import re
+import subprocess
 import time
+from collections import Counter
 from dataclasses import dataclass, field
 from os import chdir, environ
 from pathlib import Path
 from typing import Any, Dict, ForwardRef, List, Optional, Type
-from collections import Counter
-import subprocess
-import requests
 
 import click
+import requests
 import yaml
 
 
@@ -106,7 +105,7 @@ def create_workers(config: Type[ForwardRef("Config")]):
         service_name = p.name
         services_counter[service_name] += 1
         if services_counter[service_name] > 1:
-            service_name = f'{service_name}{services_counter[service_name]}'
+            service_name = f"{service_name}{services_counter[service_name]}"
 
         proc_str = re.sub(r"{{[\s]*service_name[\s]*}}", service_name, config.proc_template)
         proc_str = re.sub(r"{{[\s]*processor_name[\s]*}}", p.name, proc_str)
