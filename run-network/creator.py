@@ -97,7 +97,7 @@ def create_docker_compose(config: Type[ForwardRef("Config")]):
 def create_workers(config: Type[ForwardRef("Config")]):
     """Create service definition of docker-compose for needed processors
 
-    This function reads the processor-template an replaces placeholders with info from the
+    This function reads the processor-template and replaces placeholders with info from the
     config-object
     """
     res = ""
