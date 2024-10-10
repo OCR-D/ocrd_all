@@ -298,6 +298,13 @@ $(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2 $(BIN)/ocrd | $(OCRD_KRAKE
 	$(pip_install)
 endif
 
+ifneq ($(filter ocrd_page2alto, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(OCRD_PAGE_TO_ALTO)
+OCRD_PAGE_TO_ALTO := $(BIN)/ocrd-page2alto-transform
+$(OCRD_PAGE_TO_ALTO): ocrd_page2alto $(BIN)/ocrd
+	$(pip_install)
+endif
+
 ifneq ($(filter ocrd_ocropy, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_OCROPY)
 OCRD_OCROPY := $(BIN)/ocrd-ocropy-segment
@@ -847,7 +854,7 @@ dockers: docker-minimum docker-minimum-cuda docker-medium docker-medium-cuda doc
 docker-%: PIP_OPTIONS = -e
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from git
-docker-mini%: DOCKER_MODULES := core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap workflow-configuration ocrd_olahd_client
+docker-mini%: DOCKER_MODULES := core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap workflow-configuration ocrd_olahd_client ocrd_page2alto
 # Medium-size selection: add Olena binarization and Calamari, add evaluation
 docker-medi%: DOCKER_MODULES := core cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olahd_client ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap workflow-configuration
 # Maximum-size selection: use all modules
