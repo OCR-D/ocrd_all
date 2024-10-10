@@ -2,6 +2,331 @@
 
 ## Unreleased
 
+## [v2024-10-11](https://github.com/OCR-D/ocrd_all/releases/v2024-10-11)
+
+### [core](https://github.com/OCR-D/core) [92b217e](https://github.com/OCR-D/core/commits/92b217e)..[85bde15](https://github.com/OCR-D/core/commits/85bde15)
+
+> Release: [v2.70.0](https://github.com/OCR-D/core/releases/v2.70.0)
+
+  > * PyPI: do not upload deprecated distribution aliases anymore
+  > * deps-cuda: retry micro.mamba.pm even more
+  > * :package: v2.70.0
+  > * :memo: changelog
+  > * create PyPI CD
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'github/cli-decorator-import-network'
+  > * deps-cuda: retry if micromamba is unresponsive
+  > * Merge branch 'master' of https://github.com/OCR-D/core
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'github/fix_mets_server_zombies'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'github/deps-torch-torchvision'
+  > * :memo: changelog
+  > * Merge branch 'network_client_block_prints'
+  > * Merge pull request #1280 from OCR-D/fix-docker-cuda-torch
+  > * :package: v2.69.0
+  > * :memo: changelog
+  > * Merge branch 'mexthecat-master'
+  > * :memo: update changelog again
+  > * :memo: changelog: remove spurious entries
+  > * :memo: changelog
+  > * disableLogging: clearer comment
+  > * ocrd.cli.workspace: use physical_pages if possible, fix default output_field
+  > * OcrdMets.get_physical_pages: cover return_divs w/o for_fileIds for_pageIds
+  > * update OcrdPage from generateds
+  > * OcrdPage: add PageType.get_ReadingOrderGroups()
+  > * ocrd.cli.workspace: assert non-server in cmds mutating METS
+  > * tests: make sure ocrd_utils.config gets reset whenever changing it globally
+  > * lib.bash: fix errexit
+  > * run_processor: be robust if ocrd_tool is missing steps
+  > * ocrd.cli.validate tasks: pass on --mets-server-url, too
+  > * ocrd.cli.workspace server: add 'reload' and 'save'
+  > * ocrd.cli.workspace: consistently pass on --mets-server-url and --backup (also, simplify)
+  > * METS Server: also export+delegate physical_pages
+  > * PcGts.Page.id / make_xml_id: replace '/' with '_'
+  > * test_mets_server: add test for force (overwrite)
+  > * OcrdMetsServer.add_file: pass on 'force' kwarg, too
+  > * Workspace.reload_mets: fix for METS server case
+  > * add test for OcrdEnvConfig.reset_defaults()
+  > * ocrd_utils.config: add reset_defaults()
+  > * bashlib: re-add --log-filename, implement as stderr redirect
+  > * test-logging: also remove ocrd.log from tempdir
+  > * disableLogging: re-instate root logger, to
+  > * test_mets_server: use tmpdir to avoid side effects between suites
+  > * ClientSideOcrdMets: use same logger name prefix as server
+  > * pylint: try ignoring generateds (again)
+  > * update pylintrc
+  > * OcrdMets.add_agent: does not have positional args
+  > * cli.workspace: pass fileGrp as well, improve description
+  > * adapt to PIL.Image moved constants
+  > * fix exception
+  > * fix --log-filename (6fc606027a): apply in ocrd_cli_wrap_processor
+  > * tests report.is_valid: improve output on failure
+  > * Processor.zip_input_files: more verbose log msg
+  > * Processor.zip_input_files: warning instead of exception for missing input files
+  > * fix imports
+  > * ocrd_utils: forgot to export scale_coordinates at toplvl
+  > * allow "from ocrd_models import OcrdPage
+  > * improve output in case of assertion failures
+  > * hide/test expected deprecation warnings
+  > * use up-to-date kwargs (avoiding old deprecations)
+  > * mets_server: ClientSideOcrdMets needs OcrdMets-like kwargs (without deprecation)
+  > * test_mets_server: fix arg vs kwarg
+  > * processor CLI: delegate --resolve-resource, too
+  > * :package: v2.68.0
+  > * :memo: changelog
+  > * refactor client cli: process -> run
+  > * Merge branch 'master' into extend-network-client
+  > * :memo: changelog
+  > * Merge pull request #1270 from OCR-D/fix-parsing
+  > * fix: exception handling
+  > * add: check processing job log file
+  > * add: discovery cli, processors and processor
+  > * add sort to network agents
+  > * add: parameter_override
+  > * fix: the annoying string dict
+  > * fix: check report validation outside try block
+  > * fix: set ps address if None in constructor
+  > * Fix: server_utils.py > 404 to 400
+  > * Fix: rename to block
+  > * add docstring to cli commands
+  > * fix: required job id
+  > * add: help section to the cli
+  > * add cli job status check
+  > * add help for new env
+  > * refine status check methods
+  > * Update src/ocrd_network/client_utils.py
+  > * add timeout and wait to configs
+  > * add: client workflow run
+  > * fix: client processing request
+  > * fix test
+  > * refactor status checks
+  > * remove the client server
+  > * try docker host ip
+  > * Fix flag typo
+  > * integration test for client
+  > * update network client
+  > * fix the test dir path in docker
+  > * add integration test for client
+  > * Merge branch 'resolve-1257'
+  > * :memo: changelog
+  > * revert, and just use < v43.0.0
+  > * set paramiko logging to INFO
+  > * fix: supress paramiko warnings
+  > * set: propagate 0, logging config
+  > * set: paramiko logging to ERROR
+  > * remove downloading tool json
+  > * add: default ocrd-all-tool.json
+  > * download tool json if missing
+  > * Merge branch 'master' into resolve-1257
+  > * load tool json locally
+
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [129e6eb](https://github.com/qurator-spk/dinglehopper/commits/129e6eb)..[2e6fe0c](https://github.com/qurator-spk/dinglehopper/commits/2e6fe0c)
+
+> Release: [v0.9.7](https://github.com/qurator-spk/dinglehopper/releases/v0.9.7)
+
+  > * Merge pull request #113 from qurator-spk/python-3.13
+  > * ✔ pre-commit: Add license check
+  > * 🐛 Fix --version option in OCR-D CLI
+  > * ✨ Support --version option in CLI
+  > * ⚙ pyproject.toml: Add license.file
+  > * ⚙ pre-commit: Update hooks
+
+### [docstruct](https://github.com/bertsky/docstruct) [a7ffdda](https://github.com/bertsky/docstruct/commits/a7ffdda)..[004e6ec](https://github.com/bertsky/docstruct/commits/004e6ec)
+
+  > * add GHA CD via Dockerhub
+
+Submodule eynollah 032a99e...51f6ef6:
+  > * Merge pull request #137 from qurator-spk/dockerfile
+  > * Merge pull request #132 from qurator-spk/extracting_images_only
+  > * Merge pull request #133 from qurator-spk/src-layout
+  > * :package: v0.3.1
+  > * :memo: changelog
+  > * Merge pull request #129 from qurator-spk/resolving_issue_106
+  > * update Makefile model location
+  > * update pyproject.toml for v0.3.1
+  > * update pyproject.toml
+  > * Update README.md
+  > * rename GH action
+  > * create draft pyproject.toml
+  > * format options table
+  > * Update README.md
+  > * improve huggingface url
+  > * remove CircleCI
+  > * Update model download url
+  > * Merge pull request #127 from bertsky/new-namespace-pkg
+  > * update GitHub actions
+  > * Update README.md
+  > * update supported Python+Tensorflow version combinations
+  > * pin tf2 version to 2.12.1
+  > * use tf1 compatibility for keras backend
+  < adapt to OcrdFile.local_filename now :Path
+  < adapt to ocrd>=2.54 url vs local_filename
+  > * comment unnecessary print commands
+  > * add supported OS to readme
+  > * filtering separators in a correct way without missing them
+  > * Merge pull request #117 from qurator-spk/tf-2.12-or-greater
+  > * apply missed commit #a56988a back
+  > * Merge pull request #116 from qurator-spk/fix-typos
+  > * Merge pull request #113 from qurator-spk/tf_<2.12.0
+  > * Update citation
+  > * Update bibtex entry
+  > * format citation info as bibtex
+  > * add HIP'23 paper reference
+  > * Merge pull request #109 from bertsky/patch-3
+  > * Merge pull request #105 from bertsky/fix-model-archive-path
+  < Revert "Merge pull request #97 from qurator-spk/420-namespace-package"
+  > * Merge pull request #104 from bertsky/reinstate-namespace-pkg
+  > * Merge pull request #102 from qurator-spk/right2left_reading_order
+  > * delete printing resized image shape
+  > * issue #67 solved
+  > * improve links to GT guidelines
+  > * Update README.md
+  > * Update CHANGELOG.md
+  > * Update ocrd-tool.json
+  > * Merge pull request #86 from qurator-spk/eynollah_light
+
+### [nmalign](https://github.com/bertsky/nmalign) [7832c90](https://github.com/bertsky/nmalign/commits/7832c90)..[1426dbc](https://github.com/bertsky/nmalign/commits/1426dbc)
+
+> Release: [v0.0.3](https://github.com/bertsky/nmalign/releases/v0.0.3)
+
+  > * fix dockerfile
+  > * add GHA CD via Dockerhub
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [caac953](https://github.com/OCR-D/ocrd_calamari/commits/caac953)..[d9cde1f](https://github.com/OCR-D/ocrd_calamari/commits/d9cde1f)
+
+> Release: [v1.0.6](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.6)
+
+  > * Merge pull request #116 from bertsky/limit-batch-size
+  > * Merge pull request #115 from OCR-D/pyproject_toml
+  > * ✔ CircleCI: Don't test on Python 3.7 anymore
+  > * ⚙ pre-commit: Update hooks
+  > * 🧹 ruff: Update config
+  > * 🎨 Reformat (Black)
+  > * 🧹 Update OCR-D API usage w.r.t. workspace.add_file()
+  > * ⚙ pre-commit: Update hooks
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [38ce45b](https://github.com/cisocrgroup/ocrd_cis/commits/38ce45b)..[fe122ae](https://github.com/cisocrgroup/ocrd_cis/commits/fe122ae)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+  > * segment: adapt to numpy deprecation
+  > * Updated config.yml
+  > * CI: try testing in parallel
+  > * test_lib.bash: update GT Github URL
+  > * fix+update dockerfile
+  > * recognize: replace python-levenshtein with rapidfuzz
+  > * fix 53ae7d69 (already str not bytes)
+  > * use importlib instead of pkg_resources via ocrd_utils
+  > * docker: adapt to core using /build already
+  > * ocrd-tool.json: add Ocropy default model resources
+  > * resegment: fix 2 edge cases
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [1f56273](https://github.com/bertsky/ocrd_detectron2/commits/1f56273)..[218e0b5](https://github.com/bertsky/ocrd_detectron2/commits/218e0b5)
+
+> Release: [v0.1.8](https://github.com/bertsky/ocrd_detectron2/releases/v0.1.8)
+
+  > * CI: out py3.7, in py3.10
+  > * CD: publish to ocrd/detectron2 instead of bertsky/ocrd_detectron2
+  > * Docker: rebase to ocrd/core-cuda-torch
+  > * update from pillow deprecations
+  > * make deps: defer to detectron2 master (and always build from src)
+
+### [ocrd_doxa](https://github.com/bertsky/ocrd_doxa) [a95f8e7](https://github.com/bertsky/ocrd_doxa/commits/a95f8e7)..[15e8423](https://github.com/bertsky/ocrd_doxa/commits/15e8423)
+
+> Release: [v0.0.2](https://github.com/bertsky/ocrd_doxa/releases/v0.0.2)
+
+  > * add DH badge
+  > * fix GHA username
+  > * fix GHA syntax
+  > * add Dockerhub CD
+  > * Merge pull request #5 from joschrew/dockerfile
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [ff46bd7](https://github.com/OCR-D/ocrd_fileformat/commits/ff46bd7)..[60cb696](https://github.com/OCR-D/ocrd_fileformat/commits/60cb696)
+
+> Release: [v0.11.1](https://github.com/OCR-D/ocrd_fileformat/releases/v0.11.1)
+
+  > * test_convert: fix choice of assets (w/ wf. METS)
+  > * Merge pull request #60 from bertsky/patch-4
+  > * Merge pull request #57 from OCR-D/license
+
+### [ocrd_im6convert](https://github.com/OCR-D/ocrd_im6convert) [be794f6](https://github.com/OCR-D/ocrd_im6convert/commits/be794f6)..[82bd491](https://github.com/OCR-D/ocrd_im6convert/commits/82bd491)
+
+> Release: [v0.1.1](https://github.com/OCR-D/ocrd_im6convert/releases/v0.1.1)
+
+  > * CD: fix GHCR image tag
+  > * dockerfile: oops, confused im6convert with fileformat
+  > * Merge pull request #14 from OCR-D/docker-build-args
+
+### [ocrd_keraslm](https://github.com/OCR-D/ocrd_keraslm) [ea79b2a](https://github.com/OCR-D/ocrd_keraslm/commits/ea79b2a)..[2c466bd](https://github.com/OCR-D/ocrd_keraslm/commits/2c466bd)
+
+> Release: [v0.4.3](https://github.com/OCR-D/ocrd_keraslm/releases/v0.4.3)
+
+  > * update assets
+  > * Revert "test: replace buggy workspace clone with cp -r"
+  > * test: replace buggy workspace clone with cp -r
+  > * docker: base on ocrd/core-cuda:2.69 (via env var)
+
+### [ocrd_olahd_client](https://github.com/OCR-D/ocrd_olahd_client) [6bcbb4b](https://github.com/OCR-D/ocrd_olahd_client/commits/6bcbb4b)..[56c9272](https://github.com/OCR-D/ocrd_olahd_client/commits/56c9272)
+
+> Release: [v0.0.2](https://github.com/OCR-D/ocrd_olahd_client/releases/v0.0.2)
+
+  > * Merge branch 'dockerfile'
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [de824e9](https://github.com/OCR-D/ocrd_segment/commits/de824e9)..[064b7a8](https://github.com/OCR-D/ocrd_segment/commits/064b7a8)
+
+> Release: [v0.1.24](https://github.com/OCR-D/ocrd_segment/releases/v0.1.24)
+
+  > * Merge pull request #68 from OCR-D/update-docker-2.67
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [d23992b](https://github.com/OCR-D/ocrd_tesserocr/commits/d23992b)..[dcbd522](https://github.com/OCR-D/ocrd_tesserocr/commits/dcbd522)
+
+> Release: [v0.19.1](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.19.1)
+
+  > * Merge pull request #219 from OCR-D/fix-docker
+  > * GHA CD: forgot ghcr.io prefix
+  > * GHA CD: lowercase repo name
+  > * Merge pull request #215 from bertsky/circleci-cd-add-pypi
+  > * dockerfile: build Tesseract in parallel
+  > * dockerfile: adapt to weird dockerfile COPY syntax
+  > * docker: unblock+copy .gitmodules
+  > * dockerignore: unblock .git
+  > * dockerfile: copy .git repo as well (so submodule update works) during build
+  > * makefile: ensure submodules are checked out
+  > * makefile: fix clean-tesseract
+  > * Merge pull request #218 from OCR-D/update-docker-2.67
+
+### [ocrd_wrap](https://github.com/bertsky/ocrd_wrap) [2cd800d](https://github.com/bertsky/ocrd_wrap/commits/2cd800d)..[fd4a2bc](https://github.com/bertsky/ocrd_wrap/commits/fd4a2bc)
+
+> Release: [v0.1.8](https://github.com/bertsky/ocrd_wrap/releases/v0.1.8)
+
+  > * forgot Dockerfile
+  > * add GHA CD via Dockerhub
+
+### [opencv-python](https://github.com/skvark/opencv-python) [cce7c99](https://github.com/skvark/opencv-python/commits/cce7c99)..[6a181ce](https://github.com/skvark/opencv-python/commits/6a181ce)
+
+> Release: [84](https://github.com/skvark/opencv-python/releases/84)
+
+  > * Merge pull request #1015 from Gornoka:patch-1
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [978f425](https://github.com/qurator-spk/sbb_binarization/commits/978f425)..[ccfc821](https://github.com/qurator-spk/sbb_binarization/commits/ccfc821)
+
+> Release: [v0.1.0](https://github.com/qurator-spk/sbb_binarization/releases/v0.1.0)
+
+  > * remove shebang from setup.py (somehow breaking py39)
+  > * CI: increase memory on VM
+  > * make install: update setuptools, too
+  > * add GHA CD via Dockerhub
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [eeea260](https://github.com/bertsky/workflow-configuration/commits/eeea260)..[63e9969](https://github.com/bertsky/workflow-configuration/commits/63e9969)
+
+> Release: [0.1.3](https://github.com/bertsky/workflow-configuration/releases/0.1.3)
+
+  > * Adapt dockerimage to ocrd-d-core changes
+  > * :memo: update readme
+  > * new pair of XSLTs: un/flatten text regions in arbitrary regions
+  > * use mkdir -p when creating SHAREDIR
+
 ## [v2024-07-17](https://github.com/OCR-D/ocrd_all/releases/v2024-07-17)
 
 Changes:
