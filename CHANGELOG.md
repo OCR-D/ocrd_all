@@ -2,6 +2,13 @@
 
 ## [v2024-10-11](https://github.com/OCR-D/ocrd_all/releases/v2024-10-11)
 
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [ff46bd7](https://github.com/OCR-D/ocrd_fileformat/commits/ff46bd7)..[8ab078d](https://github.com/OCR-D/ocrd_fileformat/commits/8ab078d)
+
+> Release: [v0.11.1](https://github.com/OCR-D/ocrd_fileformat/releases/v0.11.1)
+
+
+## [v2024-10-11](https://github.com/OCR-D/ocrd_all/releases/v2024-10-11)
+
 ### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [38ce45b](https://github.com/cisocrgroup/ocrd_cis/commits/38ce45b)..[db65d7f](https://github.com/cisocrgroup/ocrd_cis/commits/db65d7f)
 
 > Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
@@ -254,6 +261,7 @@ Submodule eynollah 032a99e...51f6ef6:
 
 > Release: [v0.11.1](https://github.com/OCR-D/ocrd_fileformat/releases/v0.11.1)
 
+  > * update ocr-fileformat to include UB-Mannheim/ocr-fileformat#188
   > * test_convert: fix choice of assets (w/ wf. METS)
   > * Merge pull request #60 from bertsky/patch-4
   > * Merge pull request #57 from OCR-D/license
