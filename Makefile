@@ -210,8 +210,8 @@ $(BIN)/pip: $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(SEMPIP) pip install --upgrade pip setuptools
 
 %/bin/activate:
-	$(PYTHON) -m venv $(subst /bin/activate,,$@)
-	. $@ && pip install --upgrade pip setuptools wheel
+	$(SEMPIP) $(PYTHON) -m venv $(subst /bin/activate,,$@)
+	. $@ && $(SEMPIP) pip install --upgrade pip setuptools wheel
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
@@ -833,6 +833,9 @@ tf1nvidia: $(ACTIVATE_VENV)
 # Since ATM we already need TF 2.12, we choose for (modified) option 3:
 fix-cuda: $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(SEMPIP) pip install -i https://download.pytorch.org/whl/cu118 torchvision==0.16.2+cu118 torch==2.1.2+cu118
+# displace CUDA 12 libs pulled via Pytorch from PyPI
+	. $(SUB_VENV_TF1)/bin/activate && pip install -i https://download.pytorch.org/whl/cu118 torchvision==0.16.2+cu118 torch~=2.1.0+cu118
+
 
 .PHONY: deps-cuda tf1nvidia fix-cuda
 
