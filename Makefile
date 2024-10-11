@@ -546,8 +546,6 @@ install-models-calamari: $(BIN)/ocrd
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
 $(OCRD_CALAMARI): ocrd_calamari $(BIN)/ocrd
-	@# workaround for Calamari#337:
-	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "protobuf<4"
 	$(pip_install)
 endif
 
@@ -822,7 +820,8 @@ deps-cuda: core $(ACTIVATE_VENV)
 tf1nvidia: $(ACTIVATE_VENV)
 	$(pip_install_tf1nvidia)
 
-# post-fix workaround for clash between cuDNN of Tensorflow 2.12 (→8.6) and Pytorch 1.13 (→8.5)
+# post-fix workaround for clash between cuDNN of Tensorflow 2.12 (→8.6) and Pytorch 1.13 (→8.5) / 2.1 (8.7)
+# (which also involves conflict around typing-extensions version)
 # the latter is explicit (but unnecessary), the former is implicit (and causes "DNN library not found" crashes at runtime)
 # so we have three potential options:
 # 1. revert to the version required by TF after pip overruled our choice via Torch dependency
@@ -831,9 +830,9 @@ tf1nvidia: $(ACTIVATE_VENV)
 #    pip3 install "tensorflow<2.12"
 # 3. upgrade Torch so there is no overt conflict
 #    pip install "torch>=2.0"
-# Since ATM we don't know whether Torch 2.x will work everywhere, we opt for 2:
+# Since ATM we already need TF 2.12, we choose for (modified) option 3:
 fix-cuda: $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "tensorflow<2.12"
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install -i https://download.pytorch.org/whl/cu118 torchvision==0.16.2+cu118 torch==2.1.2+cu118
 
 .PHONY: deps-cuda tf1nvidia fix-cuda
 
