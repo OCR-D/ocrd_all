@@ -1,5 +1,12 @@
 # Changelog
 
+## [v2024-10-11](https://github.com/OCR-D/ocrd_all/releases/v2024-10-11)
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [38ce45b](https://github.com/cisocrgroup/ocrd_cis/commits/38ce45b)..[db65d7f](https://github.com/cisocrgroup/ocrd_cis/commits/db65d7f)
+
+> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
+
+
 ## Unreleased
 
 ## [v2024-10-11](https://github.com/OCR-D/ocrd_all/releases/v2024-10-11)
@@ -210,6 +217,7 @@ Submodule eynollah 032a99e...51f6ef6:
 
 > Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
 
+  > * Merge pull request #6 from MehmedGIT/fix-align-import-levenshtein
   > * segment: adapt to numpy deprecation
   > * Updated config.yml
   > * CI: try testing in parallel
