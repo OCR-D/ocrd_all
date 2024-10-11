@@ -835,8 +835,8 @@ fix-cuda: $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(SEMPIP) pip install -i https://download.pytorch.org/whl/cu118 torchvision==0.16.2+cu118 torch==2.1.2+cu118
 # displace CUDA 12 libs pulled via Pytorch from PyPI
 	if test -d $(SUB_VENV_TF1); then \
-	. $(SUB_VENV_TF1)/bin/activate && pip install -i https://download.pytorch.org/whl/cu118 torchvision==0.16.2+cu118 torch==2.1.2+cu118 \
-	pip check; fi
+	. $(SUB_VENV_TF1)/bin/activate && pip install -i https://download.pytorch.org/whl/cu118 torchvision==0.16.2+cu118 torch==2.1.2+cu118; \
+	fi
 
 .PHONY: deps-cuda tf1nvidia fix-cuda
 
