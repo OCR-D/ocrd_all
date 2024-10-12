@@ -288,12 +288,9 @@ endif
 endif
 
 ifneq ($(filter ocrd_detectron2, $(OCRD_MODULES)),)
-# ocrd_detectron patches detectron2 until there is a new detectron2 release.
-# See https://github.com/facebookresearch/detectron2/pull/5011 for details.
-CUSTOM_DEPS += patch
 OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
 OCRD_DETECTRON2 := $(BIN)/ocrd-detectron2-segment
-$(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2 $(BIN)/ocrd | $(OCRD_KRAKEN)
+$(OCRD_DETECTRON2): ocrd_detectron2 $(BIN)/ocrd | $(OCRD_KRAKEN)
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
 	$(pip_install)
 endif
@@ -301,7 +298,8 @@ endif
 ifneq ($(filter ocrd_page2alto, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_PAGE_TO_ALTO)
 OCRD_PAGE_TO_ALTO := $(BIN)/ocrd-page2alto-transform
-$(OCRD_PAGE_TO_ALTO): ocrd_page2alto $(BIN)/ocrd
+OCRD_PAGE_TO_ALTO += $(BIN)/page-to-alto
+$(call multirule,$(OCRD_PAGE_TO_ALTO)): ocrd_page2alto $(BIN)/ocrd
 	$(pip_install)
 endif
 
@@ -857,10 +855,12 @@ dockers: docker-minimum docker-minimum-cuda docker-medium docker-medium-cuda doc
 docker-%: PIP_OPTIONS = -e
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from git
-docker-mini%: DOCKER_MODULES := core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap workflow-configuration ocrd_olahd_client ocrd_page2alto
+DOCKER_MODULES_MINI := core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_olahd_client ocrd_page2alto ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap workflow-configuration
+docker-mini%: DOCKER_MODULES := $(DOCKER_MODULES_MINI)
 # Medium-size selection: add Olena binarization and Calamari, add evaluation
-docker-medi%: DOCKER_MODULES := core cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olahd_client ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap workflow-configuration
-# Maximum-size selection: use all modules
+DOCKER_MODULES_MEDI := $(DOCKER_MODULES_MINI) cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_keraslm ocrd_olena ocrd_segment
+docker-medi%: DOCKER_MODULES := $(DOCKER_MODULES_MEDI)
+# Maximum-size selection: use all enabled modules
 docker-maxi%: DOCKER_MODULES := $(OCRD_MODULES)
 
 # DOCKER_BASE_IMAGE
