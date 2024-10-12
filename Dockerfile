@@ -83,9 +83,6 @@ RUN echo "Acquire::http::Timeout \"3000\";" >> /etc/apt/apt.conf.d/99network && 
 
 WORKDIR /build
 
-# create virtual environment
-RUN rm $VIRTUAL_ENV/bin/pip* && apt-get purge -y python3-pip && python3 -m venv $VIRTUAL_ENV && python3 -m pip install --force pip
-
 # from-stage already contains a clone clashing with build context
 RUN rm -rf /build/core/.git
 
