@@ -21,7 +21,7 @@ jobs:
             mkdir test-results
             docker run --rm -v $PWD:/data ocrd/all:minim<< parameters.variant >> make -C /build/core deps-test test PYTEST_ARGS=--junitxml=/data/test-results/core.xml
       - store_test_results:
-          path: test-results
+          path: test-results/core.xml
   build-medi:
     docker:
       - image: cimg/base:current-22.04
@@ -44,7 +44,7 @@ jobs:
             mkdir test-results
             docker run --rm -v $PWD:/data ocrd/all:medi<< parameters.variant >> make -C /build/core deps-test test PYTEST_ARGS=--junitxml=/data/test-results/core.xml
       - store_test_results:
-          path: test-results
+          path: test-results/core.xml
   build-maxi:
     docker:
       - image: cimg/base:current-22.04
@@ -67,7 +67,7 @@ jobs:
             mkdir test-results
             docker run --rm -v $PWD:/data ocrd/all:maxim<< parameters.variant >> make -C /build/core deps-test test PYTEST_ARGS=--junitxml=/data/test-results/core.xml
       - store_test_results:
-          path: test-results
+          path: test-results/core.xml
   deploy-mini:
     docker:
       - image: cimg/base:current-22.04
