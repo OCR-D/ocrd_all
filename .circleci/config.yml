@@ -9,8 +9,7 @@ jobs:
           string
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - setup_remote_docker
       - run:
           name: Build Docker image
           command: make docker-minim<< parameters.variant >> GIT_DEPTH=--single-branch
@@ -22,6 +21,15 @@ jobs:
             docker run --rm -v $PWD:/data ocrd/all:minim<< parameters.variant >> make -C /build/core deps-test test PYTEST_ARGS=--junitxml=/data/test-results/core.xml
       - store_test_results:
           path: test-results/core.xml
+      - run:
+          name: save image
+          command: |
+            mkdir -p images
+            docker image save -o images/minim<< parameters.variant >>.tar
+      - persist_to_workspace:
+          root: .
+          paths:
+            - images
   build-medi:
     docker:
       - image: cimg/base:current-22.04
@@ -31,8 +39,12 @@ jobs:
           string
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - setup_remote_docker
+      - attach_workspace:
+          at: .
+      - run:
+          name: load previous image
+          command: docker image load < images/minim<< parameters.variant >>.tar
       - run:
           name: Build Docker image
           # override dependency (should come from cached layer) in make:
@@ -45,6 +57,15 @@ jobs:
             docker run --rm -v $PWD:/data ocrd/all:medi<< parameters.variant >> make -C /build/core deps-test test PYTEST_ARGS=--junitxml=/data/test-results/core.xml
       - store_test_results:
           path: test-results/core.xml
+      - run:
+          name: save image
+          command: |
+            mkdir -p images
+            docker image save -o images/medi<< parameters.variant >>.tar
+      - persist_to_workspace:
+          root: .
+          paths:
+            - images
   build-maxi:
     docker:
       - image: cimg/base:current-22.04
@@ -54,8 +75,12 @@ jobs:
           string
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
+      - setup_remote_docker
+      - attach_workspace:
+          at: .
+      - run:
+          name: load previous image
+          command: docker image load < images/medi<< parameters.variant >>.tar
       - run:
           name: Build Docker image
           # override dependency (should come from cached layer) in make:
@@ -68,6 +93,15 @@ jobs:
             docker run --rm -v $PWD:/data ocrd/all:maxim<< parameters.variant >> make -C /build/core deps-test test PYTEST_ARGS=--junitxml=/data/test-results/core.xml
       - store_test_results:
           path: test-results/core.xml
+      - run:
+          name: save image
+          command: |
+            mkdir -p images
+            docker image save -o images/maxim<< parameters.variant >>.tar
+      - persist_to_workspace:
+          root: .
+          paths:
+            - images
   deploy-mini:
     docker:
       - image: cimg/base:current-22.04
@@ -78,6 +112,11 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
+      - attach_workspace:
+          at: .
+      - run:
+          name: load previous image
+          command: docker image load < images/minim<< parameters.variant >>.tar
       - run:
           name: Alias Docker image
           command: docker tag ocrd/all:minim<< parameters.variant >> ocrd/all:minim<< parameters.variant >>-git
@@ -100,6 +139,11 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
+      - attach_workspace:
+          at: .
+      - run:
+          name: load previous image
+          command: docker image load < images/medi<< parameters.variant >>.tar
       - run:
           name: Alias Docker image
           command: docker tag ocrd/all:medi<< parameters.variant >> ocrd/all:medi<< parameters.variant >>-git
@@ -122,6 +166,11 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
+      - attach_workspace:
+          at: .
+      - run:
+          name: load previous image
+          command: docker image load < images/maxim<< parameters.variant >>.tar
       - run:
           name: Alias Docker image
           command: docker tag ocrd/all:maxim<< parameters.variant >> ocrd/all:maxim<< parameters.variant >>-git
