@@ -25,7 +25,7 @@ jobs:
           name: save image
           command: |
             mkdir -p images
-            docker image save -o images/minim<< parameters.variant >>.tar
+            docker image save -o images/minim<< parameters.variant >>.tar ocrd/all:minim<< parameters.variant >>
       - persist_to_workspace:
           root: .
           paths:
@@ -61,7 +61,7 @@ jobs:
           name: save image
           command: |
             mkdir -p images
-            docker image save -o images/medi<< parameters.variant >>.tar
+            docker image save -o images/medi<< parameters.variant >>.tar ocrd/all:medi<< parameters.variant >>
       - persist_to_workspace:
           root: .
           paths:
@@ -97,7 +97,7 @@ jobs:
           name: save image
           command: |
             mkdir -p images
-            docker image save -o images/maxim<< parameters.variant >>.tar
+            docker image save -o images/maxim<< parameters.variant >>.tar ocrd/all:maxim<< parameters.variant >>
       - persist_to_workspace:
           root: .
           paths:
