@@ -1,131 +1,45 @@
 version: 2.1
-jobs:
-  build-mini:
-    docker:
-      - image: cimg/base:current-22.04
+
+commands:
+  build:
+    description: "template for all docker-* build jobs"
     parameters:
-      variant:
+      tag:
+        description: "image tag (full variant name) to be built"
         type:
           string
+      deptag:
+        description: "image tag (full variant name) this depends on (should _not_ be rebuilt)"
+        type:
+          string
+        default: "core"
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Build Docker image
-          command: make docker-minim<< parameters.variant >> GIT_DEPTH=--single-branch
+          command: make docker-<< parameters.tag >> -o docker-<< parameters.deptag >> GIT_DEPTH=--single-branch
           no_output_timeout: 30m
       - run:
           name: test image
           command: |
             mkdir test-results
-            docker run --rm -v $PWD:/data ocrd/all:minim<< parameters.variant >> make -C /build/core deps-test test PYTEST_ARGS=--junitxml=/data/test-results/core.xml
+            docker run --rm -v $PWD:/data ocrd/all:<< parameters.tag >> make -C /build/core deps-test test PYTEST_ARGS=--junitxml=/data/test-results/core.xml
       - store_test_results:
           path: test-results/core.xml
-      - run:
-          name: save image
-          command: |
-            mkdir -p images
-            docker image save -o images/minim<< parameters.variant >>.tar ocrd/all:minim<< parameters.variant >>
-          no_output_timeout: 30m
-      - persist_to_workspace:
-          root: .
-          paths:
-            - images
-          no_output_timeout: 30m
-  build-medi:
-    docker:
-      - image: cimg/base:current-22.04
+  deploy:
+    description: "template for all docker-* deploy jobs"
     parameters:
-      variant:
+      tag:
+        description: "image tag (full variant name) to be pushed"
         type:
           string
     steps:
       - checkout
       - setup_remote_docker
-      - attach_workspace:
-          at: .
-      - run:
-          name: load previous image
-          command: docker image load < images/minim<< parameters.variant >>.tar
-      - run:
-          name: Build Docker image
-          # override dependency (should come from cached layer) in make:
-          command: make docker-medi<< parameters.variant >> -o docker-minim<< parameters.variant >> GIT_DEPTH=--single-branch
-          no_output_timeout: 30m
-      - run:
-          name: test image
-          command: |
-            mkdir test-results
-            docker run --rm -v $PWD:/data ocrd/all:medi<< parameters.variant >> make -C /build/core deps-test test PYTEST_ARGS=--junitxml=/data/test-results/core.xml
-      - store_test_results:
-          path: test-results/core.xml
-      - run:
-          name: save image
-          command: |
-            mkdir -p images
-            docker image save -o images/medi<< parameters.variant >>.tar ocrd/all:medi<< parameters.variant >>
-          no_output_timeout: 30m
-      - persist_to_workspace:
-          root: .
-          paths:
-            - images
-          no_output_timeout: 30m
-  build-maxi:
-    docker:
-      - image: cimg/base:current-22.04
-    parameters:
-      variant:
-        type:
-          string
-    steps:
-      - checkout
-      - setup_remote_docker
-      - attach_workspace:
-          at: .
-      - run:
-          name: load previous image
-          command: docker image load < images/medi<< parameters.variant >>.tar
-      - run:
-          name: Build Docker image
-          # override dependency (should come from cached layer) in make:
-          command: make docker-maxim<< parameters.variant >> -o docker-medi<< parameters.variant >> GIT_DEPTH=--single-branch
-          no_output_timeout: 30m
-      - run:
-          name: test image
-          command: |
-            mkdir test-results
-            docker run --rm -v $PWD:/data ocrd/all:maxim<< parameters.variant >> make -C /build/core deps-test test PYTEST_ARGS=--junitxml=/data/test-results/core.xml
-      - store_test_results:
-          path: test-results/core.xml
-      - run:
-          name: save image
-          command: |
-            mkdir -p images
-            docker image save -o images/maxim<< parameters.variant >>.tar ocrd/all:maxim<< parameters.variant >>
-          no_output_timeout: 30m
-      - persist_to_workspace:
-          root: .
-          paths:
-            - images
-          no_output_timeout: 30m
-  deploy-mini:
-    docker:
-      - image: cimg/base:current-22.04
-    parameters:
-      variant:
-        type:
-          string
-    steps:
-      - checkout
-      - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
-      - attach_workspace:
-          at: .
-      - run:
-          name: load previous image
-          command: docker image load < images/minim<< parameters.variant >>.tar
       - run:
           name: Alias Docker image
-          command: docker tag ocrd/all:minim<< parameters.variant >> ocrd/all:minim<< parameters.variant >>-git
+          command: docker tag ocrd/all:<< parameters.tag >> ocrd/all:<< parameters.tag >>-git
       - run:
           name: Login to Docker Hub
           command: echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
@@ -133,65 +47,11 @@ jobs:
           name: Push images to Docker Hub
           no_output_timeout: 2.5h
           command: |
-            docker push ocrd/all:minim<< parameters.variant >>
-            docker push ocrd/all:minim<< parameters.variant >>-git
-  deploy-medi:
-    docker:
-      - image: cimg/base:current-22.04
-    parameters:
-      variant:
-        type:
-          string
-    steps:
-      - checkout
-      - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
-      - attach_workspace:
-          at: .
-      - run:
-          name: load previous image
-          command: docker image load < images/medi<< parameters.variant >>.tar
-      - run:
-          name: Alias Docker image
-          command: docker tag ocrd/all:medi<< parameters.variant >> ocrd/all:medi<< parameters.variant >>-git
-      - run:
-          name: Login to Docker Hub
-          command: echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
-      - run:
-          name: Push images to Docker Hub
-          no_output_timeout: 2.5h
-          command: |
-            docker push ocrd/all:medi<< parameters.variant >>
-            docker push ocrd/all:medi<< parameters.variant >>-git
-  deploy-maxi:
-    docker:
-      - image: cimg/base:current-22.04
-    parameters:
-      variant:
-        type:
-          string
-    steps:
-      - checkout
-      - setup_remote_docker      # https://circleci.com/docs/2.0/building-docker-images/
-      - attach_workspace:
-          at: .
-      - run:
-          name: load previous image
-          command: docker image load < images/maxim<< parameters.variant >>.tar
-      - run:
-          name: Alias Docker image
-          command: docker tag ocrd/all:maxim<< parameters.variant >> ocrd/all:maxim<< parameters.variant >>-git
-      - run:
-          name: Login to Docker Hub
-          command: echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
-      - run:
-          name: Push images to Docker Hub
-          no_output_timeout: 2.5h
-          command: |
-            docker push ocrd/all:maxim<< parameters.variant >>
-            docker push ocrd/all:maxim<< parameters.variant >>-git
+            docker push ocrd/all:<< parameters.tag >>
+            docker push ocrd/all:<< parameters.tag >>-git
       - when:
           condition:
-            equal: [ um, << parameters.variant >> ]
+            equal: [ maximum, << parameters.tag >> ]
           steps:
             - run:
                 name: store ocrd-all-tool.json
@@ -211,7 +71,7 @@ jobs:
                 destination: ocrd-all-module-dir.json
       - when:
           condition:
-            equal: [ um-cuda, << parameters.variant >> ]
+            equal: [ maximum-cuda, << parameters.tag >> ]
           steps:
             - run:
                 name: Create a date-versioned mirror of ocrd/all:maximum-cuda
@@ -228,12 +88,76 @@ jobs:
                 name: persist image
                 command: |
                   sudo apt install pigz
-                  docker image save ocrd/all:maxim<< parameters.variant >> | pigz --fast > ocrd-all-maximum.tar.gz
+                  docker image save ocrd/all:<< parameters.tag >> | pigz --fast > ocrd-all-maximum.tar.gz
                 no_output_timeout: 30m
             # can be downloaded from CircleCI.com and imported via "docker image load"
             - store_artifacts:
                 path: ocrd-all-maximum.tar.gz
                 destination: artifacts
+    
+jobs:
+  build-mini:
+    docker:
+      - image: cimg/base:current-22.04
+    parameters:
+      variant:
+        type:
+          string
+    steps:
+      - build:
+          tag: minim<< parameters.variant >>
+  build-medi:
+    docker:
+      - image: cimg/base:current-22.04
+    parameters:
+      variant:
+        type:
+          string
+    steps:
+      - build:
+          deptag: minim<< parameters.variant >>
+          tag: medi<< parameters.variant >>
+  build-maxi:
+    docker:
+      - image: cimg/base:current-22.04
+    parameters:
+      variant:
+        type:
+          string
+    steps:
+      - build:
+          deptag: medi<< parameters.variant >>
+          tag: maxim<< parameters.variant >>
+  deploy-mini:
+    docker:
+      - image: cimg/base:current-22.04
+    parameters:
+      variant:
+        type:
+          string
+    steps:
+      - build:
+          tag: minim<< parameters.variant >>
+  deploy-medi:
+    docker:
+      - image: cimg/base:current-22.04
+    parameters:
+      variant:
+        type:
+          string
+    steps:
+      - build:
+          tag: medi<< parameters.variant >>
+  deploy-maxi:
+    docker:
+      - image: cimg/base:current-22.04
+    parameters:
+      variant:
+        type:
+          string
+    steps:
+      - build:
+          tag: maxim<< parameters.variant >>
 
 workflows:
   version: 2
@@ -244,6 +168,18 @@ workflows:
           matrix:
             parameters:
               variant: [um, um-cuda]
+          post-steps:
+            - run:
+                name: save image
+                command: |
+                  mkdir -p images
+                  docker image save -o images/minim<< matrix.variant >>.tar ocrd/all:minim<< matrix.variant >>
+                no_output_timeout: 30m
+            - persist_to_workspace:
+                root: .
+                paths:
+                  - images
+                no_output_timeout: 30m
       - build-medi:
           name: build-medi<< matrix.variant >>
           matrix:
@@ -251,6 +187,24 @@ workflows:
               variant: [um, um-cuda]
           requires:
             - build-minim<< matrix.variant >>
+          pre-steps:
+            - attach_workspace:
+                at: .
+            - run:
+                name: load previous image
+                command: docker image load < images/minim<< matrix.variant >>.tar
+          post-steps:
+            - run:
+                name: save image
+                command: |
+                  mkdir -p images
+                  docker image save -o images/medi<< matrix.variant >>.tar ocrd/all:medi<< matrix.variant >>
+                no_output_timeout: 30m
+            - persist_to_workspace:
+                root: .
+                paths:
+                  - images
+                no_output_timeout: 30m
       - build-maxi:
           name: build-maxim<< matrix.variant >>
           matrix:
@@ -258,6 +212,24 @@ workflows:
               variant: [um, um-cuda]
           requires:
             - build-medi<< matrix.variant >>
+          pre-steps:
+            - attach_workspace:
+                at: .
+            - run:
+                name: load previous image
+                command: docker image load < images/medi<< matrix.variant >>.tar
+          post-steps:
+            - run:
+                name: save image
+                command: |
+                  mkdir -p images
+                  docker image save -o images/maxim<< matrix.variant >>.tar ocrd/all:maxim<< matrix.variant >>
+                no_output_timeout: 30m
+            - persist_to_workspace:
+                root: .
+                paths:
+                  - images
+                no_output_timeout: 30m
       - deploy-mini:
           name: deploy-minim<< matrix.variant >>
           matrix:
@@ -265,6 +237,12 @@ workflows:
               variant: [um, um-cuda]
           requires:
             - build-minim<< matrix.variant >>
+          pre-steps:
+            - attach_workspace:
+                at: .
+            - run:
+                name: load previous image
+                command: docker image load < images/minim<< matrix.variant >>.tar
           filters:
             branches:
               only: master
@@ -275,6 +253,12 @@ workflows:
               variant: [um, um-cuda]
           requires:
             - build-medi<< matrix.variant >>
+          pre-steps:
+            - attach_workspace:
+                at: .
+            - run:
+                name: load previous image
+                command: docker image load < images/medi<< matrix.variant >>.tar
           filters:
             branches:
               only: master
@@ -285,6 +269,12 @@ workflows:
               variant: [um, um-cuda]
           requires:
             - build-maxim<< matrix.variant >>
+          pre-steps:
+            - attach_workspace:
+                at: .
+            - run:
+                name: load previous image
+                command: docker image load < images/maxim<< matrix.variant >>.tar
           filters:
             branches:
               only: master
