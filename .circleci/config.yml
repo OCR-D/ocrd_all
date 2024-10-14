@@ -26,10 +26,12 @@ jobs:
           command: |
             mkdir -p images
             docker image save -o images/minim<< parameters.variant >>.tar ocrd/all:minim<< parameters.variant >>
+          no_output_timeout: 30m
       - persist_to_workspace:
           root: .
           paths:
             - images
+          no_output_timeout: 30m
   build-medi:
     docker:
       - image: cimg/base:current-22.04
@@ -62,10 +64,12 @@ jobs:
           command: |
             mkdir -p images
             docker image save -o images/medi<< parameters.variant >>.tar ocrd/all:medi<< parameters.variant >>
+          no_output_timeout: 30m
       - persist_to_workspace:
           root: .
           paths:
             - images
+          no_output_timeout: 30m
   build-maxi:
     docker:
       - image: cimg/base:current-22.04
@@ -98,10 +102,12 @@ jobs:
           command: |
             mkdir -p images
             docker image save -o images/maxim<< parameters.variant >>.tar ocrd/all:maxim<< parameters.variant >>
+          no_output_timeout: 30m
       - persist_to_workspace:
           root: .
           paths:
             - images
+          no_output_timeout: 30m
   deploy-mini:
     docker:
       - image: cimg/base:current-22.04
