@@ -57,7 +57,7 @@ commands:
       - setup_remote_docker
       - run:
           name: Build Docker image
-          command: make docker-<< parameters.tag >> -o docker-<< parameters.deptag >> GIT_DEPTH=--single-branch
+          command: make docker-<< parameters.tag >> -o docker-<< parameters.dep >> GIT_DEPTH=--single-branch
           no_output_timeout: 30m
       - run:
           name: test image
