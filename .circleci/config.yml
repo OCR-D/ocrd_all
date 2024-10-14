@@ -192,7 +192,9 @@ workflows:
                 at: .
             - run:
                 name: load previous image
-                command: docker image load < images/minim<< matrix.variant >>.tar
+                command: |
+                  docker image load < images/minim<< matrix.variant >>.tar
+                  rm -fr images
           post-steps:
             - run:
                 name: save image
@@ -217,7 +219,9 @@ workflows:
                 at: .
             - run:
                 name: load previous image
-                command: docker image load < images/medi<< matrix.variant >>.tar
+                command: |
+                  docker image load < images/medi<< matrix.variant >>.tar
+                  rm -fr images
           post-steps:
             - run:
                 name: save image
@@ -242,7 +246,9 @@ workflows:
                 at: .
             - run:
                 name: load previous image
-                command: docker image load < images/minim<< matrix.variant >>.tar
+                command: |
+                  docker image load < images/minim<< matrix.variant >>.tar
+                  rm -fr images
           filters:
             branches:
               only: master
@@ -258,7 +264,9 @@ workflows:
                 at: .
             - run:
                 name: load previous image
-                command: docker image load < images/medi<< matrix.variant >>.tar
+                command: |
+                  docker image load < images/medi<< matrix.variant >>.tar
+                  rm -fr images
           filters:
             branches:
               only: master
@@ -274,7 +282,9 @@ workflows:
                 at: .
             - run:
                 name: load previous image
-                command: docker image load < images/maxim<< matrix.variant >>.tar
+                command: |
+                  docker image load < images/maxim<< matrix.variant >>.tar
+                  rm -fr images
           filters:
             branches:
               only: master
