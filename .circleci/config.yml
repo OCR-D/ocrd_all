@@ -1,6 +1,33 @@
 version: 2.1
 
 commands:
+  dockerhub-store:
+    description: "store an image on Dockerhub"
+    parameters:
+      tag:
+        description: "image tag (full variant name) to be removed"
+        type:
+          string
+    steps:
+      - run:
+          name: save image
+          command: |
+            docker tag ocrd/all:<< matrix.tag >> ocrd/all:<< matrix.tag >>-${CIRCLE_SHA1}
+            docker push ocrd/all:<< matrix.tag >>-${CIRCLE_SHA1}
+          no_output_timeout: 30m
+  dockerhub-load:
+    description: "load an image from Dockerhub"
+    parameters:
+      tag:
+        description: "image tag (full variant name) to be pulled"
+        type:
+          string
+    steps:
+      - run:
+          name: load previous image
+          command: |
+            docker pull ocrd/all:<< matrix.tag >>-${CIRCLE_SHA1}
+            docker tag ocrd/all:<< matrix.tag >>-${CIRCLE_SHA1} ocrd/all:<< matrix.tag >>
   dockerhub-remove:
     description: "remove an image on Dockerhub"
     parameters:
@@ -12,7 +39,7 @@ commands:
       - run:
           command: |
             HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"$DOCKERHUB_USERNAME\", \"password\": \"$DOCKERHUB_PASSWORD\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
-            curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/ocrd/repositories/all/tags/<< parameters.tag >>/
+            curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/ocrd/repositories/all/tags/<< parameters.tag >>-${CIRCLE_SHA1}/
   build:
     description: "template for all docker-* build jobs"
     parameters:
@@ -20,7 +47,7 @@ commands:
         description: "image tag (full variant name) to be built"
         type:
           string
-      deptag:
+      dep:
         description: "image tag (full variant name) this depends on (should _not_ be rebuilt)"
         type:
           string
@@ -118,6 +145,8 @@ jobs:
     steps:
       - build:
           tag: minim<< parameters.variant >>
+      - dockerhub-store:
+          tag: minim<< parameters.variant >>
   build-medi:
     docker:
       - image: cimg/base:current-22.04
@@ -126,8 +155,12 @@ jobs:
         type:
           string
     steps:
+      - dockerhub-load:
+          tag: minim<< parameters.variant >>
       - build:
-          deptag: minim<< parameters.variant >>
+          dep: minim<< parameters.variant >>
+          tag: medi<< parameters.variant >>
+      - dockerhub-store:
           tag: medi<< parameters.variant >>
   build-maxi:
     docker:
@@ -137,8 +170,12 @@ jobs:
         type:
           string
     steps:
+      - dockerhub-load:
+          tag: medi<< parameters.variant >>
       - build:
-          deptag: medi<< parameters.variant >>
+          dep: medi<< parameters.variant >>
+          tag: maxim<< parameters.variant >>
+      - dockerhub-store:
           tag: maxim<< parameters.variant >>
   deploy-mini:
     docker:
@@ -148,7 +185,11 @@ jobs:
         type:
           string
     steps:
-      - build:
+      - dockerhub-load:
+          tag: minim<< parameters.variant >>
+      - deploy:
+          tag: minim<< parameters.variant >>
+      - dockerhub-remove:
           tag: minim<< parameters.variant >>
   deploy-medi:
     docker:
@@ -158,7 +199,11 @@ jobs:
         type:
           string
     steps:
-      - build:
+      - dockerhub-load:
+          tag: medi<< parameters.variant >>
+      - deploy:
+          tag: medi<< parameters.variant >>
+      - dockerhub-remove:
           tag: medi<< parameters.variant >>
   deploy-maxi:
     docker:
@@ -168,7 +213,11 @@ jobs:
         type:
           string
     steps:
-      - build:
+      - dockerhub-load:
+          tag: maxim<< parameters.variant >>
+      - deploy:
+          tag: maxim<< parameters.variant >>
+      - dockerhub-remove:
           tag: maxim<< parameters.variant >>
 
 workflows:
@@ -180,13 +229,6 @@ workflows:
           matrix:
             parameters:
               variant: [um, um-cuda]
-          post-steps:
-            - run:
-                name: save image
-                command: |
-                  docker tag ocrd/all:minim<< matrix.variant >> ocrd/all:minim<< matrix.variant >>-$CIRCLE_SHA1
-                  docker push ocrd/all:minim<< matrix.variant >>-$CIRCLE_SHA1
-                no_output_timeout: 30m
       - build-medi:
           name: build-medi<< matrix.variant >>
           matrix:
@@ -194,19 +236,6 @@ workflows:
               variant: [um, um-cuda]
           requires:
             - build-minim<< matrix.variant >>
-          pre-steps:
-            - run:
-                name: load previous image
-                command: |
-                  docker pull ocrd/all:minim<< matrix.variant >>-$CIRCLE_SHA1
-                  docker tag ocrd/all:minim<< matrix.variant >>-$CIRCLE_SHA1 ocrd/all:minim<< matrix.variant >>
-          post-steps:
-            - run:
-                name: save image
-                command: |
-                  docker tag ocrd/all:medi<< matrix.variant >> ocrd/all:medi<< matrix.variant >>-$CIRCLE_SHA1
-                  docker push ocrd/all:medi<< matrix.variant >>-$CIRCLE_SHA1
-                no_output_timeout: 30m
       - build-maxi:
           name: build-maxim<< matrix.variant >>
           matrix:
@@ -214,19 +243,6 @@ workflows:
               variant: [um, um-cuda]
           requires:
             - build-medi<< matrix.variant >>
-          pre-steps:
-            - run:
-                name: load previous image
-                command: |
-                  docker pull ocrd/all:medi<< matrix.variant >>-$CIRCLE_SHA1
-                  docker tag ocrd/all:medi<< matrix.variant >>-$CIRCLE_SHA1 ocrd/all:medi<< matrix.variant >>
-          post-steps:
-            - run:
-                name: save image
-                command: |
-                  docker tag ocrd/all:maxim<< matrix.variant >> ocrd/all:maxim<< matrix.variant >>-$CIRCLE_SHA1
-                  docker push ocrd/all:maxim<< matrix.variant >>-$CIRCLE_SHA1
-                no_output_timeout: 30m
       - deploy-mini:
           name: deploy-minim<< matrix.variant >>
           matrix:
@@ -234,15 +250,6 @@ workflows:
               variant: [um, um-cuda]
           requires:
             - build-minim<< matrix.variant >>
-          pre-steps:
-            - run:
-                name: load previous image
-                command: |
-                  docker pull ocrd/all:minim<< matrix.variant >>-$CIRCLE_SHA1
-                  docker tag ocrd/all:minim<< matrix.variant >>-$CIRCLE_SHA1 ocrd/all:minim<< matrix.variant >>
-          post-steps:
-            - dockerhub-remove:
-                tag: minim<< matrix.variant >>-$CIRCLE_SHA1
           filters:
             branches:
               only: master
@@ -253,15 +260,6 @@ workflows:
               variant: [um, um-cuda]
           requires:
             - build-medi<< matrix.variant >>
-          pre-steps:
-            - run:
-                name: load previous image
-                command: |
-                  docker pull ocrd/all:medi<< matrix.variant >>-$CIRCLE_SHA1
-                  docker tag ocrd/all:medi<< matrix.variant >>-$CIRCLE_SHA1 ocrd/all:medi<< matrix.variant >>
-          post-steps:
-            - dockerhub-remove:
-                tag: medi<< matrix.variant >>-$CIRCLE_SHA1
           filters:
             branches:
               only: master
@@ -272,15 +270,6 @@ workflows:
               variant: [um, um-cuda]
           requires:
             - build-maxim<< matrix.variant >>
-          pre-steps:
-            - run:
-                name: load previous image
-                command: |
-                  docker pull ocrd/all:maxim<< matrix.variant >>-$CIRCLE_SHA1
-                  docker tag ocrd/all:maxim<< matrix.variant >>-$CIRCLE_SHA1 ocrd/all:maxim<< matrix.variant >>
-          post-steps:
-            - dockerhub-remove:
-                tag: maxim<< matrix.variant >>-$CIRCLE_SHA1
           filters:
             branches:
               only: master
