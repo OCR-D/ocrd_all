@@ -292,6 +292,8 @@ OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
 OCRD_DETECTRON2 := $(BIN)/ocrd-detectron2-segment
 $(OCRD_DETECTRON2): ocrd_detectron2 $(BIN)/ocrd | $(OCRD_KRAKEN)
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
+	# pre-empt conflict around typing-extensions
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install -i https://download.pytorch.org/whl/cpu torchvision==0.16.2 torch==2.1.2
 	$(pip_install)
 endif
 
@@ -600,6 +602,8 @@ SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
 SBB_BINARIZATION += $(BIN)/sbb_binarize
 $(call multirule,$(SBB_BINARIZATION)): sbb_binarization $(BIN)/ocrd
 	$(pip_install)
+	# work around #67 - switch to version pinned by eynollah:
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "tensorflow==2.12.1"
 endif
 
 ifneq ($(filter eynollah, $(OCRD_MODULES)),)
@@ -611,6 +615,8 @@ OCRD_EXECUTABLES += $(EYNOLLAH_SEGMENT)
 EYNOLLAH_SEGMENT := $(BIN)/ocrd-eynollah-segment
 $(EYNOLLAH_SEGMENT): eynollah $(BIN)/ocrd
 	$(pip_install)
+	# solve conflict with ocrd_calamari:
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "protobuf<4"
 endif
 
 ifneq ($(filter ocrd_repair_inconsistencies, $(OCRD_MODULES)),)
