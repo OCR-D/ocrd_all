@@ -1,6 +1,18 @@
 version: 2.1
 
 commands:
+  dockerhub-remove:
+    description: "remove an image on Dockerhub"
+    parameters:
+      tag:
+        description: "image tag (full variant name) to be removed"
+        type:
+          string
+    steps:
+      - run:
+          command: |
+            HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"$DOCKERHUB_USERNAME\", \"password\": \"$DOCKERHUB_PASSWORD\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
+            curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/ocrd/repositories/all/tags/<< parameters.tag >>/
   build:
     description: "template for all docker-* build jobs"
     parameters:
@@ -172,13 +184,8 @@ workflows:
             - run:
                 name: save image
                 command: |
-                  mkdir -p images
-                  docker image save -o images/minim<< matrix.variant >>.tar ocrd/all:minim<< matrix.variant >>
-                no_output_timeout: 30m
-            - persist_to_workspace:
-                root: .
-                paths:
-                  - images
+                  docker tag ocrd/all:minim<< matrix.variant >> ocrd/all:minim<< matrix.variant >>-$CIRCLE_SHA1
+                  docker push ocrd/all:minim<< matrix.variant >>-$CIRCLE_SHA1
                 no_output_timeout: 30m
       - build-medi:
           name: build-medi<< matrix.variant >>
@@ -188,24 +195,17 @@ workflows:
           requires:
             - build-minim<< matrix.variant >>
           pre-steps:
-            - attach_workspace:
-                at: .
             - run:
                 name: load previous image
                 command: |
-                  docker image load < images/minim<< matrix.variant >>.tar
-                  rm -fr images
+                  docker pull ocrd/all:minim<< matrix.variant >>-$CIRCLE_SHA1
+                  docker tag ocrd/all:minim<< matrix.variant >>-$CIRCLE_SHA1 ocrd/all:minim<< matrix.variant >>
           post-steps:
             - run:
                 name: save image
                 command: |
-                  mkdir -p images
-                  docker image save -o images/medi<< matrix.variant >>.tar ocrd/all:medi<< matrix.variant >>
-                no_output_timeout: 30m
-            - persist_to_workspace:
-                root: .
-                paths:
-                  - images
+                  docker tag ocrd/all:medi<< matrix.variant >> ocrd/all:medi<< matrix.variant >>-$CIRCLE_SHA1
+                  docker push ocrd/all:medi<< matrix.variant >>-$CIRCLE_SHA1
                 no_output_timeout: 30m
       - build-maxi:
           name: build-maxim<< matrix.variant >>
@@ -215,24 +215,17 @@ workflows:
           requires:
             - build-medi<< matrix.variant >>
           pre-steps:
-            - attach_workspace:
-                at: .
             - run:
                 name: load previous image
                 command: |
-                  docker image load < images/medi<< matrix.variant >>.tar
-                  rm -fr images
+                  docker pull ocrd/all:medi<< matrix.variant >>-$CIRCLE_SHA1
+                  docker tag ocrd/all:medi<< matrix.variant >>-$CIRCLE_SHA1 ocrd/all:medi<< matrix.variant >>
           post-steps:
             - run:
                 name: save image
                 command: |
-                  mkdir -p images
-                  docker image save -o images/maxim<< matrix.variant >>.tar ocrd/all:maxim<< matrix.variant >>
-                no_output_timeout: 30m
-            - persist_to_workspace:
-                root: .
-                paths:
-                  - images
+                  docker tag ocrd/all:maxim<< matrix.variant >> ocrd/all:maxim<< matrix.variant >>-$CIRCLE_SHA1
+                  docker push ocrd/all:maxim<< matrix.variant >>-$CIRCLE_SHA1
                 no_output_timeout: 30m
       - deploy-mini:
           name: deploy-minim<< matrix.variant >>
@@ -242,13 +235,14 @@ workflows:
           requires:
             - build-minim<< matrix.variant >>
           pre-steps:
-            - attach_workspace:
-                at: .
             - run:
                 name: load previous image
                 command: |
-                  docker image load < images/minim<< matrix.variant >>.tar
-                  rm -fr images
+                  docker pull ocrd/all:minim<< matrix.variant >>-$CIRCLE_SHA1
+                  docker tag ocrd/all:minim<< matrix.variant >>-$CIRCLE_SHA1 ocrd/all:minim<< matrix.variant >>
+          post-steps:
+            - dockerhub-remove:
+                tag: minim<< matrix.variant >>-$CIRCLE_SHA1
           filters:
             branches:
               only: master
@@ -260,13 +254,14 @@ workflows:
           requires:
             - build-medi<< matrix.variant >>
           pre-steps:
-            - attach_workspace:
-                at: .
             - run:
                 name: load previous image
                 command: |
-                  docker image load < images/medi<< matrix.variant >>.tar
-                  rm -fr images
+                  docker pull ocrd/all:medi<< matrix.variant >>-$CIRCLE_SHA1
+                  docker tag ocrd/all:medi<< matrix.variant >>-$CIRCLE_SHA1 ocrd/all:medi<< matrix.variant >>
+          post-steps:
+            - dockerhub-remove:
+                tag: medi<< matrix.variant >>-$CIRCLE_SHA1
           filters:
             branches:
               only: master
@@ -278,13 +273,14 @@ workflows:
           requires:
             - build-maxim<< matrix.variant >>
           pre-steps:
-            - attach_workspace:
-                at: .
             - run:
                 name: load previous image
                 command: |
-                  docker image load < images/maxim<< matrix.variant >>.tar
-                  rm -fr images
+                  docker pull ocrd/all:maxim<< matrix.variant >>-$CIRCLE_SHA1
+                  docker tag ocrd/all:maxim<< matrix.variant >>-$CIRCLE_SHA1 ocrd/all:maxim<< matrix.variant >>
+          post-steps:
+            - dockerhub-remove:
+                tag: maxim<< matrix.variant >>-$CIRCLE_SHA1
           filters:
             branches:
               only: master
