@@ -12,8 +12,8 @@ commands:
       - run:
           name: save image
           command: |
-            docker tag ocrd/all:<< matrix.tag >> ocrd/all:<< matrix.tag >>-${CIRCLE_SHA1}
-            docker push ocrd/all:<< matrix.tag >>-${CIRCLE_SHA1}
+            docker tag ocrd/all:<< parameters.tag >> ocrd/all:<< parameters.tag >>-${CIRCLE_SHA1}
+            docker push ocrd/all:<< parameters.tag >>-${CIRCLE_SHA1}
           no_output_timeout: 30m
   dockerhub-load:
     description: "load an image from Dockerhub"
@@ -26,8 +26,8 @@ commands:
       - run:
           name: load previous image
           command: |
-            docker pull ocrd/all:<< matrix.tag >>-${CIRCLE_SHA1}
-            docker tag ocrd/all:<< matrix.tag >>-${CIRCLE_SHA1} ocrd/all:<< matrix.tag >>
+            docker pull ocrd/all:<< parameters.tag >>-${CIRCLE_SHA1}
+            docker tag ocrd/all:<< parameters.tag >>-${CIRCLE_SHA1} ocrd/all:<< parameters.tag >>
   dockerhub-remove:
     description: "remove an image on Dockerhub"
     parameters:
