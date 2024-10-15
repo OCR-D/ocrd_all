@@ -210,8 +210,8 @@ $(BIN)/pip: $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(SEMPIP) pip install --upgrade pip setuptools
 
 %/bin/activate:
-	$(PYTHON) -m venv $(subst /bin/activate,,$@)
-	. $@ && pip install --upgrade pip setuptools wheel
+	$(SEMPIP) $(PYTHON) -m venv $(subst /bin/activate,,$@)
+	. $@ && $(SEMPIP) pip install --upgrade pip setuptools wheel
 
 .PHONY: wheel
 wheel: $(BIN)/wheel
@@ -288,13 +288,20 @@ endif
 endif
 
 ifneq ($(filter ocrd_detectron2, $(OCRD_MODULES)),)
-# ocrd_detectron patches detectron2 until there is a new detectron2 release.
-# See https://github.com/facebookresearch/detectron2/pull/5011 for details.
-CUSTOM_DEPS += patch
 OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
 OCRD_DETECTRON2 := $(BIN)/ocrd-detectron2-segment
-$(call multirule,$(OCRD_DETECTRON2)): ocrd_detectron2 $(BIN)/ocrd | $(OCRD_KRAKEN)
+$(OCRD_DETECTRON2): ocrd_detectron2 $(BIN)/ocrd | $(OCRD_KRAKEN)
 	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
+	# pre-empt conflict around typing-extensions
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install -i https://download.pytorch.org/whl/cpu torchvision==0.16.2 torch==2.1.2
+	$(pip_install)
+endif
+
+ifneq ($(filter ocrd_page2alto, $(OCRD_MODULES)),)
+OCRD_EXECUTABLES += $(OCRD_PAGE_TO_ALTO)
+OCRD_PAGE_TO_ALTO := $(BIN)/ocrd-page2alto-transform
+OCRD_PAGE_TO_ALTO += $(BIN)/page-to-alto
+$(call multirule,$(OCRD_PAGE_TO_ALTO)): ocrd_page2alto $(BIN)/ocrd
 	$(pip_install)
 endif
 
@@ -539,8 +546,6 @@ install-models-calamari: $(BIN)/ocrd
 OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-recognize
 $(OCRD_CALAMARI): ocrd_calamari $(BIN)/ocrd
-	@# workaround for Calamari#337:
-	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "protobuf<4"
 	$(pip_install)
 endif
 
@@ -597,6 +602,8 @@ SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
 SBB_BINARIZATION += $(BIN)/sbb_binarize
 $(call multirule,$(SBB_BINARIZATION)): sbb_binarization $(BIN)/ocrd
 	$(pip_install)
+	# work around #67 - switch to version pinned by eynollah:
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "tensorflow==2.12.1"
 endif
 
 ifneq ($(filter eynollah, $(OCRD_MODULES)),)
@@ -608,6 +615,8 @@ OCRD_EXECUTABLES += $(EYNOLLAH_SEGMENT)
 EYNOLLAH_SEGMENT := $(BIN)/ocrd-eynollah-segment
 $(EYNOLLAH_SEGMENT): eynollah $(BIN)/ocrd
 	$(pip_install)
+	# solve conflict with ocrd_calamari:
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "protobuf<4"
 endif
 
 ifneq ($(filter ocrd_repair_inconsistencies, $(OCRD_MODULES)),)
@@ -815,7 +824,8 @@ deps-cuda: core $(ACTIVATE_VENV)
 tf1nvidia: $(ACTIVATE_VENV)
 	$(pip_install_tf1nvidia)
 
-# post-fix workaround for clash between cuDNN of Tensorflow 2.12 (→8.6) and Pytorch 1.13 (→8.5)
+# post-fix workaround for clash between cuDNN of Tensorflow 2.12 (→8.6) and Pytorch 1.13 (→8.5) / 2.1 (8.7)
+# (which also involves conflict around typing-extensions version)
 # the latter is explicit (but unnecessary), the former is implicit (and causes "DNN library not found" crashes at runtime)
 # so we have three potential options:
 # 1. revert to the version required by TF after pip overruled our choice via Torch dependency
@@ -824,9 +834,13 @@ tf1nvidia: $(ACTIVATE_VENV)
 #    pip3 install "tensorflow<2.12"
 # 3. upgrade Torch so there is no overt conflict
 #    pip install "torch>=2.0"
-# Since ATM we don't know whether Torch 2.x will work everywhere, we opt for 2:
+# Since ATM we already need TF 2.12, we choose for (modified) option 3:
 fix-cuda: $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "tensorflow<2.12"
+	. $(ACTIVATE_VENV) && $(SEMPIP) pip install -i https://download.pytorch.org/whl/cu118 torchvision==0.16.2+cu118 torch==2.1.2+cu118
+# displace CUDA 12 libs pulled via Pytorch from PyPI
+	if test -d $(SUB_VENV_TF1); then \
+	. $(SUB_VENV_TF1)/bin/activate && pip install -i https://download.pytorch.org/whl/cu118 torchvision==0.16.2+cu118 torch==2.1.2+cu118; \
+	fi
 
 .PHONY: deps-cuda tf1nvidia fix-cuda
 
@@ -847,10 +861,12 @@ dockers: docker-minimum docker-minimum-cuda docker-medium docker-medium-cuda doc
 docker-%: PIP_OPTIONS = -e
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from git
-docker-mini%: DOCKER_MODULES := core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap workflow-configuration ocrd_olahd_client
+DOCKER_MODULES_MINI := core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_olahd_client ocrd_page2alto ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap workflow-configuration
+docker-mini%: DOCKER_MODULES := $(DOCKER_MODULES_MINI)
 # Medium-size selection: add Olena binarization and Calamari, add evaluation
-docker-medi%: DOCKER_MODULES := core cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_keraslm ocrd_olahd_client ocrd_olena ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_segment ocrd_tesserocr ocrd_wrap workflow-configuration
-# Maximum-size selection: use all modules
+DOCKER_MODULES_MEDI := $(DOCKER_MODULES_MINI) cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_keraslm ocrd_olena ocrd_segment
+docker-medi%: DOCKER_MODULES := $(DOCKER_MODULES_MEDI)
+# Maximum-size selection: use all enabled modules
 docker-maxi%: DOCKER_MODULES := $(OCRD_MODULES)
 
 # DOCKER_BASE_IMAGE

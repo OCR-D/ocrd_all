@@ -94,3 +94,6 @@
 [submodule "ocrd_froc"]
 	path = ocrd_froc
 	url = https://github.com/OCR-D/ocrd_froc
+[submodule "ocrd_page2alto"]
+	path = ocrd_page2alto
+	url = https://github.com/OCR-D/page-to-alto
