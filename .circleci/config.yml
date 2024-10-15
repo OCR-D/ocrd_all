@@ -5,17 +5,19 @@ commands:
     description: "store an image on Dockerhub"
     parameters:
       tag:
-        description: "image tag (full variant name) to be removed"
+        description: "image tag (full variant name) to be saved"
         type:
           string
-    environment:
-      - SHA1TAG: << parameters.tag >>-${CIRCLE_SHA1}
+      sha:
+        description: "image tag (temporary alias) to save as"
+        type:
+          string
     steps:
       - run:
           name: save image
           command: |
-            docker tag ocrd/all:<< parameters.tag >> ocrd/all:$SHA1TAG
-            docker push ocrd/all:$SHA1TAG
+            docker tag ocrd/all:<< parameters.tag >> ocrd/all:<< parameters.sha >>
+            docker push ocrd/all:<< parameters.sha >>
           no_output_timeout: 30m
   dockerhub-load:
     description: "load an image from Dockerhub"
@@ -24,28 +26,28 @@ commands:
         description: "image tag (full variant name) to be pulled"
         type:
           string
-    environment:
-      - SHA1TAG: << parameters.tag >>-${CIRCLE_SHA1}
+      sha:
+        description: "image tag (temporary alias) to pull as"
+        type:
+          string
     steps:
       - run:
           name: load previous image
           command: |
-            docker pull ocrd/all:$SHA1TAG
-            docker tag ocrd/all:$SHA1TAG ocrd/all:<< parameters.tag >>
+            docker pull ocrd/all:<< parameters.sha >>
+            docker tag ocrd/all:<< parameters.sha >> ocrd/all:<< parameters.tag >>
   dockerhub-remove:
     description: "remove an image on Dockerhub"
     parameters:
-      tag:
-        description: "image tag (full variant name) to be removed"
+      sha:
+        description: "image tag (temporary alias) to be removed"
         type:
           string
-    environment:
-      - SHA1TAG: << parameters.tag >>-${CIRCLE_SHA1}
     steps:
       - run:
           command: |
             HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"$DOCKERHUB_USERNAME\", \"password\": \"$DOCKERHUB_PASSWORD\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
-            curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/ocrd/repositories/all/tags/$SHA1TAG/
+            curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/ocrd/repositories/all/tags/<< parameters.sha >>/
   build:
     description: "template for all docker-* build jobs"
     parameters:
@@ -153,6 +155,7 @@ jobs:
           tag: minim<< parameters.variant >>
       - dockerhub-store:
           tag: minim<< parameters.variant >>
+          sha: minim<< parameters.variant >>-${CIRCLE_SHA1}
   build-medi:
     docker:
       - image: cimg/base:current-22.04
@@ -162,12 +165,14 @@ jobs:
           string
     steps:
       - dockerhub-load:
+          sha: minim<< parameters.variant >>-${CIRCLE_SHA1}
           tag: minim<< parameters.variant >>
       - build:
           dep: minim<< parameters.variant >>
           tag: medi<< parameters.variant >>
       - dockerhub-store:
           tag: medi<< parameters.variant >>
+          sha: medi<< parameters.variant >>-${CIRCLE_SHA1}
   build-maxi:
     docker:
       - image: cimg/base:current-22.04
@@ -177,12 +182,14 @@ jobs:
           string
     steps:
       - dockerhub-load:
+          sha: medi<< parameters.variant >>-${CIRCLE_SHA1}
           tag: medi<< parameters.variant >>
       - build:
           dep: medi<< parameters.variant >>
           tag: maxim<< parameters.variant >>
       - dockerhub-store:
           tag: maxim<< parameters.variant >>
+          sha: maxim<< parameters.variant >>-${CIRCLE_SHA1}
   deploy-mini:
     docker:
       - image: cimg/base:current-22.04
@@ -192,11 +199,12 @@ jobs:
           string
     steps:
       - dockerhub-load:
+          sha: minim<< parameters.variant >>-${CIRCLE_SHA1}
           tag: minim<< parameters.variant >>
       - deploy:
           tag: minim<< parameters.variant >>
       - dockerhub-remove:
-          tag: minim<< parameters.variant >>
+          sha: minim<< parameters.variant >>-${CIRCLE_SHA1}
   deploy-medi:
     docker:
       - image: cimg/base:current-22.04
@@ -206,11 +214,12 @@ jobs:
           string
     steps:
       - dockerhub-load:
+          sha: medi<< parameters.variant >>-${CIRCLE_SHA1}
           tag: medi<< parameters.variant >>
       - deploy:
           tag: medi<< parameters.variant >>
       - dockerhub-remove:
-          tag: medi<< parameters.variant >>
+          sha: medi<< parameters.variant >>-${CIRCLE_SHA1}
   deploy-maxi:
     docker:
       - image: cimg/base:current-22.04
@@ -220,11 +229,12 @@ jobs:
           string
     steps:
       - dockerhub-load:
+          sha: maxim<< parameters.variant >>-${CIRCLE_SHA1}
           tag: maxim<< parameters.variant >>
       - deploy:
           tag: maxim<< parameters.variant >>
       - dockerhub-remove:
-          tag: maxim<< parameters.variant >>
+          sha: maxim<< parameters.variant >>-${CIRCLE_SHA1}
 
 workflows:
   version: 2
