@@ -40,9 +40,12 @@ commands:
           string
     steps:
       - run:
+          name: use Dockerhub API to remove temporary image
           command: |
             HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"$DOCKERHUB_USERNAME\", \"password\": \"$DOCKERHUB_PASSWORD\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
             curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/ocrd/repositories/all/tags/<< parameters.tag >>-${CIRCLE_SHA1}/
+          # must be unconditional (both on_error and on_success)
+          when: always
   build:
     description: "template for all docker-* build jobs"
     parameters:
@@ -172,7 +175,6 @@ jobs:
           steps:
             - dockerhub-remove:
                 tag: minim<< parameters.variant >>
-                when: always
       - build:
           dep: minim<< parameters.variant >>
           tag: medi<< parameters.variant >>
@@ -195,7 +197,6 @@ jobs:
           steps:
             - dockerhub-remove:
                 tag: medi<< parameters.variant >>
-                when: always
       - build:
           dep: medi<< parameters.variant >>
           tag: maxim<< parameters.variant >>
@@ -220,7 +221,6 @@ jobs:
           tag: minim<< parameters.variant >>
       - dockerhub-remove:
           tag: minim<< parameters.variant >>
-          when: always
   deploy-medi:
     docker:
       - image: cimg/base:current-22.04
@@ -235,7 +235,6 @@ jobs:
           tag: medi<< parameters.variant >>
       - dockerhub-remove:
           tag: medi<< parameters.variant >>
-          when: always
   deploy-maxi:
     docker:
       - image: cimg/base:current-22.04
@@ -250,7 +249,6 @@ jobs:
           tag: maxim<< parameters.variant >>
       - dockerhub-remove:
           tag: maxim<< parameters.variant >>
-          when: always
 
 workflows:
   version: 2
