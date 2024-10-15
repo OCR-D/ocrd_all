@@ -8,12 +8,14 @@ commands:
         description: "image tag (full variant name) to be removed"
         type:
           string
+    environment:
+      - SHA1TAG: << parameters.tag >>-${CIRCLE_SHA1}
     steps:
       - run:
           name: save image
           command: |
-            docker tag ocrd/all:<< parameters.tag >> ocrd/all:<< parameters.tag >>-${CIRCLE_SHA1}
-            docker push ocrd/all:<< parameters.tag >>-${CIRCLE_SHA1}
+            docker tag ocrd/all:<< parameters.tag >> ocrd/all:$SHA1TAG
+            docker push ocrd/all:$SHA1TAG
           no_output_timeout: 30m
   dockerhub-load:
     description: "load an image from Dockerhub"
@@ -22,12 +24,14 @@ commands:
         description: "image tag (full variant name) to be pulled"
         type:
           string
+    environment:
+      - SHA1TAG: << parameters.tag >>-${CIRCLE_SHA1}
     steps:
       - run:
           name: load previous image
           command: |
-            docker pull ocrd/all:<< parameters.tag >>-${CIRCLE_SHA1}
-            docker tag ocrd/all:<< parameters.tag >>-${CIRCLE_SHA1} ocrd/all:<< parameters.tag >>
+            docker pull ocrd/all:$SHA1TAG
+            docker tag ocrd/all:$SHA1TAG ocrd/all:<< parameters.tag >>
   dockerhub-remove:
     description: "remove an image on Dockerhub"
     parameters:
@@ -35,11 +39,13 @@ commands:
         description: "image tag (full variant name) to be removed"
         type:
           string
+    environment:
+      - SHA1TAG: << parameters.tag >>-${CIRCLE_SHA1}
     steps:
       - run:
           command: |
             HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"$DOCKERHUB_USERNAME\", \"password\": \"$DOCKERHUB_PASSWORD\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
-            curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/ocrd/repositories/all/tags/<< parameters.tag >>-${CIRCLE_SHA1}/
+            curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/ocrd/repositories/all/tags/$SHA1TAG/
   build:
     description: "template for all docker-* build jobs"
     parameters:
