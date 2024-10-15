@@ -66,7 +66,12 @@ commands:
           name: test image
           command: |
             mkdir test-results
-            docker run --rm -v $PWD:/data ocrd/all:<< parameters.tag >> make -C /build/core deps-test test PYTEST_ARGS=--junitxml=/data/test-results/core.xml
+            # cannot use docker run -v because the docker executor does not support volumes
+            # docker run --rm -v $PWD:/data ocrd/all:<< parameters.tag >> make -C /build/core deps-test test PYTEST_ARGS=--junitxml=/data/test-results/core.xml
+            id=`docker create ocrd/all:<< parameters.tag >> make -C /build/core deps-test test PYTEST_ARGS=--junitxml=core.xml`
+            docker start -a $id
+            docker cp $id:/build/core/core.xml test-results/
+            docker rm $id
       - store_test_results:
           path: test-results/core.xml
   deploy:
