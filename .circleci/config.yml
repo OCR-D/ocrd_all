@@ -165,6 +165,14 @@ jobs:
     steps:
       - dockerhub-load:
           tag: minim<< parameters.variant >>
+      - unless:
+          condition: 
+            equal: [ master, << pipeline.git.branch >>]
+          # only PR testing – not needed anymore
+          steps:
+            - dockerhub-remove:
+                tag: minim<< parameters.variant >>
+                when: always
       - build:
           dep: minim<< parameters.variant >>
           tag: medi<< parameters.variant >>
@@ -180,11 +188,24 @@ jobs:
     steps:
       - dockerhub-load:
           tag: medi<< parameters.variant >>
+      - unless:
+          condition: 
+            equal: [ master, << pipeline.git.branch >>]
+          # only PR testing – not needed anymore
+          steps:
+            - dockerhub-remove:
+                tag: medi<< parameters.variant >>
+                when: always
       - build:
           dep: medi<< parameters.variant >>
           tag: maxim<< parameters.variant >>
-      - dockerhub-store:
-          tag: maxim<< parameters.variant >>
+      - when:
+          condition: 
+            equal: [ master, << pipeline.git.branch >>]
+          # only PR testing – not needed
+          steps:
+            - dockerhub-store:
+                tag: maxim<< parameters.variant >>
   deploy-mini:
     docker:
       - image: cimg/base:current-22.04
@@ -199,6 +220,7 @@ jobs:
           tag: minim<< parameters.variant >>
       - dockerhub-remove:
           tag: minim<< parameters.variant >>
+          when: always
   deploy-medi:
     docker:
       - image: cimg/base:current-22.04
@@ -213,6 +235,7 @@ jobs:
           tag: medi<< parameters.variant >>
       - dockerhub-remove:
           tag: medi<< parameters.variant >>
+          when: always
   deploy-maxi:
     docker:
       - image: cimg/base:current-22.04
@@ -227,6 +250,7 @@ jobs:
           tag: maxim<< parameters.variant >>
       - dockerhub-remove:
           tag: maxim<< parameters.variant >>
+          when: always
 
 workflows:
   version: 2
