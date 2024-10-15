@@ -1,23 +1,20 @@
 # Changelog
 
-## [v2024-10-11](https://github.com/OCR-D/ocrd_all/releases/v2024-10-11)
-
-### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [ff46bd7](https://github.com/OCR-D/ocrd_fileformat/commits/ff46bd7)..[8ab078d](https://github.com/OCR-D/ocrd_fileformat/commits/8ab078d)
-
-> Release: [v0.11.1](https://github.com/OCR-D/ocrd_fileformat/releases/v0.11.1)
-
-
-## [v2024-10-11](https://github.com/OCR-D/ocrd_all/releases/v2024-10-11)
-
-### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [38ce45b](https://github.com/cisocrgroup/ocrd_cis/commits/38ce45b)..[db65d7f](https://github.com/cisocrgroup/ocrd_cis/commits/db65d7f)
-
-> Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
-
-
 ## Unreleased
 
-## [v2024-10-11](https://github.com/OCR-D/ocrd_all/releases/v2024-10-11)
+## [v2024-10-15](https://github.com/OCR-D/ocrd_all/releases/v2024-10-15)
 
+Changes:
+
+  - added new module ocrd_page2alto (also in ocrd_fileformat, now with standalone processor)
+  - new fixup recipes for shared `venv` without dependency conflicts
+  - protect `venv` creation by semaphore as well
+  - docker: update OCRD_MODULES (default selection for custom `make docker`)
+  - docker: fix `minimum` and `medium` module lists
+  - docker: do not rm `venv` created by previous stage
+  - CI/CD: rewrite CircleCI config to split up mini/medi/maxi into interdependent incremental jobs
+  - CI/CD: fix storing test results
+  
 ### [core](https://github.com/OCR-D/core) [92b217e](https://github.com/OCR-D/core/commits/92b217e)..[85bde15](https://github.com/OCR-D/core/commits/85bde15)
 
 > Release: [v2.70.0](https://github.com/OCR-D/core/releases/v2.70.0)
@@ -135,10 +132,11 @@
   > * Merge branch 'master' into resolve-1257
   > * load tool json locally
 
-### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [129e6eb](https://github.com/qurator-spk/dinglehopper/commits/129e6eb)..[2e6fe0c](https://github.com/qurator-spk/dinglehopper/commits/2e6fe0c)
+### [dinglehopper](https://github.com/qurator-spk/dinglehopper) [129e6eb](https://github.com/qurator-spk/dinglehopper/commits/129e6eb)..[071e6a8](https://github.com/qurator-spk/dinglehopper/commits/071e6a8)
 
 > Release: [v0.9.7](https://github.com/qurator-spk/dinglehopper/releases/v0.9.7)
 
+  > * Merge pull request #120 from joschrew/dockerfile
   > * Merge pull request #113 from qurator-spk/python-3.13
   > * ✔ pre-commit: Add license check
   > * 🐛 Fix --version option in OCR-D CLI
@@ -220,7 +218,7 @@ Submodule eynollah 032a99e...51f6ef6:
   > * 🧹 Update OCR-D API usage w.r.t. workspace.add_file()
   > * ⚙ pre-commit: Update hooks
 
-### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [38ce45b](https://github.com/cisocrgroup/ocrd_cis/commits/38ce45b)..[fe122ae](https://github.com/cisocrgroup/ocrd_cis/commits/fe122ae)
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [38ce45b](https://github.com/cisocrgroup/ocrd_cis/commits/38ce45b)..[db65d7f](https://github.com/cisocrgroup/ocrd_cis/commits/db65d7f)
 
 > Release: [v0.1.5](https://github.com/cisocrgroup/ocrd_cis/releases/v0.1.5)
 
@@ -257,7 +255,7 @@ Submodule eynollah 032a99e...51f6ef6:
   > * add Dockerhub CD
   > * Merge pull request #5 from joschrew/dockerfile
 
-### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [ff46bd7](https://github.com/OCR-D/ocrd_fileformat/commits/ff46bd7)..[60cb696](https://github.com/OCR-D/ocrd_fileformat/commits/60cb696)
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [ff46bd7](https://github.com/OCR-D/ocrd_fileformat/commits/ff46bd7)..[8ab078d](https://github.com/OCR-D/ocrd_fileformat/commits/8ab078d)
 
 > Release: [v0.11.1](https://github.com/OCR-D/ocrd_fileformat/releases/v0.11.1)
 
@@ -325,10 +323,18 @@ Submodule eynollah 032a99e...51f6ef6:
 
   > * Merge pull request #1015 from Gornoka:patch-1
 
-### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [978f425](https://github.com/qurator-spk/sbb_binarization/commits/978f425)..[ccfc821](https://github.com/qurator-spk/sbb_binarization/commits/ccfc821)
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [978f425](https://github.com/qurator-spk/sbb_binarization/commits/978f425)..[d259795](https://github.com/qurator-spk/sbb_binarization/commits/d259795)
 
 > Release: [v0.1.0](https://github.com/qurator-spk/sbb_binarization/releases/v0.1.0)
 
+  > * docker: rebase on core-cuda stage
+  > * forgot to include package data
+  > * dockerfile: switch to pyproject.toml
+  > * relax TF requirement
+  > * CI: remove py37 from matrix
+  > * remove setup.py
+  > * add pyproject.toml
+  > * make docker: fix docker tag
   > * remove shebang from setup.py (somehow breaking py39)
   > * CI: increase memory on VM
   > * make install: update setuptools, too
