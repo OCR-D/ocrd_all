@@ -10,12 +10,13 @@ commands:
           string
     steps:
       - run:
+          name: Login to Docker Hub
+          command: echo "$DOCKERHUB_PASS" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+      - run:
           name: save image
           command: |
-            set -x
-            TMPTAG=<< parameters.tag >>-${CIRCLE_SHA1:0:8}
-            docker tag ocrd/all:<< parameters.tag >> ocrd/all:$TMPTAG
-            docker push ocrd/all:$TMPTAG
+            docker tag ocrd/all:<< parameters.tag >> ocrd/all:<< parameters.tag >>-${CIRCLE_SHA1}
+            docker push ocrd/all:<< parameters.tag >>-${CIRCLE_SHA1}
           no_output_timeout: 30m
   dockerhub-load:
     description: "load an image from Dockerhub"
@@ -28,9 +29,8 @@ commands:
       - run:
           name: load previous image
           command: |
-            TMPTAG=<< parameters.tag >>-${CIRCLE_SHA1:0:8}
-            docker pull ocrd/all:$TMPTAG
-            docker tag ocrd/all:$TMPTAG ocrd/all:<< parameters.tag >>
+            docker pull ocrd/all:<< parameters.tag >>-${CIRCLE_SHA1}
+            docker tag ocrd/all:<< parameters.tag >>-${CIRCLE_SHA1} ocrd/all:<< parameters.tag >>
   dockerhub-remove:
     description: "remove an image on Dockerhub"
     parameters:
@@ -41,9 +41,8 @@ commands:
     steps:
       - run:
           command: |
-            TMPTAG=<< parameters.tag >>-${CIRCLE_SHA1:0:8}
             HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"$DOCKERHUB_USERNAME\", \"password\": \"$DOCKERHUB_PASSWORD\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
-            curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/ocrd/repositories/all/tags/$TMPTAG/
+            curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/ocrd/repositories/all/tags/<< parameters.tag >>-${CIRCLE_SHA1}/
   build:
     description: "template for all docker-* build jobs"
     parameters:
@@ -68,7 +67,6 @@ commands:
           command: |
             mkdir test-results
             docker run --rm -v $PWD:/data ocrd/all:<< parameters.tag >> make -C /build/core deps-test test PYTEST_ARGS=--junitxml=/data/test-results/core.xml
-            ls -ltr test-results
       - store_test_results:
           path: test-results/core.xml
   deploy:
@@ -148,8 +146,6 @@ jobs:
         type:
           string
     steps:
-      - run:
-          command: echo 'export CIRCLE_SHA1="$CIRCLE_SHA1"' >> $BASH_ENV
       - build:
           tag: minim<< parameters.variant >>
       - dockerhub-store:
@@ -162,8 +158,6 @@ jobs:
         type:
           string
     steps:
-      - run:
-          command: echo 'export CIRCLE_SHA1="$CIRCLE_SHA1"' >> $BASH_ENV
       - dockerhub-load:
           tag: minim<< parameters.variant >>
       - build:
@@ -179,8 +173,6 @@ jobs:
         type:
           string
     steps:
-      - run:
-          command: echo 'export CIRCLE_SHA1="$CIRCLE_SHA1"' >> $BASH_ENV
       - dockerhub-load:
           tag: medi<< parameters.variant >>
       - build:
@@ -196,8 +188,6 @@ jobs:
         type:
           string
     steps:
-      - run:
-          command: echo 'export CIRCLE_SHA1="$CIRCLE_SHA1"' >> $BASH_ENV
       - dockerhub-load:
           tag: minim<< parameters.variant >>
       - deploy:
@@ -212,8 +202,6 @@ jobs:
         type:
           string
     steps:
-      - run:
-          command: echo 'export CIRCLE_SHA1="$CIRCLE_SHA1"' >> $BASH_ENV
       - dockerhub-load:
           tag: medi<< parameters.variant >>
       - deploy:
@@ -228,8 +216,6 @@ jobs:
         type:
           string
     steps:
-      - run:
-          command: echo 'export CIRCLE_SHA1="$CIRCLE_SHA1"' >> $BASH_ENV
       - dockerhub-load:
           tag: maxim<< parameters.variant >>
       - deploy:
