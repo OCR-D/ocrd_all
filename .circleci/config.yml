@@ -8,16 +8,13 @@ commands:
         description: "image tag (full variant name) to be saved"
         type:
           string
-      sha:
-        description: "image tag (temporary alias) to save as"
-        type:
-          string
     steps:
       - run:
           name: save image
           command: |
-            docker tag ocrd/all:<< parameters.tag >> ocrd/all:<< parameters.sha >>
-            docker push ocrd/all:<< parameters.sha >>
+            TMPTAG=<< parameters.tag >>-${CIRCLE_SHA1:0:8}
+            docker tag ocrd/all:<< parameters.tag >> ocrd/all:$TMPTAG
+            docker push ocrd/all:$TMPTAG
           no_output_timeout: 30m
   dockerhub-load:
     description: "load an image from Dockerhub"
@@ -26,28 +23,26 @@ commands:
         description: "image tag (full variant name) to be pulled"
         type:
           string
-      sha:
-        description: "image tag (temporary alias) to pull as"
-        type:
-          string
     steps:
       - run:
           name: load previous image
           command: |
-            docker pull ocrd/all:<< parameters.sha >>
-            docker tag ocrd/all:<< parameters.sha >> ocrd/all:<< parameters.tag >>
+            TMPTAG=<< parameters.tag >>-${CIRCLE_SHA1:0:8}
+            docker pull ocrd/all:$TMPTAG
+            docker tag ocrd/all:$TMPTAG ocrd/all:<< parameters.tag >>
   dockerhub-remove:
     description: "remove an image on Dockerhub"
     parameters:
-      sha:
-        description: "image tag (temporary alias) to be removed"
+      tag:
+        description: "image tag (full variant name) to be removed"
         type:
           string
     steps:
       - run:
           command: |
+            TMPTAG=<< parameters.tag >>-${CIRCLE_SHA1:0:8}
             HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"$DOCKERHUB_USERNAME\", \"password\": \"$DOCKERHUB_PASSWORD\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
-            curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/ocrd/repositories/all/tags/<< parameters.sha >>/
+            curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/ocrd/repositories/all/tags/$TMPTAG/
   build:
     description: "template for all docker-* build jobs"
     parameters:
@@ -151,11 +146,12 @@ jobs:
         type:
           string
     steps:
+      - run:
+          command: echo 'export CIRCLE_SHA1="$CIRCLE_SHA1"' >> $BASH_ENV
       - build:
           tag: minim<< parameters.variant >>
       - dockerhub-store:
           tag: minim<< parameters.variant >>
-          sha: minim<< parameters.variant >>-${CIRCLE_SHA1}
   build-medi:
     docker:
       - image: cimg/base:current-22.04
@@ -164,15 +160,15 @@ jobs:
         type:
           string
     steps:
+      - run:
+          command: echo 'export CIRCLE_SHA1="$CIRCLE_SHA1"' >> $BASH_ENV
       - dockerhub-load:
-          sha: minim<< parameters.variant >>-${CIRCLE_SHA1}
           tag: minim<< parameters.variant >>
       - build:
           dep: minim<< parameters.variant >>
           tag: medi<< parameters.variant >>
       - dockerhub-store:
           tag: medi<< parameters.variant >>
-          sha: medi<< parameters.variant >>-${CIRCLE_SHA1}
   build-maxi:
     docker:
       - image: cimg/base:current-22.04
@@ -181,15 +177,15 @@ jobs:
         type:
           string
     steps:
+      - run:
+          command: echo 'export CIRCLE_SHA1="$CIRCLE_SHA1"' >> $BASH_ENV
       - dockerhub-load:
-          sha: medi<< parameters.variant >>-${CIRCLE_SHA1}
           tag: medi<< parameters.variant >>
       - build:
           dep: medi<< parameters.variant >>
           tag: maxim<< parameters.variant >>
       - dockerhub-store:
           tag: maxim<< parameters.variant >>
-          sha: maxim<< parameters.variant >>-${CIRCLE_SHA1}
   deploy-mini:
     docker:
       - image: cimg/base:current-22.04
@@ -198,13 +194,14 @@ jobs:
         type:
           string
     steps:
+      - run:
+          command: echo 'export CIRCLE_SHA1="$CIRCLE_SHA1"' >> $BASH_ENV
       - dockerhub-load:
-          sha: minim<< parameters.variant >>-${CIRCLE_SHA1}
           tag: minim<< parameters.variant >>
       - deploy:
           tag: minim<< parameters.variant >>
       - dockerhub-remove:
-          sha: minim<< parameters.variant >>-${CIRCLE_SHA1}
+          tag: minim<< parameters.variant >>
   deploy-medi:
     docker:
       - image: cimg/base:current-22.04
@@ -213,13 +210,14 @@ jobs:
         type:
           string
     steps:
+      - run:
+          command: echo 'export CIRCLE_SHA1="$CIRCLE_SHA1"' >> $BASH_ENV
       - dockerhub-load:
-          sha: medi<< parameters.variant >>-${CIRCLE_SHA1}
           tag: medi<< parameters.variant >>
       - deploy:
           tag: medi<< parameters.variant >>
       - dockerhub-remove:
-          sha: medi<< parameters.variant >>-${CIRCLE_SHA1}
+          tag: medi<< parameters.variant >>
   deploy-maxi:
     docker:
       - image: cimg/base:current-22.04
@@ -228,13 +226,14 @@ jobs:
         type:
           string
     steps:
+      - run:
+          command: echo 'export CIRCLE_SHA1="$CIRCLE_SHA1"' >> $BASH_ENV
       - dockerhub-load:
-          sha: maxim<< parameters.variant >>-${CIRCLE_SHA1}
           tag: maxim<< parameters.variant >>
       - deploy:
           tag: maxim<< parameters.variant >>
       - dockerhub-remove:
-          sha: maxim<< parameters.variant >>-${CIRCLE_SHA1}
+          tag: maxim<< parameters.variant >>
 
 workflows:
   version: 2
