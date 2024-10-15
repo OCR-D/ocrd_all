@@ -42,7 +42,8 @@ commands:
       - run:
           name: use Dockerhub API to remove temporary image
           command: |
-            HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"$DOCKERHUB_USERNAME\", \"password\": \"$DOCKERHUB_PASSWORD\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
+            HUB_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d "{\"username\": \"$DOCKERHUB_USERNAME\", \"password\": \"$DOCKERHUB_PASS\"}" https://hub.docker.com/v2/users/login/ | jq -r .token)
+            set -x
             curl -i -X DELETE -H "Accept: application/json" -H "Authorization: JWT $HUB_TOKEN" https://hub.docker.com/v2/namespaces/ocrd/repositories/all/tags/<< parameters.tag >>-${CIRCLE_SHA1}/
           # must be unconditional (both on_error and on_success)
           when: always
