@@ -2,48 +2,26 @@ dest: docker-compose.yaml
 processors:
     - name: ocrd-cis-ocropy-binarize
       image: ocrd/cis
-      volumes:
-        - "${RUN_NETWORK_DIR}/my_ocrd_logging.conf:/ocrd_logging.conf"
     - name: ocrd-cis-ocropy-denoise
       image: ocrd/cis
-      volumes:
-        - "${RUN_NETWORK_DIR}/my_ocrd_logging.conf:/ocrd_logging.conf"
     - name: ocrd-cis-ocropy-deskew
       image: ocrd/cis
-      volumes:
-        - "${RUN_NETWORK_DIR}/my_ocrd_logging.conf:/ocrd_logging.conf"
     - name: ocrd-cis-ocropy-clip
       image: ocrd/cis
-      volumes:
-        - "${RUN_NETWORK_DIR}/my_ocrd_logging.conf:/ocrd_logging.conf"
     - name: ocrd-cis-ocropy-segment
       image: ocrd/cis
-      volumes:
-        - "${RUN_NETWORK_DIR}/my_ocrd_logging.conf:/ocrd_logging.conf"
     - name: ocrd-cis-ocropy-dewarp
       image: ocrd/cis
-      volumes:
-        - "${RUN_NETWORK_DIR}/my_ocrd_logging.conf:/ocrd_logging.conf"
     - name: ocrd-fileformat-transform
       image: ocrd/fileformat
-      volumes:
-        - "${RUN_NETWORK_DIR}/my_ocrd_logging.conf:/ocrd_logging.conf"
     - name: ocrd-segment-repair
       image: ocrd/segment
-      volumes:
-        - "${RUN_NETWORK_DIR}/my_ocrd_logging.conf:/ocrd_logging.conf"
     - name: ocrd-tesserocr-segment-region
       image: ocrd/tesserocr
-      volumes:
-        - "${RUN_NETWORK_DIR}/my_ocrd_logging.conf:/ocrd_logging.conf"
     - name: ocrd-tesserocr-recognize
       image: ocrd/tesserocr
-      volumes:
-        - "${RUN_NETWORK_DIR}/my_ocrd_logging.conf:/ocrd_logging.conf"
     - name: ocrd-anybaseocr-crop
       image: ocrd/anybaseocr
-      volumes:
-        - "${RUN_NETWORK_DIR}/my_ocrd_logging.conf:/ocrd_logging.conf"
 environment:
     # this folder contains the workspaces and must be created by the user
     data_dir_host: /tmp/mydata
