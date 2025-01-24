@@ -4,6 +4,7 @@ import time
 from collections import Counter
 from dataclasses import dataclass, field
 from os import chdir, environ
+from os.path import dirname
 from pathlib import Path
 from typing import Any, Dict, ForwardRef, List, Optional, Type
 
@@ -166,6 +167,8 @@ def create_env(env: Type[ForwardRef("Environment")], dest: str):
         lines.append(f"DATA_DIR_HOST={env.data_dir_host}")
     if env.internal_callback_url:
         lines.append(f"INTERNAL_CALLBACK_URL={env.internal_callback_url}")
+    if env.run_network_dir:
+        lines.append(f"RUN_NETWORK_DIR={env.run_network_dir}")
 
     with open(dest, "w+") as fout:
         fout.write("\n".join(lines))
@@ -248,6 +251,7 @@ PROCESSING_SERVER_TEMPLATE = """
     user: "${USER_ID}:${GROUP_ID}"
     volumes:
       - "${DATA_DIR_HOST}:/data"
+      - "${RUN_NETWORK_DIR}/ocrd-all-tool.json:/build/core/src/ocrd/ocrd-all-tool.json"
     ports:
       - ${OCRD_PS_PORT}:8000
 """
@@ -309,6 +313,7 @@ class Environment:
     group_id: int = 1000
     data_dir_host: str = "/tmp/data"
     internal_callback_url: str = "http://ocrd-processing-server:${OCRD_PS_PORT}"
+    run_network_dir: str = dirname(__file__)
 
 
 @dataclass
