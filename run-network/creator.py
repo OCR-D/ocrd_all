@@ -341,9 +341,14 @@ PROCESSOR_NAME = "ocrd-cis-ocropy-binarize"
 @click.option("-I", "--input-file-grp")
 @click.option("-O", "--output-file-grp")
 @click.option("-m", "--mets", help="METS to process", required=True)
-def cli(mets, input_file_grp, output_file_grp):
+@click.option('-P', '--parameter-override',
+              help="Parameter override",
+              nargs=2,
+              multiple=True,
+              callback=lambda ctx, param, kv: kv)
+def cli(mets, input_file_grp, output_file_grp, parameter_override):
     address = f"http://localhost:{PROCESSING_SERVER_PORT}"
-    ocrd_cli([
+    args = [
         "network", "client", "processing", "run",
         PROCESSOR_NAME,
         "--address", address,
@@ -352,7 +357,12 @@ def cli(mets, input_file_grp, output_file_grp):
         "-O", output_file_grp,
         "--block",
         "--print-state",
-    ])
+    ]
+    for (key, value) in parameter_override:
+        args.append("-P")
+        args.append(key)
+        args.append(value)
+    ocrd_cli(args)
 
 
 if __name__ == "__main__":
