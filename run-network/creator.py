@@ -3,7 +3,7 @@ import subprocess
 import time
 from collections import Counter
 from dataclasses import dataclass, field
-from os import chdir, environ
+from os import chdir, environ, chmod
 from os.path import dirname
 from pathlib import Path
 from typing import Any, Dict, ForwardRef, List, Optional, Type
@@ -46,6 +46,53 @@ def start(config_path):
     command = ["docker-compose", "-f", f"{dest.name}", "up", "-d"]
     subprocess.run(command)
     wait_for_startup(f"http://localhost:{config.environment.ocrd_ps_port}")
+
+
+@cli.command()
+@click.argument("venv_bin_path")
+@click.argument("config_path")
+def create_clients(venv_bin_path: str, config_path: str):
+    """ Creates a script for every processor to call and ocrd-process for workflow runs
+
+    The processing server and the workers run in docker. To simplyfy the invocation a delegator for
+    every existing worker is created. These scripts are added to the venv's bin directory.
+    """
+    if not Path(venv_bin_path).exists():
+        exit(f"path to venv not found: {venv_bin_path}")
+    elif not Path(config_path).exists():
+        exit(f"path to config file not found: {config_path}")
+
+    config: Config = Config.from_file(config_path)
+    port = config.environment.ocrd_ps_port
+
+    for proc in config.processors:
+        content = re.sub(
+            r"PROCESSOR_NAME\s*=\s*\"[^\"]+\"",
+            f'PROCESSOR_NAME = "{proc.name}"',
+            DELEGATOR_PROCESSOR_TEMPLATE.lstrip(),
+            1
+        )
+        content = re.sub(
+            r"PROCESSING_SERVER_PORT\s*=\s*[0-9]+",
+            f"PROCESSING_SERVER_PORT = {port}",
+            content,
+            1
+        )
+        dest = Path(venv_bin_path) / proc.name
+        with open(dest, "w") as fout:
+            fout.write(content)
+        chmod(dest, 0o755)
+
+    content = re.sub(
+        r"PROCESSING_SERVER_PORT\s*=\s*[0-9]+",
+        f"PROCESSING_SERVER_PORT = {port}",
+        DELEGATOR_WORKFLOW_TEMPLATE.lstrip(),
+        1
+    )
+    dest = Path(venv_bin_path) / "ocrd-process"
+    with open(dest, "w") as fout:
+        fout.write(content)
+    chmod(dest, 0o755)
 
 
 # @cli.command()
@@ -277,6 +324,68 @@ RABBITMQ_TEMPLATE = """
     ports:
       - "5672:5672"
       - "15672:15672"
+"""
+
+
+DELEGATOR_PROCESSOR_TEMPLATE = """#!/usr/bin/env python
+
+from ocrd.cli import cli as ocrd_cli
+import click
+
+
+PROCESSING_SERVER_PORT = 8000
+PROCESSOR_NAME = "ocrd-cis-ocropy-binarize"
+
+
+@click.command()
+@click.option("-I", "--input-file-grp")
+@click.option("-O", "--output-file-grp")
+@click.option("-m", "--mets", help="METS to process", required=True)
+def cli(mets, input_file_grp, output_file_grp):
+    address = f"http://localhost:{PROCESSING_SERVER_PORT}"
+    ocrd_cli([
+        "network", "client", "processing", "run",
+        PROCESSOR_NAME,
+        "--address", address,
+        "-m", mets,
+        "-I", input_file_grp,
+        "-O", output_file_grp,
+        "--block",
+        "--print-state",
+    ])
+
+
+if __name__ == "__main__":
+    cli()
+"""
+
+
+DELEGATOR_WORKFLOW_TEMPLATE = """#!/usr/bin/env python
+
+from ocrd.cli import cli as ocrd_cli
+import click
+
+
+PROCESSING_SERVER_PORT = 8000
+
+
+@click.command()
+@click.option("-w", "--workflow")
+@click.option("-m", "--mets", help="METS to process", required=True)
+def cli(mets, workflow):
+    address = f"http://localhost:{PROCESSING_SERVER_PORT}"
+    ocrd_cli([
+        "network", "client", "workflow", "run",
+        "--address", address,
+        "-m", mets,
+        "-w", workflow,
+        "--block",
+        "--print-state",
+    ])
+
+
+if __name__ == "__main__":
+    cli()
 """
 
 

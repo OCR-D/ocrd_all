@@ -889,9 +889,14 @@ docker: docker-latest
 OCRD_NETWORK_CONFIG ?= run-network/odem-workflow-config.yaml
 .PHONY: run-network
 run-network:
-	@$(PYTHON) run-network/creator.py create-docker $(OCRD_NETWORK_CONFIG)
-	@$(PYTHON) run-network/creator.py create-env $(OCRD_NETWORK_CONFIG)
-	@$(PYTHON) run-network/creator.py start $(OCRD_NETWORK_CONFIG)
+	@$(PYTHON) -m venv $(VIRTUAL_ENV)
+	@$(VIRTUAL_ENV)/bin/pip install click requests pyaml shapely==1.8.5 ocrd
+	@$(VIRTUAL_ENV)/bin/python run-network/creator.py create-docker $(OCRD_NETWORK_CONFIG)
+	@$(VIRTUAL_ENV)/bin/python run-network/creator.py create-env $(OCRD_NETWORK_CONFIG)
+	@$(VIRTUAL_ENV)/bin/python run-network/creator.py start $(OCRD_NETWORK_CONFIG)
+
+	@$(VIRTUAL_ENV)/bin/python run-network/creator.py create-clients $(VIRTUAL_ENV)/bin $(OCRD_NETWORK_CONFIG)
+
 
 # do not search for implicit rules here:
 Makefile: ;
