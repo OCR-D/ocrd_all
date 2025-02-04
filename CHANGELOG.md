@@ -1,5 +1,118 @@
 # Changelog
 
+## [v2025-02-04](https://github.com/OCR-D/ocrd_all/releases/v2025-02-04)
+
+### [core](https://github.com/OCR-D/core) [85bde15](https://github.com/OCR-D/core/commits/85bde15)..[71c0c19](https://github.com/OCR-D/core/commits/71c0c19)
+
+> Release: [v2.71.1](https://github.com/OCR-D/core/releases/v2.71.1)
+
+  > * :package: v2.71.1
+  > * :memo: changelog
+  > * ocrd_cli_wrap_processor: always do initLogging
+  > * :package: v2.71.0
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'github/initlogging-root'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'github/fix-make-docs'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'github/fix-network-logging'
+  > * fix internal_callback logging message
+  > * deps-cuda: make sure cudnn gets installed, pin torch version for CUDA 11
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [ff6bf3f](https://github.com/ASVLeipzig/cor-asv-ann/commits/ff6bf3f)..[eb47a54](https://github.com/ASVLeipzig/cor-asv-ann/commits/eb47a54)
+
+> Release: [v0.1.15](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.1.15)
+
+  > * CircleCI: add CD via Dockerhub
+  > * CD: rebase Docker on ocrd/core-cuda-tf1 stage
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [51f6ef6](https://github.com/qurator-spk/eynollah/commits/51f6ef6)..[bc9dddd](https://github.com/qurator-spk/eynollah/commits/bc9dddd)
+
+> Release: [v0.3.1](https://github.com/qurator-spk/eynollah/releases/v0.3.1)
+
+  > * Update README.md
+  > * relax tf2 requirement to < 2.13
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [3459b41](https://github.com/OCR-D/ocrd_anybaseocr/commits/3459b41)..[483848f](https://github.com/OCR-D/ocrd_anybaseocr/commits/483848f)
+
+> Release: [v1.10.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.10.0)
+
+  > * Merge remote-tracking branch 'bertsky/patch-3'
+  > * Merge branch 'fix-ci-versions'
+  > * Merge branch 'distutils'
+  > * Merge pull request #101 from bertsky/master
+  > * :package: v1.10.0
+  > * docker: build on top of 2.63
+  > * Base Docker on core-cuda
+  > * Set docker metadata with makefile
+  > * Add things required by spec to Dockerfile
+  > * Clear pip cache after installing in Dockerfile
+  > * Rename build folder to not interfere with core-img
+  > * Update dockerfile
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [d9cde1f](https://github.com/OCR-D/ocrd_calamari/commits/d9cde1f)..[d7c30b5](https://github.com/OCR-D/ocrd_calamari/commits/d7c30b5)
+
+> Release: [v1.0.6](https://github.com/OCR-D/ocrd_calamari/releases/v1.0.6)
+
+  > * Merge pull request #119 from OCR-D/dockerfile
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [8ab078d](https://github.com/OCR-D/ocrd_fileformat/commits/8ab078d)..[2e821ea](https://github.com/OCR-D/ocrd_fileformat/commits/2e821ea)
+
+> Release: [v0.11.2](https://github.com/OCR-D/ocrd_fileformat/releases/v0.11.2)
+
+  > * :package: v0.11.2
+  > * :memo: changelog
+  > * update repo/ocr-fileformat to current master
+
+### [ocrd_froc](https://github.com/OCR-D/ocrd_froc) [42f1ce0](https://github.com/OCR-D/ocrd_froc/commits/42f1ce0)..[5a5d774](https://github.com/OCR-D/ocrd_froc/commits/5a5d774)
+
+> Release: [v0.6.1](https://github.com/OCR-D/ocrd_froc/releases/v0.6.1)
+
+  > * Merge pull request #18 from OCR-D/dockerfile
+
+### [ocrd_kraken](https://github.com/OCR-D/ocrd_kraken) [a6160ce](https://github.com/OCR-D/ocrd_kraken/commits/a6160ce)..[17cefc6](https://github.com/OCR-D/ocrd_kraken/commits/17cefc6)
+
+> Release: [v0.4.1](https://github.com/OCR-D/ocrd_kraken/releases/v0.4.1)
+
+  > * Merge pull request #45 from OCR-D/dockerfile
+
+### [ocrd_neat](https://github.com/qurator-spk/page2tsv) [06c8b38](https://github.com/qurator-spk/page2tsv/commits/06c8b38)..[1982216](https://github.com/qurator-spk/page2tsv/commits/1982216)
+
+> Release: [v0.0.1](https://github.com/qurator-spk/page2tsv/releases/v0.0.1)
+
+  > * fix command line output
+  > * make code more robust
+  > * remove spam
+  > * add tsv2tsv tool;make easy re-processing of tsv files possible
+  > * Merge pull request #17 from r0man-ist/patch-1
+
+### [ocrd_pagetopdf](https://github.com/UB-Mannheim/ocrd_pagetopdf) [7c5ab70](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/7c5ab70)..[7e8c860](https://github.com/UB-Mannheim/ocrd_pagetopdf/commits/7e8c860)
+
+> Release: [v1.1.0](https://github.com/UB-Mannheim/ocrd_pagetopdf/releases/v1.1.0)
+
+  > * Fix dockerimage creation
+
+### [opencv-python](https://github.com/skvark/opencv-python) [6a181ce](https://github.com/skvark/opencv-python/commits/6a181ce)..[255564a](https://github.com/skvark/opencv-python/commits/255564a)
+
+> Release: [86](https://github.com/skvark/opencv-python/releases/86)
+
+  > * Merge pull request #1076 from asmorkalov:as/github_checkout_again
+  > * Merge pull request #1074 from asmorkalov:as/python3.13
+  > * Merge pull request #1071 from asmorkalov:as/opencv_4.11_tags
+  > * Merge pull request #1031 from mayeut:system-cmake
+  > * Merge pull request #1061 from SaikWolf:4.x
+  > * Merge pull request #1000 from zhanwenchen:patch-1
+  > * Merge pull request #1073 from asmorkalov:as/nasm_windows
+  > * Merge pull request #1065 from asmorkalov:pre_4.11
+
+### [sbb_binarization](https://github.com/qurator-spk/sbb_binarization) [d259795](https://github.com/qurator-spk/sbb_binarization/commits/d259795)..[b2d0d5c](https://github.com/qurator-spk/sbb_binarization/commits/b2d0d5c)
+
+> Release: [v0.1.0](https://github.com/qurator-spk/sbb_binarization/releases/v0.1.0)
+
+  > * add citation to README
+  > * Update README.md
+  > * Merge pull request #70 from bertsky/add-docker
+
 ## Unreleased
 
 ## [v2024-10-15](https://github.com/OCR-D/ocrd_all/releases/v2024-10-15)
