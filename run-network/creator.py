@@ -19,7 +19,7 @@ def cli():
     pass
 
 
-@cli.command("create-docker")
+@cli.command("create-compose")
 @click.argument("config_path")
 def create_docker_cli(config_path: str):
     """Creates a docker-compose file"""
@@ -27,7 +27,7 @@ def create_docker_cli(config_path: str):
     create_docker_compose(config)
 
 
-@cli.command("create-env")
+@cli.command("create-dotenv")
 @click.argument("config_path")
 def create_env_cli(config_path: str):
     """Creates .env for docker-compose"""
@@ -49,6 +49,17 @@ def start(config_path):
 
 
 @cli.command()
+@click.argument("config_path")
+def stop(config_path):
+    """Stop docker-compose services in base_dir"""
+    config: Config = Config.from_file(config_path)
+    dest = Path(config.dest)
+    chdir(dest.parent)
+    command = ["docker-compose", "-f", f"{dest.name}", "down"]
+    subprocess.run(command)
+
+
+@cli.command()
 @click.argument("venv_bin_path")
 @click.argument("config_path")
 def create_clients(venv_bin_path: str, config_path: str):
@@ -66,29 +77,13 @@ def create_clients(venv_bin_path: str, config_path: str):
     port = config.environment.ocrd_ps_port
 
     for proc in config.processors:
-        content = re.sub(
-            r"PROCESSOR_NAME\s*=\s*\"[^\"]+\"",
-            f'PROCESSOR_NAME = "{proc.name}"',
-            DELEGATOR_PROCESSOR_TEMPLATE.lstrip(),
-            1
-        )
-        content = re.sub(
-            r"PROCESSING_SERVER_PORT\s*=\s*[0-9]+",
-            f"PROCESSING_SERVER_PORT = {port}",
-            content,
-            1
-        )
+        content = DELEGATOR_PROCESSOR_TEMPLATE.format(processor_name=proc.name, ps_port=port)
         dest = Path(venv_bin_path) / proc.name
         with open(dest, "w") as fout:
             fout.write(content)
         chmod(dest, 0o755)
 
-    content = re.sub(
-        r"PROCESSING_SERVER_PORT\s*=\s*[0-9]+",
-        f"PROCESSING_SERVER_PORT = {port}",
-        DELEGATOR_WORKFLOW_TEMPLATE.lstrip(),
-        1
-    )
+    content = DELEGATOR_WORKFLOW_TEMPLATE.format(ps_port=port)
     dest = Path(venv_bin_path) / "ocrd-process"
     with open(dest, "w") as fout:
         fout.write(content)
@@ -329,40 +324,29 @@ RABBITMQ_TEMPLATE = """
 
 DELEGATOR_PROCESSOR_TEMPLATE = """#!/usr/bin/env python
 
-from ocrd.cli import cli as ocrd_cli
+from ocrd_network.cli import client_cli
 import click
 
-
-PROCESSING_SERVER_PORT = 8000
-PROCESSOR_NAME = "ocrd-cis-ocropy-binarize"
+run_cli = client_cli.commands['processing'].commands['run']
 
 
-@click.command()
-@click.option("-I", "--input-file-grp")
-@click.option("-O", "--output-file-grp")
-@click.option("-m", "--mets", help="METS to process", required=True)
-@click.option('-P', '--parameter-override',
-              help="Parameter override",
-              nargs=2,
-              multiple=True,
-              callback=lambda ctx, param, kv: kv)
-def cli(mets, input_file_grp, output_file_grp, parameter_override):
-    address = f"http://localhost:{PROCESSING_SERVER_PORT}"
-    args = [
-        "network", "client", "processing", "run",
-        PROCESSOR_NAME,
-        "--address", address,
-        "-m", mets,
-        "-I", input_file_grp,
-        "-O", output_file_grp,
-        "--block",
-        "--print-state",
-    ]
-    for (key, value) in parameter_override:
-        args.append("-P")
-        args.append(key)
-        args.append(value)
-    ocrd_cli(args)
+def callback(*args, **kwargs):
+    kwargs['address'] = "http://localhost:{ps_port}"
+    kwargs['block'] = True
+    kwargs['print_state'] = True
+    return run_cli.callback("{processor_name}", *args, **kwargs)
+
+
+params = [param for param in run_cli.params
+          if param.name not in [
+                  'processor_name',
+                  'address',
+                  'block',
+                  'print_state',
+          ]]
+cli = click.Command(name="{processor_name}",
+                    callback=callback,
+                    params=params)
 
 
 if __name__ == "__main__":
@@ -372,26 +356,27 @@ if __name__ == "__main__":
 
 DELEGATOR_WORKFLOW_TEMPLATE = """#!/usr/bin/env python
 
-from ocrd.cli import cli as ocrd_cli
+from ocrd_network.cli import client_cli
 import click
 
 
-PROCESSING_SERVER_PORT = 8000
+run_cli = client_cli.commands['workflow'].commands['run']
 
 
-@click.command()
-@click.option("-w", "--workflow")
-@click.option("-m", "--mets", help="METS to process", required=True)
-def cli(mets, workflow):
-    address = f"http://localhost:{PROCESSING_SERVER_PORT}"
-    ocrd_cli([
-        "network", "client", "workflow", "run",
-        "--address", address,
-        "-m", mets,
-        "-w", workflow,
-        "--block",
-        "--print-state",
-    ])
+def callback(*args, **kwargs):
+    kwargs['address'] = "http://localhost:{ps_port}"
+    kwargs['block'] = True
+    kwargs['print_state'] = True
+    return run_cli.callback(*args, **kwargs)
+
+
+params = [param for param in run_cli.params
+          if param.name not in [
+                  'address',
+                  'block',
+                  'print_state',
+          ]]
+cli = click.Command(name="ocrd-process", callback=callback, params=params)
 
 
 if __name__ == "__main__":
