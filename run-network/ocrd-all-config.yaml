@@ -2,6 +2,7 @@ dest: docker-compose.yml
 environment:
     # this folder contains the workspaces and must be created by the user
     data_dir_host: /tmp/mydata
+    mtu: 1300
 processors:
     - name: ocrd-anybaseocr-binarize
       image: ocrd/anybaseocr
