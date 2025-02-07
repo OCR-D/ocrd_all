@@ -37,13 +37,17 @@ def create_env_cli(config_path: str):
 
 @cli.command()
 @click.argument("config_path")
-def start(config_path):
+@click.argument("profile", default="minimum", type=click.Choice(["minimum", "medium", "maximum"]))
+def start(config_path, profile):
     """Start docker-compose in base_dir"""
     config: Config = Config.from_file(config_path)
     dest = Path(config.dest)
     chdir(dest.parent)
     environ["PWD"] = str(dest.parent)
-    command = ["docker-compose", "-f", f"{dest.name}", "up", "-d"]
+    command = ["docker-compose", "-f", f"{dest.name}"]
+    if profile:
+        command += ["--profile", profile]
+    command += ["up", "-d"]
     subprocess.run(command)
     wait_for_startup(f"http://localhost:{config.environment.ocrd_ps_port}")
 
