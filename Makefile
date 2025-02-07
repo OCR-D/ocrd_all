@@ -889,19 +889,22 @@ docker: docker-latest
 OCRD_NETWORK_CONFIG ?= run-network/odem-workflow-config.yaml
 
 .PHONY: network-setup network-start network-stop network-clean
-network-setup:
-	$(PYTHON) -m venv run-network/.venv
-	run-network/.venv/bin/python -m pip install click requests pyaml shapely==1.8.5 ocrd
-	run-network/.venv/bin/python run-network/creator.py create-compose $(OCRD_NETWORK_CONFIG)
-	run-network/.venv/bin/python run-network/creator.py create-dotenv $(OCRD_NETWORK_CONFIG)
-	run-network/.venv/bin/python run-network/creator.py create-clients run-network/.venv/bin $(OCRD_NETWORK_CONFIG)
-network-start:
-	run-network/.venv/bin/python run-network/creator.py start $(OCRD_NETWORK_CONFIG)
-network-stop:
-	run-network/.venv/bin/python run-network/creator.py stop $(OCRD_NETWORK_CONFIG)
-network-clean:
-	$(RM) -r run-network/.venv run-network/.env run-network/docker-compose.yml
+network-setup: run-network/docker-compose.yml run-network/.env
 
+run-network/venv:
+	$(PYTHON) -m venv $@
+	$@/bin/python -m pip install click requests pyaml shapely==1.8.5 ocrd
+run-network/docker-compose.yml: run-network/venv
+	$</bin/python run-network/creator.py create-compose $(OCRD_NETWORK_CONFIG)
+run-network/.env: run-network/venv
+	$</bin/python run-network/creator.py create-dotenv $(OCRD_NETWORK_CONFIG)
+	$</bin/python run-network/creator.py create-clients $</bin $(OCRD_NETWORK_CONFIG)
+network-start:
+	run-network/venv/bin/python run-network/creator.py start $(OCRD_NETWORK_CONFIG)
+network-stop:
+	run-network/venv/bin/python run-network/creator.py stop $(OCRD_NETWORK_CONFIG)
+network-clean:
+	$(RM) -r run-network/venv run-network/.env run-network/docker-compose.yml
 # do not search for implicit rules here:
 Makefile: ;
 local.mk: ;
