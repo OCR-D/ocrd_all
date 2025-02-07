@@ -125,10 +125,8 @@ def create_docker_compose(config: Type[ForwardRef("Config")]):
             fout.write(config.network_template)
             fout.write("\n")
         fout.write("services:")
-        ps_template = re.sub(
-            r"{{[\s]*image[\s]*}}",
-            config.processing_server_image,
-            config.processing_server_template,
+        ps_template = config.processing_server_template.format(
+            image=config.processing_server_image
         )
         fout.write(ps_template)
         fout.write(config.mongodb_template)
@@ -150,15 +148,18 @@ def create_workers(config: Type[ForwardRef("Config")]):
         if services_counter[service_name] > 1:
             service_name = f"{service_name}{services_counter[service_name]}"
 
-        proc_str = re.sub(r"{{[\s]*service_name[\s]*}}", service_name, config.proc_template)
-        proc_str = re.sub(r"{{[\s]*processor_name[\s]*}}", p.name, proc_str)
-        proc_str = re.sub(r"{{[\s]*image[\s]*}}", p.image, proc_str)
-
         depends_on_str = ""
         for depends_on in p.depends_on:
             depends_on_str += "\n"
             depends_on_str += f"      - {depends_on}"
-        proc_str = re.sub(r"{{[\s]*depends_on[\s]*}}", f"{depends_on_str}", proc_str)
+
+        proc_str = config.proc_template.format(
+            service_name=service_name,
+            processor_name=p.name,
+            image=p.image,
+            depends_on=depends_on_str,
+            profiles=", ".join(p.profiles)
+        )
 
         # add volume mounts for some containers
         for vol in p.volumes:
@@ -247,55 +248,56 @@ networks:
 """
 
 PROC_TEMPLATE = """
-  {{ service_name }}:
-    image: {{ image }}
-    container_name: {{ service_name }}
-    command: {{ processor_name}} worker --database $MONGODB_URL --queue $RABBITMQ_URL
-    depends_on: {{ depends_on }}
-    user: "${USER_ID}:${GROUP_ID}"
+  {service_name}:
+    image: {image}
+    container_name: {service_name}
+    command: {processor_name} worker --database $MONGODB_URL --queue $RABBITMQ_URL
+    depends_on: {depends_on}
+    user: "${{USER_ID}}:${{GROUP_ID}}"
+    profiles: [{profiles}]
     volumes:
-      - "${DATA_DIR_HOST}:/data"
+      - "${{DATA_DIR_HOST}}:/data"
     environment:
-      - OCRD_NETWORK_LOGS_ROOT_DIR=${LOGS_DIR:-/data/logs}
+      - OCRD_NETWORK_LOGS_ROOT_DIR=${{LOGS_DIR:-/data/logs}}
 """
 
 PROCESSING_SERVER_TEMPLATE = """
   ocrd-processing-server:
     container_name: ocrd-processing-server
-    image: {{ image }}
+    image: {image}
     environment:
-      - MONGODB_USER=${MONGODB_USER:-admin}
-      - MONGODB_PASS=${MONGODB_PASS:-admin}
-      - RABBITMQ_USER=${RABBITMQ_USER:-admin}
-      - RABBITMQ_PASS=${RABBITMQ_PASS:-admin}
-      - OCRD_NETWORK_SOCKETS_ROOT_DIR=${SOCKETS_DIR:-/data/sockets}
-      - OCRD_NETWORK_LOGS_ROOT_DIR=${LOGS_DIR:-/data/logs}
+      - MONGODB_USER=${{MONGODB_USER:-admin}}
+      - MONGODB_PASS=${{MONGODB_PASS:-admin}}
+      - RABBITMQ_USER=${{RABBITMQ_USER:-admin}}
+      - RABBITMQ_PASS=${{RABBITMQ_PASS:-admin}}
+      - OCRD_NETWORK_SOCKETS_ROOT_DIR=${{SOCKETS_DIR:-/data/sockets}}
+      - OCRD_NETWORK_LOGS_ROOT_DIR=${{LOGS_DIR:-/data/logs}}
     command: |
       /bin/bash -c "echo -e \\"
-        internal_callback_url: ${INTERNAL_CALLBACK_URL}
+        internal_callback_url: ${{INTERNAL_CALLBACK_URL}}
         use_tcp_mets: true
         process_queue:
           address: ocrd-rabbitmq
           port: 5672
           skip_deployment: true
           credentials:
-            username: ${RABBITMQ_USER}
-            password: ${RABBITMQ_PASS}
+            username: ${{RABBITMQ_USER}}
+            password: ${{RABBITMQ_PASS}}
         database:
           address: ocrd-mongodb
           port: 27017
           skip_deployment: true
           credentials:
-            username: ${MONGODB_USER}
-            password: ${MONGODB_PASS}
+            username: ${{MONGODB_USER}}
+            password: ${{MONGODB_PASS}}
         hosts: []\\" > /data/ocrd-processing-server-config.yaml && \\
         ocrd network processing-server -a 0.0.0.0:8000 /data/ocrd-processing-server-config.yaml"
-    user: "${USER_ID}:${GROUP_ID}"
+    user: "${{USER_ID}}:${{GROUP_ID}}"
     volumes:
-      - "${DATA_DIR_HOST}:/data"
-      - "${RUN_NETWORK_DIR}/ocrd-all-tool.json:/build/core/src/ocrd/ocrd-all-tool.json"
+      - "${{DATA_DIR_HOST}}:/data"
+      - "${{RUN_NETWORK_DIR}}/ocrd-all-tool.json:/build/core/src/ocrd/ocrd-all-tool.json"
     ports:
-      - ${OCRD_PS_PORT}:8000
+      - ${{OCRD_PS_PORT}}:8000
 """
 
 MONGODB_TEMPLATE = """
@@ -392,6 +394,7 @@ class Processor:
     image: str
     volumes: List[str] = field(default_factory=list)
     environment: List[str] = field(default_factory=list)
+    profiles: List[str] = field(default_factory=list)
     depends_on: List[str] = field(
         default_factory=lambda: [
             "ocrd-mongodb",
