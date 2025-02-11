@@ -887,7 +887,6 @@ docker: DOCKER_PARALLEL ?= -j1
 docker: docker-latest
 
 OCRD_NETWORK_CONFIG ?= run-network/ocrd-all-config.yaml
-OCRD_NETWORK_PROFILE ?= minimum
 
 .PHONY: network-setup network-start network-stop network-clean
 network-setup: run-network/docker-compose.yml run-network/.env
@@ -901,7 +900,7 @@ run-network/.env: run-network/venv
 	$</bin/python run-network/creator.py create-dotenv $(OCRD_NETWORK_CONFIG)
 	$</bin/python run-network/creator.py create-clients $</bin $(OCRD_NETWORK_CONFIG)
 network-start:
-	run-network/venv/bin/python run-network/creator.py start $(OCRD_NETWORK_CONFIG) $(OCRD_NETWORK_PROFILE)
+	run-network/venv/bin/python run-network/creator.py start $(OCRD_NETWORK_CONFIG)
 network-stop:
 	run-network/venv/bin/python run-network/creator.py stop $(OCRD_NETWORK_CONFIG)
 network-clean:
