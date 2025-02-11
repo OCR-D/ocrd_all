@@ -1,0 +1,192 @@
+dest: docker-compose.yml
+environment:
+    # this folder contains the workspaces and must be created by the user
+    data_dir_host: /tmp/mydata
+    mtu: 1300
+processors:
+    - name: ocrd-anybaseocr-binarize
+      image: ocrd/anybaseocr
+      profiles: [maximum]
+    - name: ocrd-anybaseocr-block-segmentation
+      image: ocrd/anybaseocr
+      profiles: [maximum]
+    - name: ocrd-anybaseocr-crop
+      image: ocrd/anybaseocr
+      profiles: [maximum]
+    - name: ocrd-anybaseocr-deskew
+      image: ocrd/anybaseocr
+      profiles: [maximum]
+    - name: ocrd-anybaseocr-dewarp
+      image: ocrd/anybaseocr
+      profiles: [maximum]
+    - name: ocrd-anybaseocr-layout-analysis
+      image: ocrd/anybaseocr
+      profiles: [maximum]
+    - name: ocrd-anybaseocr-textline
+      image: ocrd/anybaseocr
+      profiles: [maximum]
+    - name: ocrd-anybaseocr-tiseg
+      image: ocrd/anybaseocr
+      profiles: [maximum]
+    - name: ocrd-calamari-recognize
+      image: ocrd/calamari
+      profiles: [medium, maximum]
+    - name: ocrd-cis-align
+      image: ocrd/cis
+    - name: ocrd-cis-ocropy-binarize
+      image: ocrd/cis
+    - name: ocrd-cis-ocropy-clip
+      image: ocrd/cis
+    - name: ocrd-cis-ocropy-denoise
+      image: ocrd/cis
+    - name: ocrd-cis-ocropy-deskew
+      image: ocrd/cis
+    - name: ocrd-cis-ocropy-dewarp
+      image: ocrd/cis
+    - name: ocrd-cis-ocropy-recognize
+      image: ocrd/cis
+    - name: ocrd-cis-ocropy-resegment
+      image: ocrd/cis
+    - name: ocrd-cis-ocropy-segment
+      image: ocrd/cis
+    - name: ocrd-cis-ocropy-train
+      image: ocrd/cis
+    - name: ocrd-cis-postcorrect
+      image: ocrd/cis
+    - name: ocrd-cor-asv-ann-align
+      image: ocrd/cor-asv-ann
+      profiles: [medium, maximum]
+    - name: ocrd-cor-asv-ann-evaluate
+      image: ocrd/cor-asv-ann
+      profiles: [medium, maximum]
+    - name: ocrd-cor-asv-ann-join
+      image: ocrd/cor-asv-ann
+      profiles: [medium, maximum]
+    - name: ocrd-cor-asv-ann-mark
+      image: ocrd/cor-asv-ann
+      profiles: [medium, maximum]
+    - name: ocrd-cor-asv-ann-process
+      image: ocrd/cor-asv-ann
+      profiles: [medium, maximum]
+    - name: ocrd-detectron2-segment
+      image: ocrd/detectron2
+      profiles: [maximum]
+    - name: ocrd-dinglehopper
+      image: ocrd/dinglehopper
+      profiles: [medium, maximum]
+    - name: ocrd-docstruct
+      image: ocrd/docstruct
+      profiles: [medium, maximum]
+    - name: ocrd-doxa-binarize
+      image: ocrd/doxa
+      profiles: [maximum]
+    - name: ocrd-dummy
+      image: ocrd/core
+    - name: ocrd-eynollah-segment
+      image: ocrd/eynollah
+      profiles: [maximum]
+    - name: ocrd-fileformat-transform
+      image: ocrd/fileformat
+    - name: ocrd-froc-recognize
+      image: ocrd/froc
+      profiles: [maximum]
+    - name: ocrd-im6convert
+      image: ocrd/im6convert
+    - name: ocrd-keraslm-rate
+      image: ocrd/keraslm
+      profiles: [medium, maximum]
+    - name: ocrd-kraken-binarize
+      image: ocrd/kraken
+      profiles: [maximum]
+    - name: ocrd-kraken-recognize
+      image: ocrd/kraken
+      profiles: [maximum]
+    - name: ocrd-kraken-segment
+      image: ocrd/kraken
+      profiles: [maximum]
+    - name: ocrd-nmalign-merge
+      image: ocrd/nmalign
+      profiles: [medium, maximum]
+    - name: ocrd-olahd-client
+      image: ocrd/olahd-client
+    - name: ocrd-olena-binarize
+      image: ocrd/olena
+      profiles: [maximum]
+    - name: ocrd-page-transform
+      image: bertsky/workflow-configuration
+      profiles: [maximum]
+    - name: ocrd-pagetopdf
+      image: ocrd/pagetopdf
+      profiles: [maximum]
+    - name: ocrd-preprocess-image
+      image: ocrd/wrap
+    - name: ocrd-sbb-binarize
+      image: ocrd/sbb_binarization
+      profiles: [maximum]
+    - name: ocrd-segment-evaluate
+      image: ocrd/segment
+      profiles: [medium, maximum]
+    - name: ocrd-segment-extract-glyphs
+      image: ocrd/segment
+      profiles: [medium, maximum]
+    - name: ocrd-segment-extract-lines
+      image: ocrd/segment
+      profiles: [medium, maximum]
+    - name: ocrd-segment-extract-pages
+      image: ocrd/segment
+      profiles: [medium, maximum]
+    - name: ocrd-segment-extract-regions
+      image: ocrd/segment
+      profiles: [medium, maximum]
+    - name: ocrd-segment-extract-words
+      image: ocrd/segment
+      profiles: [medium, maximum]
+    - name: ocrd-segment-from-coco
+      image: ocrd/segment
+      profiles: [medium, maximum]
+    - name: ocrd-segment-from-masks
+      image: ocrd/segment
+      profiles: [medium, maximum]
+    - name: ocrd-segment-project
+      image: ocrd/segment
+      profiles: [medium, maximum]
+    - name: ocrd-segment-repair
+      image: ocrd/segment
+      profiles: [medium, maximum]
+    - name: ocrd-segment-replace-original
+      image: ocrd/segment
+      profiles: [medium, maximum]
+    - name: ocrd-segment-replace-page
+      image: ocrd/segment
+      profiles: [medium, maximum]
+    - name: ocrd-segment-replace-text
+      image: ocrd/segment
+      profiles: [medium, maximum]
+    - name: ocrd-skimage-binarize
+      image: ocrd/wrap
+    - name: ocrd-skimage-denoise
+      image: ocrd/wrap
+    - name: ocrd-skimage-denoise-raw
+      image: ocrd/wrap
+    - name: ocrd-skimage-normalize
+      image: ocrd/wrap
+    - name: ocrd-tesserocr-binarize
+      image: ocrd/tesserocr
+    - name: ocrd-tesserocr-crop
+      image: ocrd/tesserocr
+    - name: ocrd-tesserocr-deskew
+      image: ocrd/tesserocr
+    - name: ocrd-tesserocr-fontshape
+      image: ocrd/tesserocr
+    - name: ocrd-tesserocr-recognize
+      image: ocrd/tesserocr
+    - name: ocrd-tesserocr-segment
+      image: ocrd/tesserocr
+    - name: ocrd-tesserocr-segment-line
+      image: ocrd/tesserocr
+    - name: ocrd-tesserocr-segment-region
+      image: ocrd/tesserocr
+    - name: ocrd-tesserocr-segment-table
+      image: ocrd/tesserocr
+    - name: ocrd-tesserocr-segment-word
+      image: ocrd/tesserocr
