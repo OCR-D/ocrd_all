@@ -14,14 +14,14 @@ import yaml
 
 
 @click.group()
-def cli():
+def cli() -> None:
     """A simple CLI program"""
     pass
 
 
 @cli.command("create-compose")
 @click.argument("config_path")
-def create_docker_cli(config_path: str):
+def create_docker_cli(config_path: str) -> None:
     """Creates a docker-compose file"""
     config: Config = Config.from_file(config_path)
     create_docker_compose(config)
@@ -29,7 +29,7 @@ def create_docker_cli(config_path: str):
 
 @cli.command("create-dotenv")
 @click.argument("config_path")
-def create_env_cli(config_path: str):
+def create_env_cli(config_path: str) -> None:
     """Creates .env for docker-compose"""
     config: Config = Config.from_file(config_path)
     create_env(config.environment, config.dest_env)
@@ -37,7 +37,7 @@ def create_env_cli(config_path: str):
 
 @cli.command()
 @click.argument("config_path")
-def start(config_path):
+def start(config_path: str) -> None:
     """Start docker-compose in base_dir"""
     config: Config = Config.from_file(config_path)
     dest = Path(config.dest)
@@ -50,7 +50,7 @@ def start(config_path):
 
 @cli.command()
 @click.argument("config_path")
-def stop(config_path):
+def stop(config_path) -> None:
     """Stop docker-compose services in base_dir"""
     config: Config = Config.from_file(config_path)
     dest = Path(config.dest)
@@ -62,7 +62,7 @@ def stop(config_path):
 @cli.command()
 @click.argument("venv_bin_path")
 @click.argument("config_path")
-def create_clients(venv_bin_path: str, config_path: str):
+def create_clients(venv_bin_path: str, config_path: str) -> None:
     """ Creates a script for every processor to call and ocrd-process for workflow runs
 
     The processing server and the workers run in docker. To simplyfy the invocation a delegator for
@@ -112,7 +112,7 @@ def create_clients(venv_bin_path: str, config_path: str):
 #     validate(instance, schema)
 
 
-def create_docker_compose(config: Type[ForwardRef("Config")]):
+def create_docker_compose(config: Type[ForwardRef("Config")]) -> None:
     """Create docker-compose file from config-object
 
     The parts of the docker-compose are defined in the config-object. Basically there is a template
@@ -134,7 +134,7 @@ def create_docker_compose(config: Type[ForwardRef("Config")]):
         fout.write(create_workers(config))
 
 
-def create_workers(config: Type[ForwardRef("Config")]):
+def create_workers(config: Type[ForwardRef("Config")]) -> str:
     """Create service definition of docker-compose for needed processors
 
     This function reads the processor-template and replaces placeholders with info from the
@@ -180,7 +180,7 @@ def create_workers(config: Type[ForwardRef("Config")]):
     return res
 
 
-def create_env(env: Type[ForwardRef("Environment")], dest: str):
+def create_env(env: Type[ForwardRef("Environment")], dest: str) -> None:
     """Create .env file to configure docker-compose
 
     Info is read from the config-object and written to the env file
@@ -217,7 +217,7 @@ def create_env(env: Type[ForwardRef("Environment")], dest: str):
         fout.write("\n".join(lines))
 
 
-def wait_for_startup(processing_server_url: str):
+def wait_for_startup(processing_server_url: str) -> None:
     """Wait for completed startup of all docker-compose services
 
     After the startup the containers need some time to be usable. This function ensures their
