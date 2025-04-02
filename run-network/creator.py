@@ -132,7 +132,6 @@ def create_docker_compose(config: Type[ForwardRef("Config")]) -> None:
         fout.write(config.mongodb_template)
         fout.write(config.rabbitmq_template)
         fout.write(create_workers(config))
-        fout.write(config.volumes_template)
 
 
 def create_workers(config: Type[ForwardRef("Config")]) -> str:
@@ -209,6 +208,8 @@ def create_env(env: Type[ForwardRef("Environment")], dest: str) -> None:
         lines.append(f"GROUP_ID={env.group_id}")
     if env.data_dir_host:
         lines.append(f"DATA_DIR_HOST={env.data_dir_host}")
+    if env.resources_dir_host:
+        lines.append(f"RESOURCES_DIR_HOST={env.resources_dir_host}")
     if env.internal_callback_url:
         lines.append(f"INTERNAL_CALLBACK_URL={env.internal_callback_url}")
     if env.run_network_dir:
@@ -258,7 +259,7 @@ PROC_TEMPLATE = """
     profiles: [{profiles}]
     volumes:
       - "${{DATA_DIR_HOST}}:/data"
-      - ocrd-resources:/usr/local/share/ocrd-resources
+      - "${{RESOURCES_DIR_HOST}}:/usr/local/share/ocrd-resources"
     environment:
       - OCRD_NETWORK_LOGS_ROOT_DIR=${{LOGS_DIR:-/data/logs}}
 """
@@ -274,6 +275,7 @@ PROCESSING_SERVER_TEMPLATE = """
       - RABBITMQ_PASS=${{RABBITMQ_PASS:-admin}}
       - OCRD_NETWORK_SOCKETS_ROOT_DIR=${{SOCKETS_DIR:-/data/sockets}}
       - OCRD_NETWORK_LOGS_ROOT_DIR=${{LOGS_DIR:-/data/logs}}
+      - XDG_CONFIG_HOME=/usr/local/share/ocrd-resources
     command: |
       /bin/bash -c "echo -e \\"
         internal_callback_url: ${{INTERNAL_CALLBACK_URL}}
@@ -296,7 +298,7 @@ PROCESSING_SERVER_TEMPLATE = """
         ocrd network processing-server -a 0.0.0.0:8000 /data/ocrd-processing-server-config.yaml"
     user: "${{USER_ID}}:${{GROUP_ID}}"
     volumes:
-      - ocrd-resources:/usr/local/share/ocrd-resources
+      - "${{RESOURCES_DIR_HOST}}:/usr/local/share/ocrd-resources"
       - "${{DATA_DIR_HOST}}:/data"
       - "${{RUN_NETWORK_DIR}}/ocrd-all-tool.json:/build/core/src/ocrd/ocrd-all-tool.json"
     ports:
@@ -324,11 +326,6 @@ RABBITMQ_TEMPLATE = """
     ports:
       - "5672:5672"
       - "15672:15672"
-"""
-
-VOLUMES_TEMPLATE = """
-volumes:
-  ocrd-resources:
 """
 
 
@@ -427,6 +424,7 @@ class Environment:
     user_id: int = 1000
     group_id: int = 1000
     data_dir_host: str = "/tmp/data"
+    resources_dir_host: str = "/tmp/data/ocrd-resources"
     internal_callback_url: str = "http://ocrd-processing-server:${OCRD_PS_PORT}"
     run_network_dir: str = dirname(__file__)
 
@@ -445,7 +443,6 @@ class Config:
     rabbitmq_template: str = RABBITMQ_TEMPLATE
     proc_template: str = PROC_TEMPLATE
     network_template: str = NETWORK_TEMPLATE
-    volumes_template: str = VOLUMES_TEMPLATE
 
     @staticmethod
     def from_file(yaml_file_path: str) -> "Config":
