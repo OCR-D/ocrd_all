@@ -1,5 +1,501 @@
 # Changelog
 
+## [v2025-04-07](https://github.com/OCR-D/ocrd_all/releases/v2025-04-07)
+
+### [core](https://github.com/OCR-D/core) [71c0c19](https://github.com/OCR-D/core/commits/71c0c19)..[80eb58c](https://github.com/OCR-D/core/commits/80eb58c)
+
+> Release: [v3.3.0](https://github.com/OCR-D/core/releases/v3.3.0)
+
+  > * :package: 3.3.0
+  > * :memo: changelog
+  > * Revert "Merge remote-tracking branch 'bertsky/resmgr-type-checking'"
+  > * :package: v3.2.0
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/resmgr-type-checking'
+  > * :memo: changelog
+  > * update spec to v3.37.0
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/update-validator'
+  > * :memo: changelog
+  > * fix workdir in Dockerfile.cuda-torch
+  > * fix deps-tf1 requirements DIRSTACK fix
+  > * :package: v3.1.2
+  > * :memo: changelog
+  > * deps-tf1: fix 7a2c4c7
+  > * :package: v3.1.1
+  > * :memo: changelog
+  > * test_processor timeouts: more tolerant
+  > * test_resmgr: avoid name clash with preconfigured ocrd-dummy
+  > * update ocrd-all-tool.json
+  > * Dockerfile: repeat ARG BASE_IMAGE so it can be referenced below
+  > * nw integration test: pass build ctxt for ocrd_core_test everywhere
+  > * nw integration test: never pull ocrd_core_test (wait for build in PS service)
+  > * deps-conda: new target for non-ubuntu platforms
+  > * deps-cuda: expose get-conda independently, re-use if present, otherwise use Micromamba for current OS/platform
+  > * docker*: pass build args, also tag with version if gitref is release
+  > * Dockerfile*: always provide defaults for ARG, use upper case AS
+  > * docker-{torch,tf{1,2}}: smoke-test build, too
+  > * deps-{torch,tf{1,2}}: ensure core's requirements.txt is compatible
+  > * :package: v3.1.0
+  > * :memo: changelog
+  > * Merge branch 'update-spec'
+  > * :memo: changelog
+  > * ocrd-tool: add command 'dump-tools'
+  > * adapt processor tests some more
+  > * adapt processor tests
+  > * Processor.download: apply config.OCRD_DOWNLOAD_INPUT no sooner than available, remove useless download_files kwarg
+  > * :package: v3.0.4
+  > * :memo: changelog
+  > * update assets and adapt tests to match
+  > * tests.processor: increase timeout tolerance slightly
+  > * run_processor: handle frozendict or empty parameter in profile log
+  > * tests.processor: check profile log
+  > * tests.processor: add case adding document-global file (in METS Server mode, too)
+  > * tests.processor: add case adding document-global file
+  > * tests: OcrdPage roundtrip w/ full assertions
+  > * OcrdPage: re-generate
+  > * fix c47ae77c (pass on namespaceprefix_)
+  > * tests: add OcrdPage roundtrip
+  > * mets server: fix init of 'page_id' in POST /file
+  > * mets server: downgrade log messages INFO→DEBUG
+  > * test_workspace: use different asset w/ loctype URL
+  > * :package: v3.0.3
+  > * update assets and spec
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/fix-processpool-loglistener-shutdown'
+  > * :package: v3.0.2
+  > * :memo: changelog
+  > * fixup 39f76258: get queue type from mp.get_ctxt
+  > * Processor.ProcessPoolExecutor: use queue.Queue instead of mp.Queue for QueueHandler
+  > * Workspace.image_from_*: remove PIL workaround
+  > * ocrd_network.cli.client processing: fix CLI arg order
+  > * ocrd.decorators: update/improve docstring
+  > * config.OCRD_MAX_PARALLEL_PAGES: improve docstring
+  > * :package: v3.0.1
+  > * :memo: changelog
+  > * Processor.ProcessPoolExecutor: start QueueListener only after executor to avoid thread interference
+  > * Processor.DummyExecutor.shutdown: reset global processor instance, too
+  > * CI: Use token authentication for pypi
+  > * :package: :fire: v3.0.0
+  > * remove 3.8 breaking typing hints
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/new-processor-api-xpath-filter' into v3-release
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/initLogging-before-imports' into v3-release
+  > * :memo: changelog
+  > * Merge branch 'fix-help-output' into v3-release
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'origin/master' into v3-release
+  > * merge master
+  > * :package: v3.0.0b7
+  > * Processor parallel pages: log via QueueHandler in subprocess, QueueListener in main
+  > * Processor: replace weakref with __del__ to trigger shutdown
+  > * initLogging: call disableLogging if already initialized and force_reinit
+  > * Processor: update max_workers docstring
+  > * logging: increase default root (not ocrd) level from INFO to WARNING
+  > * setOverrideLogLevel: override all currently active loggers' level
+  > * disableLogging: remove all handlers, reset all levels
+  > * initLogging: only add root handler instead of multiple redundant handlers with propagate=false
+  > * initLogging: do not remove any previous handlers/levels
+  > * tests: prevent side effects from ocrd_logging
+  > * :package: v3.0.0b6
+  > * Merge pull request #23 from bertsky/new-processor-api-process-worker
+  > * Processor.process_page_file: avoid process_page_pcgts() if OCRD_EXISTING_OUTPUT!=OVERWRITE
+  > * ocrd.cli.workspace: use physical_pages if possible, fix default output_field
+  > * OcrdMets.get_physical_pages: cover return_divs w/o for_fileIds for_pageIds
+  > * ocrd.cli.workspace: assert non-server in cmds mutating METS
+  > * :memo: improve b5 changelog
+  > * :package: v3.0.0b5
+  > * update OcrdPage from generateds
+  > * OcrdPage: add PageType.get_ReadingOrderGroups()
+  > * tests: make sure ocrd_utils.config gets reset whenever changing it globally
+  > * test processors: no need for 'force' kwarg anymore
+  > * Processor / Workspace.add_file: always force if config.OCRD_EXISTING_OUTPUT==OVERWRITE
+  > * lib.bash input-files: do not try to validate tasks here (impossible to get right with required parameters, and now covered by wrapped Processor.verify() already)
+  > * lib.bash input-files: pass on --mets-server-url, --overwrite, and parameters (necessary for required params)
+  > * lib.bash: fix errexit
+  > * run_processor: be robust if ocrd_tool is missing steps
+  > * Processor.verify: check output fileGrps as well (or OCRD_EXISTING_OUTPUT=OVERWRITE|SKIP or disjoint --page-id)
+  > * Processor.process_workspace(): do not show NotImplementedError context if fallback process() raises anything itself
+  > * ocrd.cli.validate tasks: pass on --mets-server-url, too
+  > * ocrd.cli.bashlib input-files: pass on --mets-server-url, too
+  > * ocrd.cli.workspace server: add 'reload' and 'save'
+  > * ocrd.cli.workspace: consistently pass on --mets-server-url and --backup (also, simplify)
+  > * METS Server: also export+delegate physical_pages
+  > * processor CLI: delegate --resolve-resource, too
+  > * ocrd.cli.ocrd-tool resolve-resource: fix (forgot to print result)
+  > * PcGts.Page.id / make_xml_id: replace '/' with '_'
+  > * Processor.process_page_file / OcrdPageResultImage: allow None instead of AlternativeImageType
+  > * Processor.verify: revert 5819c816 (we still have no defaults in json loaded from v2)
+  > * add typing, extend docs
+  > * test_processor: add test for force (overwrite) w/ METS Server
+  > * test_mets_server: add test for force (overwrite)
+  > * OcrdMetsServer.add_file: pass on 'force' kwarg, too
+  > * :package: v3.0.0b4
+  > * :memo: changelog
+  > * Workspace.reload_mets: fix for METS server case
+  > * Processor: log when max_workers / max_page_seconds are in effect
+  > * Processor.metadata_location: find location package prefix (necessary for namespace packages)
+  > * :package: v3.0.0b3
+  > * ocrd.cli doc: don't rewrap description lists
+  > * Processor: improve processing log messages
+  > * add test for OcrdEnvConfig.reset_defaults()
+  > * ocrd_utils.config: add reset_defaults()
+  > * :package: v3.0.0b2
+  > * :memo: update readmes (esp. new config variables)
+  > * :memo: update changelog
+  > * test_processor: add legacy (v2-style) dummy case
+  > * bashlib: re-add --log-filename, implement as stderr redirect
+  > * Processor.generate_processor_help: forgot to include --log-filename
+  > * Processor: fix 7966057f (deprecated passing of ocrd_tool or version via init)
+  > * test-logging: also remove ocrd.log from tempdir
+  > * disableLogging: re-instate root logger, to
+  > * ClientSideOcrdMets: partial revert of 9b80ae17ef
+  > * tess: adapt to wording of exceptions
+  > * test processor timeout/parallel: avoid side effects to dummy tool json
+  > * test_mets_server: use tmpdir to avoid side effects between suites
+  > * Processor: fix ignore (negative/zero) cases for max_workers / max_page_seconds
+  > * ClientSideOcrdMets: use same logger name prefix as server
+  > * :memo: update changelog
+  > * add tests for processor per-page timeout and parallelism
+  > * Processor: add per-page timeouts and parallelism…
+  > * Merge pull request #19 from OCR-D/new-processor-api-fix-editable
+  > * adapt tests for OCRD_MAX_MISSING_OUTPUTS
+  > * Processor.process_workspace: abort anyway if too many failures (OCRD_MAX_MISSING_OUTPUTS)
+  > * generate_processor_help: avoid repeating docstrings from superclass
+  > * :package: v3.0.0b1
+  > * Merge branch 'master' into new-processor-api
+  > * Processor.process_page_file / OcrdPageResultImage: allow PageType instead of AlternativeImageType
+  > * test_bashlib: allow testing prereleases successfully
+  > * :memo: update changelog
+  > * Merge pull request #14 from bertsky/new-processor-api-parameter-setup
+  > * remove make *-workaround, we will not do that for v3+
+  > * :package: v3.0.0a2
+  > * :memo: changelog
+  > * processor CLI --debug: set all to ABORT (not just MISSING_OUTPUT)
+  > * predefine union types OcrdFileType and OcrdPageType
+  > * JsonValidator: fix deprecation warning (by actually checking instance)
+  > * tests report.is_valid: improve output on failure
+  > * dummy_processor: fix typos from logging
+  > * OcrdPage: fix typeing typo
+  > * Merge pull request #13 from OCR-D/validate-ocrd-tool-runtime
+  > * Merge pull request #11 from OCR-D/ocrd-page-with-etree
+  > * Merge pull request #10 from OCR-D/processor-logger
+  > * Merge pull request #12 from bertsky/new-processor-api-input-file-errors
+  > * Merge branch 'master' into new-processor-api
+  > * s,PcGtsType,OcrdPage,
+  > * fix 9cfd70cffcc (revert to wrong import order to avoid circle)
+  > * fix 9cfd70cffcc
+  > * ocrd_utils: forgot to export scale_coordinates at toplvl
+  > * fix type assertion
+  > * fix imports
+  > * ocrd.cli: more fix module import order, export help cmd
+  > * ocrd: more convenience imports
+  > * Update CHANGELOG.md
+  > * :memo: v3.0.0a1
+  > * Merge branch 'processor-result-object' into new-processor-api
+  > * update spec (with new ocrd_tool.schema)
+  > * bashlib: fix ocrd__minversion test syntax
+  > * fix ocrd_tool.schema.yml cardinality oneOf syntax, update spec
+  > * Merge pull request #7 from OCR-D/bashlib-version-yak-shaving
+  > * test_bashlib: use version verbatim
+  > * Merge branch 'master' into new-processor-api
+  > * CircleCI: use version 2.1
+  > * Set VERSION to upcoming 3.0.0a1
+  > * improve output in case of assertion failures
+  > * hide/test expected deprecation warnings
+  > * use up-to-date kwargs (avoiding old deprecations)
+  > * adapt to ocrd-tool.json cardinality changes
+  > * test_processor: adapt to Processor init changes
+  > * Processor / ocrd-tool.json: :fire: fileGrp cardinality checks…
+  > * Processor/CLI decorator: :fire: separate kwargs and constructor…
+  > * mets_server: ClientSideOcrdMets needs OcrdMets-like kwargs (without deprecation)
+  > * test_mets_server: fix arg vs kwarg
+  > * docs:regenerated rST
+  > * docs: add ocrd_network module
+  > * docs: do/not exclude tests/src
+  > * docs: fix relative VERSION path
+  > * Processor init: deprecate passing workspace
+  > * run_processor: fix typo
+  > * process_page_pcgts: add (variadic) type checks
+  > * Processor.process_workspace: add fileGrp assertions
+  > * run_processor w/ mem_usage: pass as args tuple
+  > * use more specific exception if parameters are invalid
+  > * ocrd-tool CLI: pass class in context
+  > * get_processor: also run setup if instance_caching
+  > * generate_processor_help: include process_workspace docstring, too
+  > * tests: adapt to new Processor init (override metadata/version/executable name)
+  > * adapt to new Processor init (override metadata/version/executable name)
+  > * autoload ocrd-tool.json and version from dist, executable name from entry point in stack
+  > * test_workspace: adapt to image_from_* DPI and add assertions
+  > * Workspace.image_from_*: annotate 'DPI' in result dict and ensure it's used in meta-data of resulting image
+  > * Workspace.save_image_file: save DPI metadata, too
+  > * Processor.process_page_pcgts: add kwargs and allow returning derived images
+  > * Workspace.save_image_file: add kwarg file_path for predetermined local_filename
+  > * test processor: adapt to `self.workspace` only during run_processor
+  > * test processor: adapt to `input_file_grp` required
+  > * test builtin ocrd-dummy: adapt to consistent filename
+  > * test DummyProcessor: override process_workspace() by delegating to process() directly
+  > * test DummyProcessor: adapt to new `download` default by setting `download_files=False` in tests (because they are not actually in the filesystem)
+  > * run_processor: adapt to process→process_workspace
+  > * DummyProcessor: re-implement via new process_page_*
+  > * Processor: refactor processing API…
+  > * ocrd_cli_wrap_processor: fix workspace arg (not a kwarg)
+  > * Processor: add setup(), run once in get_processor()
+  > * Processor: factor-out show_resource(), delegate to resolve_resource()
+  > * workspace.download: fix typo in exception
+  > * fix #274: no default -I / -O
+  > * deprecate Processor.process()
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [bc9dddd](https://github.com/qurator-spk/eynollah/commits/bc9dddd)..[8080bd8](https://github.com/qurator-spk/eynollah/commits/8080bd8)
+
+> Release: [v0.4.0](https://github.com/qurator-spk/eynollah/releases/v0.4.0)
+
+  > * :package: v0.4.0
+  > * :memo: changelog
+  > * test_run: ensure exceptions are shown
+  > *  'from PIL.Image import Image' causes an error when using Image.new(), and since Image is already imported, this line can be safely commented out.
+  > * CI: use clash-free artifact name for report upload
+  > * CI: fix coverage report calls
+  > * CI: make coverage cfg work with both editable and dist install
+  > * CI: forgot to (re-)enable verbose logging
+  > * CI: (try to) store/upload coverage results
+  > * binarization CLI: fix option checks, simplify to asserts, fix dir_in mode
+  > * pytest: add tests for directory mode (layout+bin)
+  > * pytest: add asserts for results, add binarization
+  > * pytest: use subtests for various layout options, add coverage
+  > * CLI: simplify option checks to asserts (also avoid stack trace)
+  > * logger: fix type hint
+  > * Merge remote-tracking branch 'origin/main' into v3-api-release-foreal
+  > * Merge pull request #130 from qurator-spk/v3-api
+  > * This commit enables the export of cropped text line images along with their corresponding texts from a Page-XML file. These exported text line images and texts can be utilized for training a text line-based OCR model.
+  > * For the CNN-RNN OCR model, long text lines are split into two segments
+  > * Resolved an issue in the OCR-D framework where dir_out received a None value
+  > * Resolving test failure
+  > * Merge remote-tracking branch 'bertsky/machine_based_reading_order_integration_fixes' into machine_based_reading_order_integration
+  > * changing cnn ocr model name
+  > * Provide OCR as an option to process a directory of XML files, incorporating layout and text line coordinates.
+  > * adding scatter_nd inference
+  > * fixed: machine based reading order cause tuple index out of range error if number of textregion is one.
+  > * filter textregions without textline
+  > * gha: try to free disk space
+  > * Update Makefile
+  > * new table detection model is integrated
+  > * fixing IndexError by reading order detection
+  > * updating requirements
+  > * tests are passed - new models by the way should be uploaded
+  > * textlines of drop capitals are connected to corresponding textline if possible otherwise they are inserted in corresponding textregion
+  > * drop capital and marginals extraction is updated
+  > * Update requirements.txt
+  > * sbb_binarization is integrated into eynollah works in framework of ocrd - sbb_binarization in ocrd works for individual images by the way as standalone flowing from directory can be used now. For eynollah in ocrd framework I have added -light version as default parameter.
+  > * resolve merge  conflict of main branch with machine based reading order branch
+  > * Resolve merge conflict of main and machine based reading order branch
+  > * updating early layout inference  for light version
+  > * updating inference for early layout in the case of documents with number of columns bigger than 2
+  > * updating
+  > * textline segmentation is masked with drop capitals
+  > * Merge branch 'machine_based_reading_order_integration' of https://github.com/qurator-spk/eynollah into machine_based_reading_order_integration
+  > * fixing a bug occuring with reading order + Slro option with no patch textline model and thresholding artificial class
+  > * binarization as a standalone command
+  > * doing more multiprocessing in order to make the process faster
+  > * textlines of textregions are extracted in a faster way + early layout for all documents is done with no patches model and on rgb input
+  > * updating light version
+  > * -light version need -tll to be enabled otherwise the process will be ended.
+  > * updating light version features
+  > * updating light version. Remove textlines or textregion contours inside a bigger one
+  > * updating light version
+  > * dilation of textregions and marginals are accomplished
+  > * updating textregions dilation
+  > * parametriyation in the case of textline contours dilation is accomplished
+  > * updating textline dilation parameters
+  > * updating dilation of textlines and text regions
+  > * dilation of text regions without opencv
+  > * updating light version
+  > * update of light versions
+  > * postprocessing of textline contour dilation + skip layout and reading order passed as an argument
+  > * the most effective version of contours dilation without opencv and all at once
+  > * updating scaling contours
+  > * scaling contours without dilation
+  > * passing number of columns as an argument
+  > * avoiding double binarization
+  > * adding option for textline detection in printspace
+  > * resolving issue #110 in a better way
+  > * writing drop capitals in xml output + and may resolve issue #110
+  > * inference batch size debugged
+  > * ignoring dpi check by light version
+  > * making light version faster for 1 and 2 columns images
+  > * inference with batch size bigger than 1
+  > * update Makefile model location
+  > * update pyproject.toml
+  > * dtype = object in the case of length 1 arise error
+  > * pyproject.toml may work for ocrd
+  > * resolving #106 for pyproject.toml test
+  > * testing pyproject.toml
+  > * 1&2 column images only printspace
+  > * updating 1&2 columns images + full layout
+  > * new full layout model and early layout for 1&2 column images are integrated - light version
+  > * ocr engine first integration
+  > * machine based reading order as an argument
+  > * machine based reading order & works for not full layout case
+  > * machine based reading order inference & optimized algorithm
+  > * machine based reading order inference with a variable batch size
+  > * integration of machine based reading order detection
+
+### [nmalign](https://github.com/bertsky/nmalign) [1426dbc](https://github.com/bertsky/nmalign/commits/1426dbc)..[1698cd8](https://github.com/bertsky/nmalign/commits/1698cd8)
+
+> Release: [v0.0.5](https://github.com/bertsky/nmalign/releases/v0.0.5)
+
+  > * Merge pull request #1 from bertsky/migrate-v3
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [483848f](https://github.com/OCR-D/ocrd_anybaseocr/commits/483848f)..[0c67107](https://github.com/OCR-D/ocrd_anybaseocr/commits/0c67107)
+
+> Release: [v1.10.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v1.10.0)
+
+  > * Merge remote-tracking branch 'origin/fix-ci-versions'
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [d7c30b5](https://github.com/OCR-D/ocrd_calamari/commits/d7c30b5)..[416420f](https://github.com/OCR-D/ocrd_calamari/commits/416420f)
+
+> Release: [v2.0.1](https://github.com/OCR-D/ocrd_calamari/releases/v2.0.1)
+
+  > * :package: v2.0.1
+  > * :memo: changelog
+  > * fix glitch in Makefile from merge
+  > * :package: v2.0.0
+  > * :memo: changelog
+  > * Merge branch 'master' into calamari2
+  > * docker: fix/update base image
+  > * improve dockerfile
+  > * simplify dockerfile
+  > * add docker and build rules, improve dockerfile
+  > * fix setuptools discovery
+  > * workaround: run eagerly to prevent rare TF function stalls
+  > * precompute predict_function
+  > * require ocrd 3.0.3 (clean QueueListener shutdown)
+  > * Merge remote-tracking branch 'bertsky/calamari2' into calamari2
+  > * CalamariPredictor.shutdown: not from forked processors
+  > * CI: fix indentation
+  > * CI: store coverage results
+  > * coverage: try to include subprocess results
+  > * require calamari-ocr 2.3.1 (s11n of results via queue)
+  > * install dev before normal requirements to avoid typing-extensions conflict
+  > * require ocrd 3.0.0b7 (sub logging)
+  > * test: no need for --isolate anymore
+  > * test: default to supported model
+  > * test: no need for fixture as dict
+  > * test: proper shutdown w/ no side effects
+  > * fix word/glyph level
+  > * replace atexit with weakref, also add destructor
+  > * Merge branch 'calamari2-subprocess' into calamari2
+  > * disallow TF 2.12.0
+  > * ocrd-tool.json: remove model default
+  > * Makefile: export MODEL variable
+  > * CI: wait longer for test without output
+  > * ocrd-tool.json: fix 2.2 model URLs (zip→tar.gz)
+  > * CI: test on smaller model
+  > * Merge branch 'master' into calamari2
+  > * update models (2.1→2.2 for Py3.11 `re` syntax)
+  > * update requirements (Calamari 2.3, remove implied TF)
+  > * update models (5→6 HDF5→SavedModel)
+  > * use C2 deep3_fraktur19 model for testing
+  > * add C2 models
+  > * :package: 2.0.0
+  > * expose device parameter, default to GPU
+  > * test with pytest-isolate so TF memory can be freed between tests
+  > * test configs: test metsserver independent of pageparallel
+  > * voter cannot be parallel; shmem is faster
+  > * convert images to input_channels (required TensorShape)
+  > * wait for executor to fully initialize (so we get input_channels)
+  > * :fire: adapt to (and require) Calamari 2…
+  > * CI: increase RAM
+  > * no more need for model fixup
+  > * let GPU memory grow by demand (instead of exclusive reservation)
+  > * run prediction in bg thread (shared across pages to interleave CPU/GPU)
+  > * aggregate all lines instead of per region to better utilise batched predictor
+  > * require ocrd 3.0 and calamari-ocr 1.0.7
+  > * tests: adapt to v3, overhaul and add caching+threading modes
+  > * make test: no assumption on OCRD resource location
+  > * adapt to ocrd>=3.0
+
+### [ocrd_kraken](https://github.com/OCR-D/ocrd_kraken) [17cefc6](https://github.com/OCR-D/ocrd_kraken/commits/17cefc6)..[4309d91](https://github.com/OCR-D/ocrd_kraken/commits/4309d91)
+
+> Release: [v1.0.1](https://github.com/OCR-D/ocrd_kraken/releases/v1.0.1)
+
+  > * Merge pull request #46 from bertsky/docker-res
+  > * :package: v1.0.1
+  > * :fire: :package: v1.0.0
+  > * Merge branch 'port-to-v3'
+
+### [ocrd_neat](https://github.com/qurator-spk/page2tsv) [1982216](https://github.com/qurator-spk/page2tsv/commits/1982216)..[b9cb043](https://github.com/qurator-spk/page2tsv/commits/b9cb043)
+
+> Release: [v0.0.1](https://github.com/qurator-spk/page2tsv/releases/v0.0.1)
+
+  > * add drop-columns options to tsv2tsv
+
+### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [a02e937](https://github.com/OCR-D/ocrd_olena/commits/a02e937)..[78518b8](https://github.com/OCR-D/ocrd_olena/commits/78518b8)
+
+> Release: [v2.0.0](https://github.com/OCR-D/ocrd_olena/releases/v2.0.0)
+
+  > * Merge pull request #99 from bertsky/v3-python
+
+### [ocrd_pagetopdf](https://github.com/OCR-D/ocrd_pagetopdf) [7e8c860](https://github.com/OCR-D/ocrd_pagetopdf/commits/7e8c860)..[00baf15](https://github.com/OCR-D/ocrd_pagetopdf/commits/00baf15)
+
+> Release: [v2.0.0](https://github.com/OCR-D/ocrd_pagetopdf/releases/v2.0.0)
+
+  > * PyPI CD: fix workflow
+  > * CD GHCR: downcase GH group
+  > * :package: 2.0.0
+  > * :package: 0.2.0
+  > * Merge pull request #28 from bertsky/master
+
+### [ocrd_page2alto](https://github.com/OCR-D/page-to-alto) [8877e8f](https://github.com/OCR-D/page-to-alto/commits/8877e8f)..[da309e6](https://github.com/OCR-D/page-to-alto/commits/da309e6)
+
+> Release: [v1.5.0](https://github.com/OCR-D/page-to-alto/releases/v1.5.0)
+
+  > * :package v1.5.0
+  > * :memo: changelog
+  > * ocrd-tool.json: Set steps to `postprocessing/format-conversion` OCR-D/spec#261
+  > * downgrade reqs to make py37 and py38 work
+  > * iterate over regions non-recursively, skip_empty_line bug, invert check_border default
+  > * don't check border by default
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [064b7a8](https://github.com/OCR-D/ocrd_segment/commits/064b7a8)..[a5d3d62](https://github.com/OCR-D/ocrd_segment/commits/a5d3d62)
+
+> Release: [v0.1.24](https://github.com/OCR-D/ocrd_segment/releases/v0.1.24)
+
+  > * :package: v0.2.0
+  > * Merge pull request #69 from OCR-D/port-to-v3
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [dcbd522](https://github.com/OCR-D/ocrd_tesserocr/commits/dcbd522)..[c65b345](https://github.com/OCR-D/ocrd_tesserocr/commits/c65b345)
+
+> Release: [v0.20.1](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.20.1)
+
+  > * :package: v0.20.1
+  > * docker: update to ocrd==3.3.0
+  > * Dockerfile: supplant configs/ resource by pre-installing
+  > * ocrd-tool.json: add all langs
+  > * ocrd-tool.json: remove 'configs/' resource, add all scripts
+  > * Dockerfile: no more /models alias
+  > * CI: increase no-output timeout
+  > * Merge pull request #216 from bertsky/migrate-ocrd-v3
+
+### [ocrd_wrap](https://github.com/bertsky/ocrd_wrap) [fd4a2bc](https://github.com/bertsky/ocrd_wrap/commits/fd4a2bc)..[83ab5f0](https://github.com/bertsky/ocrd_wrap/commits/83ab5f0)
+
+> Release: [v0.2.0](https://github.com/bertsky/ocrd_wrap/releases/v0.2.0)
+
+  > * Merge pull request #12 from bertsky/docker-res
+  > * Update CHANGELOG.md
+  > * :package: 0.2.1
+  > * Update pypi.yml
+  > * :package: 0.2.0
+  > * Merge pull request #11 from bertsky/migrate-v3
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [63e9969](https://github.com/bertsky/workflow-configuration/commits/63e9969)..[a5bffee](https://github.com/bertsky/workflow-configuration/commits/a5bffee)
+
+> Release: [0.1.3](https://github.com/bertsky/workflow-configuration/releases/0.1.3)
+
+  > * Merge pull request #34 from bertsky/migrate-v3-pythonize
+
+
 ## [v2025-02-04](https://github.com/OCR-D/ocrd_all/releases/v2025-02-04)
 
 ### [core](https://github.com/OCR-D/core) [85bde15](https://github.com/OCR-D/core/commits/85bde15)..[71c0c19](https://github.com/OCR-D/core/commits/71c0c19)
