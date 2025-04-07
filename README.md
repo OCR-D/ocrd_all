@@ -403,7 +403,6 @@ This table lists which tag contains which module:
 | ocrd_doxa                   | -         | -        | ☑         |
 | ocrd_kraken                 | -         | -        | ☑         |
 | ocrd_froc                   | -         | -        | ☑         |
-| sbb_binarization            | -         | -        | ☑         |
 | cor-asv-fst                 | -         | -        | -         |
 | ocrd_ocropy                 | -         | -        | -         |
 | ocrd_pc_segmentation        | -         | -        | -         |

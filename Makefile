@@ -78,7 +78,7 @@ endif
 endif
 ifeq ($(PYTHON_VERSION),3.12)
 # The required tensorflow is not available for Python 3.12.
-DEFAULT_DISABLED_MODULES += eynollah ocrd_anybaseocr ocrd_calamari sbb_binarization
+DEFAULT_DISABLED_MODULES += eynollah ocrd_anybaseocr ocrd_calamari
 # The required coremltools does not support Python 3.12.
 DEFAULT_DISABLED_MODULES += ocrd_kraken
 endif
@@ -589,21 +589,6 @@ OCRD_EXECUTABLES += $(OCRD_DOXA)
 OCRD_DOXA := $(BIN)/ocrd-doxa-binarize
 $(OCRD_DOXA): ocrd_doxa $(BIN)/ocrd
 	$(pip_install)
-endif
-
-ifneq ($(filter sbb_binarization, $(OCRD_MODULES)),)
-install-models: install-models-sbb-binarization
-.PHONY: install-models-sbb-binarization
-install-models-sbb-binarization:
-	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-sbb-binarize '*'
-
-OCRD_EXECUTABLES += $(SBB_BINARIZATION)
-SBB_BINARIZATION := $(BIN)/ocrd-sbb-binarize
-SBB_BINARIZATION += $(BIN)/sbb_binarize
-$(call multirule,$(SBB_BINARIZATION)): sbb_binarization $(BIN)/ocrd
-	$(pip_install)
-	# work around #67 - switch to version pinned by eynollah:
-	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "tensorflow==2.12.1"
 endif
 
 ifneq ($(filter eynollah, $(OCRD_MODULES)),)
