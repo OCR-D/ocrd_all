@@ -60,7 +60,7 @@
 	url = https://github.com/OCR-D/ocrd_fileformat.git
 [submodule "ocrd_pagetopdf"]
 	path = ocrd_pagetopdf
-	url = https://github.com/UB-Mannheim/ocrd_pagetopdf.git
+	url = https://github.com/OCR-D/ocrd_pagetopdf.git
 [submodule "ocrd_wrap"]
 	path = ocrd_wrap
 	url = https://github.com/bertsky/ocrd_wrap.git
