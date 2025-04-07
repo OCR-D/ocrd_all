@@ -326,7 +326,7 @@ So you don't have to type (and memorise) them on the command line or shell envir
 For example, its content could be:
 ```make
 # restrict everything to a subset of modules
-OCRD_MODULES = core ocrd_im6convert ocrd_cis ocrd_tesserocr
+OCRD_MODULES = core ocrd_cis ocrd_tesserocr
 
 # use a non-default path for the virtual environment
 VIRTUAL_ENV = $(CURDIR)/.venv
@@ -382,7 +382,6 @@ This table lists which tag contains which module:
 | ocrd_cis                    | ☑         | ☑        | ☑         |
 | ocrd_fileformat             | ☑         | ☑        | ☑         |
 | ocrd_olahd_client           | ☑         | ☑        | ☑         |
-| ocrd_im6convert             | ☑         | ☑        | ☑         |
 | ocrd_pagetopdf              | ☑         | ☑        | ☑         |
 | ocrd_repair_inconsistencies | ☑         | ☑        | ☑         |
 | ocrd_tesserocr              | ☑         | ☑        | ☑         |

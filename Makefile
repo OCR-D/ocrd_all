@@ -370,13 +370,6 @@ else
 endif
 endif
 
-ifneq ($(filter ocrd_im6convert, $(OCRD_MODULES)),)
-deps-ubuntu-modules: ocrd_im6convert
-OCRD_EXECUTABLES += $(BIN)/ocrd-im6convert
-$(BIN)/ocrd-im6convert: ocrd_im6convert $(BIN)/ocrd
-	. $(ACTIVATE_VENV) && $(MAKE) -C $< install
-endif
-
 ifneq ($(filter ocrd_neat, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_NEAT)
 OCRD_NEAT := $(BIN)/ocrd-neat-import
@@ -846,7 +839,7 @@ dockers: docker-minimum docker-minimum-cuda docker-medium docker-medium-cuda doc
 docker-%: PIP_OPTIONS = -e
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from git
-DOCKER_MODULES_MINI := core ocrd_cis ocrd_fileformat ocrd_im6convert ocrd_olahd_client ocrd_page2alto ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap workflow-configuration
+DOCKER_MODULES_MINI := core ocrd_cis ocrd_fileformat ocrd_olahd_client ocrd_page2alto ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap workflow-configuration
 docker-mini%: DOCKER_MODULES := $(DOCKER_MODULES_MINI)
 # Medium-size selection: add Olena binarization and Calamari, add evaluation
 DOCKER_MODULES_MEDI := $(DOCKER_MODULES_MINI) cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_keraslm ocrd_olena ocrd_segment

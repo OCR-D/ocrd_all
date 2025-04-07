@@ -39,9 +39,6 @@
 [submodule "cor-asv-fst"]
 	path = cor-asv-fst
 	url = https://github.com/ASVLeipzig/cor-asv-fst.git
-[submodule "ocrd_im6convert"]
-	path = ocrd_im6convert
-	url = https://github.com/OCR-D/ocrd_im6convert.git
 [submodule "ocrd_anybaseocr"]
 	path = ocrd_anybaseocr
 	url = https://github.com/OCR-D/ocrd_anybaseocr.git
