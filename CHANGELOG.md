@@ -1,6 +1,11 @@
 # Changelog
 
-## [v2025-04-07](https://github.com/OCR-D/ocrd_all/releases/v2025-04-07)
+## [v2025-04-08](https://github.com/OCR-D/ocrd_all/releases/v2025-04-08)
+
+Removed
+
+  - `sbb_binarization`: Integrated into `eynollah` as `ocrd-sbb-binarize`
+  - `ocrd_im6convert`: Same functionality with improvements available as `ocrd-preprocess-image` in `ocrd_wrap`
 
 ### [core](https://github.com/OCR-D/core) [71c0c19](https://github.com/OCR-D/core/commits/71c0c19)..[80eb58c](https://github.com/OCR-D/core/commits/80eb58c)
 
