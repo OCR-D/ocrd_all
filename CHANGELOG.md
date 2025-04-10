@@ -87,18 +87,20 @@
 
 ### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [db65d7f](https://github.com/cisocrgroup/ocrd_cis/commits/db65d7f)..[5cf22f5](https://github.com/cisocrgroup/ocrd_cis/commits/5cf22f5)
 
-> Release: [v0.20.1](https://github.com/cisocrgroup/ocrd_cis/releases/v0.20.1)
-
-  > * fix license classifier for PyPI
-  > * PyPI CD: forgot the actual build!
-  > * PyPI CD: use whatever is in dist
-  > * PyPI CD: strip 'v' prefix from git tag
-  > * add PyPI CD
-  > * :package: 0.2.0
-  > * add 'build' and 'help' targets
-  > * setup→pyproject
-  > * Docker: shortcut ocrd-all-tool.json via ocrd-tool.json
-  > * Merge pull request #5 from MehmedGIT/port-to-v3
+Release: [v0.2.0](https://github.com/bertsky/ocrd_cis/releases/v0.2.0)
+  > * all: adapt to more Numpy and Shapely changes/deprecations
+  > * get rid of remaining python-levenshtein (in favour of rapidfuzz)
+  > * all: migrate `importlib` instead of EOL `pkg_resources` via ocrd_utils
+  > * all: migrate to OCR-D v3 API (including METS Server and page multiprocessing)
+  > * all: some code style, type hints and optimization
+  > * tests: simplify, update, improve, test serially as well as page-parallel
+  > * CI: ditch CircleCI, add Github Actions
+  > * ocrd-tool.json: add `dockerhub=ocrd/cis`
+  > * docker: add labels metadata conforming to spec
+  > * docker: preinstall shortcut `ocrd-all-tool.json` via `ocrd-tool.json`
+  > * `setup.py` → `pyproject.toml`, versioning based on `ocrd-tool.json`
+  > * add continuous deployment for Dockerhub
+  > * add continuous deployment for PyPI
 
 ### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [218e0b5](https://github.com/bertsky/ocrd_detectron2/commits/218e0b5)..[3e5f838](https://github.com/bertsky/ocrd_detectron2/commits/3e5f838)
 
