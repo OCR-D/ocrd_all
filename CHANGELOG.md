@@ -1,5 +1,121 @@
 # Changelog
 
+## [v2025-04-11](https://github.com/OCR-D/ocrd_all/releases/v2025-04-11)
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [eb47a54](https://github.com/ASVLeipzig/cor-asv-ann/commits/eb47a54)..[bc6a590](https://github.com/ASVLeipzig/cor-asv-ann/commits/bc6a590)
+
+> Release: [v0.2.0](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.2.0)
+
+  > * CD PyPI: use latest packaging to fix metadata issue with twine
+  > * fix license string to conform to PyPI req
+  > * CD PyPI: use Pythonic base image
+  > * docker: add vars
+  > * Partial revert of "CI: install hunspell for ocrd-cor-asv-ann-mark test"…
+  > * CI: differentiate store_test_results / store_artifacts
+  > * requirements_test: fix typo (xdist instead of isolate)
+  > * CI: reduce workload further, isolate tests to free memory
+  > * CI: install hunspell for ocrd-cor-asv-ann-mark test
+  > * tests: reduce workload of combinations to fit into 1h without GPU
+  > * CI: cache model download, increase timeout
+  > * CI: forgot to prefix model download directory
+  > * CI: forgot to stage actual removal of Orb
+  > * :package: 0.2.0
+  > * CI: switch from Orb to CLI for Codecov
+  > * CI: change codecov orb version
+  > * setup.py → pyproject.toml (w/ dynamic setuptools-ocrd versioning)
+  > * ocrd-tool.json: add 2 model files as examples
+  > * add coverage, add tests to CI and pypi to CD
+  > * docker: update+improve…
+  > * increase default batch size for better GPU utilisation
+  > * autosized generators: make work with Keras 2.3.x (stateful metrics)
+  > * train: add model checkpointing callback
+  > * seq2seq: be robust if EOL is missing in binary (prob/confmat) line input
+  > * seq2seq: cover non-string line input (prob/confmat) in fallback
+  > * transcode: simplify updating sequence, improve logging…
+  > * transcode: pass all input TextEquiv alternatives…
+  > * fix `charmap` kwarg init
+  > * transcode test: abort on failure
+  > * add test for transcode only, cover more fileGrps and parameters, check and compare confidences
+  > * transcode: also remove lower hierarchy levels for consistency
+  > * transcode: utilise .parent_object_, simplify
+  > * tests: eval all against 'MULTI', test 'mark' separately, assert equal CER for both 'eval' strategies
+  > * replace editdistance with rapidfuzz
+  > * add tests
+  > * migrate all processors to ocrd>=3.0
+  > * CircleCI: separate CD and CI
+
+### [docstruct](https://github.com/bertsky/docstruct) [004e6ec](https://github.com/bertsky/docstruct/commits/004e6ec)..[f8c4e46](https://github.com/bertsky/docstruct/commits/f8c4e46)
+
+  > * Merge pull request #2 from bertsky/migrate-ocrd-v3
+
+### [format-converters](https://github.com/OCR-D/format-converters) [fa8b4b5](https://github.com/OCR-D/format-converters/commits/fa8b4b5)..[0894801](https://github.com/OCR-D/format-converters/commits/0894801)
+
+  > * Merge pull request #25 from stweil/PEP8
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [0c67107](https://github.com/OCR-D/ocrd_anybaseocr/commits/0c67107)..[0aa1d57](https://github.com/OCR-D/ocrd_anybaseocr/commits/0aa1d57)
+
+> Release: [v2.0.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v2.0.0)
+
+  > * :package: v2.0.0
+  > * :memo: changelog
+  > * Merge pull request #113 from bertsky/v3-api
+  > * ocrd-tool: don't restrict resource_locations
+  > * Be defensive about uninitializing possibly uninitialized model and label_mapping
+  > * 3.8 typing
+  > * self.reset at the end of process_workspace, del self.model in shutdown
+  > * move models to root of package
+  > * adapt tests
+  > * rewrite with process_workspace and deferred METS modification
+  > * rely on resolve_resource for model path
+  > * use contextmanager to open pickled label mapping
+  > * Merge branch 'v3-api' of https://github.com/OCR-D/ocrd_anybaseocr into v3-api
+  > * remove redundant model-exists check
+  > * CI: larger resource_class
+  > * Merge branch 'v3-api' of https://github.com/OCR-D/ocrd_anybaseocr into v3-api
+  > * pickle was ignored
+  > * add model to package data
+  > * reintroduce layout-analysis
+  > * remove constants
+  > * convert to src-layout
+  > * remove old mets files
+  > * remove pix2pixhd
+  > * fix setuptools packages
+  > * CI: remove references to models
+  > * adapt cropper and test
+  > * remove everything that is not cropping-related
+  > * convert cropper to v3 API, setup.py -> pyproject.toml
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [db65d7f](https://github.com/cisocrgroup/ocrd_cis/commits/db65d7f)..[5cf22f5](https://github.com/cisocrgroup/ocrd_cis/commits/5cf22f5)
+
+> Release: [v0.20.1](https://github.com/cisocrgroup/ocrd_cis/releases/v0.20.1)
+
+  > * fix license classifier for PyPI
+  > * PyPI CD: forgot the actual build!
+  > * PyPI CD: use whatever is in dist
+  > * PyPI CD: strip 'v' prefix from git tag
+  > * add PyPI CD
+  > * :package: 0.2.0
+  > * add 'build' and 'help' targets
+  > * setup→pyproject
+  > * Docker: shortcut ocrd-all-tool.json via ocrd-tool.json
+  > * Merge pull request #5 from MehmedGIT/port-to-v3
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [218e0b5](https://github.com/bertsky/ocrd_detectron2/commits/218e0b5)..[3e5f838](https://github.com/bertsky/ocrd_detectron2/commits/3e5f838)
+
+> Release: [v0.2.0](https://github.com/bertsky/ocrd_detectron2/releases/v0.2.0)
+
+  > * relax setuptools version requirement
+  > * update setuptools to fix detectron2 build
+  > * CI: remove Python 3.11 (does not work with detectron2)
+  > * Update CHANGELOG.md
+  > * Merge pull request #31 from bertsky/migrate-ocrd-v3
+
+### [ocrd_pagetopdf](https://github.com/OCR-D/ocrd_pagetopdf) [00baf15](https://github.com/OCR-D/ocrd_pagetopdf/commits/00baf15)..[b10d3f6](https://github.com/OCR-D/ocrd_pagetopdf/commits/b10d3f6)
+
+> Release: [v2.0.0](https://github.com/OCR-D/ocrd_pagetopdf/releases/v2.0.0)
+
+  > * Merge pull request #29 from OCR-D/missing-import-re
+
 ## [v2025-04-08](https://github.com/OCR-D/ocrd_all/releases/v2025-04-08)
 
 Removed
