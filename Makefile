@@ -83,8 +83,12 @@ DEFAULT_DISABLED_MODULES += eynollah ocrd_anybaseocr ocrd_calamari
 DEFAULT_DISABLED_MODULES += ocrd_kraken
 endif
 ifeq ($(shell uname -s),Darwin)
+# Disable ocrd_detectron2 because of missing dependency torchvision==0.16.2.
+DEFAULT_DISABLED_MODULES += ocrd_detectron2
 # Disable ocrd_olena for macOS because build is broken.
 DEFAULT_DISABLED_MODULES += ocrd_olena
+# Disable ocrd_segment for macOS, see https://github.com/OCR-D/ocrd_segment/issues/64..
+DEFAULT_DISABLED_MODULES += ocrd_segment
 endif
 DISABLED_MODULES ?= $(DEFAULT_DISABLED_MODULES)
 
