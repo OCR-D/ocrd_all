@@ -551,20 +551,8 @@ $(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
 endif
 
 ifneq ($(filter ocrd_anybaseocr, $(OCRD_MODULES)),)
-install-models: install-models-anybaseocr
-.PHONY: install-models-anybaseocr
-install-models-anybaseocr:
-	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-dewarp '*'
-	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-layout-analysis '*'
-	. $(ACTIVATE_VENV) && ocrd resmgr download ocrd-anybaseocr-tiseg '*'
-
 OCRD_EXECUTABLES += $(OCRD_ANYBASEOCR)
 OCRD_ANYBASEOCR := $(BIN)/ocrd-anybaseocr-crop
-OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-binarize
-OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-deskew
-OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-dewarp
-OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-tiseg
-OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-textline
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
 $(call multirule,$(OCRD_ANYBASEOCR)): ocrd_anybaseocr $(BIN)/ocrd
 	$(pip_install)
