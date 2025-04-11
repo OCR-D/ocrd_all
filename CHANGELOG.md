@@ -116,10 +116,13 @@ Release: [v0.2.0](https://github.com/bertsky/ocrd_cis/releases/v0.2.0)
   > * Update CHANGELOG.md
   > * Merge pull request #31 from bertsky/migrate-ocrd-v3
 
-### [ocrd_froc](https://github.com/OCR-D/ocrd_froc) [5a5d774](https://github.com/OCR-D/ocrd_froc/commits/5a5d774)..[0ba3030](https://github.com/OCR-D/ocrd_froc/commits/0ba3030)
+### [ocrd_froc](https://github.com/OCR-D/ocrd_froc) [5a5d774](https://github.com/OCR-D/ocrd_froc/commits/5a5d774)..[323a6ba](https://github.com/OCR-D/ocrd_froc/commits/323a6ba)
 
-> Release: [v1.0.0](https://github.com/OCR-D/ocrd_froc/releases/v1.0.0)
+> Release: [v1.0.1](https://github.com/OCR-D/ocrd_froc/releases/v1.0.1)
 
+  > * :package: v1.0.1
+  > * :memo: changelog
+  > * Merge pull request #20 from bertsky/patch-1
   > * :package: v1.0.0
   > * :memo: changelog
   > * Dockerfile: COPY ocrd-tool.json to avoid symlink
