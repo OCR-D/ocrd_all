@@ -139,10 +139,16 @@ Release: [v0.2.0](https://github.com/bertsky/ocrd_cis/releases/v0.2.0)
   > * Update pyproject.toml
   > * Convert to OCR-D v3
 
-### [ocrd_pagetopdf](https://github.com/OCR-D/ocrd_pagetopdf) [00baf15](https://github.com/OCR-D/ocrd_pagetopdf/commits/00baf15)..[b10d3f6](https://github.com/OCR-D/ocrd_pagetopdf/commits/b10d3f6)
+### [ocrd_pagetopdf](https://github.com/OCR-D/ocrd_pagetopdf) [00baf15](https://github.com/OCR-D/ocrd_pagetopdf/commits/00baf15)..[c6b414d](https://github.com/OCR-D/ocrd_pagetopdf/commits/c6b414d)
 
-> Release: [v2.0.0](https://github.com/OCR-D/ocrd_pagetopdf/releases/v2.0.0)
+> Release: [v2.0.1](https://github.com/OCR-D/ocrd_pagetopdf/releases/v2.0.1)
 
+  > * :package: v2.0.1
+  > * :memo: changelog
+  > * add changelog
+  > * improve multipage structmap extraction (more robust, more cases)
+  > * tests: debug logging only for processors
+  > * deps-ubuntu: add apt-get update; add deps-test
   > * Merge pull request #29 from OCR-D/missing-import-re
 
 ## [v2025-04-08](https://github.com/OCR-D/ocrd_all/releases/v2025-04-08)
