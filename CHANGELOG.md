@@ -2,6 +2,10 @@
 
 ## [v2025-04-11](https://github.com/OCR-D/ocrd_all/releases/v2025-04-11)
 
+Changed:
+
+  * Disable `ocrd_detectron2` and `ocrd_segment` for OSX, #460
+
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [eb47a54](https://github.com/ASVLeipzig/cor-asv-ann/commits/eb47a54)..[bc6a590](https://github.com/ASVLeipzig/cor-asv-ann/commits/bc6a590)
 
 > Release: [v0.2.0](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.2.0)
