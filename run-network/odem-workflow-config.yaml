@@ -1,0 +1,28 @@
+dest: docker-compose.yml
+processors:
+    - name: ocrd-cis-ocropy-binarize
+      image: ocrd/cis
+    - name: ocrd-cis-ocropy-denoise
+      image: ocrd/cis
+    - name: ocrd-cis-ocropy-deskew
+      image: ocrd/cis
+    - name: ocrd-cis-ocropy-clip
+      image: ocrd/cis
+    - name: ocrd-cis-ocropy-segment
+      image: ocrd/cis
+    - name: ocrd-cis-ocropy-dewarp
+      image: ocrd/cis
+    - name: ocrd-fileformat-transform
+      image: ocrd/fileformat
+    - name: ocrd-segment-repair
+      image: ocrd/segment
+    - name: ocrd-tesserocr-segment-region
+      image: ocrd/tesserocr
+    - name: ocrd-tesserocr-recognize
+      image: ocrd/tesserocr
+    - name: ocrd-anybaseocr-crop
+      image: ocrd/anybaseocr
+environment:
+    # this folder contains the workspaces and must be created by the user
+    data_dir_host: /tmp/mydata
+    mtu: 1300
