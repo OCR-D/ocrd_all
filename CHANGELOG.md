@@ -116,6 +116,26 @@ Release: [v0.2.0](https://github.com/bertsky/ocrd_cis/releases/v0.2.0)
   > * Update CHANGELOG.md
   > * Merge pull request #31 from bertsky/migrate-ocrd-v3
 
+### [ocrd_froc](https://github.com/OCR-D/ocrd_froc) [5a5d774](https://github.com/OCR-D/ocrd_froc/commits/5a5d774)..[0ba3030](https://github.com/OCR-D/ocrd_froc/commits/0ba3030)
+
+> Release: [v1.0.0](https://github.com/OCR-D/ocrd_froc/releases/v1.0.0)
+
+  > * :package: v1.0.0
+  > * :memo: changelog
+  > * Dockerfile: COPY ocrd-tool.json to avoid symlink
+  > * make docker: podman does not support --progress
+  > * CI/GHA: actually run make test
+  > * CI: docker
+  > * Dockerfile: set locale/XDG variables, use COPY . . and .dockerignore
+  > * Dockerfile: base on ocrd/core-cuda-torch
+  > * Update requirements-test.txt
+  > * tests: use subtests.test instead of plain for loop
+  > * unit tests
+  > * processor: handle ocr_method=none vs ocr_method=adaptive correctly
+  > * OCR-D processor: restrict to 1 worker due to single CUDA context
+  > * Update pyproject.toml
+  > * Convert to OCR-D v3
+
 ### [ocrd_pagetopdf](https://github.com/OCR-D/ocrd_pagetopdf) [00baf15](https://github.com/OCR-D/ocrd_pagetopdf/commits/00baf15)..[b10d3f6](https://github.com/OCR-D/ocrd_pagetopdf/commits/b10d3f6)
 
 > Release: [v2.0.0](https://github.com/OCR-D/ocrd_pagetopdf/releases/v2.0.0)
