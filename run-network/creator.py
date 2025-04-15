@@ -261,6 +261,7 @@ PROC_TEMPLATE = """
       - ocrd-resources:/usr/local/share/ocrd-resources
     environment:
       - OCRD_NETWORK_LOGS_ROOT_DIR=${{LOGS_DIR:-/data/logs}}
+      - XDG_CONFIG_HOME=/usr/local/share/ocrd-resources
 """
 
 PROCESSING_SERVER_TEMPLATE = """
@@ -274,6 +275,7 @@ PROCESSING_SERVER_TEMPLATE = """
       - RABBITMQ_PASS=${{RABBITMQ_PASS:-admin}}
       - OCRD_NETWORK_SOCKETS_ROOT_DIR=${{SOCKETS_DIR:-/data/sockets}}
       - OCRD_NETWORK_LOGS_ROOT_DIR=${{LOGS_DIR:-/data/logs}}
+      - XDG_CONFIG_HOME=/usr/local/share/ocrd-resources
     command: |
       /bin/bash -c "echo -e \\"
         internal_callback_url: ${{INTERNAL_CALLBACK_URL}}
@@ -329,6 +331,7 @@ RABBITMQ_TEMPLATE = """
 VOLUMES_TEMPLATE = """
 volumes:
   ocrd-resources:
+    external: true
 """
 
 
