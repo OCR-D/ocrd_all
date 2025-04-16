@@ -1,5 +1,254 @@
 # Changelog
 
+## [v2025-04-16](https://github.com/OCR-D/ocrd_all/releases/v2025-04-16)
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [eb47a54](https://github.com/ASVLeipzig/cor-asv-ann/commits/eb47a54)..[7ce4631](https://github.com/ASVLeipzig/cor-asv-ann/commits/7ce4631)
+
+> Release: [v0.2.0](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.2.0)
+
+  > * ocrd-tool.json: fix typo
+  > * ocrd-tool.json: forgot to add dockerhub key
+  > * CD PyPI: use latest packaging to fix metadata issue with twine
+  > * fix license string to conform to PyPI req
+  > * CD PyPI: use Pythonic base image
+  > * docker: add vars
+  > * Partial revert of "CI: install hunspell for ocrd-cor-asv-ann-mark test"…
+  > * CI: differentiate store_test_results / store_artifacts
+  > * requirements_test: fix typo (xdist instead of isolate)
+  > * CI: reduce workload further, isolate tests to free memory
+  > * CI: install hunspell for ocrd-cor-asv-ann-mark test
+  > * tests: reduce workload of combinations to fit into 1h without GPU
+  > * CI: cache model download, increase timeout
+  > * CI: forgot to prefix model download directory
+  > * CI: forgot to stage actual removal of Orb
+  > * :package: 0.2.0
+  > * CI: switch from Orb to CLI for Codecov
+  > * CI: change codecov orb version
+  > * setup.py → pyproject.toml (w/ dynamic setuptools-ocrd versioning)
+  > * ocrd-tool.json: add 2 model files as examples
+  > * add coverage, add tests to CI and pypi to CD
+  > * docker: update+improve…
+  > * increase default batch size for better GPU utilisation
+  > * autosized generators: make work with Keras 2.3.x (stateful metrics)
+  > * train: add model checkpointing callback
+  > * seq2seq: be robust if EOL is missing in binary (prob/confmat) line input
+  > * seq2seq: cover non-string line input (prob/confmat) in fallback
+  > * transcode: simplify updating sequence, improve logging…
+  > * transcode: pass all input TextEquiv alternatives…
+  > * fix `charmap` kwarg init
+  > * transcode test: abort on failure
+  > * add test for transcode only, cover more fileGrps and parameters, check and compare confidences
+  > * transcode: also remove lower hierarchy levels for consistency
+  > * transcode: utilise .parent_object_, simplify
+  > * tests: eval all against 'MULTI', test 'mark' separately, assert equal CER for both 'eval' strategies
+  > * replace editdistance with rapidfuzz
+  > * add tests
+  > * migrate all processors to ocrd>=3.0
+  > * CircleCI: separate CD and CI
+
+### [core](https://github.com/OCR-D/core) [80eb58c](https://github.com/OCR-D/core/commits/80eb58c)..[769919a](https://github.com/OCR-D/core/commits/769919a)
+
+> Release: [v3.3.1](https://github.com/OCR-D/core/releases/v3.3.1)
+
+  > * :package: v3.3.1
+  > * :memo: changelog
+  > * ocrd-tool.json: add dockerhub key
+  > * Processor.zip_input_files: fix check for OCRD_MISSING_INPUT
+  > * deps-ubuntu: do apt-get update first
+  > * ocrd_cli_wrap_processor: strictly require non-empty input_file_grp kwarg
+  > * GHA CI: remove u20 runner here, too
+  > * ocrd_cli_wrap_processor: allow 'None' for file grp arguments
+  > * run_processor/get_processor: replace 'None' with empty str
+
+### [dinglehopper](https://github.com/OCR-D/dinglehopper) [071e6a8](https://github.com/OCR-D/dinglehopper/commits/071e6a8)..[9573539](https://github.com/OCR-D/dinglehopper/commits/9573539)
+
+> Release: [v1.0.0pre1](https://github.com/OCR-D/dinglehopper/releases/v1.0.0pre1)
+
+  > * typo: report_prefix -> file_id
+  > * ocrd_cli: but do check for existing output files
+  > * ocrd_cli: no need to check fileGrp dir exists
+  > * OCR-D processor: properly handle missing or non-downloaded GT/OCR file
+  > * Dockerfile: build ocrd-all-tool.json
+  > * adapt tests
+  > * use Levenshtein.normalized_distance instead of distance
+  > * 🧹Don't pin uniseg and rapidfuzz
+  > * Port to OCR-D/core API v3
+  > * Merge pull request #136 from qurator-spk/chore/update-liccheck
+  > * Merge pull request #135 from qurator-spk/chore/update-python-version
+  > * Merge pull request #132 from qurator-spk/fix/uniseg-removed-index-parameter
+  > * Merge pull request #131 from qurator-spk/chore/update-pre-commit
+
+### [docstruct](https://github.com/bertsky/docstruct) [004e6ec](https://github.com/bertsky/docstruct/commits/004e6ec)..[1183e1a](https://github.com/bertsky/docstruct/commits/1183e1a)
+
+  > * ocrd-tool.json: forgot to add dockerhub key
+  > * Merge pull request #2 from bertsky/migrate-ocrd-v3
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [8080bd8](https://github.com/qurator-spk/eynollah/commits/8080bd8)..[41318f0](https://github.com/qurator-spk/eynollah/commits/41318f0)
+
+> Release: [v0.4.0](https://github.com/qurator-spk/eynollah/releases/v0.4.0)
+
+  > * :memo: changelog
+  > * Restoring the contour in the original image caused an error due to an empty tuple. This issue has been resolved, and as expected, the confidence score for this contour is set to zero
+
+### [format-converters](https://github.com/OCR-D/format-converters) [fa8b4b5](https://github.com/OCR-D/format-converters/commits/fa8b4b5)..[0894801](https://github.com/OCR-D/format-converters/commits/0894801)
+
+  > * Merge pull request #25 from stweil/PEP8
+
+### [nmalign](https://github.com/bertsky/nmalign) [1698cd8](https://github.com/bertsky/nmalign/commits/1698cd8)..[50edf46](https://github.com/bertsky/nmalign/commits/50edf46)
+
+> Release: [v0.0.5](https://github.com/bertsky/nmalign/releases/v0.0.5)
+
+  > * ocrd-tool.json: forgot to add dockerhub key
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [0c67107](https://github.com/OCR-D/ocrd_anybaseocr/commits/0c67107)..[0aa1d57](https://github.com/OCR-D/ocrd_anybaseocr/commits/0aa1d57)
+
+> Release: [v2.0.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v2.0.0)
+
+  > * :package: v2.0.0
+  > * :memo: changelog
+  > * Merge pull request #113 from bertsky/v3-api
+  > * ocrd-tool: don't restrict resource_locations
+  > * Be defensive about uninitializing possibly uninitialized model and label_mapping
+  > * 3.8 typing
+  > * self.reset at the end of process_workspace, del self.model in shutdown
+  > * move models to root of package
+  > * adapt tests
+  > * rewrite with process_workspace and deferred METS modification
+  > * rely on resolve_resource for model path
+  > * use contextmanager to open pickled label mapping
+  > * Merge branch 'v3-api' of https://github.com/OCR-D/ocrd_anybaseocr into v3-api
+  > * remove redundant model-exists check
+  > * CI: larger resource_class
+  > * Merge branch 'v3-api' of https://github.com/OCR-D/ocrd_anybaseocr into v3-api
+  > * pickle was ignored
+  > * add model to package data
+  > * reintroduce layout-analysis
+  > * remove constants
+  > * convert to src-layout
+  > * remove old mets files
+  > * remove pix2pixhd
+  > * fix setuptools packages
+  > * CI: remove references to models
+  > * adapt cropper and test
+  > * remove everything that is not cropping-related
+  > * convert cropper to v3 API, setup.py -> pyproject.toml
+
+### [ocrd_cis](https://github.com/cisocrgroup/ocrd_cis) [db65d7f](https://github.com/cisocrgroup/ocrd_cis/commits/db65d7f)..[5cf22f5](https://github.com/cisocrgroup/ocrd_cis/commits/5cf22f5)
+
+> Release: [v0.2.0](https://github.com/cisocrgroup/ocrd_cis/releases/v0.2.0)
+
+  > * fix license classifier for PyPI
+  > * PyPI CD: forgot the actual build!
+  > * PyPI CD: use whatever is in dist
+  > * PyPI CD: strip 'v' prefix from git tag
+  > * add PyPI CD
+  > * :package: 0.2.0
+  > * add 'build' and 'help' targets
+  > * setup→pyproject
+  > * Docker: shortcut ocrd-all-tool.json via ocrd-tool.json
+  > * Merge pull request #5 from MehmedGIT/port-to-v3
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [218e0b5](https://github.com/bertsky/ocrd_detectron2/commits/218e0b5)..[10aea24](https://github.com/bertsky/ocrd_detectron2/commits/10aea24)
+
+> Release: [v0.2.0](https://github.com/bertsky/ocrd_detectron2/releases/v0.2.0)
+
+  > * ocrd-tool.json: forgot to add dockerhub key
+  > * relax setuptools version requirement
+  > * update setuptools to fix detectron2 build
+  > * CI: remove Python 3.11 (does not work with detectron2)
+  > * Update CHANGELOG.md
+  > * Merge pull request #31 from bertsky/migrate-ocrd-v3
+
+### [ocrd_doxa](https://github.com/bertsky/ocrd_doxa) [15e8423](https://github.com/bertsky/ocrd_doxa/commits/15e8423)..[a6df2f2](https://github.com/bertsky/ocrd_doxa/commits/a6df2f2)
+
+> Release: [v0.0.3](https://github.com/bertsky/ocrd_doxa/releases/v0.0.3)
+
+  > * update changelog
+  > * update dockerfile:
+  > * setup.py → pyproject.toml (w/ versioning based on `ocrd-tool.json`)
+  > * add CI
+  > * try to avoid doxapy allocation problems
+  > * add tests (from ocrd_olena)
+  > * migrate to ocrd >= 3 API
+  > * improve makefile
+
+### [ocrd_froc](https://github.com/OCR-D/ocrd_froc) [5a5d774](https://github.com/OCR-D/ocrd_froc/commits/5a5d774)..[323a6ba](https://github.com/OCR-D/ocrd_froc/commits/323a6ba)
+
+> Release: [v1.0.1](https://github.com/OCR-D/ocrd_froc/releases/v1.0.1)
+
+  > * :package: v1.0.1
+  > * :memo: changelog
+  > * Merge pull request #20 from bertsky/patch-1
+  > * :package: v1.0.0
+  > * :memo: changelog
+  > * Dockerfile: COPY ocrd-tool.json to avoid symlink
+  > * make docker: podman does not support --progress
+  > * CI/GHA: actually run make test
+  > * CI: docker
+  > * Dockerfile: set locale/XDG variables, use COPY . . and .dockerignore
+  > * Dockerfile: base on ocrd/core-cuda-torch
+  > * Update requirements-test.txt
+  > * tests: use subtests.test instead of plain for loop
+  > * unit tests
+  > * processor: handle ocr_method=none vs ocr_method=adaptive correctly
+  > * OCR-D processor: restrict to 1 worker due to single CUDA context
+  > * Update pyproject.toml
+  > * Convert to OCR-D v3
+
+### [ocrd_keraslm](https://github.com/OCR-D/ocrd_keraslm) [2c466bd](https://github.com/OCR-D/ocrd_keraslm/commits/2c466bd)..[676cc00](https://github.com/OCR-D/ocrd_keraslm/commits/676cc00)
+
+> Release: [v0.5.0](https://github.com/OCR-D/ocrd_keraslm/releases/v0.5.0)
+
+  > * Merge pull request #23 from OCR-D/migrate-v3
+
+### [ocrd_olahd_client](https://github.com/OCR-D/ocrd_olahd_client) [56c9272](https://github.com/OCR-D/ocrd_olahd_client/commits/56c9272)..[3a90373](https://github.com/OCR-D/ocrd_olahd_client/commits/3a90373)
+
+> Release: [v1.0.0](https://github.com/OCR-D/ocrd_olahd_client/releases/v1.0.0)
+
+  > * convert to src layout
+  > * :package: v1.0.0
+  > * :memo: changelog
+  > * make test: remove pytest's -s
+  > * Activate print for tests with makefile
+  > * v3-compatible workaround for not having an output fileGrp
+  > * Update Dockerfile
+  > * Fix errors from v3 port
+  > * port to v3
+
+### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [78518b8](https://github.com/OCR-D/ocrd_olena/commits/78518b8)..[bf5cf76](https://github.com/OCR-D/ocrd_olena/commits/bf5cf76)
+
+> Release: [v2.0.0](https://github.com/OCR-D/ocrd_olena/releases/v2.0.0)
+
+  > * ocrd-tool.json: forgot to add dockerhub key
+  > * deps-ubuntu: do apt-get update, first
+
+### [ocrd_page2alto](https://github.com/OCR-D/page-to-alto) [da309e6](https://github.com/OCR-D/page-to-alto/commits/da309e6)..[76f6951](https://github.com/OCR-D/page-to-alto/commits/76f6951)
+
+> Release: [v2.0.0](https://github.com/OCR-D/page-to-alto/releases/v2.0.0)
+
+  > * :package: v2.0.0
+  > * :memo: changelog
+  > * Merge pull request #40 from bertsky/v3-ocrd-api
+
+### [ocrd_pagetopdf](https://github.com/OCR-D/ocrd_pagetopdf) [00baf15](https://github.com/OCR-D/ocrd_pagetopdf/commits/00baf15)..[c6b414d](https://github.com/OCR-D/ocrd_pagetopdf/commits/c6b414d)
+
+> Release: [v2.0.1](https://github.com/OCR-D/ocrd_pagetopdf/releases/v2.0.1)
+
+  > * :package: v2.0.1
+  > * :memo: changelog
+  > * add changelog
+  > * improve multipage structmap extraction (more robust, more cases)
+  > * tests: debug logging only for processors
+  > * deps-ubuntu: add apt-get update; add deps-test
+  > * Merge pull request #29 from OCR-D/missing-import-re
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [a5bffee](https://github.com/bertsky/workflow-configuration/commits/a5bffee)..[c7259fb](https://github.com/bertsky/workflow-configuration/commits/c7259fb)
+
+> Release: [0.1.3](https://github.com/bertsky/workflow-configuration/releases/0.1.3)
+
+  > * deps-ubuntu: do apt-get update first
+
+
 ## [v2025-04-11](https://github.com/OCR-D/ocrd_all/releases/v2025-04-11)
 
 Changed:
