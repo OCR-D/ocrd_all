@@ -49,7 +49,7 @@ main () {
     shift
     case "$cmd" in
         update) update_all_submodules "$@" ;;
-        changelog) update_changelog "$@" ;;
+        changelog|CHANGELOG.md) update_changelog "$@" ;;
         release-github) release_github ;;
         release-dockerhub) release_dockerhub ;;
         *) usage; exit 1 ;;
@@ -77,10 +77,16 @@ update_one_submodule () {
     local sm="$1"
     (
         cd $sm
-        local branch=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
-        loginfo "Updating submodule $sm / branch $branch"
-        git pull -q --rebase origin "$branch"
-        git pull -q --rebase origin "$branch" --tags
+        local remote=origin
+        local branch=$(git remote show $remote | sed -n '/HEAD branch/s/.*: //p')
+        # Until https://github.com/cisocrgroup/ocrd_cis/pull/87 is merged
+        if [[ $sm == 'ocrd_cis' ]];then
+          remote="bertsky"
+          branch="fix-alpha-shape"
+        fi
+        loginfo "Updating submodule $sm from $remote/$branch"
+        git pull -q --rebase $remote "$branch"
+        git pull -q --rebase $remote "$branch" --tags
         git submodule update --init
      )
 }
