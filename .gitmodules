@@ -26,7 +26,7 @@
         shallow = true
 [submodule "dinglehopper"]
 	path = dinglehopper
-	url = https://github.com/qurator-spk/dinglehopper.git
+	url = https://github.com/OCR-D/dinglehopper
 [submodule "cor-asv-ann"]
 	path = cor-asv-ann
 	url = https://github.com/ASVLeipzig/cor-asv-ann.git
