@@ -113,7 +113,7 @@ clean: # add more prerequisites for clean below
 	$(RM) -r $(SUB_VENV)
 	$(RM) -r $(CURDIR)/venv # deliberately not using VIRTUAL_ENV here
 	$(RM) -r $(HOME)/.parallel/semaphores/id-ocrd_*
-	$(RM) ocrd-all-tool.json ocrd-all-module-dir.json
+	$(RM) ocrd-all-tool.json ocrd-all-module-dir.json ocrd-all-meta.json
 
 define HELP
 cat <<"EOF"
@@ -148,8 +148,9 @@ Targets (testing):
 	test-workflow: verify that most executables work correctly via test runs on test data
 
 Targets (auxiliary data):
-	ocrd-all-tool.json: generate union of ocrd-tool.json for all executables of all modules
-	ocrd-all-module-dir.json: mapping of module locations for all executables of all modules
+	ocrd-all-tool.json: generate union of ocrd-tool.json's tools section for all executables of all modules
+	ocrd-all-meta.json: map executable to ocrd-tool.json's metadata section for all executables of all modules
+	ocrd-all-module-dir.json: map executable to module location for all executables of all modules
 	install-models: download commonly used models to appropriate locations
 
 Targets (build of container images):
@@ -703,7 +704,7 @@ $(filter-out $(BIN)/ocrd,$(OCRD_EXECUTABLES)): $(BIN)/ocrd
 
 # At last, we know what all OCRD_EXECUTABLES are:
 # (json targets depend on OCRD_MODULES and OCRD_EXECUTABLES)
-all: ocrd-all-tool.json ocrd-all-module-dir.json
+all: ocrd-all-tool.json ocrd-all-module-dir.json ocrd-all-meta.json
 	. $(ACTIVATE_VENV) && cp -f $^ `python -c "import ocrd; print(ocrd.__path__[0])"`
 	if test -d $(SUB_VENV_TF1); then . $(SUB_VENV_TF1)/bin/activate && cp -f $^ `python -c "import ocrd; print(ocrd.__path__[0])"`; fi
 
@@ -740,6 +741,9 @@ ocrd-all-tool.json: $(OCRD_MODULES) $(ACTIVATE_VENV)
 
 ocrd-all-module-dir.json: ocrd-all-tool.json $(OCRD_EXECUTABLES) $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && TF_CPP_MIN_LOG_LEVEL=3 $(PYTHON) ocrd-all-module-dir.py $< > $@
+
+ocrd-all-meta.json: $(OCRD_MODULES) $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && $(PYTHON) ocrd-all-meta.py $(wildcard $(OCRD_MODULES:%=%/ocrd-tool.json)) > $@
 
 .PHONY: $(OCRD_EXECUTABLES:%=%-check)
 $(OCRD_EXECUTABLES:%=%-check):

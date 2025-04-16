@@ -120,6 +120,14 @@ commands:
             - store_artifacts:
                 path: ocrd-all-module-dir.json
                 destination: ocrd-all-module-dir.json
+            - run:
+                name: store ocrd-all-dockerhub.json
+                command: |
+                  id=`docker create ocrd/all:maximum`
+                  docker cp $id:/build/ocrd-all-dockerhub.json .
+            - store_artifacts:
+                path: ocrd-all-dockerhub.json
+                destination: ocrd-all-dockerhub.json
       - when:
           condition:
             equal: [ maximum-cuda, << parameters.tag >> ]
