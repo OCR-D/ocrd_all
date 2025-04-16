@@ -382,6 +382,7 @@ This table lists which tag contains which module:
 | ocrd_cis                    | ☑         | ☑        | ☑         |
 | ocrd_fileformat             | ☑         | ☑        | ☑         |
 | ocrd_olahd_client           | ☑         | ☑        | ☑         |
+| ocrd_page2alto              | ☑         | ☑        | ☑         |
 | ocrd_pagetopdf              | ☑         | ☑        | ☑         |
 | ocrd_repair_inconsistencies | ☑         | ☑        | ☑         |
 | ocrd_tesserocr              | ☑         | ☑        | ☑         |
@@ -394,7 +395,6 @@ This table lists which tag contains which module:
 | nmalign                     | -         | ☑        | ☑         |
 | ocrd_calamari               | -         | ☑        | ☑         |
 | ocrd_keraslm                | -         | ☑        | ☑         |
-| ocrd_neat                   | -         | ☑        | ☑         |
 | ocrd_olena                  | -         | ☑        | ☑         |
 | ocrd_segment                | -         | ☑        | ☑         |
 | ocrd_anybaseocr             | -         | -        | ☑         |
@@ -403,6 +403,7 @@ This table lists which tag contains which module:
 | ocrd_kraken                 | -         | -        | ☑         |
 | ocrd_froc                   | -         | -        | ☑         |
 | cor-asv-fst                 | -         | -        | -         |
+| ocrd_neat                   | -         | -        | -         |
 | ocrd_ocropy                 | -         | -        | -         |
 | ocrd_pc_segmentation        | -         | -        | -         |
 
@@ -412,6 +413,7 @@ This table lists which tag contains which module:
 > * `cor-asv-fst` (runtime issues)
 > * `ocrd_ocropy` (better implementation in ocrd_cis available)
 > * `ocrd_pc_segmentation` (dependency and quality issues)
+> * `ocrd_neat` (dependency/namespace issues)
 
 ### Uninstall
 
