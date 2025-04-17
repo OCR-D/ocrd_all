@@ -42,9 +42,6 @@
 [submodule "ocrd_anybaseocr"]
 	path = ocrd_anybaseocr
 	url = https://github.com/OCR-D/ocrd_anybaseocr.git
-[submodule "ocrd_pc_segmentation"]
-	path = ocrd_pc_segmentation
-	url = https://github.com/ocr-d-modul-2-segmentierung/ocrd-pixelclassifier-segmentation.git
 [submodule "opencv-python"]
 	path = opencv-python
 	url = https://github.com/skvark/opencv-python.git
