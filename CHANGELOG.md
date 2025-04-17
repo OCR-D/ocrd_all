@@ -1,14 +1,14 @@
 # Changelog
 
-## [v2025-04-17](https://github.com/OCR-D/ocrd_all/releases/v2025-04-17)
-
-
-
 ## [v2025-04-17](https://github.com/OCR-D/ocrd_all/releases/v2025-04-16)
 
 Added:
 
   * `make ocrd-all-meta.json`: Generate mapping from processor to `dockerhub`/`version`/commit SHA, #461
+
+Removed:
+
+  * `ocrd_pc_segmentation` long unmaintained and with better alternatives, #464
 
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [eb47a54](https://github.com/ASVLeipzig/cor-asv-ann/commits/eb47a54)..[7ce4631](https://github.com/ASVLeipzig/cor-asv-ann/commits/7ce4631)
 
