@@ -46,10 +46,15 @@
   > * migrate all processors to ocrd>=3.0
   > * CircleCI: separate CD and CI
 
-### [core](https://github.com/OCR-D/core) [80eb58c](https://github.com/OCR-D/core/commits/80eb58c)..[769919a](https://github.com/OCR-D/core/commits/769919a)
+### [core](https://github.com/OCR-D/core) [80eb58c](https://github.com/OCR-D/core/commits/80eb58c)..[66bb7bc](https://github.com/OCR-D/core/commits/66bb7bc)
 
-> Release: [v3.3.1](https://github.com/OCR-D/core/releases/v3.3.1)
+> Release: [v3.3.2](https://github.com/OCR-D/core/releases/v3.3.2)
 
+  > * :package: v3.3.2
+  > * :memo: changelog
+  > * test_mets_server: escape '.' in assertion
+  > * ClientSideOcrdMets.init: also escape '.' in UDS paths
+  > * Workspace.init / Resolver.resolve_mets_arguments: also resolve UDS path
   > * :package: v3.3.1
   > * :memo: changelog
   > * ocrd-tool.json: add dockerhub key
