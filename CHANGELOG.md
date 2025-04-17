@@ -1,5 +1,9 @@
 # Changelog
 
+## [v2025-04-17](https://github.com/OCR-D/ocrd_all/releases/v2025-04-17)
+
+
+
 ## [v2025-04-17](https://github.com/OCR-D/ocrd_all/releases/v2025-04-16)
 
 Added:
@@ -256,10 +260,12 @@ Added:
   > * deps-ubuntu: add apt-get update; add deps-test
   > * Merge pull request #29 from OCR-D/missing-import-re
 
-### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [a5bffee](https://github.com/bertsky/workflow-configuration/commits/a5bffee)..[c7259fb](https://github.com/bertsky/workflow-configuration/commits/c7259fb)
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [a5bffee](https://github.com/bertsky/workflow-configuration/commits/a5bffee)..[3bbe197](https://github.com/bertsky/workflow-configuration/commits/3bbe197)
 
 > Release: [0.1.3](https://github.com/bertsky/workflow-configuration/releases/0.1.3)
 
+  > * ocrd-make: fail early if METSSERV=1 but the METS Server failed immediately
+  > * ocrd-make: fix non-chained workflows (allow explicit .DEFAULT_GOAL again)
   > * deps-ubuntu: do apt-get update first
 
 
