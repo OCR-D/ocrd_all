@@ -69,7 +69,7 @@ SHELL := $(shell which bash)
 OCRD_EXECUTABLES = $(BIN)/ocrd # add more CLIs below
 CUSTOM_DEPS = unzip wget parallel git less # add more packages for deps-ubuntu below (or modules as preqrequisites)
 
-DEFAULT_DISABLED_MODULES = cor-asv-fst opencv-python ocrd_ocropy ocrd_pc_segmentation ocrd_neat
+DEFAULT_DISABLED_MODULES = cor-asv-fst opencv-python ocrd_ocropy ocrd_neat
 ifeq ($(filter docker-%,$(MAKECMDGOALS)),)
 ifneq ($(PYTHON_VERSION),3.8)
 # Disable modules which require tensorflow-gpu 1.15 unless running a Python version which provides it.
@@ -546,14 +546,6 @@ $(OCRD_CALAMARI): ocrd_calamari $(BIN)/ocrd
 	$(pip_install)
 endif
 
-ifneq ($(filter ocrd_pc_segmentation, $(OCRD_MODULES)),)
-OCRD_EXECUTABLES += $(OCRD_PC_SEGMENTATION)
-OCRD_PC_SEGMENTATION := $(BIN)/ocrd-pc-segmentation
-$(OCRD_PC_SEGMENTATION): ocrd_pc_segmentation
-	. $(ACTIVATE_VENV) && $(MAKE) -C $< deps
-	$(pip_install)
-endif
-
 ifneq ($(filter ocrd_anybaseocr, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_ANYBASEOCR)
 OCRD_ANYBASEOCR := $(BIN)/ocrd-anybaseocr-crop
@@ -588,13 +580,6 @@ $(EYNOLLAH_SEGMENT): eynollah $(BIN)/ocrd
 	$(pip_install)
 	# solve conflict with ocrd_calamari:
 	. $(ACTIVATE_VENV) && $(SEMPIP) pip install "protobuf<4"
-endif
-
-ifneq ($(filter ocrd_repair_inconsistencies, $(OCRD_MODULES)),)
-OCRD_EXECUTABLES += $(OCRD_REPAIR_INCONSISTENCIES)
-OCRD_REPAIR_INCONSISTENCIES := $(BIN)/ocrd-repair-inconsistencies
-$(OCRD_REPAIR_INCONSISTENCIES): ocrd_repair_inconsistencies $(BIN)/ocrd
-	$(pip_install)
 endif
 
 ifneq ($(filter ocrd_olahd_client, $(OCRD_MODULES)),)
@@ -832,7 +817,7 @@ dockers: docker-minimum docker-minimum-cuda docker-medium docker-medium-cuda doc
 docker-%: PIP_OPTIONS = -e
 
 # Minimum-size selection: use Ocropy binarization, use Tesseract from git
-DOCKER_MODULES_MINI := core ocrd_cis ocrd_fileformat ocrd_olahd_client ocrd_page2alto ocrd_pagetopdf ocrd_repair_inconsistencies ocrd_tesserocr ocrd_wrap workflow-configuration
+DOCKER_MODULES_MINI := core ocrd_cis ocrd_fileformat ocrd_olahd_client ocrd_page2alto ocrd_pagetopdf ocrd_tesserocr ocrd_wrap workflow-configuration
 docker-mini%: DOCKER_MODULES := $(DOCKER_MODULES_MINI)
 # Medium-size selection: add Olena binarization and Calamari, add evaluation
 DOCKER_MODULES_MEDI := $(DOCKER_MODULES_MINI) cor-asv-ann dinglehopper docstruct format-converters nmalign ocrd_calamari ocrd_keraslm ocrd_olena ocrd_segment
