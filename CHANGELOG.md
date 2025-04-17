@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2025-04-16](https://github.com/OCR-D/ocrd_all/releases/v2025-04-16)
+## [v2025-04-17](https://github.com/OCR-D/ocrd_all/releases/v2025-04-16)
 
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [eb47a54](https://github.com/ASVLeipzig/cor-asv-ann/commits/eb47a54)..[7ce4631](https://github.com/ASVLeipzig/cor-asv-ann/commits/7ce4631)
 
@@ -62,8 +62,10 @@
 
 ### [dinglehopper](https://github.com/OCR-D/dinglehopper) [071e6a8](https://github.com/OCR-D/dinglehopper/commits/071e6a8)..[9573539](https://github.com/OCR-D/dinglehopper/commits/9573539)
 
-> Release: [v1.0.0pre1](https://github.com/OCR-D/dinglehopper/releases/v1.0.0pre1)
+> Release: [v1.0.0pre2](https://github.com/OCR-D/dinglehopper/releases/v1.0.0pre2)
 
+  > * pyproject: support 3.8 as well
+  > * Merge remote-tracking branch 'bertsky/allow-uniseg-py38'
   > * typo: report_prefix -> file_id
   > * ocrd_cli: but do check for existing output files
   > * ocrd_cli: no need to check fileGrp dir exists
