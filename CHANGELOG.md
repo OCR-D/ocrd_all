@@ -224,10 +224,13 @@
   > * ocrd-tool.json: forgot to add dockerhub key
   > * deps-ubuntu: do apt-get update, first
 
-### [ocrd_page2alto](https://github.com/OCR-D/page-to-alto) [da309e6](https://github.com/OCR-D/page-to-alto/commits/da309e6)..[76f6951](https://github.com/OCR-D/page-to-alto/commits/76f6951)
+### [ocrd_page2alto](https://github.com/OCR-D/page-to-alto) [da309e6](https://github.com/OCR-D/page-to-alto/commits/da309e6)..[841b614](https://github.com/OCR-D/page-to-alto/commits/841b614)
 
-> Release: [v2.0.0](https://github.com/OCR-D/page-to-alto/releases/v2.0.0)
+> Release: [v2.0.1](https://github.com/OCR-D/page-to-alto/releases/v2.0.1)
 
+  > * :package: v2.0.1
+  > * :memo: changelog
+  > * Merge pull request #47 from bertsky/fix-v3-regression
   > * :package: v2.0.0
   > * :memo: changelog
   > * Merge pull request #40 from bertsky/v3-ocrd-api
