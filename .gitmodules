@@ -30,9 +30,6 @@
 [submodule "cor-asv-ann"]
 	path = cor-asv-ann
 	url = https://github.com/ASVLeipzig/cor-asv-ann.git
-[submodule "format-converters"]
-	path = format-converters
-	url = https://github.com/OCR-D/format-converters.git
 [submodule "ocrd_cis"]
 	path = ocrd_cis
 	url = https://github.com/cisocrgroup/ocrd_cis.git
@@ -42,10 +39,6 @@
 [submodule "ocrd_anybaseocr"]
 	path = ocrd_anybaseocr
 	url = https://github.com/OCR-D/ocrd_anybaseocr.git
-[submodule "opencv-python"]
-	path = opencv-python
-	url = https://github.com/skvark/opencv-python.git
-        shallow = true
 [submodule "workflow-configuration"]
 	path = workflow-configuration
 	url = https://github.com/bertsky/workflow-configuration.git
