@@ -42,6 +42,7 @@ endef
 SHELL := $(shell which bash)
 
 OCRD_EXECUTABLES = # add more CLIs below
+OCRD_IMAGES =
 
 DEFAULT_DISABLED_MODULES = cor-asv-fst ocrd_ocropy ocrd_neat
 DISABLED_MODULES ?= $(DEFAULT_DISABLED_MODULES)
@@ -99,12 +100,15 @@ Targets (testing):
 Targets (auxiliary data):
 	ocrd-all-tool.json: generate union of ocrd-tool.json's tools section for all executables of all modules
 	ocrd-all-meta.json: map executable to ocrd-tool.json's metadata section for all executables of all modules
-	ocrd-all-module-dir.json: map executable to module location for all executables of all modules
+	init-vol-models: initialise shared Docker volume with files from module images but user permissions
 	install-models: download commonly used models to appropriate locations
 
 Variables:
 	OCRD_MODULES: selection of submodules to include. Default: all git submodules (see `show`)
 	DISABLED_MODULES: list of disabled modules. Default: "$(DISABLED_MODULES)"
+	DOCKER_PULL_POLICY: set to `build` to `docker build` instead of `docker pull` images
+	DOCKER_VOL_MODELS: name of named volume to be mounted for processor resources (see `init-vol-models`)
+	DOCKER_RUN_OPTS: additional options for `docker run`
 	GIT_RECURSIVE: set to `--recursive` to checkout/update all submodules recursively
 	GIT_DEPTH: set to `--depth 1` to truncate all history when cloning subrepos
 	NO_UPDATE: set to `1` to omit git submodule sync and update
@@ -168,13 +172,11 @@ OCRD_EXECUTABLES += $(CORE)
 CORE := $(BIN)/ocrd
 CORE += $(BIN)/ocrd-dummy
 CORE += $(BIN)/ocrd-filter
+OCRD_IMAGES += ocrd/core
 $(CORE): ocrd/core
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/core
-images: ocrd/core
 ocrd/core: core
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 # Convert the executable names (1) to a pattern rule,
@@ -197,26 +199,22 @@ OCRD_KRAKEN += $(BIN)/ocrd-kraken-segment
 OCRD_KRAKEN += $(BIN)/ocrd-kraken-recognize
 OCRD_KRAKEN += $(BIN)/kraken
 OCRD_KRAKEN += $(BIN)/ketos
+OCRD_IMAGES += ocrd/kraken
 $(OCRD_KRAKEN): ocrd/kraken
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/kraken
-images: ocrd/kraken
 ocrd/kraken: ocrd_kraken
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_detectron2, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_DETECTRON2)
 OCRD_DETECTRON2 := $(BIN)/ocrd-detectron2-ocrd
 OCRD_DETECTRON2 += $(BIN)/ocrd-detectron2-segment
+OCRD_IMAGES += ocrd/detectron2
 $(OCRD_DETECTRON2): ocrd/detectron2
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/detectron2
-images: ocrd/detectron2
 ocrd/detectron2: ocrd_detectron2
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_page2alto, $(OCRD_MODULES)),)
@@ -224,26 +222,22 @@ OCRD_EXECUTABLES += $(OCRD_PAGE_TO_ALTO)
 OCRD_PAGE_TO_ALTO := $(BIN)/ocrd-page2alto-ocrd
 OCRD_PAGE_TO_ALTO += $(BIN)/ocrd-page2alto-transform
 OCRD_PAGE_TO_ALTO += $(BIN)/page-to-alto
+OCRD_IMAGES += ocrd/page2alto
 $(OCRD_PAGE_TO_ALTO): ocrd/page2alto
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/page2alto
-images: ocrd/page2alto
 ocrd/page2alto: ocrd_page2alto
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_ocropy, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_OCROPY)
 OCRD_OCROPY := $(BIN)/ocrd-ocropy-ocrd
 OCRD_OCROPY += $(BIN)/ocrd-ocropy-segment
+OCRD_IMAGES += ocrd/ocropy
 $(OCRD_OCROPY): ocrd/ocropy
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/ocropy
-images: ocrd/ocropy
 ocrd/ocropy: ocrd_ocropy
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter cor-asv-ann, $(OCRD_MODULES)),)
@@ -259,13 +253,11 @@ OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-proc
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-eval
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-compare
 OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
+OCRD_IMAGES += ocrd/cor-asv-ann
 $(OCRD_COR_ASV_ANN): ocrd/cor-asv-ann
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/cor-asv-ann
-images: ocrd/cor-asv-ann
 ocrd/cor-asv-ann: cor-asv-ann
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter cor-asv-fst, $(OCRD_MODULES)),)
@@ -273,13 +265,11 @@ OCRD_EXECUTABLES += $(OCRD_COR_ASV_FST)
 OCRD_COR_ASV_FST := $(BIN)/ocrd-cor-asv-fst-ocrd
 OCRD_COR_ASV_FST += $(BIN)/ocrd-cor-asv-fst-process
 OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
+OCRD_IMAGES += ocrd/cor-asv-fst
 $(OCRD_COR_ASV_FST): ocrd/cor-asv-fst
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/cor-asv-fst
-images: ocrd/cor-asv-fst
 ocrd/cor-asv-fst: cor-asv-fst
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_keraslm, $(OCRD_MODULES)),)
@@ -287,13 +277,11 @@ OCRD_EXECUTABLES += $(OCRD_KERASLM)
 OCRD_KERASLM := $(BIN)/ocrd-keraslm-ocrd
 OCRD_KERASLM += $(BIN)/ocrd-keraslm-rate
 OCRD_KERASLM += $(BIN)/keraslm-rate
+OCRD_IMAGES += ocrd/keraslm
 $(OCRD_KERASLM): ocrd/keraslm
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/keraslm
-images: ocrd/keraslm
 ocrd/keraslm: ocrd_keraslm
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_neat, $(OCRD_MODULES)),)
@@ -305,13 +293,11 @@ OCRD_NEAT += $(BIN)/annotate-tsv
 OCRD_NEAT += $(BIN)/page2tsv
 OCRD_NEAT += $(BIN)/tsv2page
 OCRD_NEAT += $(BIN)/make-page2tsv-commands
+OCRD_IMAGES += ocrd/neat
 $(OCRD_NEAT): ocrd/neat
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/neat
-images: ocrd/neat
 ocrd/neat: ocrd_neat
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_wrap, $(OCRD_MODULES)),)
@@ -322,13 +308,11 @@ OCRD_WRAP += $(BIN)/ocrd-skimage-normalize
 OCRD_WRAP += $(BIN)/ocrd-skimage-denoise-raw
 OCRD_WRAP += $(BIN)/ocrd-skimage-binarize
 OCRD_WRAP += $(BIN)/ocrd-skimage-denoise
+OCRD_IMAGES += ocrd/wrap
 $(OCRD_WRAP): ocrd/wrap
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/wrap
-images: ocrd/wrap
 ocrd/wrap: ocrd_wrap
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_fileformat, $(OCRD_MODULES)),)
@@ -338,13 +322,11 @@ OCRD_FILEFORMAT := $(BIN)/ocrd-fileformat-ocrd
 OCRD_FILEFORMAT += $(BIN)/ocrd-fileformat-transform
 OCRD_FILEFORMAT += $(BIN)/ocr-transform
 OCRD_FILEFORMAT += $(BIN)/ocr-validate
+OCRD_IMAGES += ocrd/fileformat
 $(OCRD_FILEFORMAT): ocrd/fileformat
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/fileformat
-images: ocrd/fileformat
 ocrd/fileformat: ocrd_fileformat
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_olena, $(OCRD_MODULES)),)
@@ -353,13 +335,11 @@ OCRD_EXECUTABLES += $(OCRD_OLENA)
 OCRD_OLENA := $(BIN)/ocrd-olena-ocrd
 OCRD_OLENA += $(BIN)/ocrd-olena-binarize
 OCRD_OLENA += $(BIN)/scribo-cli
+OCRD_IMAGES += ocrd/olena
 $(OCRD_OLENA): ocrd/olena
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/olena
-images: ocrd/olena
 ocrd/olena: ocrd_olena
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter dinglehopper, $(OCRD_MODULES)),)
@@ -370,26 +350,22 @@ OCRD_DINGLEHOPPER += $(BIN)/dinglehopper
 OCRD_DINGLEHOPPER += $(BIN)/dinglehopper-extract
 OCRD_DINGLEHOPPER += $(BIN)/dinglehopper-summarize
 OCRD_DINGLEHOPPER += $(BIN)/dinglehopper-line-dirs
+OCRD_IMAGES += ocrd/dinglehopper
 $(OCRD_DINGLEHOPPER): ocrd/dinglehopper
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/dinglehopper
-images: ocrd/dinglehopper
 ocrd/dinglehopper: dinglehopper
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter docstruct, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_DOCSTRUCT)
 OCRD_DOCSTRUCT := $(BIN)/ocrd-docstruct-ocrd
 OCRD_DOCSTRUCT += $(BIN)/ocrd-docstruct
+OCRD_IMAGES += ocrd/docstruct
 $(OCRD_DOCSTRUCT): ocrd/docstruct
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/docstruct
-images: ocrd/docstruct
 ocrd/docstruct: docstruct
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter nmalign, $(OCRD_MODULES)),)
@@ -397,13 +373,11 @@ OCRD_EXECUTABLES += $(OCRD_NMALIGN)
 OCRD_NMALIGN := $(BIN)/ocrd-nmalign-ocrd
 OCRD_NMALIGN += $(BIN)/ocrd-nmalign-merge
 OCRD_NMALIGN += $(BIN)/nmalign
+OCRD_IMAGES += ocrd/nmalign
 $(OCRD_NMALIGN): ocrd/nmalign
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/nmalign
-images: ocrd/nmalign
 ocrd/nmalign: nmalign
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_segment, $(OCRD_MODULES)),)
@@ -423,13 +397,11 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-page
 OCRD_SEGMENT += $(BIN)/ocrd-segment-replace-text
 OCRD_SEGMENT += $(BIN)/ocrd-segment-repair
 OCRD_SEGMENT += $(BIN)/ocrd-segment-project
+OCRD_IMAGES += ocrd/segment
 $(OCRD_SEGMENT): ocrd/segment
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/segment
-images: ocrd/segment
 ocrd/segment: ocrd_segment
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_tesserocr, $(OCRD_MODULES)),)
@@ -467,13 +439,11 @@ OCRD_TESSEROCR += $(BIN)/shapeclustering
 OCRD_TESSEROCR += $(BIN)/text2image
 OCRD_TESSEROCR += $(BIN)/unicharset_extractor
 OCRD_TESSEROCR += $(BIN)/wordlist2dawg
+OCRD_IMAGES += ocrd/tesserocr
 $(OCRD_TESSEROCR): ocrd/tesserocr
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/tesserocr
-images: ocrd/tesserocr
 ocrd/tesserocr: ocrd_tesserocr
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_cis, $(OCRD_MODULES)),)
@@ -496,13 +466,11 @@ OCRD_CIS += $(BIN)/ocrd-cis-ocropy-resegment
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-segment
 OCRD_CIS += $(BIN)/ocrd-cis-ocropy-train
 OCRD_CIS += $(BIN)/ocrd-cis-postcorrect
+OCRD_IMAGES += ocrd/cis
 $(OCRD_CIS): ocrd/cis
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/cis
-images: ocrd/cis
 ocrd/cis: ocrd_cis
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_pagetopdf, $(OCRD_MODULES)),)
@@ -510,13 +478,11 @@ OCRD_EXECUTABLES += $(OCRD_PAGETOPDF)
 OCRD_PAGETOPDF := $(BIN)/ocrd-pagetopdf-ocrd
 OCRD_PAGETOPDF += $(BIN)/ocrd-pagetopdf
 OCRD_PAGETOPDF += $(BIN)/ocrd-altotopdf
+OCRD_IMAGES += ocrd/pagetopdf
 $(OCRD_PAGETOPDF): ocrd/pagetopdf
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/pagetopdf
-images: ocrd/pagetopdf
 ocrd/pagetopdf: ocrd_pagetopdf
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_calamari, $(OCRD_MODULES)),)
@@ -528,13 +494,11 @@ OCRD_EXECUTABLES += $(OCRD_CALAMARI)
 OCRD_CALAMARI := $(BIN)/ocrd-calamari-ocrd
 OCRD_CALAMARI += $(BIN)/ocrd-calamari-recognize
 OCRD_CALAMARI += $(BIN)/calamari-ocr
+OCRD_IMAGES += ocrd/calamari
 $(OCRD_CALAMARI): ocrd/calamari
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/calamari
-images: ocrd/calamari
 ocrd/calamari: ocrd_calamari
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_anybaseocr, $(OCRD_MODULES)),)
@@ -542,39 +506,33 @@ OCRD_EXECUTABLES += $(OCRD_ANYBASEOCR)
 OCRD_ANYBASEOCR := $(BIN)/ocrd-anybaseocr-ocrd
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-crop
 OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
+OCRD_IMAGES += ocrd/anybaseocr
 $(OCRD_ANYBASEOCR): ocrd/anybaseocr
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/anybaseocr
-images: ocrd/anybaseocr
 ocrd/anybaseocr: ocrd_anybaseocr
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_froc, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_FROC)
 OCRD_FROC := $(BIN)/ocrd-froc-ocrd
 OCRD_FROC += $(BIN)/ocrd-froc-recognize
+OCRD_IMAGES += ocrd/froc
 $(OCRD_FROC): ocrd/froc
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/froc
-images: ocrd/froc
 ocrd/froc: ocrd_froc
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_doxa, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_DOXA)
 OCRD_DOXA := $(BIN)/ocrd-doxa-ocrd
 OCRD_DOXA += $(BIN)/ocrd-doxa-binarize
+OCRD_IMAGES += ocrd/doxa
 $(OCRD_DOXA): ocrd/doxa
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/doxa
-images: ocrd/doxa
 ocrd/doxa: ocrd_doxa
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter eynollah, $(OCRD_MODULES)),)
@@ -587,26 +545,22 @@ EYNOLLAH_SEGMENT := $(BIN)/ocrd-eynollah-ocrd
 EYNOLLAH_SEGMENT += $(BIN)/ocrd-eynollah-segment
 EYNOLLAH_SEGMENT += $(BIN)/ocrd-sbb-binarize
 EYNOLLAH_SEGMENT += $(BIN)/eynollah
+OCRD_IMAGES += ocrd/eynollah
 $(EYNOLLAH_SEGMENT): ocrd/eynollah
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/eynollah
-images: ocrd/eynollah
 ocrd/eynollah: eynollah
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter ocrd_olahd_client, $(OCRD_MODULES)),)
 OCRD_EXECUTABLES += $(OCRD_OLAHD_CLIENT)
 OCRD_OLAHD_CLIENT := $(BIN)/ocrd-olahd-ocrd
 OCRD_OLAHD_CLIENT += $(BIN)/ocrd-olahd-client
+OCRD_IMAGES += ocrd/olahd-client
 $(OCRD_OLAHD_CLIENT): ocrd/olahd-client
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/olahd-client
-images: ocrd/olahd-client
 ocrd/olahd-client: ocrd_olahd_client
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 ifneq ($(filter workflow-configuration, $(OCRD_MODULES)),)
@@ -615,14 +569,12 @@ WORKFLOW_CONFIGURATION := $(BIN)/ocrd-make-ocrd
 WORKFLOW_CONFIGURATION += $(BIN)/ocrd-make
 WORKFLOW_CONFIGURATION += $(BIN)/ocrd-import
 WORKFLOW_CONFIGURATION += $(BIN)/ocrd-page-transform
+OCRD_IMAGES += ocrd/workflow-configuration
 # fixme: add others...
 $(WORKFLOW_CONFIGURATION): ocrd/workflow-configuration
 	$(call delegate_docker,$@,$<)
-.PHONY: ocrd/workflow-configuration
-images: ocrd/workflow-configuration
-ocrd/workflow-configuration: workflow_configuration
+ocrd/workflow-configuration: workflow-configuration
 	$(call pullpolicy_docker,$<,$@)
-	$(call initmodels_docker,$@)
 endif
 
 # canned recipes for executables as Docker runners:
@@ -663,14 +615,23 @@ endef
 
 # At last, we know what all OCRD_EXECUTABLES are:
 # (json targets depend on OCRD_MODULES and OCRD_EXECUTABLES)
-all: ocrd-all-tool.json ocrd-all-module-dir.json ocrd-all-meta.json
+all: $(OCRD_EXECUTABLES)
+all: ocrd-all-tool.json ocrd-all-meta.json
+
+images: $(OCRD_IMAGES)
+.PHONY: $(OCRD_IMAGES)
 
 show:
 	@echo VIRTUAL_ENV = $(VIRTUAL_ENV)
 	@echo OCRD_MODULES = $(OCRD_MODULES)
+	@echo OCRD_IMAGES = $(OCRD_IMAGES)
 	@echo OCRD_EXECUTABLES = $(OCRD_EXECUTABLES:$(BIN)/%=%)
 
 show-%: ; @echo $($*)
+
+init-vol-models: $(OCRD_IMAGES:%=init-vol-models/%)
+init-vol-models/%:
+	$(call initmodels_docker,$*)
 
 check: $(OCRD_EXECUTABLES:%=%-check)
 
@@ -683,14 +644,13 @@ test-workflow: core/tests/assets
 core/tests/assets: core
 	$(MAKE) -C core assets
 
-ocrd-all-tool.json: $(OCRD_MODULES) $(ACTIVATE_VENV)
+ocrd-all-tool.json: $(OCRD_MODULES:%=%/ocrd-tool.json) $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(PYTHON) ocrd-all-tool.py $(wildcard $(OCRD_MODULES:%=%/ocrd-tool.json)) > $@
 
-ocrd-all-module-dir.json: ocrd-all-tool.json $(OCRD_EXECUTABLES) $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && TF_CPP_MIN_LOG_LEVEL=3 $(PYTHON) ocrd-all-module-dir.py $< > $@
-
-ocrd-all-meta.json: $(OCRD_MODULES) $(ACTIVATE_VENV)
+ocrd-all-meta.json: $(OCRD_MODULES:%=%/ocrd-tool.json) $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(PYTHON) ocrd-all-meta.py $(wildcard $(OCRD_MODULES:%=%/ocrd-tool.json)) > $@
+
+%/ocrd-tool.json: %
 
 .PHONY: $(OCRD_EXECUTABLES:%=%-check)
 $(OCRD_EXECUTABLES:%=%-check):
@@ -704,9 +664,6 @@ $(OCRD_EXECUTABLES:%=%-check):
 # without its directory):
 .PHONY: $(OCRD_EXECUTABLES:$(BIN)/%=%)
 $(OCRD_EXECUTABLES:$(BIN)/%=%): %: $(BIN)/%
-
-XDG_DATA_HOME ?= $(if $(HOME),$(HOME)/.local/share,/usr/local/share)
-DEFAULT_RESLOC ?= $(XDG_DATA_HOME)/ocrd-resources
 
 # do not delete intermediate targets:
 .SECONDARY:
