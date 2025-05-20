@@ -1,5 +1,209 @@
 # Changelog
 
+## [v2025-05-20](https://github.com/OCR-D/ocrd_all/releases/v2025-05-20)
+
+### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [7ce4631](https://github.com/ASVLeipzig/cor-asv-ann/commits/7ce4631)..[0746af1](https://github.com/ASVLeipzig/cor-asv-ann/commits/0746af1)
+
+> Release: [v0.2.0](https://github.com/ASVLeipzig/cor-asv-ann/releases/v0.2.0)
+
+  > * docker: prepackage ocrd-all-module-dir.json
+  > * docker: use latest core base stage
+
+Submodule core contains modified content
+### [core](https://github.com/OCR-D/core) [66bb7bc](https://github.com/OCR-D/core/commits/66bb7bc)..[57c1973](https://github.com/OCR-D/core/commits/57c1973)
+
+> Release: [v3.4.0](https://github.com/OCR-D/core/releases/v3.4.0)
+
+  > * :package: v3.4.0
+  > * :memo: changelog
+  > * Merge branch 'network-logging-permissions'
+  > * :memo: changelog
+  > * Merge remote-tracking branch 'bertsky/add-test-cuda'
+  > * :memo: changelog
+  > * cli.workspace.find: fix --undo-download
+  > * ClientSideOcrdMets: fix typo in exception
+  > * Workspace.resolve_image_exif|resolve_image_as_pil: try as local path first
+  > * mets_server.OcrdFileModel: do not convert None to str
+
+### [dinglehopper](https://github.com/OCR-D/dinglehopper) [946d77d](https://github.com/OCR-D/dinglehopper/commits/946d77d)..[7cbecd7](https://github.com/OCR-D/dinglehopper/commits/7cbecd7)
+
+> Release: [v1.0.0.pre3](https://github.com/OCR-D/dinglehopper/releases/v1.0.0.pre3)
+
+  > * docker: prepackage ocrd-all-module-dir.json
+  > * docker: use latest core base stage
+
+### [docstruct](https://github.com/bertsky/docstruct) [1183e1a](https://github.com/bertsky/docstruct/commits/1183e1a)..[2d33f7e](https://github.com/bertsky/docstruct/commits/2d33f7e)
+
+  > * docker: prepackage ocrd-all-module-dir.json
+  > * docker: use latest core base stage
+
+### [eynollah](https://github.com/qurator-spk/eynollah) [41318f0](https://github.com/qurator-spk/eynollah/commits/41318f0)..[3dcbb20](https://github.com/qurator-spk/eynollah/commits/3dcbb20)
+
+> Release: [v0.4.0](https://github.com/qurator-spk/eynollah/releases/v0.4.0)
+
+  > * Merge pull request #159 from bertsky/main
+  > * Fix model name to return the correct machine-based model name
+  > * Fix OCR text cleaning to correctly handle 'U', 'K', and 'N' starting sentence; update text line splitting size
+  > * Resolve remaining issue with #158 and resolving #124
+  > * resolving issue #158
+  > * Merge pull request #157 from qurator-spk/kba-patch-1
+  > * Merge pull request #154 from qurator-spk/ci-pypi
+
+### [format-converters](https://github.com/OCR-D/format-converters) [0894801](https://github.com/OCR-D/format-converters/commits/0894801)..[7667455](https://github.com/OCR-D/format-converters/commits/7667455)
+
+> Release: [v0.1.0](https://github.com/OCR-D/format-converters/releases/v0.1.0)
+
+  > * Merge pull request #28 from bertsky/setuptools
+
+### [nmalign](https://github.com/bertsky/nmalign) [50edf46](https://github.com/bertsky/nmalign/commits/50edf46)..[7c37ad9](https://github.com/bertsky/nmalign/commits/7c37ad9)
+
+> Release: [v0.0.5](https://github.com/bertsky/nmalign/releases/v0.0.5)
+
+  > * docker: prepackage ocrd-all-module-dir.json
+  > * docker: use latest core base stage
+
+### [ocrd_anybaseocr](https://github.com/OCR-D/ocrd_anybaseocr) [0aa1d57](https://github.com/OCR-D/ocrd_anybaseocr/commits/0aa1d57)..[8a78663](https://github.com/OCR-D/ocrd_anybaseocr/commits/8a78663)
+
+> Release: [v2.0.0](https://github.com/OCR-D/ocrd_anybaseocr/releases/v2.0.0)
+
+  > * docker: use latest core base stage
+  > * docker: prepackage ocrd-all-module-dir.json
+
+### [ocrd_calamari](https://github.com/OCR-D/ocrd_calamari) [416420f](https://github.com/OCR-D/ocrd_calamari/commits/416420f)..[4d66fa1](https://github.com/OCR-D/ocrd_calamari/commits/4d66fa1)
+
+> Release: [v2.1.0](https://github.com/OCR-D/ocrd_calamari/releases/v2.1.0)
+
+  > * :memo: v2.1.0
+  > * :memo: changelog
+  > * Merge pull request #124 from bertsky/master
+
+### [ocrd_detectron2](https://github.com/bertsky/ocrd_detectron2) [10aea24](https://github.com/bertsky/ocrd_detectron2/commits/10aea24)..[6ff0a12](https://github.com/bertsky/ocrd_detectron2/commits/6ff0a12)
+
+> Release: [v0.2.0](https://github.com/bertsky/ocrd_detectron2/releases/v0.2.0)
+
+  > * docker: prepackage ocrd-all-module-dir.json
+  > * docker: use latest core base stage
+
+### [ocrd_doxa](https://github.com/bertsky/ocrd_doxa) [a6df2f2](https://github.com/bertsky/ocrd_doxa/commits/a6df2f2)..[d391f05](https://github.com/bertsky/ocrd_doxa/commits/d391f05)
+
+> Release: [v0.0.3](https://github.com/bertsky/ocrd_doxa/releases/v0.0.3)
+
+  > * dockerfile: fix typo
+  > * docker: prepackage ocrd-all-module-dir.json
+  > * docker: use latest core base stage
+
+### [ocrd_fileformat](https://github.com/OCR-D/ocrd_fileformat) [2e821ea](https://github.com/OCR-D/ocrd_fileformat/commits/2e821ea)..[aee593f](https://github.com/OCR-D/ocrd_fileformat/commits/aee593f)
+
+> Release: [v0.12.0](https://github.com/OCR-D/ocrd_fileformat/releases/v0.12.0)
+
+  > * :package: v0.12.0
+  > * :memo: changelog
+  > * Merge pull request #64 from bertsky/pythonize
+  > * :memo: changelog
+  > * Update ocr-fileformat to v0.8.0
+
+### [ocrd_froc](https://github.com/OCR-D/ocrd_froc) [323a6ba](https://github.com/OCR-D/ocrd_froc/commits/323a6ba)..[8af9441](https://github.com/OCR-D/ocrd_froc/commits/8af9441)
+
+> Release: [v1.1.0](https://github.com/OCR-D/ocrd_froc/releases/v1.1.0)
+
+  > * :package: v1.1.0
+  > * :memo: changelog
+  > * Merge pull request #22 from bertsky/main
+
+### [ocrd_keraslm](https://github.com/OCR-D/ocrd_keraslm) [676cc00](https://github.com/OCR-D/ocrd_keraslm/commits/676cc00)..[71dc491](https://github.com/OCR-D/ocrd_keraslm/commits/71dc491)
+
+> Release: [v0.5.0](https://github.com/OCR-D/ocrd_keraslm/releases/v0.5.0)
+
+  > * docker: prepackage ocrd-all-module-dir.json
+  > * docker: use latest core base stage
+
+### [ocrd_kraken](https://github.com/OCR-D/ocrd_kraken) [4309d91](https://github.com/OCR-D/ocrd_kraken/commits/4309d91)..[b98dd48](https://github.com/OCR-D/ocrd_kraken/commits/b98dd48)
+
+> Release: [v1.0.1](https://github.com/OCR-D/ocrd_kraken/releases/v1.0.1)
+
+  > * docker: prepackage ocrd-all-module-dir.json
+  > * docker: use latest core base stage
+
+### [ocrd_neat](https://github.com/qurator-spk/page2tsv) [b9cb043](https://github.com/qurator-spk/page2tsv/commits/b9cb043)..[5d9d9f0](https://github.com/qurator-spk/page2tsv/commits/5d9d9f0)
+
+> Release: [v0.0.1](https://github.com/qurator-spk/page2tsv/releases/v0.0.1)
+
+  > * Update README.md
+  > * Update cli help text.
+  > * Update README
+  > * Update cli help text.
+  > * Update required python version;update README
+
+### [ocrd_olahd_client](https://github.com/OCR-D/ocrd_olahd_client) [3a90373](https://github.com/OCR-D/ocrd_olahd_client/commits/3a90373)..[4a9c9d5](https://github.com/OCR-D/ocrd_olahd_client/commits/4a9c9d5)
+
+> Release: [v1.1.0](https://github.com/OCR-D/ocrd_olahd_client/releases/v1.1.0)
+
+  > * :package: v1.1.0
+  > * :memo: changlog
+  > * Merge pull request #16 from bertsky/master
+
+### [ocrd_olena](https://github.com/OCR-D/ocrd_olena) [bf5cf76](https://github.com/OCR-D/ocrd_olena/commits/bf5cf76)..[7f153df](https://github.com/OCR-D/ocrd_olena/commits/7f153df)
+
+> Release: [v2.0.0](https://github.com/OCR-D/ocrd_olena/releases/v2.0.0)
+
+  > * docker: prepackage ocrd-all-module-dir.json
+  > * docker: use latest core base stage
+
+### [ocrd_page2alto](https://github.com/OCR-D/page-to-alto) [841b614](https://github.com/OCR-D/page-to-alto/commits/841b614)..[c35b160](https://github.com/OCR-D/page-to-alto/commits/c35b160)
+
+> Release: [v2.1.0](https://github.com/OCR-D/page-to-alto/releases/v2.1.0)
+
+  > * CI: build with python 3.9
+  > * CI: make build
+  > * :package: v2.1.0
+  > * :memo: changelog
+  > * Merge pull request #48 from bertsky/master
+
+### [ocrd_pagetopdf](https://github.com/OCR-D/ocrd_pagetopdf) [c6b414d](https://github.com/OCR-D/ocrd_pagetopdf/commits/c6b414d)..[11d3521](https://github.com/OCR-D/ocrd_pagetopdf/commits/11d3521)
+
+> Release: [v2.0.1](https://github.com/OCR-D/ocrd_pagetopdf/releases/v2.0.1)
+
+  > * docker: use latest core base stage
+  > * docker: prepackage ocrd-all-module-dir.json
+
+### [ocrd_segment](https://github.com/OCR-D/ocrd_segment) [a5d3d62](https://github.com/OCR-D/ocrd_segment/commits/a5d3d62)..[08f169c](https://github.com/OCR-D/ocrd_segment/commits/08f169c)
+
+> Release: [v0.2.1](https://github.com/OCR-D/ocrd_segment/releases/v0.2.1)
+
+  > * :package: v0.2.1
+  > * Merge pull request #71 from MehmedGIT/master
+  > * docker: prepackage ocrd-all-module-dir.json
+  > * docker: use latest core base stage
+
+### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [c65b345](https://github.com/OCR-D/ocrd_tesserocr/commits/c65b345)..[24c3ecf](https://github.com/OCR-D/ocrd_tesserocr/commits/24c3ecf)
+
+> Release: [v0.20.1](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.20.1)
+
+  > * .dockerignore repo/assets
+  > * make docker: allow overriding $(DOCKER) command (e.g. podman)
+
+### [ocrd_wrap](https://github.com/bertsky/ocrd_wrap) [83ab5f0](https://github.com/bertsky/ocrd_wrap/commits/83ab5f0)..[0fd26dd](https://github.com/bertsky/ocrd_wrap/commits/0fd26dd)
+
+> Release: [v0.2.0](https://github.com/bertsky/ocrd_wrap/releases/v0.2.0)
+
+  > * docker: prepackage ocrd-all-module-dir.json
+  > * docker: use latest core base stage
+
+### [opencv-python](https://github.com/skvark/opencv-python) [255564a](https://github.com/skvark/opencv-python/commits/255564a)..[2606a60](https://github.com/skvark/opencv-python/commits/2606a60)
+
+> Release: [86](https://github.com/skvark/opencv-python/releases/86)
+
+  > * Merge pull request #1100 from avdivan:4.x
+
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [3bbe197](https://github.com/bertsky/workflow-configuration/commits/3bbe197)..[9ba58ae](https://github.com/bertsky/workflow-configuration/commits/9ba58ae)
+
+> Release: [0.1.3](https://github.com/bertsky/workflow-configuration/releases/0.1.3)
+
+  > * docker: prepackage ocrd-all-module-dir.json
+  > * docker: use latest core base stage
+  > * rename Docker image bertsky→ocrd
+
+
 ## [v2025-04-17](https://github.com/OCR-D/ocrd_all/releases/v2025-04-16)
 
 Added:
