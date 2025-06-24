@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2025-05-20](https://github.com/OCR-D/ocrd_all/releases/v2025-05-20)
+## [v2025-06-24](https://github.com/OCR-D/ocrd_all/releases/v2025-06-24)
 
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [7ce4631](https://github.com/ASVLeipzig/cor-asv-ann/commits/7ce4631)..[0746af1](https://github.com/ASVLeipzig/cor-asv-ann/commits/0746af1)
 
@@ -9,11 +9,29 @@
   > * docker: prepackage ocrd-all-module-dir.json
   > * docker: use latest core base stage
 
-Submodule core contains modified content
-### [core](https://github.com/OCR-D/core) [66bb7bc](https://github.com/OCR-D/core/commits/66bb7bc)..[57c1973](https://github.com/OCR-D/core/commits/57c1973)
+### [core](https://github.com/OCR-D/core) [66bb7bc](https://github.com/OCR-D/core/commits/66bb7bc)..[8ac528f](https://github.com/OCR-D/core/commits/8ac528f)
 
-> Release: [v3.4.0](https://github.com/OCR-D/core/releases/v3.4.0)
+> Release: [v3.5.0](https://github.com/OCR-D/core/releases/v3.5.0)
 
+  > * :package: v3.5.0
+  > * :memo: changelog
+  > * Merge branch 'master' into page-id-logical-filter
+  > * Merge remote-tracking branch 'bertsky/fix-network-agent-type-click' into page-id-logical-filter
+  > * OcrdMets.get_physical_pages(for_pageIds): more syntax checks
+  > * OcrdMets.get_physical_pages(for_pageIds): store `has_matched` in pat
+  > * OcrdMets.get_physical_pages(for_pageIds): keep matching pages
+  > * OcrdMets.get_physical_pages(for_pageIds): prettier types
+  > * tests: adapt to Click 8.2 API change
+  > * OcrdMets.get_physical_pages(for_pageIds): introduce attribute disambiguation prefixes
+  > * OcrdMets.get_physical_pages(for_pageIds): refactor with dataclasses for patterns
+  > * OcrdMets.get_physical_pages(for_pageIds): also support logical @LABEL
+  > * test_ocrd_mets: cover logical div attribute selection
+  > * OcrdMets.get_physical_pages(for_pageIds): support logical structMap div attribute matching
+  > * test_workspace: cover negative page selection
+  > * test_processor: cover negative page selection
+  > * test_ocrd_mets: cover negative page selection
+  > * OcrdMets.get_physical_pages(for_pageIds): support negative subpatterns
+  > * require frozendict 2.4 (needed for json compatibility)
   > * :package: v3.4.0
   > * :memo: changelog
   > * Merge branch 'network-logging-permissions'
@@ -37,10 +55,12 @@ Submodule core contains modified content
   > * docker: prepackage ocrd-all-module-dir.json
   > * docker: use latest core base stage
 
-### [eynollah](https://github.com/qurator-spk/eynollah) [41318f0](https://github.com/qurator-spk/eynollah/commits/41318f0)..[3dcbb20](https://github.com/qurator-spk/eynollah/commits/3dcbb20)
+### [eynollah](https://github.com/qurator-spk/eynollah) [41318f0](https://github.com/qurator-spk/eynollah/commits/41318f0)..[b7b218f](https://github.com/qurator-spk/eynollah/commits/b7b218f)
 
 > Release: [v0.4.0](https://github.com/qurator-spk/eynollah/releases/v0.4.0)
 
+  > * OCR-D processor: same behavior as standalone wrt light_version/textline_light
+  > * Fixed duplicate textline_light assignments (true and false) in the OCR-D framework for the Eynollah light version, which caused rectangles to be used instead of contours for textlines
   > * Merge pull request #159 from bertsky/main
   > * Fix model name to return the correct machine-based model name
   > * Fix OCR text cleaning to correctly handle 'U', 'K', and 'N' starting sentence; update text line splitting size
@@ -159,10 +179,14 @@ Submodule core contains modified content
   > * :memo: changelog
   > * Merge pull request #48 from bertsky/master
 
-### [ocrd_pagetopdf](https://github.com/OCR-D/ocrd_pagetopdf) [c6b414d](https://github.com/OCR-D/ocrd_pagetopdf/commits/c6b414d)..[11d3521](https://github.com/OCR-D/ocrd_pagetopdf/commits/11d3521)
+### [ocrd_pagetopdf](https://github.com/OCR-D/ocrd_pagetopdf) [c6b414d](https://github.com/OCR-D/ocrd_pagetopdf/commits/c6b414d)..[393ae0b](https://github.com/OCR-D/ocrd_pagetopdf/commits/393ae0b)
 
-> Release: [v2.0.1](https://github.com/OCR-D/ocrd_pagetopdf/releases/v2.0.1)
+> Release: [v2.0.2](https://github.com/OCR-D/ocrd_pagetopdf/releases/v2.0.2)
 
+  > * :package: v2.0.2
+  > * altotopdf: support running on missing ALTO files for some pages (by creating an empty PAGE for the image)
+  > * multipage: re-enter workspace.directory for correct relative paths
+  > * package-data: fix missing PageConverter.java
   > * docker: use latest core base stage
   > * docker: prepackage ocrd-all-module-dir.json
 
@@ -175,13 +199,6 @@ Submodule core contains modified content
   > * docker: prepackage ocrd-all-module-dir.json
   > * docker: use latest core base stage
 
-### [ocrd_tesserocr](https://github.com/OCR-D/ocrd_tesserocr) [c65b345](https://github.com/OCR-D/ocrd_tesserocr/commits/c65b345)..[24c3ecf](https://github.com/OCR-D/ocrd_tesserocr/commits/24c3ecf)
-
-> Release: [v0.20.1](https://github.com/OCR-D/ocrd_tesserocr/releases/v0.20.1)
-
-  > * .dockerignore repo/assets
-  > * make docker: allow overriding $(DOCKER) command (e.g. podman)
-
 ### [ocrd_wrap](https://github.com/bertsky/ocrd_wrap) [83ab5f0](https://github.com/bertsky/ocrd_wrap/commits/83ab5f0)..[0fd26dd](https://github.com/bertsky/ocrd_wrap/commits/0fd26dd)
 
 > Release: [v0.2.0](https://github.com/bertsky/ocrd_wrap/releases/v0.2.0)
@@ -189,20 +206,26 @@ Submodule core contains modified content
   > * docker: prepackage ocrd-all-module-dir.json
   > * docker: use latest core base stage
 
-### [opencv-python](https://github.com/skvark/opencv-python) [255564a](https://github.com/skvark/opencv-python/commits/255564a)..[2606a60](https://github.com/skvark/opencv-python/commits/2606a60)
+### [opencv-python](https://github.com/skvark/opencv-python) [255564a](https://github.com/skvark/opencv-python/commits/255564a)..[d2b8df1](https://github.com/skvark/opencv-python/commits/d2b8df1)
 
 > Release: [86](https://github.com/skvark/opencv-python/releases/86)
 
+  > * Merge pull request #1095 from as1100k-forks/fix-missing-python-supported-version
+  > * Merge pull request #1111 from asmorkalov/as/opencv_update
+  > * Merge pull request #1108 from opencv-pushbot:gitee/alalek/support_custom_builds
+  > * Merge pull request #1109 from asmorkalov:as/macos_avif
+  > * Added libavif to the build environment (#1098)
+  > * Linux and Mac builds update (#1106)
   > * Merge pull request #1100 from avdivan:4.x
 
-### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [3bbe197](https://github.com/bertsky/workflow-configuration/commits/3bbe197)..[9ba58ae](https://github.com/bertsky/workflow-configuration/commits/9ba58ae)
+### [workflow-configuration](https://github.com/bertsky/workflow-configuration) [3bbe197](https://github.com/bertsky/workflow-configuration/commits/3bbe197)..[706e4b7](https://github.com/bertsky/workflow-configuration/commits/706e4b7)
 
 > Release: [0.1.3](https://github.com/bertsky/workflow-configuration/releases/0.1.3)
 
+  > * ocrd-import: fix typo in *.log skip rule
   > * docker: prepackage ocrd-all-module-dir.json
   > * docker: use latest core base stage
   > * rename Docker image bertsky→ocrd
-
 
 ## [v2025-04-17](https://github.com/OCR-D/ocrd_all/releases/v2025-04-16)
 
