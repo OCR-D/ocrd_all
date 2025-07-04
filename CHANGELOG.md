@@ -1,6 +1,6 @@
 # Changelog
 
-## [v2025-06-24](https://github.com/OCR-D/ocrd_all/releases/v2025-06-24)
+## [v2025-07-04](https://github.com/OCR-D/ocrd_all/releases/v2025-07-04)
 
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [7ce4631](https://github.com/ASVLeipzig/cor-asv-ann/commits/7ce4631)..[0746af1](https://github.com/ASVLeipzig/cor-asv-ann/commits/0746af1)
 
@@ -9,10 +9,13 @@
   > * docker: prepackage ocrd-all-module-dir.json
   > * docker: use latest core base stage
 
-### [core](https://github.com/OCR-D/core) [66bb7bc](https://github.com/OCR-D/core/commits/66bb7bc)..[8ac528f](https://github.com/OCR-D/core/commits/8ac528f)
+### [core](https://github.com/OCR-D/core) [66bb7bc](https://github.com/OCR-D/core/commits/66bb7bc)..[8b854e9](https://github.com/OCR-D/core/commits/8b854e9)
 
-> Release: [v3.5.0](https://github.com/OCR-D/core/releases/v3.5.0)
+> Release: [v3.5.1](https://github.com/OCR-D/core/releases/v3.5.1)
 
+  > * :package: v3.5.1
+  > * pyproject.toml: Saner pinning of numpy build requirements
+  > * pin numpy<2 shapely <2.0.2 for py3.8
   > * :package: v3.5.0
   > * :memo: changelog
   > * Merge branch 'master' into page-id-logical-filter
