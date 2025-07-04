@@ -1,5 +1,7 @@
 # Changelog
 
+## Unreleased
+
 ## [v2025-07-04](https://github.com/OCR-D/ocrd_all/releases/v2025-07-04)
 
 ### [cor-asv-ann](https://github.com/ASVLeipzig/cor-asv-ann) [7ce4631](https://github.com/ASVLeipzig/cor-asv-ann/commits/7ce4631)..[0746af1](https://github.com/ASVLeipzig/cor-asv-ann/commits/0746af1)
@@ -1264,8 +1266,6 @@ Removed
   > * add citation to README
   > * Update README.md
   > * Merge pull request #70 from bertsky/add-docker
-
-## Unreleased
 
 ## [v2024-10-15](https://github.com/OCR-D/ocrd_all/releases/v2024-10-15)
 
