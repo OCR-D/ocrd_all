@@ -1,4 +1,3 @@
-dest: docker-compose.yml
 processors:
     - name: ocrd-cis-ocropy-binarize
       image: ocrd/cis

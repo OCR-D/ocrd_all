@@ -31,10 +31,6 @@ define SEMGIT
 $(if $(shell sem --version 2>/dev/null),sem -q --will-cite --fg --id ocrd_all_git,$(error cannot find package GNU parallel))
 endef
 
-define SEMPIP
-$(if $(shell sem --version 2>/dev/null),sem -q --will-cite --fg --id ocrd_all_pip$(notdir $(VIRTUAL_ENV)),$(error cannot find package GNU parallel))
-endef
-
 define WGET
 $(if $(shell wget --version 2>/dev/null),wget -nv -O $(1) $(2),$(if $(shell curl --version 2>/dev/null),curl -L -o $(1) $(2),$(error found no cmdline downloader (wget/curl))))
 endef
@@ -62,10 +58,14 @@ endif
 
 .PHONY: all modules clean help show check always-update install-models
 
-clean: # add more prerequisites for clean below
+clean: network-clean images-clean
 	$(RM) -r $(CURDIR)/venv # deliberately not using VIRTUAL_ENV here
 	$(RM) -r $(HOME)/.parallel/semaphores/id-ocrd_*
-	$(RM) ocrd-all-tool.json ocrd-all-module-dir.json ocrd-all-meta.json
+	$(RM) ocrd-all-tool.json ocrd-all-module-dir.json ocrd-all-meta.json ocrd-all-images.yaml
+
+.PHONY: images-clean
+images-clean:
+	for image in $(OCRD_IMAGES); do docker rmi $$image; $(RM) $$image; done
 
 define HELP
 cat <<"EOF"
@@ -160,8 +160,9 @@ tidy: clean
 # Get Python modules.
 
 %/bin/activate:
-	$(SEMPIP) $(PYTHON) -m venv $(subst /bin/activate,,$@)
-	. $@ && $(SEMPIP) pip install --upgrade pip setuptools wheel
+	$(PYTHON) -m venv $(subst /bin/activate,,$@)
+	. $@ && pip install --upgrade pip setuptools wheel
+	. $@ && pip install click requests pyaml ocrd dotenv
 
 # Install modules from source.
 
@@ -175,7 +176,8 @@ CORE += $(BIN)/ocrd-filter
 OCRD_IMAGES += ocrd/core
 $(CORE): ocrd/core
 	$(call delegate_docker,$@,$<)
-ocrd/core: core
+ocrd/core: DOCKER_PROFILES =
+ocrd/core: ./core
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -202,7 +204,8 @@ OCRD_KRAKEN += $(BIN)/ketos
 OCRD_IMAGES += ocrd/kraken
 $(OCRD_KRAKEN): ocrd/kraken
 	$(call delegate_docker,$@,$<)
-ocrd/kraken: ocrd_kraken
+ocrd/kraken: DOCKER_PROFILES = maximum
+ocrd/kraken: ./ocrd_kraken
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -213,7 +216,8 @@ OCRD_DETECTRON2 += $(BIN)/ocrd-detectron2-segment
 OCRD_IMAGES += ocrd/detectron2
 $(OCRD_DETECTRON2): ocrd/detectron2
 	$(call delegate_docker,$@,$<)
-ocrd/detectron2: ocrd_detectron2
+ocrd/detectron2: DOCKER_PROFILES = maximum
+ocrd/detectron2: ./ocrd_detectron2
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -225,7 +229,8 @@ OCRD_PAGE_TO_ALTO += $(BIN)/page-to-alto
 OCRD_IMAGES += ocrd/page2alto
 $(OCRD_PAGE_TO_ALTO): ocrd/page2alto
 	$(call delegate_docker,$@,$<)
-ocrd/page2alto: ocrd_page2alto
+ocrd/page2alto: DOCKER_PROFILES =
+ocrd/page2alto: ./ocrd_page2alto
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -236,7 +241,8 @@ OCRD_OCROPY += $(BIN)/ocrd-ocropy-segment
 OCRD_IMAGES += ocrd/ocropy
 $(OCRD_OCROPY): ocrd/ocropy
 	$(call delegate_docker,$@,$<)
-ocrd/ocropy: ocrd_ocropy
+ocrd/ocropy: DOCKER_PROFILES =
+ocrd/ocropy: ./ocrd_ocropy
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -256,7 +262,8 @@ OCRD_COR_ASV_ANN += $(BIN)/cor-asv-ann-repl
 OCRD_IMAGES += ocrd/cor-asv-ann
 $(OCRD_COR_ASV_ANN): ocrd/cor-asv-ann
 	$(call delegate_docker,$@,$<)
-ocrd/cor-asv-ann: cor-asv-ann
+ocrd/cor-asv-ann: DOCKER_PROFILES = medium maximum
+ocrd/cor-asv-ann: ./cor-asv-ann
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -268,7 +275,8 @@ OCRD_COR_ASV_FST += $(BIN)/cor-asv-fst-train
 OCRD_IMAGES += ocrd/cor-asv-fst
 $(OCRD_COR_ASV_FST): ocrd/cor-asv-fst
 	$(call delegate_docker,$@,$<)
-ocrd/cor-asv-fst: cor-asv-fst
+ocrd/cor-asv-fst: DOCKER_PROFILES = maximum
+ocrd/cor-asv-fst: ./cor-asv-fst
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -278,9 +286,10 @@ OCRD_KERASLM := $(BIN)/ocrd-keraslm-ocrd
 OCRD_KERASLM += $(BIN)/ocrd-keraslm-rate
 OCRD_KERASLM += $(BIN)/keraslm-rate
 OCRD_IMAGES += ocrd/keraslm
+$(OCRD_KERASLM): DOCKER_PROFILES = medium, maximum
 $(OCRD_KERASLM): ocrd/keraslm
 	$(call delegate_docker,$@,$<)
-ocrd/keraslm: ocrd_keraslm
+ocrd/keraslm: ./ocrd_keraslm
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -296,7 +305,8 @@ OCRD_NEAT += $(BIN)/make-page2tsv-commands
 OCRD_IMAGES += ocrd/neat
 $(OCRD_NEAT): ocrd/neat
 	$(call delegate_docker,$@,$<)
-ocrd/neat: ocrd_neat
+ocrd/neat: DOCKER_PROFILES = maximum
+ocrd/neat: ./ocrd_neat
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -311,7 +321,8 @@ OCRD_WRAP += $(BIN)/ocrd-skimage-denoise
 OCRD_IMAGES += ocrd/wrap
 $(OCRD_WRAP): ocrd/wrap
 	$(call delegate_docker,$@,$<)
-ocrd/wrap: ocrd_wrap
+ocrd/wrap: DOCKER_PROFILES =
+ocrd/wrap: ./ocrd_wrap
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -325,7 +336,8 @@ OCRD_FILEFORMAT += $(BIN)/ocr-validate
 OCRD_IMAGES += ocrd/fileformat
 $(OCRD_FILEFORMAT): ocrd/fileformat
 	$(call delegate_docker,$@,$<)
-ocrd/fileformat: ocrd_fileformat
+ocrd/fileformat: DOCKER_PROFILES =
+ocrd/fileformat: ./ocrd_fileformat
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -338,7 +350,8 @@ OCRD_OLENA += $(BIN)/scribo-cli
 OCRD_IMAGES += ocrd/olena
 $(OCRD_OLENA): ocrd/olena
 	$(call delegate_docker,$@,$<)
-ocrd/olena: ocrd_olena
+ocrd/olena: DOCKER_PROFILES = medium maximum
+ocrd/olena: ./ocrd_olena
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -353,7 +366,8 @@ OCRD_DINGLEHOPPER += $(BIN)/dinglehopper-line-dirs
 OCRD_IMAGES += ocrd/dinglehopper
 $(OCRD_DINGLEHOPPER): ocrd/dinglehopper
 	$(call delegate_docker,$@,$<)
-ocrd/dinglehopper: dinglehopper
+ocrd/dinglehopper: DOCKER_PROFILES = medium maximum
+ocrd/dinglehopper: ./dinglehopper
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -364,7 +378,8 @@ OCRD_DOCSTRUCT += $(BIN)/ocrd-docstruct
 OCRD_IMAGES += ocrd/docstruct
 $(OCRD_DOCSTRUCT): ocrd/docstruct
 	$(call delegate_docker,$@,$<)
-ocrd/docstruct: docstruct
+ocrd/docstruct: DOCKER_PROFILES = medium maximum
+ocrd/docstruct: ./docstruct
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -376,7 +391,8 @@ OCRD_NMALIGN += $(BIN)/nmalign
 OCRD_IMAGES += ocrd/nmalign
 $(OCRD_NMALIGN): ocrd/nmalign
 	$(call delegate_docker,$@,$<)
-ocrd/nmalign: nmalign
+ocrd/nmalign: DOCKER_PROFILES = medium maximum
+ocrd/nmalign: ./nmalign
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -400,7 +416,8 @@ OCRD_SEGMENT += $(BIN)/ocrd-segment-project
 OCRD_IMAGES += ocrd/segment
 $(OCRD_SEGMENT): ocrd/segment
 	$(call delegate_docker,$@,$<)
-ocrd/segment: ocrd_segment
+ocrd/segment: DOCKER_PROFILES = medium maximum
+ocrd/segment: ./ocrd_segment
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -442,7 +459,8 @@ OCRD_TESSEROCR += $(BIN)/wordlist2dawg
 OCRD_IMAGES += ocrd/tesserocr
 $(OCRD_TESSEROCR): ocrd/tesserocr
 	$(call delegate_docker,$@,$<)
-ocrd/tesserocr: ocrd_tesserocr
+ocrd/tesserocr: DOCKER_PROFILES =
+ocrd/tesserocr: ./ocrd_tesserocr
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -469,7 +487,8 @@ OCRD_CIS += $(BIN)/ocrd-cis-postcorrect
 OCRD_IMAGES += ocrd/cis
 $(OCRD_CIS): ocrd/cis
 	$(call delegate_docker,$@,$<)
-ocrd/cis: ocrd_cis
+ocrd/cis: DOCKER_PROFILES =
+ocrd/cis: ./ocrd_cis
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -481,7 +500,8 @@ OCRD_PAGETOPDF += $(BIN)/ocrd-altotopdf
 OCRD_IMAGES += ocrd/pagetopdf
 $(OCRD_PAGETOPDF): ocrd/pagetopdf
 	$(call delegate_docker,$@,$<)
-ocrd/pagetopdf: ocrd_pagetopdf
+ocrd/pagetopdf: DOCKER_PROFILES =
+ocrd/pagetopdf: ./ocrd_pagetopdf
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -497,7 +517,8 @@ OCRD_CALAMARI += $(BIN)/calamari-ocr
 OCRD_IMAGES += ocrd/calamari
 $(OCRD_CALAMARI): ocrd/calamari
 	$(call delegate_docker,$@,$<)
-ocrd/calamari: ocrd_calamari
+ocrd/calamari: DOCKER_PROFILES = medium maximum
+ocrd/calamari: ./ocrd_calamari
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -509,7 +530,8 @@ OCRD_ANYBASEOCR += $(BIN)/ocrd-anybaseocr-layout-analysis
 OCRD_IMAGES += ocrd/anybaseocr
 $(OCRD_ANYBASEOCR): ocrd/anybaseocr
 	$(call delegate_docker,$@,$<)
-ocrd/anybaseocr: ocrd_anybaseocr
+ocrd/anybaseocr: DOCKER_PROFILES = maximum
+ocrd/anybaseocr: ./ocrd_anybaseocr
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -520,7 +542,8 @@ OCRD_FROC += $(BIN)/ocrd-froc-recognize
 OCRD_IMAGES += ocrd/froc
 $(OCRD_FROC): ocrd/froc
 	$(call delegate_docker,$@,$<)
-ocrd/froc: ocrd_froc
+ocrd/froc: DOCKER_PROFILES = maximum
+ocrd/froc: ./ocrd_froc
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -531,7 +554,8 @@ OCRD_DOXA += $(BIN)/ocrd-doxa-binarize
 OCRD_IMAGES += ocrd/doxa
 $(OCRD_DOXA): ocrd/doxa
 	$(call delegate_docker,$@,$<)
-ocrd/doxa: ocrd_doxa
+ocrd/doxa: DOCKER_PROFILES = maximum
+ocrd/doxa: ./ocrd_doxa
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -548,7 +572,8 @@ EYNOLLAH_SEGMENT += $(BIN)/eynollah
 OCRD_IMAGES += ocrd/eynollah
 $(EYNOLLAH_SEGMENT): ocrd/eynollah
 	$(call delegate_docker,$@,$<)
-ocrd/eynollah: eynollah
+ocrd/eynollah: DOCKER_PROFILES = maximum
+ocrd/eynollah: ./eynollah
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -559,7 +584,8 @@ OCRD_OLAHD_CLIENT += $(BIN)/ocrd-olahd-client
 OCRD_IMAGES += ocrd/olahd-client
 $(OCRD_OLAHD_CLIENT): ocrd/olahd-client
 	$(call delegate_docker,$@,$<)
-ocrd/olahd-client: ocrd_olahd_client
+ocrd/olahd-client: DOCKER_PROFILES =
+ocrd/olahd-client: ./ocrd_olahd_client
 	$(call pullpolicy_docker,$<,$@)
 endif
 
@@ -573,37 +599,43 @@ OCRD_IMAGES += ocrd/workflow-configuration
 # fixme: add others...
 $(WORKFLOW_CONFIGURATION): ocrd/workflow-configuration
 	$(call delegate_docker,$@,$<)
-ocrd/workflow-configuration: workflow-configuration
+ocrd/workflow-configuration: DOCKER_PROFILES =
+ocrd/workflow-configuration: ./workflow-configuration
 	$(call pullpolicy_docker,$<,$@)
 endif
 
 # canned recipes for executables as Docker runners:
 
-# echo a shell script that relays to
-# the Docker run
-define delegator
-#!/usr/bin/env bash
-docker run --rm "$${DOCKER_RUN_OPTS[@]}" $(DOCKER_RUN_OPTS) $2 $1 "$$@"
-endef
-# create shell scripts that relay to
-# the (currently active) sub-venv
+# create shell scripts for each executable that either
+# 1) run the ocrd network client for the passed Processing Server
+#    (if a .env config for the network setup exists)
+# 2) run the standalone CLI in the passed Docker image
+#    (otherwise)
 define delegate_docker
-$(foreach executable,$(1),$(file >$(executable),$(call delegator,$(notdir $(executable:%-ocrd=ocrd)),$(2))))
-chmod +x $(1)
+. $(ACTIVATE_VENV) && python run-network/creator.py create-client --docker-run-opts "$(DOCKER_RUN_OPTS)" $(1) $(notdir $(1:%-ocrd=ocrd)) $(2)
 endef
+
 
 DOCKER_PULL_POLICY ?= pull
 DOCKER_VOL_MODELS ?= ocrd-models
-DOCKER_RUN_OPTS ?= -v $(DOCKER_VOL_MODELS):/usr/local/share/ocrd-resources \
-                   -v $$PWD:/data -u $$UID
+DOCKER_RUN_OPTS ?= -v $(DOCKER_VOL_MODELS):/usr/local/share/ocrd-resources -u $$UID
 
 ifeq ($(DOCKER_PULL_POLICY),build)
 define pullpolicy_docker
 $(MAKE) -C $1 docker DOCKER_TAG=$2
+endif
+mkdir -p $(dir $2)
+@echo built: `date -Iseconds` > $2
+@echo tools: `jq -c ".tools|keys" $1/ocrd-tool.json` >> $2
+@echo profiles: $(DOCKER_PROFILES) >> $2
 endef
 else
 define pullpolicy_docker
 docker pull $2
+mkdir -p $(dir $2)
+@echo pulled: `date -Iseconds` > $2
+@echo tools: `jq -c ".tools|keys" $1/ocrd-tool.json` >> $2
+@echo profiles: $(DOCKER_PROFILES), >> $2
 endef
 endif
 
@@ -616,10 +648,10 @@ endef
 # At last, we know what all OCRD_EXECUTABLES are:
 # (json targets depend on OCRD_MODULES and OCRD_EXECUTABLES)
 all: $(OCRD_EXECUTABLES)
-all: ocrd-all-tool.json ocrd-all-meta.json
+all: ocrd-all-tool.json ocrd-all-meta.json ocrd-all-images.yaml
 
 images: $(OCRD_IMAGES)
-.PHONY: $(OCRD_IMAGES)
+#.PHONY: $(OCRD_IMAGES)
 
 show:
 	@echo VIRTUAL_ENV = $(VIRTUAL_ENV)
@@ -630,7 +662,7 @@ show:
 show-%: ; @echo $($*)
 
 init-vol-models: $(OCRD_IMAGES:%=init-vol-models/%)
-init-vol-models/%:
+init-vol-models/%: %
 	$(call initmodels_docker,$*)
 
 check: $(OCRD_EXECUTABLES:%=%-check)
@@ -644,11 +676,17 @@ test-workflow: core/tests/assets
 core/tests/assets: core
 	$(MAKE) -C core assets
 
+# concatenate executables
 ocrd-all-tool.json: $(OCRD_MODULES:%=%/ocrd-tool.json) $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(PYTHON) ocrd-all-tool.py $(wildcard $(OCRD_MODULES:%=%/ocrd-tool.json)) > $@
 
+# concatenate everything but tools, and add current git revision
 ocrd-all-meta.json: $(OCRD_MODULES:%=%/ocrd-tool.json) $(ACTIVATE_VENV)
 	. $(ACTIVATE_VENV) && $(PYTHON) ocrd-all-meta.py $(wildcard $(OCRD_MODULES:%=%/ocrd-tool.json)) > $@
+
+ocrd-all-images.yaml: $(OCRD_IMAGES)
+	$(file > $@)
+	$(foreach IMAGE, $^, $(file >> $@, - $(IMAGE)))
 
 %/ocrd-tool.json: %
 
@@ -683,26 +721,31 @@ endif
 OCRD_NETWORK_CONFIG ?= run-network/ocrd-all-config.yaml
 
 .PHONY: network-setup network-start network-stop network-clean
-network-setup: run-network/docker-compose.yml run-network/.env
-	docker volume create ocrd-resources
-	docker-compose -f run-network/docker-compose-resources.yaml up > /dev/null
-	docker-compose -f run-network/docker-compose-resources.yaml down --remove-orphans -v
+network-setup: init-vol-models
+network-setup: docker-compose.yml
+network-setup: .env
+network-setup: ocrd-processing-server-config.yaml
 
-run-network/venv:
-	$(PYTHON) -m venv $@
-	$@/bin/python -m pip install click requests pyaml shapely==1.8.5 ocrd
-run-network/docker-compose.yml: run-network/venv
-	$</bin/python run-network/creator.py create-compose $(OCRD_NETWORK_CONFIG)
-run-network/.env: run-network/venv
-	$</bin/python run-network/creator.py create-dotenv $(OCRD_NETWORK_CONFIG)
-	$</bin/python run-network/creator.py create-clients $</bin $(OCRD_NETWORK_CONFIG)
+docker-compose.yml: $(ACTIVATE_VENV) ocrd-all-images.yaml
+	. $(ACTIVATE_VENV) && python run-network/creator.py create-compose $(OCRD_NETWORK_CONFIG) $@
+.env: $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && python run-network/creator.py create-dotenv $(OCRD_NETWORK_CONFIG) $@
+	@# overrides
+	@echo RES_VOL=$(DOCKER_VOL_MODELS) >> $@
+	@echo USER_ID=`id -u` >> $@
+	@echo GROUP_ID=`id -g` >> $@
+#	. $(ACTIVATE_VENV) && python run-network/creator.py create-clients $(BIN) $(OCRD_NETWORK_CONFIG)
+ocrd-processing-server-config.yaml: $(ACTIVATE_VENV)
+	. $(ACTIVATE_VENV) && python run-network/creator.py create-psconfig $(OCRD_NETWORK_CONFIG) $@
 network-start:
-	run-network/venv/bin/python run-network/creator.py start $(OCRD_NETWORK_CONFIG)
+	# docker compose up -d
+	. $(ACTIVATE_VENV) && python run-network/creator.py start
 network-stop:
-	run-network/venv/bin/python run-network/creator.py stop $(OCRD_NETWORK_CONFIG)
+	# docker compose down
+	. $(ACTIVATE_VENV) && python run-network/creator.py stop
 network-clean:
-	$(RM) -r run-network/venv run-network/.env run-network/docker-compose.yml
-	docker volume rm ocrd-resources
+	$(RM) -r $(VIRTUAL_ENV) .env docker-compose.yml ocrd-processing-server-config.yaml
+	docker volume rm $(DOCKER_VOL_MODELS)
 # do not search for implicit rules here:
 Makefile: ;
 local.mk: ;

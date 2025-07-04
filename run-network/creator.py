@@ -6,10 +6,11 @@ from dataclasses import dataclass, field
 from os import chdir, environ, chmod
 from os.path import dirname
 from pathlib import Path
-from typing import Any, Dict, ForwardRef, List, Optional, Type
+from typing import Any, Dict, ForwardRef, List, Type
 
 import click
 import requests
+import json
 import yaml
 
 
@@ -20,71 +21,84 @@ def cli() -> None:
 
 
 @cli.command("create-compose")
-@click.argument("config_path")
-def create_docker_cli(config_path: str) -> None:
+@click.argument("config_path", type=click.Path(dir_okay=False,exists=True))
+@click.argument("out_path", type=click.Path(dir_okay=False), default="docker-compose.yml")
+def create_compose_cli(config_path: str, out_path: str) -> None:
     """Creates a docker-compose file"""
     config: Config = Config.from_file(config_path)
-    create_docker_compose(config)
+    create_docker_compose(config, out_path)
 
 
 @cli.command("create-dotenv")
-@click.argument("config_path")
-def create_env_cli(config_path: str) -> None:
+@click.argument("config_path", type=click.Path(dir_okay=False,exists=True))
+@click.argument("out_path", type=click.Path(dir_okay=False), default=".env")
+def create_dotenv_cli(config_path: str, out_path: str) -> None:
     """Creates .env for docker-compose"""
     config: Config = Config.from_file(config_path)
-    create_env(config.environment, config.dest_env)
+    create_dotenv(config.environment, out_path)
 
 
-@cli.command()
-@click.argument("config_path")
-def start(config_path: str) -> None:
-    """Start docker-compose in base_dir"""
+@cli.command("create-psconfig")
+@click.argument("config_path", type=click.Path(dir_okay=False,exists=True))
+@click.argument("out_path", type=click.Path(dir_okay=False), default="ocrd-processing-server-config.yaml")
+def create_psconfig_cli(config_path: str, out_path: str) -> None:
+    """Creates configuration file for ocrd network processing-server"""
     config: Config = Config.from_file(config_path)
-    dest = Path(config.dest)
-    chdir(dest.parent)
-    environ["PWD"] = str(dest.parent)
-    command = ["docker-compose", "-f", f"{dest.name}", "up", "-d"]
-    subprocess.run(command)
-    wait_for_startup(f"http://localhost:{config.environment.ocrd_ps_port}")
+    create_psconfig(config.environment, out_path)
 
 
 @cli.command()
-@click.argument("config_path")
-def stop(config_path) -> None:
-    """Stop docker-compose services in base_dir"""
-    config: Config = Config.from_file(config_path)
-    dest = Path(config.dest)
-    chdir(dest.parent)
-    command = ["docker-compose", "-f", f"{dest.name}", "down"]
+def start() -> None:
+    """Start all services via docker compose"""
+    command = ["docker", "compose", "up", "--wait", "--wait-timeout", "30", "-d"]
+    subprocess.run(command)
+    #wait_for_startup(f"http://localhost:{config.environment.ocrd_ps_port}")
+
+
+@cli.command()
+def stop() -> None:
+    """Stop all services via docker compose"""
+    command = ["docker", "compose", "down"]
     subprocess.run(command)
 
 
 @cli.command()
-@click.argument("venv_bin_path")
-@click.argument("config_path")
-def create_clients(venv_bin_path: str, config_path: str) -> None:
-    """ Creates a script for every processor to call and ocrd-process for workflow runs
+@click.option("--docker-run-opts")
+@click.argument("path")
+@click.argument("executable")
+@click.argument("image")
+def create_client(docker_run_opts: str, path: str, executable: str, image: str) -> None:
+    """Creates an executable script for the specified processor
 
-    The processing server and the workers run in docker. To simplyfy the invocation a delegator for
-    every existing worker is created. These scripts are added to the venv's bin directory.
+    The script will either call the standalone CLI via Docker run,
+    or (if the network-setup has been run) the client CLI for the
+    Processing Server (assuming network-start has been run as well).
     """
-    if not Path(venv_bin_path).exists():
-        exit(f"path to venv not found: {venv_bin_path}")
-    elif not Path(config_path).exists():
-        exit(f"path to config file not found: {config_path}")
+    content = DELEGATOR_PROCESSOR_TEMPLATE.format(processor_name=executable, docker_image=image, docker_run_opts=docker_run_opts)
+    dest = Path(path)
+    if not dest.parent.exists():
+        exit(f"target {dest} parent directory does not exist")
+    with open(dest, "w") as fout:
+        fout.write(content)
+    chmod(dest, 0o755)
 
-    config: Config = Config.from_file(config_path)
-    port = config.environment.ocrd_ps_port
 
-    for proc in config.processors:
-        content = DELEGATOR_PROCESSOR_TEMPLATE.format(processor_name=proc.name, ps_port=port)
-        dest = Path(venv_bin_path) / proc.name
-        with open(dest, "w") as fout:
-            fout.write(content)
-        chmod(dest, 0o755)
+@cli.command()
+@click.option("--docker-run-opts")
+@click.argument("path")
+def create_workflow_client(docker_run_opts: str, path: str) -> None:
+    """Creates an executable script for the 'ocrd process' functionality (workflow processing)
 
-    content = DELEGATOR_WORKFLOW_TEMPLATE.format(ps_port=port)
-    dest = Path(venv_bin_path) / "ocrd-process"
+    After validating fileGrp dependencies for the passed workspace,
+    for each processor in the passed workflow,
+    the script will either call the respective standalone CLI via Docker run,
+    or (if the network-setup has been run) the client CLI for the
+    Processing Server (assuming network-start has been run as well).
+    """
+    content = DELEGATOR_WORKFLOW_TEMPLATE.format(docker_run_opts=docker_run_opts)
+    dest = Path(path)
+    if not dest.parent.exists():
+        exit(f"target {dest} parent directory does not exist")
     with open(dest, "w") as fout:
         fout.write(content)
     chmod(dest, 0o755)
@@ -112,14 +126,14 @@ def create_clients(venv_bin_path: str, config_path: str) -> None:
 #     validate(instance, schema)
 
 
-def create_docker_compose(config: Type[ForwardRef("Config")]) -> None:
+def create_docker_compose(config: Type[ForwardRef("Config")], dest: str) -> None:
     """Create docker-compose file from config-object
 
     The parts of the docker-compose are defined in the config-object. Basically there is a template
     string for all needed services. These templates are configurable and parts of it are set via
     info specified in the config file
     """
-    with open(config.dest, "w") as fout:
+    with open(dest, "w") as fout:
 
         if config.environment.mtu:
             fout.write(config.network_template)
@@ -181,41 +195,39 @@ def create_workers(config: Type[ForwardRef("Config")]) -> str:
     return res
 
 
-def create_env(env: Type[ForwardRef("Environment")], dest: str) -> None:
+def create_dotenv(env: Type[ForwardRef("Environment")], dest: str) -> None:
     """Create .env file to configure docker-compose
 
     Info is read from the config-object and written to the env file
     """
-    lines = []
-    if env.mtu:
-        lines.append(f"OCRD_PS_MTU={env.mtu}")
-    if env.ocrd_ps_port:
-        lines.append(f"OCRD_PS_PORT={env.ocrd_ps_port}")
-    if env.mongodb_user:
-        lines.append(f"MONGODB_USER={env.mongodb_user}")
-    if env.mongodb_pass:
-        lines.append(f"MONGODB_PASS={env.mongodb_pass}")
-    if env.mongodb_url:
-        lines.append(f"MONGODB_URL={env.mongodb_url}")
-    if env.rabbitmq_user:
-        lines.append(f"RABBITMQ_USER={env.rabbitmq_user}")
-    if env.rabbitmq_pass:
-        lines.append(f"RABBITMQ_PASS={env.rabbitmq_pass}")
-    if env.rabbitmq_url:
-        lines.append(f"RABBITMQ_URL={env.rabbitmq_url}")
-    if env.user_id:
-        lines.append(f"USER_ID={env.user_id}")
-    if env.group_id:
-        lines.append(f"GROUP_ID={env.group_id}")
-    if env.data_dir_host:
-        lines.append(f"DATA_DIR_HOST={env.data_dir_host}")
-    if env.internal_callback_url:
-        lines.append(f"INTERNAL_CALLBACK_URL={env.internal_callback_url}")
-    if env.run_network_dir:
-        lines.append(f"RUN_NETWORK_DIR={env.run_network_dir}")
+    lines = [
+        f"OCRD_PS_MTU={env.mtu}",
+        f"OCRD_PS_PORT={env.ocrd_ps_port}",
+        f"MONGODB_USER={env.mongodb_user}",
+        f"MONGODB_PASS={env.mongodb_pass}",
+        f"MONGODB_URL={env.mongodb_url}",
+        f"RABBITMQ_USER={env.rabbitmq_user}",
+        f"RABBITMQ_PASS={env.rabbitmq_pass}",
+        f"RABBITMQ_URL={env.rabbitmq_url}",
+        f"USER_ID={env.user_id}",
+        f"GROUP_ID={env.group_id}",
+        f"DATA_DIR={env.data_dir}",
+        f"RES_VOL={env.res_vol}",
+        f"INTERNAL_CALLBACK_URL={env.internal_callback_url}",
+    ]
 
     with open(dest, "w+") as fout:
-        fout.write("\n".join(lines))
+        fout.write("\n".join(lines) + "\n")
+
+
+def create_psconfig(env: Type[ForwardRef("Environment")], dest: str) -> None:
+    """Create configuration file for ocrd network processing-server
+
+    Info is read from the config-object and written to the yaml file
+    """
+    content = PROCESSING_SERVER_CONFIG_TEMPLATE.format(env=env).replace("${OCRD_PS_PORT}", str(env.ocrd_ps_port))
+    with open(dest, "w") as fout:
+        fout.write(content)
 
 
 def wait_for_startup(processing_server_url: str) -> None:
@@ -253,11 +265,11 @@ PROC_TEMPLATE = """
     image: {image}
     container_name: {service_name}
     command: {processor_name} worker --database $MONGODB_URL --queue $RABBITMQ_URL
+    profiles: [{profiles}]
     depends_on: {depends_on}
     user: "${{USER_ID}}:${{GROUP_ID}}"
-    profiles: [{profiles}]
     volumes:
-      - "${{DATA_DIR_HOST}}:/data"
+      - "${{DATA_DIR}}:/data"
       - ocrd-resources:/usr/local/share/ocrd-resources
     environment:
       - OCRD_NETWORK_LOGS_ROOT_DIR=${{LOGS_DIR:-/data/logs}}
@@ -276,33 +288,41 @@ PROCESSING_SERVER_TEMPLATE = """
       - OCRD_NETWORK_SOCKETS_ROOT_DIR=${{SOCKETS_DIR:-/data/sockets}}
       - OCRD_NETWORK_LOGS_ROOT_DIR=${{LOGS_DIR:-/data/logs}}
       - XDG_CONFIG_HOME=/usr/local/share/ocrd-resources
-    command: |
-      /bin/bash -c "echo -e \\"
-        internal_callback_url: ${{INTERNAL_CALLBACK_URL}}
-        use_tcp_mets: true
-        process_queue:
-          address: ocrd-rabbitmq
-          port: 5672
-          skip_deployment: true
-          credentials:
-            username: ${{RABBITMQ_USER}}
-            password: ${{RABBITMQ_PASS}}
-        database:
-          address: ocrd-mongodb
-          port: 27017
-          skip_deployment: true
-          credentials:
-            username: ${{MONGODB_USER}}
-            password: ${{MONGODB_PASS}}
-        hosts: []\\" > /data/ocrd-processing-server-config.yaml && \\
-        ocrd network processing-server -a 0.0.0.0:8000 /data/ocrd-processing-server-config.yaml"
+    command: ocrd network processing-server -a 0.0.0.0:8000 /data/ocrd-processing-server-config.yaml
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:8000"]
+      interval: 60s
+      timeout: 10s
+      start_period: 30s
+      retries: 2
     user: "${{USER_ID}}:${{GROUP_ID}}"
     volumes:
       - ocrd-resources:/usr/local/share/ocrd-resources
-      - "${{DATA_DIR_HOST}}:/data"
-      - "${{RUN_NETWORK_DIR}}/ocrd-all-tool.json:/build/core/src/ocrd/ocrd-all-tool.json"
+      - "${{DATA_DIR}}:/data"
+      - "${{PWD}}/ocrd-all-tool.json:/build/core/src/ocrd/ocrd-all-tool.json"
+      - "${{PWD}}/ocrd-processing-server-config.yaml:/data/ocrd-processing-server-config.yaml"
     ports:
       - ${{OCRD_PS_PORT}}:8000
+"""
+
+PROCESSING_SERVER_CONFIG_TEMPLATE = """
+internal_callback_url: {env.internal_callback_url}
+use_tcp_mets: true
+process_queue:
+  address: ocrd-rabbitmq
+  port: 5672
+  skip_deployment: true
+  credentials:
+    username: {env.rabbitmq_user}
+    password: {env.rabbitmq_pass}
+database:
+  address: ocrd-mongodb
+  port: 27017
+  skip_deployment: true
+  credentials:
+    username: {env.mongodb_user}
+    password: {env.mongodb_pass}
+hosts: []
 """
 
 MONGODB_TEMPLATE = """
@@ -314,6 +334,12 @@ MONGODB_TEMPLATE = """
       - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASS:-admin}
     ports:
       - "27018:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 60s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
 """
 
 RABBITMQ_TEMPLATE = """
@@ -326,25 +352,73 @@ RABBITMQ_TEMPLATE = """
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 60s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
 """
 
 VOLUMES_TEMPLATE = """
 volumes:
   ocrd-resources:
     external: true
+    name: ${RES_VOL}
 """
 
 
 DELEGATOR_PROCESSOR_TEMPLATE = """#!/usr/bin/env python
 
-from ocrd_network.cli import client_cli
+import sys
+import os
+import pathlib
+import subprocess
+
+# detect whether to run standalone or in ocrd_network
+dotenv = pathlib.Path(".env")
+if dotenv.exists():
+    from dotenv import dotenv_values
+    dotenv = dotenv_values(dotenv)
+    ps_port = dotenv.get('OCRD_PS_PORT', '')
+    if ps_port and ps_port.isdecimal():
+        pass
+        print("using Processing Server at localhost:%s" % ps_port)
+    else:
+        ps_port = ''
+        print("no OCRD_PS_PORT found in .env - starting local container")
+else:
+    ps_port = ''
+    print("no .env found - starting local container")
+
+# allow overriding detection
+if policy := os.environ.get('DOCKER_RUN_POLICY', None):
+    if policy in ['ocrd_network', 'client'] and not ps_port:
+        exit("cannot apply DOCKER_RUN_POLICY=" + policy + ": needs OCRD_PS_PORT via .env")
+    if policy in ['local', 'standalone'] and ps_port:
+        ps_port = ''
+
+if not ps_port:
+    cmd = 'docker run --rm '
+    cmd += '{docker_run_opts} ${{DOCKER_RUN_OPTS}} '
+    if not (':/data' in '{docker_run_opts}' or
+            ',destination=/data' in '{docker_run_opts}' or
+            ':/data' in os.environ.get('DOCKER_RUN_OPTS', '') or
+            ',destination=/data' in os.environ.get('DOCKER_RUN_OPTS', '')):
+        cmd += '-v ' + str(pathlib.Path().absolute()) + ':/data '
+    cmd += '{docker_image} {processor_name} '
+    cmd += ' '.join(sys.argv[1:])
+    ret = subprocess.run(cmd, shell=True)
+    sys.exit(ret.returncode)
+
 import click
+from ocrd_network.cli import client_cli
 
 run_cli = client_cli.commands['processing'].commands['run']
 
 
 def callback(*args, **kwargs):
-    kwargs['address'] = "http://localhost:{ps_port}"
+    kwargs['address'] = "http://localhost:" + ps_port
     kwargs['block'] = True
     kwargs['print_state'] = True
     return run_cli.callback("{processor_name}", *args, **kwargs)
@@ -361,12 +435,12 @@ cli = click.Command(name="{processor_name}",
                     callback=callback,
                     params=params)
 
-
 if __name__ == "__main__":
     cli()
 """
 
 
+# FIXME
 DELEGATOR_WORKFLOW_TEMPLATE = """#!/usr/bin/env python
 
 from ocrd_network.cli import client_cli
@@ -429,18 +503,16 @@ class Environment:
     rabbitmq_url: str = "amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@ocrd-rabbitmq:5672"
     user_id: int = 1000
     group_id: int = 1000
-    data_dir_host: str = "/tmp/data"
+    data_dir: str = "/tmp/data"
+    res_vol: str = "ocrd-models"
     internal_callback_url: str = "http://ocrd-processing-server:${OCRD_PS_PORT}"
-    run_network_dir: str = dirname(__file__)
 
 
 @dataclass
 class Config:
     """This object determines how the docker-compose will finally look like"""
 
-    dest: str
     processors: List[Processor]
-    dest_env: Optional[str] = None
     environment: Environment = field(default_factory=Environment)
     processing_server_image: str = "ocrd/core:latest"
     processing_server_template: str = PROCESSING_SERVER_TEMPLATE
@@ -454,18 +526,36 @@ class Config:
     def from_file(yaml_file_path: str) -> "Config":
         with open(yaml_file_path, "r") as file:
             yamldict: Dict[str, Any] = yaml.safe_load(file)
-        processors = [Processor(**processor) for processor in yamldict["processors"]]
+
+        if "processors" in yamldict:
+            # manual config
+            processors = [Processor(**processor) for processor in yamldict["processors"]]
+            print("loaded %d processors from manual config %s" % (len(processors), yaml_file_path))
+        else:
+            # controlled by Makefile at build time (OCRD_MODULES etc.)
+            with open("ocrd-all-images.yaml", "r") as file:
+                images = yaml.safe_load(file)
+            processors = []
+            for image in images:
+                with open(image, "r") as file:
+                    meta = yaml.safe_load(file)
+                processors.extend([
+                    Processor(name=executable, image=image,
+                              # DOCKER_PROFILES is whitespace-separated in Makefile
+                              profiles=(meta['profiles'] or "").split())
+                    for executable in meta['tools']])
+            print("loaded %d processors from generated config" % len(processors))
         yamldict["processors"] = processors
 
         if "environment" in yamldict:
-            yamldict["environment"] = Environment(**yamldict["environment"])
-        res = Config(**yamldict)
+            # manual config
+            environment = Environment(**yamldict["environment"])
+        else:
+            # defaults
+            environment = Environment()
+        yamldict["environment"] = environment
 
-        # let a relative dest path be relativ to the config file
-        if not Path(res.dest).is_absolute():
-            res.dest = Path(yaml_file_path).parent / res.dest
-        if not res.dest_env:
-            res.dest_env = str(Path(res.dest).with_name(".env"))
+        res = Config(**yamldict)
         return res
 
 
