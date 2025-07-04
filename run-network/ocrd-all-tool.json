@@ -1,0 +1,4761 @@
+{
+  "ocrd-cor-asv-ann-process": {
+    "executable": "ocrd-cor-asv-ann-process",
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "steps": [
+      "recognition/post-correction"
+    ],
+    "description": "Improve text annotation by character-level encoder-attention-decoder ANN model",
+    "input_file_grp": [
+      "OCR-D-OCR-TESS",
+      "OCR-D-OCR-KRAK",
+      "OCR-D-OCR-OCRO",
+      "OCR-D-OCR-CALA",
+      "OCR-D-OCR-ANY"
+    ],
+    "output_file_grp": [
+      "OCR-D-COR-ASV"
+    ],
+    "parameters": {
+      "model_file": {
+        "type": "string",
+        "format": "uri",
+        "content-type": "application/x-hdf;subtype=bag",
+        "description": "path of h5py weight/config file for model trained with cor-asv-ann-train",
+        "required": true,
+        "cacheable": true
+      },
+      "textequiv_level": {
+        "type": "string",
+        "enum": [
+          "line",
+          "word",
+          "glyph"
+        ],
+        "default": "glyph",
+        "description": "PAGE XML hierarchy level to read/write TextEquiv input/output on"
+      },
+      "charmap": {
+        "type": "object",
+        "default": {},
+        "description": "mapping for input characters before passing to correction; can be used to adapt to character set mismatch between input and model (without relying on underspecification alone)"
+      },
+      "rejection_threshold": {
+        "type": "number",
+        "format": "float",
+        "default": 0.5,
+        "description": "minimum probability of the candidate corresponding to the input character in each hypothesis during beam search, helps balance precision/recall trade-off; set to 0 to disable rejection (max recall) or 1 to disable correction (max precision)"
+      },
+      "relative_beam_width": {
+        "type": "number",
+        "format": "float",
+        "default": 0.2,
+        "description": "minimum fraction of the best candidate's probability required to enter the beam in each hypothesis; controls the quality/performance trade-off"
+      },
+      "fixed_beam_width": {
+        "type": "number",
+        "format": "integer",
+        "default": 15,
+        "description": "maximum number of candidates allowed to enter the beam in each hypothesis; controls the quality/performance trade-off"
+      },
+      "fast_mode": {
+        "type": "boolean",
+        "default": false,
+        "description": "decode greedy instead of beamed, with batches of parallel lines instead of parallel alternatives; also disables rejection and beam parameters; enable if performance is far more important than quality"
+      }
+    }
+  },
+  "ocrd-cor-asv-ann-evaluate": {
+    "executable": "ocrd-cor-asv-ann-evaluate",
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "steps": [
+      "recognition/evaluation"
+    ],
+    "description": "Align different textline annotations and compute distance",
+    "input_file_grp": [
+      "OCR-D-GT-SEG-LINE",
+      "OCR-D-OCR-TESS",
+      "OCR-D-OCR-KRAK",
+      "OCR-D-OCR-OCRO",
+      "OCR-D-OCR-CALA",
+      "OCR-D-OCR-ANY",
+      "OCR-D-COR-ASV"
+    ],
+    "output_file_grp": [
+      "OCR-D-EVAL-CER"
+    ],
+    "parameters": {
+      "match_on": {
+        "type": "string",
+        "enum": [
+          "index",
+          "id",
+          "coords",
+          "baseline"
+        ],
+        "default": "id",
+        "description": "Attribute to differentiate input annotations by: either `TextEquiv/@index` of the same TextLine and input file, or `TextLine/@id` (or `./Coords/@points` or `./Baseline/@points`) of input files across input fileGrps."
+      },
+      "metric": {
+        "type": "string",
+        "enum": [
+          "Levenshtein-fast",
+          "Levenshtein",
+          "NFC",
+          "NFKC",
+          "historic_latin"
+        ],
+        "default": "Levenshtein-fast",
+        "description": "Distance metric to calculate and aggregate: `historic_latin` for GT level 1-3, `NFKC` for roughly GT level 2 (but including reduction of `\u017f/s` and superscript numerals etc), `Levenshtein` for GT level 3 (or `Levenshtein-fast` for faster alignment - but using maximum sequence length instead of path length as CER denominator, and without confusion statistics)."
+      },
+      "gt_level": {
+        "type": "number",
+        "enum": [
+          1,
+          2,
+          3
+        ],
+        "default": 1,
+        "description": "When `metric=historic_latin`, normalize and equate at this GT transcription level."
+      },
+      "confusion": {
+        "type": "number",
+        "format": "integer",
+        "minimum": 0,
+        "default": 0,
+        "description": "Count edits and show that number of most frequent confusions (non-identity) in the end."
+      },
+      "histogram": {
+        "type": "boolean",
+        "default": false,
+        "description": "Aggregate and show mutual character histograms."
+      }
+    }
+  },
+  "ocrd-cor-asv-ann-align": {
+    "executable": "ocrd-cor-asv-ann-align",
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "steps": [
+      "recognition/post-correction"
+    ],
+    "description": "Align different textline annotations and pick best",
+    "input_file_grp": [
+      "OCR-D-GT-SEG-LINE",
+      "OCR-D-OCR-TESS",
+      "OCR-D-OCR-KRAK",
+      "OCR-D-OCR-OCRO",
+      "OCR-D-OCR-CALA",
+      "OCR-D-OCR-ANY",
+      "OCR-D-COR-ASV"
+    ],
+    "output_file_grp": [
+      "OCR-D-OCR-MULTI"
+    ],
+    "parameters": {
+      "method": {
+        "type": "string",
+        "enum": [
+          "majority",
+          "confidence",
+          "combined"
+        ],
+        "default": "majority",
+        "description": "decide by majority of OCR hypotheses, by highest confidence of OCRs or by a combination thereof"
+      }
+    }
+  },
+  "ocrd-cor-asv-ann-join": {
+    "executable": "ocrd-cor-asv-ann-join",
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "steps": [
+      "recognition/post-correction"
+    ],
+    "description": "Join different textline annotations by concatenation",
+    "input_file_grp": [
+      "OCR-D-GT-SEG-LINE",
+      "OCR-D-OCR-TESS",
+      "OCR-D-OCR-KRAK",
+      "OCR-D-OCR-OCRO",
+      "OCR-D-OCR-CALA",
+      "OCR-D-OCR-ANY",
+      "OCR-D-COR-ASV"
+    ],
+    "output_file_grp": [
+      "OCR-D-OCR-MULTI"
+    ],
+    "parameters": {
+      "add-filegrp-comments": {
+        "type": "boolean",
+        "default": false,
+        "description": "set @comments of each TextEquiv to the fileGrp/@USE it came from"
+      },
+      "add-filegrp-index": {
+        "type": "boolean",
+        "default": false,
+        "description": "set @index of each TextEquiv to the fileGrp index (zero based) it came from"
+      },
+      "match-on": {
+        "type": "string",
+        "enum": [
+          "id",
+          "coords",
+          "baseline"
+        ],
+        "default": "id",
+        "description": "information to match lines on (element @id, Coords/@points, Baseline/@points)"
+      }
+    }
+  },
+  "ocrd-cor-asv-ann-mark": {
+    "executable": "ocrd-cor-asv-ann-mark",
+    "description": "mark words not found by a spellchecker",
+    "steps": [
+      "recognition/post-correction"
+    ],
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "parameters": {
+      "command": {
+        "type": "string",
+        "required": true,
+        "description": "external tool to query word forms, e.g. 'hunspell -i utf-8 -d de_DE,en_US -w'"
+      },
+      "normalization": {
+        "type": "object",
+        "default": {},
+        "description": "mapping of characters prior to spellcheck, e.g. {\"\u017f\": \"s\", \"a\u0364\": \"\u00e4\"}"
+      },
+      "format": {
+        "type": "string",
+        "default": "conf",
+        "description": "how unknown words should be marked; if 'conf', then writes @conf=0.123, otherwise writes that value into @comments"
+      }
+    }
+  },
+  "ocrd-dummy": {
+    "executable": "ocrd-dummy",
+    "description": "Bare-bones processor creates PAGE-XML and optionally copies file from input group to output group",
+    "steps": [
+      "preprocessing/optimization"
+    ],
+    "categories": [
+      "Image preprocessing"
+    ],
+    "input_file_grp": "DUMMY_INPUT",
+    "output_file_grp": "DUMMY_OUTPUT",
+    "parameters": {
+      "copy_files": {
+        "type": "boolean",
+        "default": false,
+        "description": "Whether to actually copy files (true) or just create PAGE-XML as a side effect (false)"
+      }
+    }
+  },
+  "ocrd-dinglehopper": {
+    "executable": "ocrd-dinglehopper",
+    "description": "Evaluate OCR text against ground truth with dinglehopper",
+    "input_file_grp": [
+      "OCR-D-GT-PAGE",
+      "OCR-D-OCR"
+    ],
+    "output_file_grp": [
+      "OCR-D-OCR-EVAL"
+    ],
+    "categories": [
+      "Quality assurance"
+    ],
+    "steps": [
+      "recognition/text-recognition"
+    ],
+    "parameters": {
+      "metrics": {
+        "type": "boolean",
+        "default": true,
+        "description": "Enable/disable metrics and green/red"
+      },
+      "textequiv_level": {
+        "type": "string",
+        "enum": [
+          "region",
+          "line"
+        ],
+        "default": "region",
+        "description": "PAGE XML hierarchy level to extract the text from"
+      }
+    }
+  },
+  "ocrd-docstruct": {
+    "executable": "ocrd-docstruct",
+    "categories": [
+      "Layout analysis"
+    ],
+    "description": "Parsing page-level text regions with headings and reading order, create a dummy logical structMap",
+    "steps": [
+      "layout/analysis"
+    ],
+    "parameters": {
+      "mode": {
+        "type": "string",
+        "enum": [
+          "enmap",
+          "dfg"
+        ],
+        "default": "dfg",
+        "description": "representational convention to use in the METS; either ENMAP profile (using mets:area) or DFG profile (using only mets:structLink)"
+      },
+      "type": {
+        "type": "string",
+        "enum": [
+          "chapter",
+          "section",
+          "article"
+        ],
+        "default": "article",
+        "description": "mets:div type to use for headings"
+      }
+    }
+  },
+  "ocrd-eynollah-segment": {
+    "executable": "ocrd-eynollah-segment",
+    "categories": [
+      "Layout analysis"
+    ],
+    "description": "Segment page into regions and lines and do reading order detection with eynollah",
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-PAGE",
+      "OCR-D-GT-SEG-PAGE"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-LINE"
+    ],
+    "steps": [
+      "layout/segmentation/region",
+      "layout/segmentation/line"
+    ],
+    "parameters": {
+      "models": {
+        "type": "string",
+        "format": "file",
+        "content-type": "text/directory",
+        "cacheable": true,
+        "description": "Path to directory containing models to be used (See https://qurator-data.de/eynollah)",
+        "required": true
+      },
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images); ignored if <= 0 (with fall-back 230)",
+        "default": 0
+      },
+      "full_layout": {
+        "type": "boolean",
+        "default": true,
+        "description": "Try to detect all element subtypes, including drop-caps and headings"
+      },
+      "tables": {
+        "type": "boolean",
+        "default": false,
+        "description": "Try to detect table regions"
+      },
+      "curved_line": {
+        "type": "boolean",
+        "default": false,
+        "description": "try to return contour of textlines instead of just rectangle bounding box. Needs more processing time"
+      },
+      "allow_scaling": {
+        "type": "boolean",
+        "default": false,
+        "description": "check the resolution against the number of detected columns and if needed, scale the image up or down during layout detection (heuristic to improve quality and performance)"
+      },
+      "headers_off": {
+        "type": "boolean",
+        "default": false,
+        "description": "ignore the special role of headings during reading order detection"
+      }
+    },
+    "resources": [
+      {
+        "description": "models for eynollah (TensorFlow SavedModel format)",
+        "url": "https://github.com/qurator-spk/eynollah/releases/download/v0.3.1/models_eynollah.tar.gz",
+        "name": "default",
+        "size": 1894627041,
+        "type": "archive",
+        "path_in_archive": "models_eynollah"
+      }
+    ]
+  },
+  "ocrd-nmalign-merge": {
+    "executable": "ocrd-nmalign-merge",
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "steps": [
+      "recognition/post-correction"
+    ],
+    "description": "forced alignment of lists of string by fuzzy string matching",
+    "parameters": {
+      "normalization": {
+        "type": "object",
+        "default": {},
+        "additionalProperties": {
+          "type": "string"
+        },
+        "description": "replacement pairs (regex patterns and regex backrefs) to be applied prior to matching (but not on the result itself)"
+      },
+      "allow_splits": {
+        "type": "boolean",
+        "default": false,
+        "description": "allow line strings of the first input fileGrp to be matched by multiple line strings of the second input fileGrp (so concatenate all the latter before inserting into the former)"
+      }
+    }
+  },
+  "ocrd-anybaseocr-binarize": {
+    "executable": "ocrd-anybaseocr-binarize",
+    "description": "Binarizes images with the algorithm from ocropy and outputs it as an AlternativeImage.",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization/binarization"
+    ],
+    "input_file_grp": [
+      "OCR-D-IMG"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG-BIN"
+    ],
+    "parameters": {
+      "nocheck": {
+        "type": "boolean",
+        "default": false,
+        "description": "disable error checking on inputs"
+      },
+      "show": {
+        "type": "boolean",
+        "default": false,
+        "description": "display final results"
+      },
+      "raw_copy": {
+        "type": "boolean",
+        "default": false,
+        "description": "also copy the raw image"
+      },
+      "gray": {
+        "type": "boolean",
+        "default": false,
+        "description": "force grayscale processing even if image seems binary"
+      },
+      "bignore": {
+        "type": "number",
+        "format": "float",
+        "default": 0.1,
+        "description": "ignore this much of the border for threshold estimation"
+      },
+      "debug": {
+        "type": "number",
+        "format": "integer",
+        "default": 0,
+        "description": "display intermediate results"
+      },
+      "escale": {
+        "type": "number",
+        "format": "float",
+        "default": 1.0,
+        "description": "scale for estimating a mask over the text region"
+      },
+      "hi": {
+        "type": "number",
+        "format": "float",
+        "default": 90,
+        "description": "percentile for white estimation"
+      },
+      "lo": {
+        "type": "number",
+        "format": "float",
+        "default": 5,
+        "description": "percentile for black estimation"
+      },
+      "perc": {
+        "type": "number",
+        "format": "float",
+        "default": 80,
+        "description": "percentage for filters"
+      },
+      "range": {
+        "type": "number",
+        "format": "integer",
+        "default": 20,
+        "description": "range for filters"
+      },
+      "threshold": {
+        "type": "number",
+        "format": "float",
+        "default": 0.5,
+        "description": "threshold, determines lightness"
+      },
+      "zoom": {
+        "type": "number",
+        "format": "float",
+        "default": 0.5,
+        "description": "zoom for page background estimation, smaller=faster"
+      },
+      "operation_level": {
+        "type": "string",
+        "enum": [
+          "page",
+          "region",
+          "line"
+        ],
+        "default": "page",
+        "description": "PAGE XML hierarchy level to operate on"
+      }
+    }
+  },
+  "ocrd-anybaseocr-deskew": {
+    "executable": "ocrd-anybaseocr-deskew",
+    "description": "Deskews images with the algorithm from ocropy and outputs a deskew angle.",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization/deskewing"
+    ],
+    "input_file_grp": [
+      "OCR-D-IMG-BIN"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG-DESKEW"
+    ],
+    "parameters": {
+      "escale": {
+        "type": "number",
+        "format": "float",
+        "default": 1.0,
+        "description": "scale for estimating a mask over the text region"
+      },
+      "bignore": {
+        "type": "number",
+        "format": "float",
+        "default": 0.1,
+        "description": "ignore this much of the border for threshold estimation"
+      },
+      "threshold": {
+        "type": "number",
+        "format": "float",
+        "default": 0.5,
+        "description": "threshold, determines lightness"
+      },
+      "maxskew": {
+        "type": "number",
+        "format": "float",
+        "default": 1.0,
+        "description": "skew angle estimation parameters (degrees)"
+      },
+      "skewsteps": {
+        "type": "number",
+        "format": "integer",
+        "default": 8,
+        "description": "steps for skew angle estimation (per degree)"
+      },
+      "debug": {
+        "type": "number",
+        "format": "integer",
+        "default": 0,
+        "description": "display intermediate results"
+      },
+      "parallel": {
+        "type": "number",
+        "format": "integer",
+        "default": 0,
+        "description": "???"
+      },
+      "lo": {
+        "type": "number",
+        "format": "integer",
+        "default": 5,
+        "description": "percentile for black estimation"
+      },
+      "hi": {
+        "type": "number",
+        "format": "integer",
+        "default": 90,
+        "description": "percentile for white estimation"
+      },
+      "operation_level": {
+        "type": "string",
+        "enum": [
+          "page",
+          "region",
+          "line"
+        ],
+        "default": "page",
+        "description": "PAGE XML hierarchy level to operate on"
+      }
+    }
+  },
+  "ocrd-anybaseocr-crop": {
+    "executable": "ocrd-anybaseocr-crop",
+    "description": "Detect the input images' page frame, annotate it as border polygon and add a cropped derived image.",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization/cropping"
+    ],
+    "input_file_grp": [
+      "OCR-D-IMG-DESKEW"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG-CROP"
+    ],
+    "parameters": {
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "default": 0,
+        "description": "pixel density in dots per inch (used to zoom/scale during processing; overrides any meta-data in the images); disabled when zero or negative"
+      },
+      "rulerRatioMax": {
+        "type": "number",
+        "format": "float",
+        "default": 50.0,
+        "description": "ruler detection and suppression: maximum aspect ratio of bbox"
+      },
+      "rulerRatioMin": {
+        "type": "number",
+        "format": "float",
+        "default": 3.0,
+        "description": "ruler detection and suppression: minimum aspect ratio of bbox"
+      },
+      "rulerAreaMax": {
+        "type": "number",
+        "format": "float",
+        "default": 0.3,
+        "description": "ruler detection and suppression: maximum area of bbox (as ratio of total image pixels)"
+      },
+      "rulerAreaMin": {
+        "type": "number",
+        "format": "float",
+        "default": 0.01,
+        "description": "ruler detection and suppression: minimum area of bbox (as ratio of total image pixels)"
+      },
+      "rulerWidthMax": {
+        "type": "number",
+        "format": "float",
+        "default": 0.95,
+        "description": "ruler detection and suppression: maximum width of bbox (as ratio of total image width)"
+      },
+      "columnAreaMin": {
+        "type": "number",
+        "format": "float",
+        "default": 0.05,
+        "description": "text block detection: minimum area of individual columns (as ratio of total image pixels)"
+      },
+      "columnSepWidthMax": {
+        "type": "number",
+        "format": "float",
+        "default": 0.04,
+        "description": "text block detection: maximum width between individual columns (as ratio of total image width)"
+      },
+      "marginTop": {
+        "type": "number",
+        "format": "float",
+        "default": 0.25,
+        "description": "ruler / edge / text detection: maximum y position to crop from above (as ratio of total image height)"
+      },
+      "marginBottom": {
+        "type": "number",
+        "format": "float",
+        "default": 0.75,
+        "description": "ruler / edge / text detection: minimum y position to crop from below (as ratio of total image height)"
+      },
+      "marginLeft": {
+        "type": "number",
+        "format": "float",
+        "default": 0.3,
+        "description": "ruler / edge / text detection: maximum x position to crop from left (as ratio of total image width)"
+      },
+      "marginRight": {
+        "type": "number",
+        "format": "float",
+        "default": 0.7,
+        "description": "ruler / edge / text detection: minimum x position to crop from right (as ratio of total image width)"
+      },
+      "padding": {
+        "type": "number",
+        "format": "integer",
+        "default": 10,
+        "description": "extend / shrink border resulting from edge detection / text detection by this many px in each direction"
+      }
+    }
+  },
+  "ocrd-anybaseocr-dewarp": {
+    "executable": "ocrd-anybaseocr-dewarp",
+    "description": "Dewarps the input image with anyBaseOCR and outputs it as an AlternativeImage",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization/dewarping"
+    ],
+    "input_file_grp": [
+      "OCR-D-IMG-CROP"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG-DEWARP"
+    ],
+    "parameters": {
+      "resize_mode": {
+        "type": "string",
+        "enum": [
+          "resize_and_crop",
+          "crop",
+          "scale_width",
+          "scale_width_and_crop",
+          "none"
+        ],
+        "default": "resize_and_crop",
+        "description": "transformation to apply to the original image before input to the network"
+      },
+      "resize_height": {
+        "type": "number",
+        "format": "integer",
+        "default": 1024,
+        "description": "target image height before input to the network"
+      },
+      "resize_width": {
+        "type": "number",
+        "format": "integer",
+        "default": 1024,
+        "description": "target image width before input to the network"
+      },
+      "model_path": {
+        "type": "string",
+        "format": "uri",
+        "default": "latest_net_G.pth",
+        "description": "Path to the trained pix2pixHD model",
+        "cacheable": true,
+        "content-type": "application/vnd.pytorch"
+      },
+      "gpu_id": {
+        "type": "number",
+        "format": "integer",
+        "default": -1,
+        "description": "CUDA device ID of GPU to use, or -1 for CPU only"
+      },
+      "operation_level": {
+        "type": "string",
+        "enum": [
+          "page",
+          "region"
+        ],
+        "default": "page",
+        "description": "PAGE XML hierarchy level to operate on (should match what model was trained on!)"
+      }
+    },
+    "resources": [
+      {
+        "url": "https://s3.gwdg.de/ocr-d/models/dfki/dewarping/latest_net_G.pth",
+        "name": "latest_net_G.pth",
+        "description": "dewarping model for anybaseocr",
+        "size": 805292230
+      }
+    ]
+  },
+  "ocrd-anybaseocr-tiseg": {
+    "executable": "ocrd-anybaseocr-tiseg",
+    "input_file_grp": [
+      "OCR-D-IMG-CROP"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-TISEG"
+    ],
+    "categories": [
+      "Layout analysis"
+    ],
+    "steps": [
+      "layout/segmentation/text-nontext"
+    ],
+    "description": "Separates the text and non-text elements with anyBaseOCR. Outputs clipped versions of the input image as AlternativeImage containing either only text or non-text elements.",
+    "parameters": {
+      "use_deeplr": {
+        "type": "boolean",
+        "default": true,
+        "description": "Whether to use deep learning model (UNet pixel classifier) instead of rule-based implementation (multi-resolution morphology)."
+      },
+      "seg_weights": {
+        "type": "string",
+        "format": "uri",
+        "content-type": "text/directory",
+        "cacheable": true,
+        "default": "seg_model",
+        "description": "Directory path to deep learning model when use_deeplr is true."
+      }
+    },
+    "resources": [
+      {
+        "url": "https://s3.gwdg.de/ocr-d/models/seg_model.tar.gz",
+        "name": "seg_model",
+        "description": "text image segmentation model for anybaseocr",
+        "type": "archive",
+        "path_in_archive": "seg_model",
+        "size": 61388872
+      }
+    ]
+  },
+  "ocrd-anybaseocr-textline": {
+    "executable": "ocrd-anybaseocr-textline",
+    "input_file_grp": [
+      "OCR-D-SEG-TISEG"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-LINE-ANY"
+    ],
+    "categories": [
+      "Layout analysis"
+    ],
+    "steps": [
+      "layout/segmentation/line"
+    ],
+    "description": "Finds region polygons for each text line in the input image.",
+    "parameters": {
+      "minscale": {
+        "type": "number",
+        "format": "float",
+        "default": 12.0,
+        "description": "minimum scale permitted"
+      },
+      "maxlines": {
+        "type": "number",
+        "format": "float",
+        "default": 300,
+        "description": "non-standard scaling of horizontal parameters"
+      },
+      "scale": {
+        "type": "number",
+        "format": "float",
+        "default": 0.0,
+        "description": "the basic scale of the document (roughly, xheight) 0=automatic"
+      },
+      "hscale": {
+        "type": "number",
+        "format": "float",
+        "default": 1.0,
+        "description": "non-standard scaling of horizontal parameters"
+      },
+      "vscale": {
+        "type": "number",
+        "format": "float",
+        "default": 1.7,
+        "description": "non-standard scaling of vertical parameters"
+      },
+      "threshold": {
+        "type": "number",
+        "format": "float",
+        "default": 0.2,
+        "description": "baseline threshold"
+      },
+      "noise": {
+        "type": "number",
+        "format": "integer",
+        "default": 8,
+        "description": "noise threshold for removing small components from lines"
+      },
+      "usegauss": {
+        "type": "boolean",
+        "default": false,
+        "description": "use gaussian instead of uniform"
+      },
+      "maxseps": {
+        "type": "number",
+        "format": "integer",
+        "default": 2,
+        "description": "maximum black column separators"
+      },
+      "sepwiden": {
+        "type": "number",
+        "format": "integer",
+        "default": 10,
+        "description": "widen black separators (to account for warping)"
+      },
+      "blackseps": {
+        "type": "boolean",
+        "default": false,
+        "description": "also check for black column separators"
+      },
+      "maxcolseps": {
+        "type": "number",
+        "format": "integer",
+        "default": 2,
+        "description": "maximum # whitespace column separators"
+      },
+      "csminaspect": {
+        "type": "number",
+        "format": "float",
+        "default": 1.1,
+        "description": "minimum aspect ratio for column separators"
+      },
+      "csminheight": {
+        "type": "number",
+        "format": "float",
+        "default": 6.5,
+        "description": "minimum column height (units=scale)"
+      },
+      "pad": {
+        "type": "number",
+        "format": "integer",
+        "default": 3,
+        "description": "padding for extracted lines"
+      },
+      "expand": {
+        "type": "number",
+        "format": "integer",
+        "default": 3,
+        "description": "expand mask for grayscale extraction"
+      },
+      "parallel": {
+        "type": "number",
+        "format": "integer",
+        "default": 0,
+        "description": "number of CPUs to use"
+      },
+      "libpath": {
+        "type": "string",
+        "default": ".",
+        "description": "Library Path for C Executables"
+      },
+      "operation_level": {
+        "type": "string",
+        "enum": [
+          "page",
+          "region"
+        ],
+        "default": "region",
+        "description": "PAGE XML hierarchy level to operate on"
+      },
+      "overwrite": {
+        "type": "boolean",
+        "default": false,
+        "description": "check whether to overwrite existing text lines"
+      }
+    }
+  },
+  "ocrd-anybaseocr-layout-analysis": {
+    "executable": "ocrd-anybaseocr-layout-analysis",
+    "input_file_grp": [
+      "OCR-D-IMG-CROP"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-LAYOUT"
+    ],
+    "categories": [
+      "Layout analysis"
+    ],
+    "steps": [
+      "layout/analysis"
+    ],
+    "description": "Generates a table-of-content like document structure of the whole document.",
+    "parameters": {
+      "batch_size": {
+        "type": "number",
+        "format": "integer",
+        "default": 4,
+        "description": "Batch size for generating test images"
+      },
+      "model_path": {
+        "type": "string",
+        "format": "uri",
+        "content-type": "text/directory",
+        "cacheable": true,
+        "default": "structure_analysis",
+        "description": "Directory path to layout structure classification model"
+      },
+      "class_mapping_path": {
+        "type": "string",
+        "format": "uri",
+        "content-type": "application/python-pickle",
+        "cacheable": true,
+        "default": "mapping_densenet.pickle",
+        "description": "File path to layout structure classes"
+      }
+    },
+    "resources": [
+      {
+        "url": "https://s3.gwdg.de/ocr-d/models/structure_analysis.tar.gz",
+        "name": "structure_analysis",
+        "description": "structure analysis model for anybaseocr",
+        "type": "archive",
+        "path_in_archive": "structure_analysis",
+        "size": 29002514
+      },
+      {
+        "url": "https://s3.gwdg.de/ocr-d/models/dfki/layoutAnalysis/mapping_densenet.pickle",
+        "name": "mapping_densenet.pickle",
+        "description": "mapping model for anybaseocr",
+        "size": 374
+      }
+    ]
+  },
+  "ocrd-anybaseocr-block-segmentation": {
+    "executable": "ocrd-anybaseocr-block-segmentation",
+    "input_file_grp": [
+      "OCR-D-IMG"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-BLOCK"
+    ],
+    "categories": [
+      "Layout analysis"
+    ],
+    "steps": [
+      "layout/segmentation/region"
+    ],
+    "description": "Segments and classifies regions in each single page and annotates the the region polygons and classes.",
+    "parameters": {
+      "block_segmentation_weights": {
+        "type": "string",
+        "format": "uri",
+        "content-type": "application/x-hdf;subtype=bag",
+        "cacheable": true,
+        "default": "block_segmentation_weights.h5",
+        "description": "Path to model weights"
+      },
+      "overwrite": {
+        "type": "boolean",
+        "default": false,
+        "description": "whether to delete existing text lines prior to segmentation"
+      },
+      "th": {
+        "type": "number",
+        "format": "integer",
+        "default": 15,
+        "description": "num of pixels to include in the area region (when applying text/non-text mask from tiseg)"
+      },
+      "active_classes": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "page-number",
+            "paragraph",
+            "catch-word",
+            "heading",
+            "drop-capital",
+            "signature-mark",
+            "header",
+            "marginalia",
+            "footnote",
+            "footnote-continued",
+            "caption",
+            "endnote",
+            "footer",
+            "keynote",
+            "image",
+            "table",
+            "graphics"
+          ]
+        },
+        "default": [
+          "page-number",
+          "paragraph",
+          "catch-word",
+          "heading",
+          "drop-capital",
+          "signature-mark",
+          "marginalia",
+          "caption"
+        ],
+        "description": "Restrict types of regions to be detected."
+      },
+      "post_process": {
+        "type": "boolean",
+        "default": true,
+        "description": "whether to apply non-maximum suppression (across classes) on the detections"
+      },
+      "use_masks": {
+        "type": "boolean",
+        "default": true,
+        "description": "whether to segment from the mask as polygon instead of just the bbox"
+      },
+      "min_confidence": {
+        "type": "number",
+        "format": "float",
+        "default": 0.9,
+        "description": "Confidence threshold for region detections"
+      },
+      "min_share_drop": {
+        "type": "number",
+        "format": "float",
+        "default": 0.9,
+        "description": "Minimum required overlap (intersection over single) of mask-derived contour area between neighbours to suppress smaller prediction"
+      },
+      "min_share_merge": {
+        "type": "number",
+        "format": "float",
+        "default": 0.8,
+        "description": "Minimum required overlap (intersection over single) of mask-derived contour area between neighbours to merge smaller prediction"
+      },
+      "min_iou_drop": {
+        "type": "number",
+        "format": "float",
+        "default": 0.8,
+        "description": "Minimum required overlap (intersection over union) of mask-derived contour area between neighbours to suppress prediction scoring worse"
+      },
+      "min_iou_merge": {
+        "type": "number",
+        "format": "float",
+        "default": 0.2,
+        "description": "Minimum required overlap (intersection over union) of mask-derived contour area between neighbours to merge prediction scoring worse"
+      }
+    },
+    "resources": [
+      {
+        "url": "https://s3.gwdg.de/ocr-d/models/dfki/segmentation/block_segmentation_weights.h5",
+        "name": "block_segmentation_weights.h5",
+        "description": "block segmentation model for anybaseocr",
+        "size": 256139800
+      }
+    ]
+  },
+  "ocrd-calamari-recognize": {
+    "executable": "ocrd-calamari-recognize",
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "steps": [
+      "recognition/text-recognition"
+    ],
+    "description": "Recognize lines with Calamari",
+    "input_file_grp": [
+      "OCR-D-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-OCR-CALAMARI"
+    ],
+    "parameters": {
+      "checkpoint_dir": {
+        "description": "The directory containing calamari model files (*.ckpt.json). Uses all checkpoints in that directory",
+        "type": "string",
+        "format": "uri",
+        "content-type": "text/directory",
+        "cacheable": true,
+        "default": "qurator-gt4histocr-1.0"
+      },
+      "voter": {
+        "description": "The voting algorithm to use",
+        "type": "string",
+        "default": "confidence_voter_default_ctc"
+      },
+      "textequiv_level": {
+        "type": "string",
+        "enum": [
+          "line",
+          "word",
+          "glyph"
+        ],
+        "default": "line",
+        "description": "Deepest PAGE XML hierarchy level to include TextEquiv results for"
+      },
+      "glyph_conf_cutoff": {
+        "type": "number",
+        "format": "float",
+        "default": 0.001,
+        "description": "Only include glyph alternatives with confidences above this threshold"
+      }
+    },
+    "resources": [
+      {
+        "url": "https://qurator-data.de/calamari-models/GT4HistOCR/2019-12-11T11_10+0100/model.tar.xz",
+        "type": "archive",
+        "name": "qurator-gt4histocr-1.0",
+        "description": "Calamari model trained with GT4HistOCR",
+        "size": 90275264,
+        "version_range": ">= 1.0.0"
+      },
+      {
+        "url": "https://github.com/Calamari-OCR/calamari_models_experimental/releases/download/v0.0.1-pre1/c1_fraktur19-1.tar.gz",
+        "type": "archive",
+        "name": "zpd-fraktur19",
+        "description": "Model trained on 19th century german fraktur",
+        "path_in_archive": "c1_fraktur19-1",
+        "size": 86009886,
+        "version_range": ">= 1.0.0"
+      },
+      {
+        "url": "https://github.com/Calamari-OCR/calamari_models_experimental/releases/download/v0.0.1-pre1/c1_latin-script-hist-3.tar.gz",
+        "type": "archive",
+        "name": "zpd-latin-script-hist-3",
+        "path_in_archive": "c1_latin-script-hist-3",
+        "description": "Model trained on historical latin-script texts",
+        "size": 88416863,
+        "version_range": ">= 1.0.0"
+      },
+      {
+        "url": "https://github.com/Calamari-OCR/calamari_models/releases/download/1.1/antiqua_historical.zip",
+        "type": "archive",
+        "name": "antiqua_historical",
+        "path_in_archive": "antiqua_historical",
+        "description": "Antiqua parts of GT4HistOCR from Calamari-OCR/calamari_models (5-fold ensemble, normalized grayscale, NFC)",
+        "size": 89615540,
+        "version_range": ">= 1.0.0"
+      },
+      {
+        "url": "https://github.com/Calamari-OCR/calamari_models/releases/download/1.1/antiqua_historical_ligs.zip",
+        "type": "archive",
+        "name": "antiqua_historical_ligs",
+        "path_in_archive": "antiqua_historical_ligs",
+        "description": "Antiqua parts of GT4HistOCR with enriched ligatures from Calamari-OCR/calamari_models (5-fold ensemble, normalized grayscale, NFC)",
+        "size": 87540762,
+        "version_range": ">= 1.0.0"
+      },
+      {
+        "url": "https://github.com/Calamari-OCR/calamari_models/releases/download/1.1/fraktur_19th_century.zip",
+        "type": "archive",
+        "name": "fraktur_19th_century",
+        "path_in_archive": "fraktur_19th_century",
+        "description": "Fraktur 19th century parts of GT4HistOCR mixed with Fraktur data from Archiscribe and jze from Calamari-OCR/calamari_models (5-fold ensemble, normalized grayscale and nlbin, NFC)",
+        "size": 83895140,
+        "version_range": ">= 1.0.0"
+      },
+      {
+        "url": "https://github.com/Calamari-OCR/calamari_models/releases/download/1.1/fraktur_historical.zip",
+        "type": "archive",
+        "name": "fraktur_historical",
+        "path_in_archive": "fraktur_historical",
+        "description": "Fraktur parts of GT4HistOCR from Calamari-OCR/calamari_models (5-fold ensemble, normalized grayscale, NFC)",
+        "size": 87807639,
+        "version_range": ">= 1.0.0"
+      },
+      {
+        "url": "https://github.com/Calamari-OCR/calamari_models/releases/download/1.1/fraktur_historical_ligs.zip",
+        "type": "archive",
+        "name": "fraktur_historical_ligs",
+        "path_in_archive": "fraktur_historical_ligs",
+        "description": "Fraktur parts of GT4HistOCR with enriched ligatures from Calamari-OCR/calamari_models (5-fold ensemble, normalized grayscale, NFC)",
+        "size": 88039551,
+        "version_range": ">= 1.0.0"
+      },
+      {
+        "url": "https://github.com/Calamari-OCR/calamari_models/releases/download/1.1/gt4histocr.zip",
+        "type": "archive",
+        "name": "gt4histocr",
+        "path_in_archive": "gt4histocr",
+        "description": "GT4HistOCR from Calamari-OCR/calamari_models (5-fold ensemble, normalized grayscale, NFC)",
+        "size": 90107851,
+        "version_range": ">= 1.0.0"
+      },
+      {
+        "url": "https://github.com/Calamari-OCR/calamari_models/releases/download/1.1/historical_french.zip",
+        "type": "archive",
+        "name": "historical_french",
+        "path_in_archive": "historical_french",
+        "description": "17-19th century French prints from Calamari-OCR/calamari_models (5-fold ensemble, nlbin, NFC)",
+        "size": 87335250,
+        "version_range": ">= 1.0.0"
+      },
+      {
+        "url": "https://github.com/Calamari-OCR/calamari_models/releases/download/1.1/idiotikon.zip",
+        "type": "archive",
+        "name": "idiotikon",
+        "path_in_archive": "idiotikon",
+        "description": "Antiqua UW3 finetuned on Antiqua Idiotikon dictionary with many diacritics from Calamari-OCR/calamari_models (5-fold ensemble, nlbin, NFD)",
+        "size": 100807764,
+        "version_range": ">= 1.0.0"
+      },
+      {
+        "url": "https://github.com/Calamari-OCR/calamari_models/releases/download/1.1/uw3-modern-english.zip",
+        "type": "archive",
+        "name": "uw3-modern-english",
+        "path_in_archive": "uw3-modern-english",
+        "description": "Antiqua UW3 corpus from Calamari-OCR/calamari_models (5-fold ensemble, nlbin, NFC)",
+        "size": 85413520,
+        "version_range": ">= 1.0.0"
+      }
+    ]
+  },
+  "ocrd-cis-ocropy-binarize": {
+    "executable": "ocrd-cis-ocropy-binarize",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization/binarization",
+      "preprocessing/optimization/grayscale_normalization",
+      "preprocessing/optimization/deskewing"
+    ],
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-BLOCK",
+      "OCR-D-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG-BIN",
+      "OCR-D-SEG-BLOCK",
+      "OCR-D-SEG-LINE"
+    ],
+    "description": "Binarize (and optionally deskew/despeckle) pages / regions / lines with ocropy",
+    "parameters": {
+      "method": {
+        "type": "string",
+        "enum": [
+          "none",
+          "global",
+          "otsu",
+          "gauss-otsu",
+          "ocropy"
+        ],
+        "description": "binarization method to use (only 'ocropy' will include deskewing and denoising)",
+        "default": "ocropy"
+      },
+      "threshold": {
+        "type": "number",
+        "format": "float",
+        "description": "for the 'ocropy' and ' global' method, black/white threshold to apply on the whitelevel normalized image (the larger the more/heavier foreground)",
+        "default": 0.5
+      },
+      "grayscale": {
+        "type": "boolean",
+        "description": "for the 'ocropy' method, produce grayscale-normalized instead of thresholded image",
+        "default": false
+      },
+      "maxskew": {
+        "type": "number",
+        "format": "float",
+        "description": "modulus of maximum skewing angle (in degrees) to detect (larger will be slower, 0 will deactivate deskewing)",
+        "default": 0.0
+      },
+      "noise_maxsize": {
+        "type": "number",
+        "format": "int",
+        "description": "maximum pixel number for connected components to regard as noise (0 will deactivate denoising)",
+        "default": 0
+      },
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images); disabled when zero or negative",
+        "default": 0
+      },
+      "level-of-operation": {
+        "type": "string",
+        "enum": [
+          "page",
+          "table",
+          "region",
+          "line"
+        ],
+        "description": "PAGE XML hierarchy level granularity to annotate images for",
+        "default": "page"
+      }
+    }
+  },
+  "ocrd-cis-ocropy-deskew": {
+    "executable": "ocrd-cis-ocropy-deskew",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization/deskewing"
+    ],
+    "input_file_grp": [
+      "OCR-D-SEG-BLOCK",
+      "OCR-D-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-BLOCK",
+      "OCR-D-SEG-LINE"
+    ],
+    "description": "Deskew regions with ocropy (by annotating orientation angle and adding AlternativeImage)",
+    "parameters": {
+      "maxskew": {
+        "type": "number",
+        "description": "modulus of maximum skewing angle to detect (larger will be slower, 0 will deactivate deskewing)",
+        "default": 5.0
+      },
+      "level-of-operation": {
+        "type": "string",
+        "enum": [
+          "page",
+          "table",
+          "region"
+        ],
+        "description": "PAGE XML hierarchy level granularity to annotate images for",
+        "default": "region"
+      }
+    }
+  },
+  "ocrd-cis-ocropy-denoise": {
+    "executable": "ocrd-cis-ocropy-denoise",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization/despeckling"
+    ],
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-BLOCK",
+      "OCR-D-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG-DESPECK",
+      "OCR-D-SEG-BLOCK",
+      "OCR-D-SEG-LINE"
+    ],
+    "description": "Despeckle pages / regions / lines with ocropy",
+    "parameters": {
+      "noise_maxsize": {
+        "type": "number",
+        "format": "float",
+        "description": "maximum size in points (pt) for connected components to regard as noise (0 will deactivate denoising)",
+        "default": 3.0
+      },
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images); disabled when zero or negative",
+        "default": 0
+      },
+      "level-of-operation": {
+        "type": "string",
+        "enum": [
+          "page",
+          "region",
+          "line"
+        ],
+        "description": "PAGE XML hierarchy level granularity to annotate images for",
+        "default": "page"
+      }
+    }
+  },
+  "ocrd-cis-ocropy-clip": {
+    "executable": "ocrd-cis-ocropy-clip",
+    "categories": [
+      "Layout analysis"
+    ],
+    "steps": [
+      "layout/segmentation/region",
+      "layout/segmentation/line"
+    ],
+    "input_file_grp": [
+      "OCR-D-SEG-BLOCK",
+      "OCR-D-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-BLOCK",
+      "OCR-D-SEG-LINE"
+    ],
+    "description": "Clip text regions / lines at intersections with neighbours",
+    "parameters": {
+      "level-of-operation": {
+        "type": "string",
+        "enum": [
+          "region",
+          "line"
+        ],
+        "description": "PAGE XML hierarchy level granularity to annotate images for",
+        "default": "region"
+      },
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images); disabled when zero or negative",
+        "default": 0
+      },
+      "min_fraction": {
+        "type": "number",
+        "format": "float",
+        "description": "share of foreground pixels that must be retained by the largest label",
+        "default": 0.7
+      }
+    }
+  },
+  "ocrd-cis-ocropy-resegment": {
+    "executable": "ocrd-cis-ocropy-resegment",
+    "categories": [
+      "Layout analysis"
+    ],
+    "steps": [
+      "layout/segmentation/line"
+    ],
+    "input_file_grp": [
+      "OCR-D-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-LINE"
+    ],
+    "description": "Improve coordinates of text lines",
+    "parameters": {
+      "level-of-operation": {
+        "type": "string",
+        "enum": [
+          "page",
+          "region"
+        ],
+        "description": "PAGE XML hierarchy level to segment textlines in ('region' abides by existing text region boundaries, 'page' optimises lines in the whole page once",
+        "default": "page"
+      },
+      "method": {
+        "type": "string",
+        "enum": [
+          "lineest",
+          "baseline",
+          "ccomps"
+        ],
+        "description": "source for new line polygon candidates ('lineest' for line estimation, i.e. how Ocropy would have segmented text lines; 'baseline' tries to re-polygonize from the baseline annotation; 'ccomps' avoids crossing connected components by majority rule)",
+        "default": "lineest"
+      },
+      "baseline_only": {
+        "type": "boolean",
+        "description": "ignore existing textline coords completely and use baseline as input if possible",
+        "default": false
+      },
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images); disabled when zero or negative",
+        "default": 0
+      },
+      "min_fraction": {
+        "type": "number",
+        "format": "float",
+        "description": "share of foreground pixels that must be retained by the output polygons",
+        "default": 0.75
+      },
+      "spread": {
+        "type": "number",
+        "format": "float",
+        "description": "distance in points (pt) from the foreground to project textline labels into the background for polygonal contours; if zero, project half a scale/capheight",
+        "default": 2.4
+      },
+      "extend_margins": {
+        "type": "number",
+        "format": "integer",
+        "description": "(ignored)",
+        "default": 3
+      }
+    }
+  },
+  "ocrd-cis-ocropy-dewarp": {
+    "executable": "ocrd-cis-ocropy-dewarp",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization/dewarping"
+    ],
+    "description": "Dewarp line images with ocropy",
+    "input_file_grp": [
+      "OCR-D-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-LINE"
+    ],
+    "parameters": {
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images); disabled when zero or negative",
+        "default": 0
+      },
+      "range": {
+        "type": "number",
+        "format": "float",
+        "description": "maximum vertical disposition or maximum margin (will be multiplied by mean centerline deltas to yield pixels); also the mean vertical padding",
+        "default": 4.0
+      },
+      "smoothness": {
+        "type": "number",
+        "format": "float",
+        "description": "kernel size (relative to image height) of horizontal blur applied to foreground to find the center line; the smaller the more dynamic (0.1 would be a better default)",
+        "default": 1.0
+      },
+      "max_neighbour": {
+        "type": "number",
+        "format": "float",
+        "description": "maximum rate of foreground pixels intruding from neighbouring lines (line will not be processed above that)",
+        "default": 0.05
+      }
+    }
+  },
+  "ocrd-cis-ocropy-recognize": {
+    "executable": "ocrd-cis-ocropy-recognize",
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "steps": [
+      "recognition/text-recognition"
+    ],
+    "description": "Recognize text in (binarized+deskewed+dewarped) lines with ocropy",
+    "input_file_grp": [
+      "OCR-D-SEG-LINE",
+      "OCR-D-SEG-WORD",
+      "OCR-D-SEG-GLYPH"
+    ],
+    "output_file_grp": [
+      "OCR-D-OCR-OCRO"
+    ],
+    "parameters": {
+      "textequiv_level": {
+        "type": "string",
+        "enum": [
+          "line",
+          "word",
+          "glyph"
+        ],
+        "description": "PAGE XML hierarchy level granularity to add the TextEquiv results to",
+        "default": "line"
+      },
+      "model": {
+        "type": "string",
+        "format": "uri",
+        "content-type": "application/gzip",
+        "description": "ocropy model to apply (e.g. fraktur.pyrnn.gz)"
+      }
+    },
+    "resources": [
+      {
+        "url": "https://github.com/zuphilip/ocropy-models/raw/master/en-default.pyrnn.gz",
+        "name": "en-default.pyrnn.gz",
+        "description": "Default ocropy model for English",
+        "size": 83826134
+      },
+      {
+        "url": "https://github.com/zuphilip/ocropy-models/raw/master/fraktur.pyrnn.gz",
+        "name": "fraktur.pyrnn.gz",
+        "description": "Default ocropy fraktur model",
+        "size": 43882365
+      },
+      {
+        "url": "https://github.com/jze/ocropus-model_fraktur/raw/master/fraktur.pyrnn.gz",
+        "name": "fraktur-jze.pyrnn.gz",
+        "description": "ocropy fraktur model by github.com/jze",
+        "size": 2961298
+      },
+      {
+        "url": "https://github.com/chreul/OCR_Testdata_EarlyPrintedBooks/raw/master/LatinHist-98000.pyrnn.gz",
+        "name": "LatinHist.pyrnn.gz",
+        "description": "ocropy historical latin model by github.com/chreul",
+        "size": 16989864
+      }
+    ]
+  },
+  "ocrd-cis-ocropy-segment": {
+    "executable": "ocrd-cis-ocropy-segment",
+    "categories": [
+      "Layout analysis"
+    ],
+    "steps": [
+      "layout/segmentation/region",
+      "layout/segmentation/line"
+    ],
+    "input_file_grp": [
+      "OCR-D-GT-SEG-BLOCK",
+      "OCR-D-SEG-BLOCK"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-LINE"
+    ],
+    "description": "Segment pages into regions and lines, tables into cells and lines, or regions into lines with ocropy",
+    "parameters": {
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images); disabled when zero or negative; when disabled and no meta-data is found, 300 is assumed",
+        "default": 0
+      },
+      "level-of-operation": {
+        "type": "string",
+        "enum": [
+          "page",
+          "table",
+          "region"
+        ],
+        "description": "PAGE XML hierarchy level to read images from and add elements to",
+        "default": "region"
+      },
+      "maxcolseps": {
+        "type": "number",
+        "format": "integer",
+        "default": 20,
+        "description": "(when operating on the page/table level) maximum number of white/background column separators to detect, counted piece-wise"
+      },
+      "maxseps": {
+        "type": "number",
+        "format": "integer",
+        "default": 20,
+        "description": "(when operating on the page/table level) number of black/foreground column separators to detect (and suppress), counted piece-wise"
+      },
+      "maximages": {
+        "type": "number",
+        "format": "integer",
+        "default": 10,
+        "description": "(when operating on the page level) maximum number of black/foreground very large components to detect (and suppress), counted piece-wise"
+      },
+      "csminheight": {
+        "type": "number",
+        "format": "integer",
+        "default": 4,
+        "description": "(when operating on the page/table level) minimum height of white/background or black/foreground column separators in multiples of scale/capheight, counted piece-wise"
+      },
+      "hlminwidth": {
+        "type": "number",
+        "format": "integer",
+        "default": 10,
+        "description": "(when operating on the page/table level) minimum width of black/foreground horizontal separators in multiples of scale/capheight, counted piece-wise"
+      },
+      "gap_height": {
+        "type": "number",
+        "format": "float",
+        "default": 0.01,
+        "description": "(when operating on the page/table level) largest minimum pixel average in the horizontal or vertical profiles (across the binarized image) to still be regarded as a gap during recursive X-Y cut from lines to regions; needs to be larger when more foreground noise is present, reduce to avoid mistaking text for noise"
+      },
+      "gap_width": {
+        "type": "number",
+        "format": "float",
+        "default": 1.5,
+        "description": "(when operating on the page/table level) smallest width in multiples of scale/capheight of a valley in the horizontal or vertical profiles (across the binarized image) to still be regarded as a gap during recursive X-Y cut from lines to regions; needs to be smaller when more foreground noise is present, increase to avoid mistaking inter-line as paragraph gaps and inter-word as inter-column gaps"
+      },
+      "overwrite_order": {
+        "type": "boolean",
+        "default": true,
+        "description": "(when operating on the page/table level) remove any references for existing TextRegion elements within the top (page/table) reading order; otherwise append"
+      },
+      "overwrite_separators": {
+        "type": "boolean",
+        "default": true,
+        "description": "(when operating on the page/table level) remove any existing SeparatorRegion elements; otherwise append"
+      },
+      "overwrite_regions": {
+        "type": "boolean",
+        "default": true,
+        "description": "(when operating on the page/table level) remove any existing TextRegion elements; otherwise append"
+      },
+      "overwrite_lines": {
+        "type": "boolean",
+        "default": true,
+        "description": "(when operating on the region level) remove any existing TextLine elements; otherwise append"
+      },
+      "spread": {
+        "type": "number",
+        "format": "float",
+        "default": 2.4,
+        "description": "distance in points (pt) from the foreground to project text line (or text region) labels into the background for polygonal contours; if zero, project half a scale/capheight"
+      }
+    }
+  },
+  "ocrd-cis-ocropy-train": {
+    "executable": "ocrd-cis-ocropy-train",
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "steps": [
+      "recognition/text-recognition"
+    ],
+    "input_file_grp": [
+      "OCR-D-GT-SEG-BLOCK",
+      "OCR-D-SEG-BLOCK"
+    ],
+    "description": "train model with ground truth from mets data",
+    "parameters": {
+      "textequiv_level": {
+        "type": "string",
+        "description": "hierarchy level to extract GT pairs from",
+        "enum": [
+          "line",
+          "word",
+          "glyph"
+        ],
+        "default": "line"
+      },
+      "model": {
+        "type": "string",
+        "format": "uri",
+        "content-type": "application/gzip",
+        "description": "load model (e.g. 'fraktur.pyrnn.gz') to init weights, or none to train from scratch"
+      },
+      "ntrain": {
+        "type": "number",
+        "format": "integer",
+        "description": "lines to train before stopping",
+        "default": 1000000
+      },
+      "outputpath": {
+        "type": "string",
+        "description": "(existing) path for the trained model"
+      }
+    }
+  },
+  "ocrd-cis-align": {
+    "executable": "ocrd-cis-align",
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "steps": [
+      "recognition/post-correction"
+    ],
+    "input_file_grp": [
+      "OCR-D-OCR-1",
+      "OCR-D-OCR-2",
+      "OCR-D-OCR-N"
+    ],
+    "output_file_grp": [
+      "OCR-D-ALIGNED"
+    ],
+    "description": "Align multiple OCRs and/or GTs"
+  },
+  "ocrd-cis-postcorrect": {
+    "executable": "ocrd-cis-postcorrect",
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "steps": [
+      "recognition/post-correction"
+    ],
+    "description": "Post correct OCR results",
+    "input_file_grp": [
+      "OCR-D-LINE-ALIGNED"
+    ],
+    "output_file_grp": [
+      "OCR-D-POST-CORRECTED"
+    ],
+    "parameters": {
+      "maxCandidates": {
+        "description": "Maximum number of considered correction candidates per suspicious token",
+        "type": "number",
+        "format": "integer",
+        "default": 10
+      },
+      "profilerPath": {
+        "description": "Path to the profiler executable",
+        "required": true,
+        "type": "string"
+      },
+      "profilerConfig": {
+        "description": "Path to the profiler's language config file",
+        "required": true,
+        "type": "string"
+      },
+      "model": {
+        "description": "Path to the post correction model file",
+        "type": "string",
+        "required": true
+      },
+      "nOCR": {
+        "description": "Number of parallel OCR's to use for the post correction",
+        "type": "number",
+        "format": "integer",
+        "default": 1
+      },
+      "runLE": {
+        "description": "Do run the lexicon extension step for the post correction",
+        "type": "boolean",
+        "default": false
+      }
+    }
+  },
+  "ocrd-detectron2-segment": {
+    "executable": "ocrd-detectron2-segment",
+    "categories": [
+      "Layout analysis"
+    ],
+    "steps": [
+      "layout/segmentation/region"
+    ],
+    "description": "Detect regions with Detectron2 models",
+    "input_file_grp": [
+      "OCR-D-IMG"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-REGION"
+    ],
+    "parameters": {
+      "operation_level": {
+        "type": "string",
+        "enum": [
+          "page",
+          "table"
+        ],
+        "default": "page",
+        "description": "hierarchy level which to predict and assign regions for"
+      },
+      "categories": {
+        "type": "array",
+        "required": true,
+        "description": "maps each region category (position) of the model to a PAGE region type (and @type or @custom if separated by colon), e.g. ['TextRegion:paragraph', 'TextRegion:heading', 'TextRegion:floating', 'TableRegion', 'ImageRegion'] for PubLayNet; categories with an empty string will be skipped during prediction"
+      },
+      "model_config": {
+        "type": "string",
+        "format": "uri",
+        "content-type": "text/yaml",
+        "required": true,
+        "description": "path name of model config"
+      },
+      "model_weights": {
+        "type": "string",
+        "format": "uri",
+        "content-type": "application/octet-stream",
+        "required": true,
+        "description": "path name of model weights"
+      },
+      "min_confidence": {
+        "type": "number",
+        "format": "float",
+        "default": 0.5,
+        "description": "confidence threshold for detections"
+      },
+      "postprocessing": {
+        "type": "string",
+        "enum": [
+          "full",
+          "only-nms",
+          "only-morph",
+          "none"
+        ],
+        "default": "full",
+        "description": "which postprocessing steps to enable: by default, applies a custom non-maximum suppression (to avoid overlaps) and morphological operations (using connected component analysis on the binarized input image to shrink or expand regions)"
+      },
+      "debug_img": {
+        "type": "string",
+        "enum": [
+          "none",
+          "instance_colors",
+          "instance_colors_only",
+          "category_colors"
+        ],
+        "default": "none",
+        "description": "paint an AlternativeImage which blends the input image and all raw decoded region candidates"
+      },
+      "device": {
+        "type": "string",
+        "default": "cuda",
+        "description": "select computing device for Torch (e.g. cpu or cuda:0); will fall back to CPU if no GPU is available"
+      }
+    },
+    "resources": [
+      {
+        "description": "TableBank via LayoutLM X152-FPN config",
+        "name": "TableBank_X152.yaml",
+        "size": 536,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/TableBank_X152.yaml"
+      },
+      {
+        "description": "TableBank via LayoutLM X152-FPN weights",
+        "name": "TableBank_X152.pth",
+        "size": 1103832675,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/TableBank_X152.pth"
+      },
+      {
+        "description": "TableBank via Psarpei X152-FPN config",
+        "name": "TableBank_X152_Psarpei.yaml",
+        "size": 534,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/TableBank_X152_Psarpei.yaml"
+      },
+      {
+        "description": "TableBank via Psarpei X152-FPN weights",
+        "name": "TableBank_X152_Psarpei.pth",
+        "size": 1103832675,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/TableBank_X152_Psarpei.pth"
+      },
+      {
+        "description": "PubLayNet via hpanwar08 R50-FPN config",
+        "name": "PubLayNet_R_50_FPN_3x.yaml",
+        "size": 388,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_50_FPN_3x.yaml"
+      },
+      {
+        "description": "PubLayNet via hpanwar08 R50-FPN weights",
+        "name": "PubLayNet_R_50_FPN_3x.pth",
+        "size": 176249718,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_50_FPN_3x.pth"
+      },
+      {
+        "description": "PubLayNet via hpanwar08 R101-FPN config",
+        "name": "PubLayNet_R_101_FPN_3x.yaml",
+        "size": 392,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_101_FPN_3x.yaml"
+      },
+      {
+        "description": "PubLayNet via hpanwar08 R101-FPN weights",
+        "name": "PubLayNet_R_101_FPN_3x.pth",
+        "size": 503147199,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_101_FPN_3x.pth"
+      },
+      {
+        "description": "PubLayNet via hpanwar08 X101-FPN config",
+        "name": "PubLayNet_X_101_32x8d_FPN_3x.yaml",
+        "size": 592,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_X_101_32x8d_FPN_3x.yaml"
+      },
+      {
+        "description": "PubLayNet via hpanwar08 X101-FPN weights",
+        "name": "PubLayNet_X_101_32x8d_FPN_3x.pth",
+        "size": 429840864,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_X_101_32x8d_FPN_3x.pth"
+      },
+      {
+        "description": "PubLayNet via JPLeoRX R50-FPN config",
+        "name": "PubLayNet_R_50_FPN_3x_JPLeoRX.yaml",
+        "size": 388,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_50_FPN_3x_JPLeoRX.yaml"
+      },
+      {
+        "description": "PubLayNet via JPLeoRX R50-FPN weights",
+        "name": "PubLayNet_R_50_FPN_3x_JPLeoRX.pth",
+        "size": 176299422,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_50_FPN_3x_JPLeoRX.pth"
+      },
+      {
+        "description": "PubLayNet via JPLeoRX R101-FPN config",
+        "name": "PubLayNet_R_101_FPN_3x_JPLeoRX.yaml",
+        "size": 392,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_101_FPN_3x_JPLeoRX.yaml"
+      },
+      {
+        "description": "PubLayNet via JPLeoRX R101-FPN weights",
+        "name": "PubLayNet_R_101_FPN_3x_JPLeoRX.pth",
+        "size": 252572745,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PubLayNet_R_101_FPN_3x_JPLeoRX.pth"
+      },
+      {
+        "description": "Modern Magazines via Jambo-sudo X101-FPN (pre-trained on PubLayNet, fine-tuned on 500 p. 20th cent. magazines) config",
+        "name": "Jambo-sudo_X101.yaml",
+        "size": 592,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/Jambo-sudo_X101.yaml"
+      },
+      {
+        "description": "Modern Magazines via Jambo-sudo X101-FPN (pre-trained on PubLayNet, fine-tuned on 500 p. 20th cent. magazines) weights",
+        "name": "Jambo-sudo_X101.pth",
+        "size": 856430002,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/Jambo-sudo_X101.pth"
+      },
+      {
+        "description": "PRImALayout via LayoutLM R50-FPN config",
+        "name": "PRImALayout_R50.yaml",
+        "size": 934,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PRImALayout_R50.yaml"
+      },
+      {
+        "description": "PRImALayout via LayoutLM R50-FPN weights",
+        "name": "PRImALayout_R50.pth",
+        "size": 351229486,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/PRImALayout_R50.pth"
+      },
+      {
+        "description": "DocBank via LayoutLM X101-FPN config",
+        "name": "DocBank_X101.yaml",
+        "size": 523,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/DocBank_X101.yaml"
+      },
+      {
+        "description": "DocBank via LayoutLM X101-FPN config",
+        "name": "DocBank_X101.pth",
+        "size": 835606605,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/DocBank_X101.pth"
+      },
+      {
+        "description": "NewspaperNavigator via LayoutParser R50-PanopticFPN config",
+        "name": "NewspaperNavigator_R_50_PFPN_3x.yaml",
+        "size": 330226761,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/NewspaperNavigator_R_50_PFPN_3x.yaml"
+      },
+      {
+        "description": "NewspaperNavigator via LayoutParser R50-PanopticFPN weights",
+        "name": "NewspaperNavigator_R_50_PFPN_3x.pth",
+        "size": 330226761,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/NewspaperNavigator_R_50_PFPN_3x.pth"
+      },
+      {
+        "description": "MathFormulaDetection via LayoutParser R50-FPN config",
+        "name": "Math_R_50_FPN_3x.yaml",
+        "size": 5632,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/Math_R_50_FPN_3x.yaml"
+      },
+      {
+        "description": "MathFormulaDetection via LayoutParser R50-FPN weights",
+        "name": "Math_R_50_FPN_3x.pth",
+        "size": 330084629,
+        "url": "https://github.com/bertsky/ocrd_detectron2/releases/download/v0.1.7/Math_R_50_FPN_3x.pth"
+      }
+    ]
+  },
+  "ocrd-doxa-binarize": {
+    "executable": "ocrd-doxa-binarize",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization/binarization"
+    ],
+    "description": "binarize via locally adaptive thresholding",
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-PAGE",
+      "OCR-D-SEG-REGION",
+      "OCR-D-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-PAGE",
+      "OCR-D-SEG-REGION",
+      "OCR-D-SEG-LINE"
+    ],
+    "parameters": {
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images); disabled when zero",
+        "default": 0
+      },
+      "level-of-operation": {
+        "type": "string",
+        "enum": [
+          "page",
+          "region",
+          "line"
+        ],
+        "default": "page",
+        "description": "PAGE XML hierarchy level to operate on"
+      },
+      "algorithm": {
+        "type": "string",
+        "enum": [
+          "Otsu",
+          "Bernsen",
+          "Niblack",
+          "Sauvola",
+          "Wolf",
+          "Gatos",
+          "NICK",
+          "Su",
+          "Singh",
+          "Bataineh",
+          "ISauvola",
+          "WAN"
+        ],
+        "default": "ISauvola",
+        "description": "Thresholding algorithm to use."
+      },
+      "parameters": {
+        "type": "object",
+        "default": {},
+        "description": "Dictionary of algorithm-specific parameters. Unless overridden here, the following defaults are used: \nBernsen:\t{'window': 75, 'threshold': 100, 'contrast-limit': 25}\nNICK:\t{'window': 75, 'k': -0.2}\nNiblack:\t{'window': 75, 'k': 0.2}\nSingh:\t{'window': 75, 'k', 0.2}\nGatos:\t{'glyph': 60}\nSauvola:\t{'window': 75, 'k': 0.2}\nWolf:\t{'window': 75, 'k': 0.2}\nWAN:\t{'window': 75, 'k': 0.2}\nSu:\t{'window': 0 (based on stroke size), 'minN': windowSize (roughly based on size of window)}\n\n(window/glyph sizes are in px, threshold/limits in uint8 [0,255])"
+      }
+    }
+  },
+  "ocrd-fileformat-transform": {
+    "executable": "ocrd-fileformat-transform",
+    "description": "Convert between OCR file formats",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization"
+    ],
+    "input_file_grp": [
+      "OCR-D-OCR-PAGE",
+      "OCR-D-OCR-ALTO",
+      "OCR-D-OCR-HOCR"
+    ],
+    "output_file_grp": [
+      "OCR-D-OCR-PAGE",
+      "OCR-D-OCR-ALTO",
+      "OCR-D-OCR-HOCR"
+    ],
+    "parameters": {
+      "from-to": {
+        "description": "Transformation scenario, see ocr-fileformat -L",
+        "type": "string",
+        "default": "page alto",
+        "enum": [
+          "abbyy hocr",
+          "abbyy page",
+          "alto2.0 alto3.0",
+          "alto2.0 alto3.1",
+          "alto2.0 hocr",
+          "alto2.1 alto3.0",
+          "alto2.1 alto3.1",
+          "alto2.1 hocr",
+          "alto page",
+          "alto text",
+          "gcv hocr",
+          "gcv page",
+          "hocr alto2.0",
+          "hocr alto2.1",
+          "hocr page",
+          "hocr text",
+          "page alto",
+          "page alto_legacy",
+          "page hocr",
+          "page page2019",
+          "page text",
+          "tei hocr",
+          "textract page"
+        ]
+      },
+      "ext": {
+        "description": "Output extension. Set to empty string to derive extension from the media type.",
+        "type": "string",
+        "default": ""
+      },
+      "script-args": {
+        "description": "Arguments to Saxon (for XSLT transformations) or to transformation script",
+        "type": "string",
+        "default": ""
+      }
+    }
+  },
+  "ocrd-froc-recognize": {
+    "executable": "ocrd-froc",
+    "description": "Recognise font family/shape (annotating TextStyle) along with text (annotating TextEquiv)",
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "steps": [
+      "recognition/font-identification",
+      "recognition/text-recognition"
+    ],
+    "input_file_grp": [
+      "OCR-D-SEG"
+    ],
+    "output_file_grp": [
+      "OCR-D-OCR"
+    ],
+    "parameters": {
+      "ocr_method": {
+        "description": "The method to use for text recognition",
+        "type": "string",
+        "enum": [
+          "none",
+          "SelOCR",
+          "COCR",
+          "adaptive"
+        ],
+        "default": "none"
+      },
+      "overwrite_style": {
+        "description": "Whether to overwrite existing TextStyle/@fontFamily attributes",
+        "type": "boolean",
+        "required": false,
+        "default": true
+      },
+      "min_score_style": {
+        "description": "The minimum score of a font classification to be serialized/used as input for OCR",
+        "type": "number",
+        "format": "float",
+        "required": false,
+        "default": 0
+      },
+      "overwrite_text": {
+        "description": "Whether to remove any existing TextEquiv before adding text",
+        "type": "boolean",
+        "required": false,
+        "default": false
+      },
+      "model": {
+        "description": "The file name of the neural network to use, including sufficient path information. Defaults to the model bundled with ocrd_froc.",
+        "type": "string",
+        "required": false
+      },
+      "fast_cocr": {
+        "description": "Whether to use optimization steps on the COCR strategy",
+        "type": "boolean",
+        "default": true
+      },
+      "adaptive_threshold": {
+        "description": "Threshold of certitude needed to use SelOCR when using the adaptive strategy",
+        "type": "number",
+        "format": "integer",
+        "default": 95
+      },
+      "font_class_priors": {
+        "description": "List of font classes which are known to be present on the data when using the adaptive/SelOCR strategies. If this option is specified, any font classes not included are ignored. If 'other' is included in the list, no font classification is output and a generic model is used for transcriptions.",
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "antiqua",
+            "bastarda",
+            "fraktur",
+            "textura",
+            "schwabacher",
+            "greek",
+            "italic",
+            "hebrew",
+            "gotico-antiqua",
+            "manuscript",
+            "rotunda",
+            "other"
+          ]
+        },
+        "default": []
+      }
+    }
+  },
+  "ocrd-im6convert": {
+    "executable": "ocrd-im6convert",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization"
+    ],
+    "description": "Convert and transform images",
+    "input_file_grp": [
+      "OCR-D-IMG"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG"
+    ],
+    "parameters": {
+      "input-options": {
+        "type": "string",
+        "description": "e.g. -density 600x600 -wavelet-denoise 1%x0.1",
+        "default": ""
+      },
+      "output-format": {
+        "type": "string",
+        "description": "Desired media type of output",
+        "required": true,
+        "enum": [
+          "image/tiff",
+          "image/jp2",
+          "image/png"
+        ]
+      },
+      "output-options": {
+        "type": "string",
+        "description": "e.g. -resample 300x300 -alpha deactivate -normalize -despeckle -noise 2 -negate -morphology close diamond",
+        "default": ""
+      }
+    }
+  },
+  "ocrd-keraslm-rate": {
+    "executable": "ocrd-keraslm-rate",
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "steps": [
+      "recognition/text-recognition"
+    ],
+    "description": "Rate elements of the text with a character-level LSTM language model in Keras",
+    "input_file_grp": [
+      "OCR-D-OCR-TESS",
+      "OCR-D-OCR-KRAK",
+      "OCR-D-OCR-OCRO",
+      "OCR-D-OCR-CALA",
+      "OCR-D-OCR-ANY",
+      "OCR-D-COR-CIS",
+      "OCR-D-COR-ASV"
+    ],
+    "output_file_grp": [
+      "OCR-D-COR-LM"
+    ],
+    "parameters": {
+      "model_file": {
+        "type": "string",
+        "format": "uri",
+        "content-type": "application/x-hdf;subtype=bag",
+        "description": "path of h5py weight/config file for model trained with keraslm",
+        "required": true,
+        "cacheable": true
+      },
+      "textequiv_level": {
+        "type": "string",
+        "enum": [
+          "region",
+          "line",
+          "word",
+          "glyph"
+        ],
+        "default": "glyph",
+        "description": "PAGE XML hierarchy level to evaluate TextEquiv sequences on"
+      },
+      "alternative_decoding": {
+        "type": "boolean",
+        "description": "whether to process all TextEquiv alternatives, finding the best path via beam search, and delete each non-best alternative",
+        "default": true
+      },
+      "beam_width": {
+        "type": "number",
+        "format": "integer",
+        "description": "maximum number of best partial paths to consider during search with alternative_decoding",
+        "default": 10
+      },
+      "lm_weight": {
+        "type": "number",
+        "format": "float",
+        "description": "share of the LM scores over the input confidences",
+        "default": 0.5
+      }
+    },
+    "resources": [
+      {
+        "url": "https://github.com/OCR-D/ocrd_keraslm/releases/download/v0.4.3/model_dta_full.h5",
+        "name": "model_dta_full.h5",
+        "description": "character-level LM as stateful contiguous LSTM model (2 layers, 128 hidden nodes each, window length 256) trained on complete Deutsches Textarchiv",
+        "size": 1769684
+      }
+    ]
+  },
+  "ocrd-kraken-binarize": {
+    "executable": "ocrd-kraken-binarize",
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-PRE-CROP",
+      "OCR-D-SEG-REGION",
+      "OCR-D-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-PRE-BIN"
+    ],
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization/binarization"
+    ],
+    "description": "Binarize images with kraken",
+    "parameters": {
+      "level-of-operation": {
+        "description": "segment hierarchy level to operate on",
+        "type": "string",
+        "default": "page",
+        "enum": [
+          "page",
+          "region",
+          "line"
+        ]
+      }
+    }
+  },
+  "ocrd-kraken-segment": {
+    "executable": "ocrd-kraken-segment",
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-PRE-CROP",
+      "OCR-D-PRE-BIN"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-REGION",
+      "OCR-D-SEG-LINE"
+    ],
+    "categories": [
+      "Layout analysis"
+    ],
+    "steps": [
+      "layout/segmentation/region",
+      "layout/segmentation/line"
+    ],
+    "description": "Layout segmentation with Kraken",
+    "parameters": {
+      "level-of-operation": {
+        "description": "segment hierarchy level to operate on (page into regions+lines, or regions into lines)",
+        "type": "string",
+        "default": "page",
+        "enum": [
+          "page",
+          "table",
+          "region"
+        ]
+      },
+      "overwrite_segments": {
+        "description": "remove any existing regions/lines",
+        "type": "boolean",
+        "default": false
+      },
+      "text_direction": {
+        "type": "string",
+        "description": "Sets principal text direction",
+        "enum": [
+          "horizontal-lr",
+          "horizontal-rl",
+          "vertical-lr",
+          "vertical-rl"
+        ],
+        "default": "horizontal-lr"
+      },
+      "maxcolseps": {
+        "description": "Maximum number of column separators. Set to 0 for single-column text to avoid unnecessary computation.",
+        "type": "number",
+        "format": "integer",
+        "default": 2
+      },
+      "scale": {
+        "description": "mean xheight size of glyphs (guessed if zero)",
+        "type": "number",
+        "format": "float",
+        "default": 0
+      },
+      "black_colseps": {
+        "description": "Whether column separators are assumed to be vertical black lines or not",
+        "type": "boolean",
+        "default": false
+      },
+      "remove_hlines": {
+        "description": "Remove horizontal colseps before segmentation",
+        "type": "boolean",
+        "default": true
+      },
+      "blla_model": {
+        "description": "Model used for baseline detection and page segmentation. Ignored if use_legacy.",
+        "type": "string",
+        "format": "uri",
+        "content-type": "application/python-cpickle",
+        "cacheable": true,
+        "default": "blla.mlmodel"
+      },
+      "blla_classes": {
+        "description": "Class mapping for the region types trained into blla_model.",
+        "type": "object",
+        "minProperties": 2,
+        "additionalProperties": {
+          "type": "string",
+          "enum": [
+            "TextRegion",
+            "ImageRegion",
+            "LineDrawingRegion",
+            "GraphicRegion",
+            "TableRegion",
+            "ChartRegion",
+            "MapRegion",
+            "SeparatorRegion",
+            "MathsRegion",
+            "ChemRegion",
+            "MusicRegion",
+            "AdvertRegion",
+            "NoiseRegion",
+            "UnknownRegion",
+            "CustomRegion"
+          ]
+        },
+        "default": {
+          "text": "TextRegion",
+          "image": "ImageRegion",
+          "line drawing": "LineDrawingRegion",
+          "graphic": "GraphicRegion",
+          "table": "TableRegion",
+          "chart": "ChartRegion",
+          "map": "MapRegion",
+          "separator": "SeparatorRegion",
+          "maths": "MathsRegion",
+          "chem": "ChemRegion",
+          "music": "MusicRegion",
+          "advert": "AdvertRegion",
+          "noise": "NoiseRegion",
+          "unknown": "UnknownRegion",
+          "custom": "CustomRegion"
+        }
+      },
+      "device": {
+        "description": "CUDA ID (e.g. 'cuda:0') for computation on GPU (if available), or 'cpu' to run on CPU only",
+        "type": "string",
+        "default": "cuda:0"
+      },
+      "use_legacy": {
+        "description": "Use legacy box segmenter as opposed to neural net baseline segmenter",
+        "type": "boolean",
+        "default": false
+      }
+    },
+    "resources": [
+      {
+        "url": "https://github.com/mittagessen/kraken/raw/main/kraken/blla.mlmodel",
+        "size": 5047020,
+        "name": "blla.mlmodel",
+        "parameter_usage": "without-extension",
+        "description": "Pretrained region+baseline segmentation model (trained on handwriting)"
+      },
+      {
+        "url": "https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/ubma_segmentation/ubma_segmentation.mlmodel",
+        "size": 5047020,
+        "name": "ubma_segmentation.mlmodel",
+        "parameter_usage": "without-extension",
+        "description": "region+baseline segmentation model trained by UBMA (on print)"
+      }
+    ]
+  },
+  "ocrd-kraken-recognize": {
+    "executable": "ocrd-kraken-recognize",
+    "input_file_grp": [
+      "OCR-D-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-OCR-KRAK"
+    ],
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "steps": [
+      "recognition/text-recognition"
+    ],
+    "description": "Text recognition with Kraken",
+    "parameters": {
+      "overwrite_text": {
+        "description": "remove any existing TextEquiv",
+        "type": "boolean",
+        "default": false
+      },
+      "model": {
+        "description": "OCR model to recognize with",
+        "type": "string",
+        "format": "uri",
+        "content-type": "application/python-cpickle",
+        "cacheable": true,
+        "default": "en_best.mlmodel"
+      },
+      "pad": {
+        "description": "Extra blank padding to the left and right of text line.",
+        "type": "number",
+        "format": "integer",
+        "default": 16
+      },
+      "bidi_reordering": {
+        "description": "Reorder classes in the ocr_record according to  the Unicode bidirectional algorithm for correct display.",
+        "type": "boolean",
+        "default": true
+      },
+      "device": {
+        "description": "CUDA ID (e.g. 'cuda:0') for computation on GPU (if available), or 'cpu' to run on CPU only",
+        "type": "string",
+        "default": "cuda:0"
+      }
+    },
+    "resources": [
+      {
+        "url": "https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/austriannewspapers/20220520/austriannewspapers_best.mlmodel",
+        "size": 16243476,
+        "name": "austriannewspapers.mlmodel",
+        "parameter_usage": "without-extension",
+        "description": "19th and 20th century German Fraktur; https://github.com/UB-Mannheim/AustrianNewspapers/wiki/Training-with-Kraken"
+      },
+      {
+        "url": "https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/reichsanzeiger-gt/reichsanzeiger_best.mlmodel",
+        "size": 16358636,
+        "name": "reichsanzeiger.mlmodel",
+        "parameter_usage": "without-extension",
+        "description": "19th and 20th century German Fraktur ('Deutscher Reichsanzeiger'); https://github.com/UB-Mannheim/reichsanzeiger-gt/wiki/Training-with-Kraken"
+      },
+      {
+        "url": "https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/digitue-gt/digitue_best.mlmodel",
+        "size": 16364343,
+        "name": "digitue.mlmodel",
+        "parameter_usage": "without-extension",
+        "description": "mostly 19th century German Fraktur; https://github.com/UB-Mannheim/digitue-gt/wiki/Training-with-Kraken"
+      },
+      {
+        "url": "https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/digi-gt/luther_best.mlmodel",
+        "size": 16305851,
+        "name": "luther.mlmodel",
+        "parameter_usage": "without-extension",
+        "description": "16th century German Gothic; https://github.com/UB-Mannheim/digi-gt/wiki/Training"
+      },
+      {
+        "url": "https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/typewriter/typewriter.mlmodel",
+        "size": 16364780,
+        "name": "typewriter.mlmodel",
+        "parameter_usage": "without-extension",
+        "description": "20th century typewriter http://idb.ub.uni-tuebingen.de/opendigi/walz_1976, pretrained on austriannewspapers.mlmodel"
+      },
+      {
+        "url": "https://zenodo.org/record/2577813/files/en_best.mlmodel?download=1",
+        "size": 2930723,
+        "name": "en_best.mlmodel",
+        "parameter_usage": "without-extension",
+        "description": "This model has been trained on a large corpus of modern printed English text augmented with ~10000 lines of historical pages"
+      }
+    ]
+  },
+  "ocrd-olahd-client": {
+    "executable": "ocrd-olahd-client",
+    "description": "Post a workspace to OLA-HD",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization"
+    ],
+    "input_file_grp": [],
+    "output_file_grp": [],
+    "parameters": {
+      "endpoint": {
+        "description": "URL of the OLA-HD instance",
+        "type": "string",
+        "required": true
+      },
+      "strict": {
+        "description": "Whether to log or raise bagging issues",
+        "type": "boolean",
+        "default": true
+      },
+      "username": {
+        "description": "Username",
+        "type": "string",
+        "required": true
+      },
+      "password": {
+        "description": "Password",
+        "type": "string",
+        "required": true
+      },
+      "pid_previous_version": {
+        "description": "PID of the previous version of this work, already stored in OLA-HD",
+        "type": "string",
+        "required": false
+      }
+    }
+  },
+  "ocrd-olena-binarize": {
+    "executable": "ocrd-olena-binarize",
+    "description": "popular binarization algorithms implemented by Olena/SCRIBO, wrapped for OCR-D (on page level only)",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization/binarization"
+    ],
+    "input_file_grp": [
+      "OCR-D-SEG-BLOCK",
+      "OCR-D-SEG-LINE",
+      "OCR-D-SEG-WORD",
+      "OCR-D-IMG"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-BLOCK",
+      "OCR-D-SEG-LINE",
+      "OCR-D-SEG-WORD"
+    ],
+    "parameters": {
+      "impl": {
+        "description": "The name of the actual binarization algorithm",
+        "type": "string",
+        "default": "sauvola-ms-split",
+        "enum": [
+          "sauvola",
+          "sauvola-ms",
+          "sauvola-ms-fg",
+          "sauvola-ms-split",
+          "kim",
+          "wolf",
+          "niblack",
+          "singh",
+          "otsu"
+        ]
+      },
+      "k": {
+        "description": "Sauvola's formulae parameter (foreground weight decreases with k); for Multiscale, multiplied to yield default 0.2/0.3/0.5; for Singh, multiplied to yield default 0.06; for Niblack, multiplied to yield default -0.2; for Wolf/Kim, used directly; for Otsu, does not apply",
+        "format": "float",
+        "type": "number",
+        "default": 0.34
+      },
+      "win-size": {
+        "description": "The (odd) window size in pixels; when zero (default), set to DPI (or 301); for Otsu, does not apply",
+        "type": "number",
+        "format": "integer",
+        "default": 0
+      },
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images); disabled when zero",
+        "default": 0
+      }
+    }
+  },
+  "ocrd-page2alto-transform": {
+    "executable": "ocrd-page2alto-transform",
+    "categories": [
+      "Layout analysis"
+    ],
+    "description": "Transform PAGE-XML to ALTO",
+    "input_file_grp": [
+      "OBSOLETE"
+    ],
+    "output_file_grp": [
+      "ALSO-OBSOLETE"
+    ],
+    "steps": [
+      "whatevs"
+    ],
+    "parameters": {
+      "check_border": {
+        "type": "boolean",
+        "description": "Whether to create full-page WIDTH/HEIGHT etc. if no border/pagespace present",
+        "default": false
+      },
+      "check_words": {
+        "type": "boolean",
+        "description": "Check whether PAGE-XML contains any Words and fail if not",
+        "default": true
+      },
+      "skip_empty_lines": {
+        "type": "boolean",
+        "description": "Whether to omit or keep empty lines in PAGE-XML",
+        "default": false
+      },
+      "trailing_dash_to_hyp": {
+        "type": "boolean",
+        "description": "Whether to add a <HYP/> element if the last word in a line ends in '-'",
+        "default": false
+      },
+      "dummy_word": {
+        "type": "boolean",
+        "description": "Whether to create a Word for TextLine that have TextEquiv/Unicode but no Word",
+        "default": true
+      },
+      "dummy_textline": {
+        "type": "boolean",
+        "description": "Whether to create a TextLine for regions that have TextEquiv/Unicode but no TextLine",
+        "default": true
+      },
+      "textequiv_index": {
+        "type": "number",
+        "description": "If multiple textequiv, use the n-th TextEquiv by @index",
+        "default": 0
+      },
+      "region_order": {
+        "type": "string",
+        "description": "Order in which to iterate over the regions",
+        "enum": [
+          "document",
+          "reading-order",
+          "reading-order-only"
+        ],
+        "default": "document"
+      },
+      "textline_order": {
+        "type": "string",
+        "description": "Order in which to iterate over the textlines",
+        "enum": [
+          "document",
+          "index",
+          "textline-order"
+        ],
+        "default": "document"
+      },
+      "textequiv_fallback_strategy": {
+        "type": "string",
+        "description": "What to do if selected TextEquiv @index is not available: 'raise' will lead to a runtime error, 'first' will use the first TextEquiv, 'last' will use the last TextEquiv on the element",
+        "enum": [
+          "raise",
+          "first",
+          "last"
+        ],
+        "default": "first"
+      },
+      "alto_version": {
+        "type": "string",
+        "description": "Whether to create full-page WIDTH/HEIGHT etc. if no border/pagespace present",
+        "default": "v4.2",
+        "enum": [
+          "v4.2",
+          "v4.1",
+          "v4.0",
+          "v3.1",
+          "v3.0",
+          "v2.1",
+          "v2.0"
+        ]
+      },
+      "timestamp_src": {
+        "type": "string",
+        "description": "Which element to use for the timestamp",
+        "default": "LastChange",
+        "enum": [
+          "Created",
+          "LastChange",
+          "none"
+        ]
+      }
+    },
+    "resources": []
+  },
+  "ocrd-pagetopdf": {
+    "executable": "ocrd-pagetopdf",
+    "description": "Convert text and layout annotations to PDF format (overlaying original image with text layer and polygon outlines)",
+    "categories": [
+      "Long-term preservation"
+    ],
+    "steps": [
+      "postprocessing/format-conversion"
+    ],
+    "input_file_grp": [
+      "OCR-D-OCR-PAGE"
+    ],
+    "output_file_grp": [
+      "OCR-D-OCR-PDF"
+    ],
+    "parameters": {
+      "font": {
+        "description": "Font file to be used in PDF file. If unset, AletheiaSans.ttf is used. (Make sure to pick a font which covers all glyphs!)",
+        "type": "string",
+        "format": "uri",
+        "content-type": "application/x-font-ttf",
+        "default": ""
+      },
+      "outlines": {
+        "description": "What segment hierarchy to draw coordinate outlines for. If unset, no outlines are drawn.",
+        "type": "string",
+        "default": "",
+        "enum": [
+          "",
+          "region",
+          "line",
+          "word",
+          "glyph"
+        ]
+      },
+      "textequiv_level": {
+        "description": "What segment hierarchy level to render text output from. If unset, no text is rendered.",
+        "type": "string",
+        "default": "",
+        "enum": [
+          "",
+          "region",
+          "line",
+          "word",
+          "glyph"
+        ]
+      },
+      "negative2zero": {
+        "description": "Set all negative box values to 0",
+        "type": "boolean",
+        "default": false
+      },
+      "ext": {
+        "description": "Output filename extension",
+        "type": "string",
+        "default": ".pdf"
+      },
+      "multipage": {
+        "description": "Merge all PDFs into one multipage file. The value is used as filename for the pdf.",
+        "type": "string",
+        "default": ""
+      },
+      "pagelabel": {
+        "description": "Parameter for 'multipage': Set the page information, which will be used as pagelabel. Default is 'pageId', e.g. the option 'pagenumber' will create numbered pagelabel consecutively",
+        "type": "string",
+        "default": "pageId",
+        "enum": [
+          "pagenumber",
+          "pageId",
+          "basename",
+          "basename_without_extension",
+          "local_filename",
+          "ID",
+          "url"
+        ]
+      },
+      "script-args": {
+        "description": "Extra arguments to PageToPdf (see https://github.com/PRImA-Research-Lab/prima-page-to-pdf)",
+        "type": "string",
+        "default": ""
+      }
+    }
+  },
+  "ocrd-repair-inconsistencies": {
+    "executable": "ocrd-repair-inconsistencies",
+    "categories": [
+      "Layout analysis"
+    ],
+    "description": "Re-order glyphs/words/lines top-down-left-right when textually inconsistent with their parents",
+    "input_file_grp": [
+      "OCR-D-SEG-BLOCK"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-BLOCK-FIXED"
+    ],
+    "steps": [
+      "layout/segmentation/line",
+      "layout/segmentation/word",
+      "layout/segmentation/glyph"
+    ]
+  },
+  "ocrd-segment-repair": {
+    "executable": "ocrd-segment-repair",
+    "categories": [
+      "Layout analysis"
+    ],
+    "description": "Analyse and repair region segmentation; at least ensure validity and consistency of coordinates.",
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-BLOCK"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-BLOCK"
+    ],
+    "steps": [
+      "layout/segmentation/region"
+    ],
+    "parameters": {
+      "sanitize": {
+        "type": "boolean",
+        "default": false,
+        "description": "Shrink each region such that its coordinates become the minimal concave hull of its binary foreground. (Assumes that a perfect binarization is available.)"
+      },
+      "sanitize_padding": {
+        "type": "number",
+        "format": "integer",
+        "minimum": 1,
+        "default": 5,
+        "description": "When shrinking a region, enlarge the resulting hull by this amount of pixels in each direction."
+      },
+      "simplify": {
+        "type": "number",
+        "format": "float",
+        "minimum": 0,
+        "default": 0,
+        "description": "Distance (in px) used to simplify all segment polygons. (Avoid values larger than xheight/scale, or corners will be chopped off.) Set to 0 to disable."
+      },
+      "plausibilize": {
+        "type": "boolean",
+        "default": false,
+        "description": "Identify and remove redundancies on text regions and text lines (deleting/merging/shrinking where overlaps occur)."
+      },
+      "plausibilize_merge_min_overlap": {
+        "type": "number",
+        "format": "float",
+        "minimum": 0.0,
+        "maximum": 1.0,
+        "default": 0.9,
+        "description": "When merging a region or line almost contained in another, require at least this ratio of area is shared with the other."
+      },
+      "spread": {
+        "type": "number",
+        "format": "integer",
+        "default": 0,
+        "description": "After all other steps, enlarge segments by this many pixels into the background."
+      },
+      "spread_level": {
+        "type": "string",
+        "enum": [
+          "page",
+          "table",
+          "region",
+          "line",
+          "word"
+        ],
+        "default": "region",
+        "description": "Hierarchy level spread operates on"
+      }
+    }
+  },
+  "ocrd-segment-project": {
+    "executable": "ocrd-segment-project",
+    "categories": [
+      "Layout analysis"
+    ],
+    "description": "Project segment coordinates to their structural parents",
+    "input_file_grp": [
+      "OCR-D-SEG-BLOCK"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-BLOCK"
+    ],
+    "steps": [
+      "layout/segmentation"
+    ],
+    "parameters": {
+      "level-of-operation": {
+        "type": "string",
+        "enum": [
+          "page",
+          "table",
+          "region",
+          "line",
+          "word"
+        ],
+        "default": "page",
+        "description": "hierarchy level which to assign new coordinates to"
+      },
+      "padding": {
+        "type": "number",
+        "format": "integer",
+        "minimum": 0,
+        "default": 10,
+        "description": "margin (in px) to extend the hull in every direction"
+      }
+    }
+  },
+  "ocrd-segment-from-masks": {
+    "executable": "ocrd-segment-from-masks",
+    "categories": [
+      "Layout analysis"
+    ],
+    "description": "Import region segmentation from mask images (segments filled with colors encoding classes). Input fileGrp format is `base,mask` (i.e. PAGE or original image files first, mask image files second).",
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-PAGE"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-BLOCK"
+    ],
+    "steps": [
+      "layout/segmentation/region"
+    ],
+    "parameters": {
+      "colordict": {
+        "type": "object",
+        "default": {
+          "FFFFFF00": "",
+          "FFFFFFFF": "Border",
+          "8B4513FF": "TableRegion",
+          "4682B4FF": "AdvertRegion",
+          "FF8C00FF": "ChemRegion",
+          "9400D3FF": "MusicRegion",
+          "9ACDD2FF": "MapRegion",
+          "0000FFFF": "TextRegion",
+          "0000FFFA": "TextRegion:paragraph",
+          "0000FFF5": "TextRegion:heading",
+          "0000FFF0": "TextRegion:caption",
+          "0000FFEB": "TextRegion:header",
+          "0000FFE6": "TextRegion:footer",
+          "0000FFE1": "TextRegion:page-number",
+          "0000FFDC": "TextRegion:drop-capital",
+          "0000FFD7": "TextRegion:credit",
+          "0000FFD2": "TextRegion:floating",
+          "0000FFCD": "TextRegion:signature-mark",
+          "0000FFC8": "TextRegion:catch-word",
+          "0000FFC3": "TextRegion:marginalia",
+          "0000FFBE": "TextRegion:footnote",
+          "0000FFB9": "TextRegion:footnote-continued",
+          "0000FFB4": "TextRegion:endnote",
+          "0000FFAF": "TextRegion:TOC-entry",
+          "0000FFA5": "TextRegion:list-label",
+          "0000FFA0": "TextRegion:other",
+          "800080FF": "ChartRegion",
+          "800080FA": "ChartRegion:bar",
+          "800080F5": "ChartRegion:line",
+          "800080F0": "ChartRegion:pie",
+          "800080EB": "ChartRegion:scatter",
+          "800080E6": "ChartRegion:surface",
+          "800080E1": "ChartRegion:other",
+          "008000FF": "GraphicRegion",
+          "008000FA": "GraphicRegion:logo",
+          "008000F0": "GraphicRegion:letterhead",
+          "008000EB": "GraphicRegion:decoration",
+          "008000E6": "GraphicRegion:frame",
+          "008000E1": "GraphicRegion:handwritten-annotation",
+          "008000DC": "GraphicRegion:stamp",
+          "008000D7": "GraphicRegion:signature",
+          "008000D2": "GraphicRegion:barcode",
+          "008000CD": "GraphicRegion:paper-grow",
+          "008000C8": "GraphicRegion:punch-hole",
+          "008000C3": "GraphicRegion:other",
+          "00CED1FF": "ImageRegion",
+          "B8860BFF": "LineDrawingRegion",
+          "00BFFFFF": "MathsRegion",
+          "FF0000FF": "NoiseRegion",
+          "FF00FFFF": "SeparatorRegion",
+          "646464FF": "UnknownRegion",
+          "637C81FF": "CustomRegion"
+        },
+        "description": "Mapping from color values in the input masks to region types to annotate; color must be encoded hexadecimal (e.g. '00FF00'); region type equals the element name in PAGE-XML, optionally followed by a colon and a subtype (e.g. 'TextRegion:paragraph'; unmapped colors will be ignored (i.e. treated as background)). Default is PageViewer color scheme. Cf. colordict.json output and colordict parameter of ocrd-segment-extract-pages."
+      }
+    }
+  },
+  "ocrd-segment-from-coco": {
+    "executable": "ocrd-segment-from-coco",
+    "categories": [
+      "Layout analysis"
+    ],
+    "description": "Import region segmentation from COCO detection format JSON (for all pages). Input fileGrp format is `base,COCO` (i.e. PAGE or original image files first, COCO file second).",
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-PAGE"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-BLOCK"
+    ],
+    "steps": [
+      "layout/segmentation/region"
+    ],
+    "parameters": {}
+  },
+  "ocrd-segment-extract-pages": {
+    "executable": "ocrd-segment-extract-pages",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "description": "Extract page segmentation as page images (deskewed according to `/Page/@orientation` and cropped+masked along `/Page/Border`) + JSON (including region coordinates/classes and meta-data), as binarized images, and as mask images (segments filled with colors encoding classes) + COCO detection format JSON (for all pages). Output fileGrp format is `raw[,binarized[,mask]]` (i.e. fall back to first group).",
+    "input_file_grp": [
+      "OCR-D-SEG-PAGE",
+      "OCR-D-GT-SEG-PAGE",
+      "OCR-D-SEG-BLOCK",
+      "OCR-D-GT-SEG-BLOCK"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG-PAGE"
+    ],
+    "steps": [
+      "layout/analysis"
+    ],
+    "parameters": {
+      "feature_filter": {
+        "type": "string",
+        "default": "",
+        "description": "Comma-separated list of forbidden image features (e.g. `binarized,despeckled`)."
+      },
+      "mimetype": {
+        "type": "string",
+        "enum": [
+          "image/bmp",
+          "application/postscript",
+          "image/gif",
+          "image/jpeg",
+          "image/jp2",
+          "image/png",
+          "image/x-portable-pixmap",
+          "image/tiff"
+        ],
+        "default": "image/png",
+        "description": "File format to save extracted images in."
+      },
+      "transparency": {
+        "type": "boolean",
+        "default": true,
+        "description": "Add alpha channels with segment masks to the images"
+      },
+      "plot_overlay": {
+        "type": "boolean",
+        "default": false,
+        "description": "When generating mask images with `plot_segmasks`, instead of starting with a blank image and having layers and segments replace each other, start with the raw image and superimpose (alpha-composite) layers and segments."
+      },
+      "plot_segmasks": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "order",
+            "page",
+            "region",
+            "line",
+            "word",
+            "glyph"
+          ]
+        },
+        "default": [
+          "region"
+        ],
+        "description": "Generate mask images of the page segmentation in the last output fileGrp. Draw filled polygons for each specified PAGE hierarchy level in the list (in that order), where 'page' denotes the Border polygon, 'region' denotes Region types, 'line' denotes TextLine, 'word' denotes Word and 'glyph' denotes Glyph. Each type must be mapped in `colordict`. Where neighbors of the same type intersect, show a warning (unless `plot_overlay` is true). If 'order' is present, then draw arrows for reading order, too."
+      },
+      "colordict": {
+        "type": "object",
+        "default": {
+          "": "FFFFFF00",
+          "ReadingOrderLevel0": "DC143CFF",
+          "ReadingOrderLevel1": "9400D3FF",
+          "ReadingOrderLevelN": "8B0000FF",
+          "Border": "FFFFFFFF",
+          "TableRegion": "8B4513FF",
+          "AdvertRegion": "4682B4FF",
+          "ChemRegion": "FF8C00FF",
+          "MusicRegion": "9400D3FF",
+          "MapRegion": "9ACDD2FF",
+          "TextRegion": "0000FFFF",
+          "TextRegion:paragraph": "0000FFFA",
+          "TextRegion:heading": "0000FFF5",
+          "TextRegion:caption": "0000FFF0",
+          "TextRegion:header": "0000FFEB",
+          "TextRegion:footer": "0000FFE6",
+          "TextRegion:page-number": "0000FFE1",
+          "TextRegion:drop-capital": "0000FFDC",
+          "TextRegion:credit": "0000FFD7",
+          "TextRegion:floating": "0000FFD2",
+          "TextRegion:signature-mark": "0000FFCD",
+          "TextRegion:catch-word": "0000FFC8",
+          "TextRegion:marginalia": "0000FFC3",
+          "TextRegion:footnote": "0000FFBE",
+          "TextRegion:footnote-continued": "0000FFB9",
+          "TextRegion:endnote": "0000FFB4",
+          "TextRegion:TOC-entry": "0000FFAF",
+          "TextRegion:list-label": "0000FFA5",
+          "TextRegion:other": "0000FFA0",
+          "ChartRegion": "800080FF",
+          "ChartRegion:bar": "800080FA",
+          "ChartRegion:line": "800080F5",
+          "ChartRegion:pie": "800080F0",
+          "ChartRegion:scatter": "800080EB",
+          "ChartRegion:surface": "800080E6",
+          "ChartRegion:other": "800080E1",
+          "GraphicRegion": "008000FF",
+          "GraphicRegion:logo": "008000FA",
+          "GraphicRegion:letterhead": "008000F0",
+          "GraphicRegion:decoration": "008000EB",
+          "GraphicRegion:frame": "008000E6",
+          "GraphicRegion:handwritten-annotation": "008000E1",
+          "GraphicRegion:stamp": "008000DC",
+          "GraphicRegion:signature": "008000D7",
+          "GraphicRegion:barcode": "008000D2",
+          "GraphicRegion:paper-grow": "008000CD",
+          "GraphicRegion:punch-hole": "008000C8",
+          "GraphicRegion:other": "008000C3",
+          "ImageRegion": "00CED1FF",
+          "LineDrawingRegion": "B8860BFF",
+          "MathsRegion": "00BFFFFF",
+          "NoiseRegion": "FF0000FF",
+          "SeparatorRegion": "FF00FFFF",
+          "UnknownRegion": "646464FF",
+          "CustomRegion": "637C81FF",
+          "TextLine": "32CD32FF",
+          "Word": "B22222FF",
+          "Glyph": "2E8B08FF"
+        },
+        "description": "Mapping from segment types to extract to color values in the output mask images and COCO; color must be encoded hexadecimal (e.g. '00FF00'); region type equals the element name in PAGE-XML, optionally followed by a colon and a subtype (e.g. 'TextRegion:paragraph'; unmapped region types will be ignored (i.e. treated as background)). Default is PageViewer color scheme. Cf. colordict parameter of ocrd-segment-from-masks."
+      }
+    }
+  },
+  "ocrd-segment-extract-regions": {
+    "executable": "ocrd-segment-extract-regions",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "description": "Extract region segmentation as region images (deskewed according to `*/@orientation` and cropped+masked along `*/Coords` polygon) + JSON (including region coordinates/classes and meta-data).",
+    "input_file_grp": [
+      "OCR-D-SEG-BLOCK",
+      "OCR-D-GT-SEG-BLOCK"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG-REGION"
+    ],
+    "steps": [
+      "layout/analysis"
+    ],
+    "parameters": {
+      "feature_filter": {
+        "type": "string",
+        "default": "",
+        "description": "Comma-separated list of forbidden image features (e.g. `binarized,despeckled`)."
+      },
+      "classes": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "NoiseRegion",
+            "LineDrawingRegion",
+            "AdvertRegion",
+            "ImageRegion",
+            "ChartRegion",
+            "MusicRegion",
+            "GraphicRegion",
+            "UnknownRegion",
+            "CustomRegion",
+            "SeparatorRegion",
+            "MathsRegion",
+            "TextRegion",
+            "MapRegion",
+            "ChemRegion",
+            "TableRegion"
+          ]
+        },
+        "default": [
+          "NoiseRegion",
+          "LineDrawingRegion",
+          "AdvertRegion",
+          "ImageRegion",
+          "ChartRegion",
+          "MusicRegion",
+          "GraphicRegion",
+          "UnknownRegion",
+          "CustomRegion",
+          "SeparatorRegion",
+          "MathsRegion",
+          "TextRegion",
+          "MapRegion",
+          "ChemRegion",
+          "TableRegion"
+        ],
+        "description": "Array of region types to extract e.g. -P classes '[\"TextRegion\", \"TableRegion\", \"ImageRegion\"]' . If empty, all regions are allowed."
+      },
+      "mimetype": {
+        "type": "string",
+        "enum": [
+          "image/bmp",
+          "application/postscript",
+          "image/gif",
+          "image/jpeg",
+          "image/jp2",
+          "image/png",
+          "image/x-portable-pixmap",
+          "image/tiff"
+        ],
+        "default": "image/png",
+        "description": "File format to save extracted images in."
+      },
+      "transparency": {
+        "type": "boolean",
+        "default": true,
+        "description": "Add alpha channels with segment masks to the images"
+      }
+    }
+  },
+  "ocrd-segment-extract-lines": {
+    "executable": "ocrd-segment-extract-lines",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "description": "Extract line segmentation as line images + text file + JSON.",
+    "input_file_grp": [
+      "OCR-D-SEG-LINE",
+      "OCR-D-GT-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG-LINE"
+    ],
+    "steps": [
+      "layout/analysis"
+    ],
+    "parameters": {
+      "feature_filter": {
+        "type": "string",
+        "default": "",
+        "description": "Comma-separated list of forbidden image features (e.g. `binarized,despeckled`)."
+      },
+      "mimetype": {
+        "type": "string",
+        "enum": [
+          "image/bmp",
+          "application/postscript",
+          "image/gif",
+          "image/jpeg",
+          "image/jp2",
+          "image/png",
+          "image/x-portable-pixmap",
+          "image/tiff"
+        ],
+        "default": "image/png",
+        "description": "File format to save extracted images in."
+      },
+      "transparency": {
+        "type": "boolean",
+        "default": true,
+        "description": "Add alpha channels with segment masks to the images"
+      },
+      "output-types": {
+        "type": "array",
+        "default": [
+          "text",
+          "json",
+          "xlsx"
+        ],
+        "items": {
+          "type": "string",
+          "enum": [
+            "text",
+            "json",
+            "xlsx"
+          ]
+        },
+        "description": "What kind of files to extract besides the line image itself (text/json files for  each line, xlsx per page)."
+      },
+      "library-convention": {
+        "type": "string",
+        "enum": [
+          "slub",
+          "sbb",
+          "none"
+        ],
+        "default": "none",
+        "description": "For xlsx extraction, to make line images hyperlinked, use this scheme in reconstructing presentation URLs of original pages. Libraries have different conventions in their METS files. Set to none to disable."
+      },
+      "min-line-length": {
+        "type": "number",
+        "format": "integer",
+        "minimum": 0,
+        "default": 0,
+        "description": "Only extract lines with at least this many characters."
+      },
+      "min-line-width": {
+        "type": "number",
+        "format": "integer",
+        "minimum": 1,
+        "default": 1,
+        "description": "Only extract lines that are at least this wide (in px)."
+      },
+      "min-line-height": {
+        "type": "number",
+        "format": "integer",
+        "minimum": 1,
+        "default": 1,
+        "description": "Only extract lines that are at least this high (in px)."
+      },
+      "textequiv-index": {
+        "type": "string",
+        "enum": [
+          "first",
+          "last",
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9"
+        ],
+        "default": "first",
+        "description": "Only extract lines with the specified TextEquiv/@index entries; 'first' and 'last' denote the first and last TextEquiv elements, regardless of their @index, respectively."
+      }
+    }
+  },
+  "ocrd-segment-extract-words": {
+    "executable": "ocrd-segment-extract-words",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "description": "Extract word segmentation as word images (deskewed according to `*/@orientation` and cropped+masked along `*/Coords` polygon and dewarped as in `*/AlternativeImage`) + text file (according to `*/TextEquiv`) + JSON (including line coordinates and meta-data).",
+    "input_file_grp": [
+      "OCR-D-SEG-WORD",
+      "OCR-D-GT-SEG-WORD"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG-WORD"
+    ],
+    "steps": [
+      "layout/analysis"
+    ],
+    "parameters": {
+      "feature_filter": {
+        "type": "string",
+        "default": "",
+        "description": "Comma-separated list of forbidden image features (e.g. `binarized,despeckled`)."
+      },
+      "mimetype": {
+        "type": "string",
+        "enum": [
+          "image/bmp",
+          "application/postscript",
+          "image/gif",
+          "image/jpeg",
+          "image/jp2",
+          "image/png",
+          "image/x-portable-pixmap",
+          "image/tiff"
+        ],
+        "default": "image/png",
+        "description": "File format to save extracted images in."
+      },
+      "transparency": {
+        "type": "boolean",
+        "default": true,
+        "description": "Add alpha channels with segment masks to the images"
+      }
+    }
+  },
+  "ocrd-segment-extract-glyphs": {
+    "executable": "ocrd-segment-extract-glyphs",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "description": "Extract glyph segmentation as glyph images (deskewed according to `*/@orientation` and cropped+masked along `*/Coords` polygon and dewarped as in `*/AlternativeImage`) + text file (according to `*/TextEquiv`) + JSON (including line coordinates and meta-data).",
+    "input_file_grp": [
+      "OCR-D-SEG-GLYPH",
+      "OCR-D-GT-SEG-GLYPH"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG-GLYPH"
+    ],
+    "steps": [
+      "layout/analysis"
+    ],
+    "parameters": {
+      "feature_filter": {
+        "type": "string",
+        "default": "",
+        "description": "Comma-separated list of forbidden image features (e.g. `binarized,despeckled`)."
+      },
+      "mimetype": {
+        "type": "string",
+        "enum": [
+          "image/bmp",
+          "application/postscript",
+          "image/gif",
+          "image/jpeg",
+          "image/jp2",
+          "image/png",
+          "image/x-portable-pixmap",
+          "image/tiff"
+        ],
+        "default": "image/png",
+        "description": "File format to save extracted images in."
+      },
+      "transparency": {
+        "type": "boolean",
+        "default": true,
+        "description": "Add alpha channels with segment masks to the images"
+      }
+    }
+  },
+  "ocrd-segment-replace-original": {
+    "executable": "ocrd-segment-replace-original",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "description": "Extract page image (deskewed according to `/Page/@orientation` and cropped+masked along `/Page/Border`) and use it as @imageFilename, adjusting all coordinates",
+    "input_file_grp": [
+      "OCR-D-SEG-LINE",
+      "OCR-D-GT-SEG-LINE",
+      "OCR-D-OCR"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-CROP"
+    ],
+    "steps": [
+      "layout/analysis"
+    ],
+    "parameters": {
+      "feature_selector": {
+        "type": "string",
+        "default": "",
+        "description": "Comma-separated list of required image features (e.g. `binarized,despeckled`)"
+      },
+      "feature_filter": {
+        "type": "string",
+        "default": "",
+        "description": "Comma-separated list of forbidden image features (e.g. `binarized,despeckled`)"
+      },
+      "transform_coordinates": {
+        "type": "boolean",
+        "default": true,
+        "description": "re-calculate coordinates for all segments of the structural hierarchy to be consistent with the coordinate system of the chosen image again (vital after cropping, deskewing etc; disable only if input coordinates must be assumed to be inconsistent with the original)"
+      }
+    }
+  },
+  "ocrd-segment-replace-page": {
+    "executable": "ocrd-segment-replace-page",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "description": "Replace everything below page level with another annotation, adjusting all coordinates",
+    "input_file_grp": [
+      "OCR-D-SEG-LINE",
+      "OCR-D-GT-SEG-LINE",
+      "OCR-D-OCR"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-LINE",
+      "OCR-D-OCR"
+    ],
+    "steps": [
+      "layout/analysis"
+    ],
+    "parameters": {
+      "transform_coordinates": {
+        "type": "boolean",
+        "default": true,
+        "description": "re-calculate coordinates for all segments of the structural hierarchy to be consistent with the coordinate system of the first input file group (vital after cropping, deskewing etc; disable only if input coordinates can be assumed to be consistent with the second input file group)"
+      }
+    }
+  },
+  "ocrd-segment-replace-text": {
+    "executable": "ocrd-segment-replace-text",
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "description": "Insert text from annotations in single-segment text files",
+    "steps": [
+      "recognition/post-correction"
+    ],
+    "parameters": {
+      "file_glob": {
+        "type": "string",
+        "default": "*.gt.txt",
+        "description": "glob expression which expands to file names to match against page IDs and segment IDs in order to be ingested"
+      }
+    }
+  },
+  "ocrd-segment-evaluate": {
+    "executable": "ocrd-segment-evaluate",
+    "categories": [
+      "Layout analysis"
+    ],
+    "description": "Compare segmentations",
+    "input_file_grp": [
+      "OCR-D-GT-SEG-BLOCK",
+      "OCR-D-SEG-BLOCK"
+    ],
+    "steps": [
+      "layout/analysis"
+    ],
+    "parameters": {
+      "level-of-operation": {
+        "type": "string",
+        "enum": [
+          "region",
+          "line"
+        ],
+        "default": "region",
+        "description": "segment hierarchy level to compare GT and predictions at"
+      },
+      "only-fg": {
+        "type": "boolean",
+        "default": false,
+        "description": "only overlap and compare the foregrounds in the binarized image"
+      },
+      "ignore-subtype": {
+        "type": "boolean",
+        "default": false,
+        "description": "on region level, ignore @type differentiation (where applicable)"
+      },
+      "for-categories": {
+        "type": "string",
+        "default": "",
+        "description": "on region level, only compare these region types (comma-separated list; unless `ignore-subtype` is given, append subtypes via `.`; e.g. `TextRegion.page-number,TextRegion.marginalia`)"
+      }
+    }
+  },
+  "ocrd-tesserocr-deskew": {
+    "executable": "ocrd-tesserocr-deskew",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "description": "Detect script, orientation and skew angle for pages or regions",
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-BLOCK"
+    ],
+    "output_file_grp": [
+      "OCR-D-DESKEW-BLOCK"
+    ],
+    "steps": [
+      "preprocessing/optimization/deskewing"
+    ],
+    "parameters": {
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images)",
+        "default": 0
+      },
+      "operation_level": {
+        "type": "string",
+        "enum": [
+          "page",
+          "region",
+          "line"
+        ],
+        "default": "region",
+        "description": "PAGE XML hierarchy level to operate on"
+      },
+      "min_orientation_confidence": {
+        "type": "number",
+        "format": "float",
+        "default": 1.5,
+        "description": "Minimum confidence score to apply orientation as detected by OSD"
+      }
+    }
+  },
+  "ocrd-tesserocr-fontshape": {
+    "executable": "ocrd-tesserocr-fontshape",
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "description": "Recognize font shapes (family/monospace/bold/italic) and size in segmented words with Tesseract (using annotated derived images, or masking and cropping images from coordinate polygons), annotating TextStyle",
+    "input_file_grp": [
+      "OCR-D-SEG-WORD",
+      "OCR-D-OCR"
+    ],
+    "output_file_grp": [
+      "OCR-D-OCR-FONTSTYLE"
+    ],
+    "steps": [
+      "recognition/font-identification"
+    ],
+    "parameters": {
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images)",
+        "default": 0
+      },
+      "padding": {
+        "type": "number",
+        "format": "integer",
+        "default": 0,
+        "description": "Number of background-filled pixels to add around the word image (i.e. the annotated AlternativeImage if it exists or the higher-level image cropped to the bounding box and masked by the polygon otherwise) on each side before recognition."
+      },
+      "model": {
+        "type": "string",
+        "format": "uri",
+        "content-type": "application/octet-stream",
+        "default": "osd",
+        "description": "tessdata model to apply (an ISO 639-3 language specification or some other basename, e.g. deu-frak or osd); must be an old (pre-LSTM) model"
+      }
+    }
+  },
+  "ocrd-tesserocr-recognize": {
+    "executable": "ocrd-tesserocr-recognize",
+    "categories": [
+      "Text recognition and optimization"
+    ],
+    "description": "Segment and/or recognize text with Tesseract (using annotated derived images, or masking and cropping images from coordinate polygons) on any level of the PAGE hierarchy.",
+    "input_file_grp": [
+      "OCR-D-SEG-PAGE",
+      "OCR-D-SEG-REGION",
+      "OCR-D-SEG-TABLE",
+      "OCR-D-SEG-LINE",
+      "OCR-D-SEG-WORD"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-REGION",
+      "OCR-D-SEG-TABLE",
+      "OCR-D-SEG-LINE",
+      "OCR-D-SEG-WORD",
+      "OCR-D-SEG-GLYPH",
+      "OCR-D-OCR-TESS"
+    ],
+    "steps": [
+      "layout/segmentation/region",
+      "layout/segmentation/line",
+      "recognition/text-recognition"
+    ],
+    "parameters": {
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images)",
+        "default": 0
+      },
+      "padding": {
+        "type": "number",
+        "format": "integer",
+        "default": 0,
+        "description": "Extend detected region/cell/line/word rectangles by this many (true) pixels, or extend existing region/line/word images (i.e. the annotated AlternativeImage if it exists or the higher-level image cropped to the bounding box and masked by the polygon otherwise) by this many (background/white) pixels on each side before recognition."
+      },
+      "segmentation_level": {
+        "type": "string",
+        "enum": [
+          "region",
+          "cell",
+          "line",
+          "word",
+          "glyph",
+          "none"
+        ],
+        "default": "word",
+        "description": "Highest PAGE XML hierarchy level to remove existing annotation from and detect segments for (before iterating downwards); if ``none``, does not attempt any new segmentation; if ``cell``, starts at table regions, detecting text regions (cells). Ineffective when lower than ``textequiv_level``."
+      },
+      "textequiv_level": {
+        "type": "string",
+        "enum": [
+          "region",
+          "cell",
+          "line",
+          "word",
+          "glyph",
+          "none"
+        ],
+        "default": "word",
+        "description": "Lowest PAGE XML hierarchy level to re-use or detect segments for and add the TextEquiv results to (before projecting upwards); if ``none``, adds segmentation down to the glyph level, but does not attempt recognition at all; if ``cell``, stops short before text lines, adding text of text regions inside tables (cells) or on page level only."
+      },
+      "overwrite_segments": {
+        "type": "boolean",
+        "default": false,
+        "description": "If ``segmentation_level`` is not none, but an element already contains segments, remove them and segment again. Otherwise use the existing segments of that element."
+      },
+      "overwrite_text": {
+        "type": "boolean",
+        "default": true,
+        "description": "If ``textequiv_level`` is not none, but a segment already contains TextEquivs, remove them and replace with recognised text. Otherwise add new text as alternative. (Only the first entry is projected upwards.)"
+      },
+      "shrink_polygons": {
+        "type": "boolean",
+        "default": false,
+        "description": "When detecting any segments, annotate polygon coordinates instead of bounding box rectangles by projecting the convex hull of all symbols."
+      },
+      "block_polygons": {
+        "type": "boolean",
+        "default": false,
+        "description": "When detecting regions, annotate polygon coordinates instead of bounding box rectangles by querying Tesseract accordingly."
+      },
+      "find_tables": {
+        "type": "boolean",
+        "default": true,
+        "description": "When detecting regions, recognise tables as table regions (Tesseract's ``textord_tabfind_find_tables=1``)."
+      },
+      "find_staves": {
+        "type": "boolean",
+        "default": false,
+        "description": "When detecting regions, recognize music staves as non-text, suppressing it in the binary image (Tesseract's ``pageseg_apply_music_mask``). Note that this might wrongly detect tables as staves."
+      },
+      "sparse_text": {
+        "type": "boolean",
+        "default": false,
+        "description": "When detecting regions, use 'sparse text' page segmentation mode (finding as much text as possible in no particular order): only text regions, single lines without vertical or horizontal space."
+      },
+      "raw_lines": {
+        "type": "boolean",
+        "default": false,
+        "description": "When detecting lines, do not attempt additional segmentation (baseline+xheight+ascenders/descenders prediction) on line images. Can increase accuracy for certain workflows. Disable when line segments/images may contain components of more than 1 line, or larger gaps/white-spaces."
+      },
+      "char_whitelist": {
+        "type": "string",
+        "default": "",
+        "description": "When recognizing text, enumeration of character hypotheses (from the model) to allow exclusively; overruled by blacklist if set."
+      },
+      "char_blacklist": {
+        "type": "string",
+        "default": "",
+        "description": "When recognizing text, enumeration of character hypotheses (from the model) to suppress; overruled by unblacklist if set."
+      },
+      "char_unblacklist": {
+        "type": "string",
+        "default": "",
+        "description": "When recognizing text, enumeration of character hypotheses (from the model) to allow inclusively."
+      },
+      "tesseract_parameters": {
+        "type": "object",
+        "default": {},
+        "description": "Dictionary of additional Tesseract runtime variables (cf. tesseract --print-parameters), string values."
+      },
+      "xpath_parameters": {
+        "type": "object",
+        "default": {},
+        "description": "Set additional Tesseract runtime variables according to results of XPath queries into the segment. (As a convenience, `@language` and `@script` also match their upwards `@primary*` and `@secondary*` variants where applicable.) (Example: {'ancestor::TextRegion/@type=\"page-number\"': {'char_whitelist': '0123456789-'}, 'contains(@custom,\"ISBN\")': {'char_whitelist': '0123456789-'}})"
+      },
+      "xpath_model": {
+        "type": "object",
+        "default": {},
+        "description": "Prefer models mapped according to results of XPath queries into the segment. (As a convenience, `@language` and `@script` also match their upwards `@primary*` and `@secondary*` variants where applicable.) If no queries / mappings match (or under the default empty parameter), then fall back to `model`. If there are multiple matches, combine their results. (Example: {'starts-with(@script,\"Latn\")': 'Latin', 'starts-with(@script,\"Grek\")': 'Greek', '@language=\"Latin\"': 'lat', '@language=\"Greek\"': 'grc+ell', 'ancestor::TextRegion/@type=\"page-number\"': 'eng'})"
+      },
+      "auto_model": {
+        "type": "boolean",
+        "default": false,
+        "description": "Prefer models performing best (by confidence) per segment (if multiple given in `model`). Repeats the OCR of the best model once (i.e. slower). (Use as a fallback to xpath_model if you do not trust script/language detection.)"
+      },
+      "model": {
+        "type": "string",
+        "format": "uri",
+        "content-type": "application/octet-stream",
+        "description": "The tessdata text recognition model to apply (an ISO 639-3 language specification or some other basename, e.g. deu-frak or Fraktur)."
+      },
+      "oem": {
+        "type": "string",
+        "enum": [
+          "TESSERACT_ONLY",
+          "LSTM_ONLY",
+          "TESSERACT_LSTM_COMBINED",
+          "DEFAULT"
+        ],
+        "default": "DEFAULT",
+        "description": "Tesseract OCR engine mode to use:\n* Run Tesseract only - fastest,\n* Run just the LSTM line recognizer. (>=v4.00),\n*Run the LSTM recognizer, but allow fallback to Tesseract when things get difficult. (>=v4.00),\n*Run both and combine results - best accuracy."
+      }
+    },
+    "resource_locations": [
+      "module"
+    ],
+    "resources": [
+      {
+        "url": "https://ub-backup.bib.uni-mannheim.de/~stweil/ocrd-train/data/Fraktur_5000000/tessdata_best/Fraktur_50000000.334_450937.traineddata",
+        "name": "Fraktur_GT4HistOCR.traineddata",
+        "parameter_usage": "without-extension",
+        "description": "Tesseract LSTM model trained on GT4HistOCR",
+        "size": 1058487
+      },
+      {
+        "url": "https://ub-backup.bib.uni-mannheim.de/~stweil/ocrd-train/data/ONB/tessdata_best/ONB_1.195_300718_989100.traineddata",
+        "name": "ONB.traineddata",
+        "parameter_usage": "without-extension",
+        "description": "Tesseract LSTM model based on Austrian National Library newspaper data",
+        "size": 4358948
+      },
+      {
+        "url": "https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/frak2021/tessdata_best/frak2021-0.905.traineddata",
+        "name": "frak2021.traineddata",
+        "parameter_usage": "without-extension",
+        "description": "Tesseract LSTM model based on a mix of mostly German and Latin ground truth data",
+        "size": 3421140
+      },
+      {
+        "url": "https://github.com/tesseract-ocr/tessdata_best/raw/main/equ.traineddata",
+        "name": "equ.traineddata",
+        "parameter_usage": "without-extension",
+        "description": "Tesseract legacy model for mathematical equations",
+        "size": 2251950
+      },
+      {
+        "url": "https://github.com/tesseract-ocr/tessdata_best/raw/main/osd.traineddata",
+        "name": "osd.traineddata",
+        "parameter_usage": "without-extension",
+        "description": "Tesseract legacy model for orientation and script detection",
+        "size": 10562727
+      },
+      {
+        "url": "https://github.com/tesseract-ocr/tessdata_best/raw/main/eng.traineddata",
+        "name": "eng.traineddata",
+        "parameter_usage": "without-extension",
+        "description": "Tesseract LSTM model for contemporary (computer typesetting and offset printing) English",
+        "size": 4113088
+      },
+      {
+        "url": "https://github.com/tesseract-ocr/tessdata_best/raw/main/deu.traineddata",
+        "name": "deu.traineddata",
+        "parameter_usage": "without-extension",
+        "description": "Tesseract LSTM model for contemporary (computer typesetting and offset printing) German",
+        "size": 1525436
+      },
+      {
+        "url": "https://github.com/tesseract-ocr/tessdata_best/raw/main/deu_latf.traineddata",
+        "name": "deu_latf.traineddata",
+        "parameter_usage": "without-extension",
+        "description": "Tesseract LSTM model for historical (Fraktur typesetting and letterpress printing) German",
+        "size": 6423052
+      },
+      {
+        "url": "https://github.com/tesseract-ocr/tessdata_best/raw/main/deu_latf.traineddata",
+        "name": "frk.traineddata",
+        "parameter_usage": "without-extension",
+        "description": "Tesseract LSTM model for historical German (deprecated, replaced by deu_latf)",
+        "size": 6423052
+      },
+      {
+        "url": "https://github.com/tesseract-ocr/tessdata_best/raw/main/script/Fraktur.traineddata",
+        "name": "Fraktur.traineddata",
+        "parameter_usage": "without-extension",
+        "description": "Tesseract LSTM model for historical Latin script with Fraktur typesetting",
+        "size": 10915632
+      },
+      {
+        "url": "https://github.com/tesseract-ocr/tessdata_best/raw/main/script/Latin.traineddata",
+        "name": "Latin.traineddata",
+        "parameter_usage": "without-extension",
+        "description": "Tesseract LSTM model for contemporary and historical Latin script",
+        "size": 89384811
+      },
+      {
+        "url": "https://github.com/tesseract-ocr/tesseract/archive/main.tar.gz",
+        "name": "configs",
+        "description": "Tesseract configs (parameter sets) for use with the standalone tesseract CLI",
+        "size": 1915529,
+        "type": "archive",
+        "path_in_archive": "tesseract-main/tessdata/configs"
+      }
+    ]
+  },
+  "ocrd-tesserocr-segment": {
+    "executable": "ocrd-tesserocr-segment",
+    "categories": [
+      "Layout analysis"
+    ],
+    "description": "Segment page into regions and lines with Tesseract",
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-PAGE",
+      "OCR-D-GT-SEG-PAGE"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-LINE"
+    ],
+    "steps": [
+      "layout/segmentation/region",
+      "layout/segmentation/line"
+    ],
+    "parameters": {
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images)",
+        "default": 0
+      },
+      "padding": {
+        "type": "number",
+        "format": "integer",
+        "description": "extend detected region rectangles by this many (true) pixels",
+        "default": 4
+      },
+      "shrink_polygons": {
+        "type": "boolean",
+        "default": false,
+        "description": "annotate polygon coordinates instead of bounding box rectangles by projecting the convex hull of all symbols"
+      },
+      "block_polygons": {
+        "type": "boolean",
+        "default": false,
+        "description": "annotate polygon coordinates instead of bounding box rectangles"
+      },
+      "find_tables": {
+        "type": "boolean",
+        "default": true,
+        "description": "recognise tables as table regions (textord_tabfind_find_tables)"
+      },
+      "find_staves": {
+        "type": "boolean",
+        "default": false,
+        "description": "When detecting regions, recognize music staves as non-text, suppressing it in the binary image (Tesseract's ``pageseg_apply_music_mask``). Note that this might wrongly detect tables as staves."
+      },
+      "sparse_text": {
+        "type": "boolean",
+        "default": false,
+        "description": "use 'sparse text' page segmentation mode (find as much text as possible in no particular order): only text regions, single lines without vertical or horizontal space"
+      }
+    }
+  },
+  "ocrd-tesserocr-segment-region": {
+    "executable": "ocrd-tesserocr-segment-region",
+    "categories": [
+      "Layout analysis"
+    ],
+    "description": "Segment page into regions with Tesseract",
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-PAGE",
+      "OCR-D-GT-SEG-PAGE"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-BLOCK"
+    ],
+    "steps": [
+      "layout/segmentation/region"
+    ],
+    "parameters": {
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images)",
+        "default": 0
+      },
+      "overwrite_regions": {
+        "type": "boolean",
+        "default": true,
+        "description": "Remove existing layout and text annotation below the Page level (otherwise skip page; no incremental annotation yet)."
+      },
+      "padding": {
+        "type": "number",
+        "format": "integer",
+        "description": "extend detected region rectangles by this many (true) pixels",
+        "default": 0
+      },
+      "shrink_polygons": {
+        "type": "boolean",
+        "default": false,
+        "description": "annotate polygon coordinates instead of bounding box rectangles by projecting the convex hull of all symbols"
+      },
+      "crop_polygons": {
+        "type": "boolean",
+        "default": false,
+        "description": "annotate polygon coordinates instead of bounding box rectangles"
+      },
+      "find_tables": {
+        "type": "boolean",
+        "default": true,
+        "description": "recognise tables as table regions (textord_tabfind_find_tables)"
+      },
+      "find_staves": {
+        "type": "boolean",
+        "default": false,
+        "description": "When detecting regions, recognize music staves as non-text, suppressing it in the binary image (Tesseract's ``pageseg_apply_music_mask``). Note that this might wrongly detect tables as staves."
+      },
+      "sparse_text": {
+        "type": "boolean",
+        "default": false,
+        "description": "use 'sparse text' page segmentation mode (find as much text as possible in no particular order): only text regions, single lines without vertical or horizontal space"
+      }
+    }
+  },
+  "ocrd-tesserocr-segment-table": {
+    "executable": "ocrd-tesserocr-segment-table",
+    "categories": [
+      "Layout analysis"
+    ],
+    "description": "Segment table regions into cell text regions with Tesseract",
+    "input_file_grp": [
+      "OCR-D-SEG-BLOCK",
+      "OCR-D-GT-SEG-BLOCK"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-BLOCK"
+    ],
+    "steps": [
+      "layout/segmentation/region"
+    ],
+    "parameters": {
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images)",
+        "default": 0
+      },
+      "overwrite_cells": {
+        "type": "boolean",
+        "default": true,
+        "description": "Remove existing layout and text annotation below the TableRegion level (otherwise skip table; no incremental annotation yet)."
+      },
+      "padding": {
+        "type": "number",
+        "format": "integer",
+        "description": "extend detected cell rectangles by this many (true) pixels",
+        "default": 0
+      },
+      "shrink_polygons": {
+        "type": "boolean",
+        "default": false,
+        "description": "annotate polygon coordinates instead of bounding box rectangles by projecting the convex hull of all symbols"
+      }
+    }
+  },
+  "ocrd-tesserocr-segment-line": {
+    "executable": "ocrd-tesserocr-segment-line",
+    "categories": [
+      "Layout analysis"
+    ],
+    "description": "Segment regions into lines with Tesseract",
+    "input_file_grp": [
+      "OCR-D-SEG-BLOCK",
+      "OCR-D-GT-SEG-BLOCK"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-LINE"
+    ],
+    "steps": [
+      "layout/segmentation/line"
+    ],
+    "parameters": {
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images)",
+        "default": 0
+      },
+      "overwrite_lines": {
+        "type": "boolean",
+        "default": true,
+        "description": "Remove existing layout and text annotation below the TextRegion level (otherwise skip region; no incremental annotation yet)."
+      },
+      "padding": {
+        "type": "number",
+        "format": "integer",
+        "description": "extend detected line rectangles by this many (true) pixels",
+        "default": 0
+      },
+      "shrink_polygons": {
+        "type": "boolean",
+        "default": false,
+        "description": "annotate polygon coordinates instead of bounding box rectangles by projecting the convex hull of all symbols"
+      }
+    }
+  },
+  "ocrd-tesserocr-segment-word": {
+    "executable": "ocrd-tesserocr-segment-word",
+    "categories": [
+      "Layout analysis"
+    ],
+    "description": "Segment lines into words with Tesseract",
+    "input_file_grp": [
+      "OCR-D-SEG-LINE",
+      "OCR-D-GT-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-WORD"
+    ],
+    "steps": [
+      "layout/segmentation/word"
+    ],
+    "parameters": {
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images)",
+        "default": 0
+      },
+      "overwrite_words": {
+        "type": "boolean",
+        "default": true,
+        "description": "Remove existing layout and text annotation below the TextLine level (otherwise skip line; no incremental annotation yet)."
+      },
+      "padding": {
+        "type": "number",
+        "format": "integer",
+        "description": "extend detected cell rectangles by this many (true) pixels",
+        "default": 0
+      },
+      "shrink_polygons": {
+        "type": "boolean",
+        "default": false,
+        "description": "annotate polygon coordinates instead of bounding box rectangles by projecting the convex hull of all symbols"
+      }
+    }
+  },
+  "ocrd-tesserocr-crop": {
+    "executable": "ocrd-tesserocr-crop",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "description": "Poor man's cropping via region segmentation",
+    "input_file_grp": [
+      "OCR-D-IMG"
+    ],
+    "output_file_grp": [
+      "OCR-D-SEG-PAGE"
+    ],
+    "steps": [
+      "preprocessing/optimization/cropping"
+    ],
+    "parameters": {
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images)",
+        "default": 0
+      },
+      "padding": {
+        "type": "number",
+        "format": "integer",
+        "description": "extend detected border by this many (true) pixels on every side",
+        "default": 4
+      }
+    }
+  },
+  "ocrd-tesserocr-binarize": {
+    "executable": "ocrd-tesserocr-binarize",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "description": "Binarize regions or lines with Tesseract's global Otsu",
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-BLOCK",
+      "OCR-D-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-BIN-BLOCK",
+      "OCR-D-BIN-LINE"
+    ],
+    "steps": [
+      "preprocessing/optimization/binarization"
+    ],
+    "parameters": {
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images)",
+        "default": 0
+      },
+      "operation_level": {
+        "type": "string",
+        "enum": [
+          "page",
+          "region",
+          "line"
+        ],
+        "default": "page",
+        "description": "PAGE XML hierarchy level to operate on"
+      },
+      "tiseg": {
+        "type": "boolean",
+        "default": false,
+        "description": "also separate text vs image by detecting and suppressing photo+sepline mask"
+      }
+    }
+  },
+  "ocrd-preprocess-image": {
+    "executable": "ocrd-preprocess-image",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization"
+    ],
+    "description": "Convert or enhance images",
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-PAGE",
+      "OCR-D-SEG-REGION",
+      "OCR-D-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-PAGE",
+      "OCR-D-SEG-REGION",
+      "OCR-D-SEG-LINE"
+    ],
+    "parameters": {
+      "level-of-operation": {
+        "type": "string",
+        "enum": [
+          "page",
+          "region",
+          "line",
+          "word",
+          "glyph"
+        ],
+        "default": "page",
+        "description": "PAGE XML hierarchy level to operate on"
+      },
+      "input_feature_selector": {
+        "type": "string",
+        "default": "",
+        "description": "comma-separated list of required image features (e.g. binarized,despeckled)"
+      },
+      "input_feature_filter": {
+        "type": "string",
+        "default": "",
+        "description": "comma-separated list of forbidden image features (e.g. binarized,despeckled)"
+      },
+      "output_feature_added": {
+        "type": "string",
+        "required": true,
+        "description": "image feature(s) to be added after this operation (if multiple, separate by comma)"
+      },
+      "input_mimetype": {
+        "type": "string",
+        "default": "image/png",
+        "enum": [
+          "image/bmp",
+          "application/postscript",
+          "image/gif",
+          "image/jpeg",
+          "image/jp2",
+          "image/png",
+          "image/x-portable-pixmap",
+          "image/tiff"
+        ],
+        "description": "File format to save input images to (tool's expected input)"
+      },
+      "output_mimetype": {
+        "type": "string",
+        "default": "image/png",
+        "enum": [
+          "image/bmp",
+          "application/postscript",
+          "image/gif",
+          "image/jpeg",
+          "image/jp2",
+          "image/png",
+          "image/x-portable-pixmap",
+          "image/tiff"
+        ],
+        "description": "File format to load output images from (tool's expected output)"
+      },
+      "command": {
+        "type": "string",
+        "required": true,
+        "description": "shell command to operate on image files, with @INFILE as place-holder for the input file path, and @OUTFILE as place-holder for the output file path"
+      }
+    }
+  },
+  "ocrd-skimage-binarize": {
+    "executable": "ocrd-skimage-binarize",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization/binarization"
+    ],
+    "description": "Binarize images with Scikit-image",
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-PAGE",
+      "OCR-D-SEG-REGION",
+      "OCR-D-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG-BIN",
+      "OCR-D-SEG-PAGE-BIN",
+      "OCR-D-SEG-REGION-BIN",
+      "OCR-D-SEG-LINE-BIN"
+    ],
+    "parameters": {
+      "level-of-operation": {
+        "type": "string",
+        "enum": [
+          "page",
+          "region",
+          "line",
+          "word",
+          "glyph"
+        ],
+        "default": "page",
+        "description": "PAGE XML hierarchy level to operate on"
+      },
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images); disabled when zero",
+        "default": 0
+      },
+      "method": {
+        "type": "string",
+        "default": "sauvola",
+        "enum": [
+          "sauvola",
+          "niblack",
+          "otsu",
+          "gauss",
+          "yen",
+          "li"
+        ],
+        "description": "Thresholding algorithm to use"
+      },
+      "window_size": {
+        "type": "number",
+        "format": "integer",
+        "default": 0,
+        "description": "For Sauvola/Niblack/Gauss, the (odd) window size in pixels; when zero (default), set to DPI"
+      },
+      "k": {
+        "type": "number",
+        "format": "float",
+        "default": 0.34,
+        "description": "For Sauvola/Niblack, formula parameter influencing the threshold bias; larger is lighter foreground"
+      }
+    }
+  },
+  "ocrd-skimage-denoise-raw": {
+    "executable": "ocrd-skimage-denoise-raw",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization/despeckling"
+    ],
+    "description": "Denoise raw images with Scikit-image",
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-PAGE",
+      "OCR-D-SEG-REGION",
+      "OCR-D-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG-DEN",
+      "OCR-D-SEG-PAGE-DEN",
+      "OCR-D-SEG-REGION-DEN",
+      "OCR-D-SEG-LINE-DEN"
+    ],
+    "parameters": {
+      "level-of-operation": {
+        "type": "string",
+        "enum": [
+          "page",
+          "region",
+          "line",
+          "word",
+          "glyph"
+        ],
+        "default": "page",
+        "description": "PAGE XML hierarchy level to operate on"
+      },
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images); disabled when zero",
+        "default": 0
+      },
+      "method": {
+        "type": "string",
+        "default": "VisuShrink",
+        "enum": [
+          "BayesShrink",
+          "VisuShrink"
+        ],
+        "description": "Wavelet filtering scheme to use"
+      }
+    }
+  },
+  "ocrd-skimage-denoise": {
+    "executable": "ocrd-skimage-denoise",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization/despeckling"
+    ],
+    "description": "Denoise binarized images with Scikit-image",
+    "input_file_grp": [
+      "OCR-D-IMG-BIN",
+      "OCR-D-SEG-PAGE-BIN",
+      "OCR-D-SEG-REGION-BIN",
+      "OCR-D-SEG-LINE-BIN"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG-DEN",
+      "OCR-D-SEG-PAGE-DEN",
+      "OCR-D-SEG-REGION-DEN",
+      "OCR-D-SEG-LINE-DEN"
+    ],
+    "parameters": {
+      "level-of-operation": {
+        "type": "string",
+        "enum": [
+          "page",
+          "region",
+          "line",
+          "word",
+          "glyph"
+        ],
+        "default": "page",
+        "description": "PAGE XML hierarchy level to operate on"
+      },
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images); disabled when zero",
+        "default": 0
+      },
+      "protect": {
+        "type": "number",
+        "format": "float",
+        "default": 0.0,
+        "description": "avoid removing fg specks near larger fg components by up to this distance in pt"
+      },
+      "maxsize": {
+        "type": "number",
+        "format": "float",
+        "default": 1.0,
+        "description": "maximum component size of (bg holes or fg specks) noise in pt"
+      }
+    }
+  },
+  "ocrd-skimage-normalize": {
+    "executable": "ocrd-skimage-normalize",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization"
+    ],
+    "description": "Equalize contrast/exposure of images with Scikit-image; stretches the color value/tone to the full dynamic range",
+    "input_file_grp": [
+      "OCR-D-IMG",
+      "OCR-D-SEG-PAGE",
+      "OCR-D-SEG-REGION",
+      "OCR-D-SEG-LINE"
+    ],
+    "output_file_grp": [
+      "OCR-D-IMG-NRM",
+      "OCR-D-SEG-PAGE-NRM",
+      "OCR-D-SEG-REGION-NRM",
+      "OCR-D-SEG-LINE-NRM"
+    ],
+    "parameters": {
+      "level-of-operation": {
+        "type": "string",
+        "enum": [
+          "page",
+          "region",
+          "line",
+          "word",
+          "glyph"
+        ],
+        "default": "page",
+        "description": "PAGE XML hierarchy level to operate on"
+      },
+      "dpi": {
+        "type": "number",
+        "format": "float",
+        "description": "pixel density in dots per inch (overrides any meta-data in the images); disabled when zero",
+        "default": 0
+      },
+      "black-point": {
+        "type": "number",
+        "format": "float",
+        "default": 1.0,
+        "description": "black point point in percent of luminance/value/tone histogram; up to ``black-point`` darkest pixels will be clipped to black when stretching"
+      },
+      "white-point": {
+        "type": "number",
+        "format": "float",
+        "default": 7.0,
+        "description": "white point in percent of luminance/value/tone histogram; up to ``white-point`` brightest pixels will be clipped to white when stretching"
+      },
+      "method": {
+        "type": "string",
+        "default": "stretch",
+        "enum": [
+          "stretch",
+          "adapthist"
+        ],
+        "description": "contrast-enhancing transformation to use after clipping; ``stretch`` uses ``skimage.exposure.rescale_intensity`` (globally linearly stretching to full dynamic range) and ``adapthist`` uses ``skimage.exposure.equalize_adapthist`` (applying over tiles with context from 1/8th of the image's width)"
+      }
+    }
+  },
+  "ocrd-sbb-binarize": {
+    "executable": "ocrd-sbb-binarize",
+    "description": "Pixelwise binarization with selectional auto-encoders in Keras",
+    "categories": [
+      "Image preprocessing"
+    ],
+    "steps": [
+      "preprocessing/optimization/binarization"
+    ],
+    "input_file_grp": [],
+    "output_file_grp": [],
+    "parameters": {
+      "operation_level": {
+        "type": "string",
+        "enum": [
+          "page",
+          "region"
+        ],
+        "default": "page",
+        "description": "PAGE XML hierarchy level to operate on"
+      },
+      "model": {
+        "description": "Directory containing HDF5 or SavedModel/ProtoBuf models. Can be an absolute path or a path relative to the OCR-D resource location, the current working directory or the $SBB_BINARIZE_DATA environment variable (if set)",
+        "type": "string",
+        "format": "uri",
+        "content-type": "text/directory",
+        "required": true
+      }
+    },
+    "resources": [
+      {
+        "url": "https://github.com/qurator-spk/sbb_binarization/releases/download/v0.0.11/saved_model_2020_01_16.zip",
+        "name": "default",
+        "type": "archive",
+        "path_in_archive": "saved_model_2020_01_16",
+        "size": 563147331,
+        "description": "default models provided by github.com/qurator-spk (SavedModel format)"
+      },
+      {
+        "url": "https://github.com/qurator-spk/sbb_binarization/releases/download/v0.0.11/saved_model_2021_03_09.zip",
+        "name": "default-2021-03-09",
+        "type": "archive",
+        "path_in_archive": ".",
+        "size": 133230419,
+        "description": "updated default models provided by github.com/qurator-spk (SavedModel format)"
+      }
+    ]
+  },
+  "ocrd-page-transform": {
+    "executable": "ocrd-page-transform",
+    "description": "apply arbitrary XSL transformation file for PAGE-XML",
+    "parameters": {
+      "xsl": {
+        "description": "File path of the XSL transformation script",
+        "type": "string",
+        "format": "uri",
+        "content-type": "text/xsl",
+        "required": true
+      },
+      "xslt-params": {
+        "description": "Assignment of XSL transformation parameter values, given as in `xmlstarlet` (which differentiates between `-s name=value` for literal `value` and `-p name=value` for XPath expression `value`), white-space separated.",
+        "type": "string",
+        "default": ""
+      },
+      "pretty-print": {
+        "description": "Reformat with line breaks and this many spaces of indentation after XSL transformation (unless zero).",
+        "type": "number",
+        "format": "integer",
+        "default": 0
+      },
+      "mimetype": {
+        "description": "MIME type to register the output files under (should correspond to `xsl` result)",
+        "type": "string",
+        "default": "application/vnd.prima.page+xml"
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+environment:
+    # this folder contains the workspaces and must be created by the user
+    data_dir: /tmp/mydata
+    mtu: 1300
