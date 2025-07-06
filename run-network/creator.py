@@ -62,7 +62,7 @@ def stop() -> None:
     subprocess.run(command)
 
 
-@cli.command()
+@cli.command("create-client")
 @click.option("--docker-run-opts")
 @click.argument("path")
 @click.argument("executable")
@@ -368,12 +368,10 @@ volumes:
 """
 
 
-DELEGATOR_PROCESSOR_TEMPLATE = """#!/usr/bin/env python
-
-import sys
+DELEGATOR_DETECTENV_TEMPLATE = """
 import os
+import sys
 import pathlib
-import subprocess
 
 # detect whether to run standalone or in ocrd_network
 dotenv = pathlib.Path(".env")
@@ -383,13 +381,13 @@ if dotenv.exists():
     ps_port = dotenv.get('OCRD_PS_PORT', '')
     if ps_port and ps_port.isdecimal():
         pass
-        print("using Processing Server at localhost:%s" % ps_port)
+        print("using Processing Server at localhost:%s" % ps_port, file=sys.stderr)
     else:
         ps_port = ''
-        print("no OCRD_PS_PORT found in .env - starting local container")
+        print("no OCRD_PS_PORT found in .env - starting local container", file=sys.stderr)
 else:
     ps_port = ''
-    print("no .env found - starting local container")
+    print("no .env found - starting local container", file=sys.stderr)
 
 # allow overriding detection
 if policy := os.environ.get('DOCKER_RUN_POLICY', None):
@@ -397,18 +395,44 @@ if policy := os.environ.get('DOCKER_RUN_POLICY', None):
         exit("cannot apply DOCKER_RUN_POLICY=" + policy + ": needs OCRD_PS_PORT via .env")
     if policy in ['local', 'standalone'] and ps_port:
         ps_port = ''
+        print("DOCKER_RUN_POLICY overrides: starting local container", file=sys.stderr)
+"""
+
+DELEGATOR_PROCESSOR_TEMPLATE = """#!/usr/bin/env python
+
+import sys
+import os
+import pathlib
+import subprocess
+
+""" + DELEGATOR_DETECTENV_TEMPLATE + """
 
 if not ps_port:
-    cmd = 'docker run --rm '
-    cmd += '{docker_run_opts} ${{DOCKER_RUN_OPTS}} '
-    if not (':/data' in '{docker_run_opts}' or
-            ',destination=/data' in '{docker_run_opts}' or
-            ':/data' in os.environ.get('DOCKER_RUN_OPTS', '') or
-            ',destination=/data' in os.environ.get('DOCKER_RUN_OPTS', '')):
-        cmd += '-v ' + str(pathlib.Path().absolute()) + ':/data '
-    cmd += '{docker_image} {processor_name} '
-    cmd += ' '.join(sys.argv[1:])
-    ret = subprocess.run(cmd, shell=True)
+    # avoid re-interpreting by shell
+    args = ['docker', 'run', '--rm']
+    args.extend('{docker_run_opts}'.split())
+    args.extend(os.environ.get('DOCKER_RUN_OPTS', '').split())
+    # try to be smart: bind-mount CWD as /data if not mounted yet
+    datapath = None
+    for arg in args:
+        if arg.endswith(':/data'):
+            datapath = arg[:arg.index(':')]
+            break
+        if arg.endswith(',destination=/data'):
+            typ, src, dst = arg.split(',')
+            datapath = src.replace('source=', '')
+            break
+    if not datapath:
+        datapath = str(pathlib.Path().absolute())
+        args.extend(['-v', datapath + ':/data'])
+    if datapath.endswith('/'):
+        datapath = datapath[:-1]
+    args.append('{docker_image}')
+    args.append('{processor_name}')
+    # try to be smart: translate host to container data paths
+    args.extend([arg.replace(datapath + '/', '/data/') if arg.startswith('/') else arg
+                 for arg in sys.argv[1:]])
+    ret = subprocess.run(args)
     sys.exit(ret.returncode)
 
 import click
