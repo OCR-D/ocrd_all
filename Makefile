@@ -31,14 +31,10 @@ define SEMGIT
 $(if $(shell sem --version 2>/dev/null),sem -q --will-cite --fg --id ocrd_all_git,$(error cannot find package GNU parallel))
 endef
 
-define WGET
-$(if $(shell wget --version 2>/dev/null),wget -nv -O $(1) $(2),$(if $(shell curl --version 2>/dev/null),curl -L -o $(1) $(2),$(error found no cmdline downloader (wget/curl))))
-endef
-
 SHELL := $(shell which bash)
 
 OCRD_EXECUTABLES = # add more CLIs below
-OCRD_IMAGES =
+OCRD_IMAGES = # add Docker images below
 
 DEFAULT_DISABLED_MODULES = cor-asv-fst ocrd_ocropy ocrd_neat
 DISABLED_MODULES ?= $(DEFAULT_DISABLED_MODULES)
@@ -90,7 +86,8 @@ Targets (build and installation into venv):
 	images: download/rebuild Docker images associated with submodules
 	all: install all executables of all modules/images
 	ocrd: only install the multi-purpose CLI of OCR-D/core
-	clean: remove the virtual environment directory
+	clean: remove the virtual environment directory and images
+	images-clean: remove only the Docker images
 
 Targets (testing):
 	check: verify that all executables are runnable
@@ -100,6 +97,7 @@ Targets (testing):
 Targets (auxiliary data):
 	ocrd-all-tool.json: generate union of ocrd-tool.json's tools section for all executables of all modules
 	ocrd-all-meta.json: map executable to ocrd-tool.json's metadata section for all executables of all modules
+	ocrd-all-images.yaml: list all OCRD_IMAGES in a file
 	init-vol-models: initialise shared Docker volume with files from module images but user permissions
 	install-models: download commonly used models to appropriate locations
 
@@ -108,14 +106,15 @@ Variables:
 	DISABLED_MODULES: list of disabled modules. Default: "$(DISABLED_MODULES)"
 	DOCKER_PULL_POLICY: set to `build` to `docker build` instead of `docker pull` images
 	DOCKER_VOL_MODELS: name of named volume to be mounted for processor resources (see `init-vol-models`)
-	DOCKER_RUN_OPTS: additional options for `docker run`
+	DOCKER_RUN_OPTS: additional options for `docker run` (volumes etc)
+	DOCKER_RUN_POLICY: set to `local` to `docker run` executables, or `client` to use ocrd_network
+	                   (overrides auto-detection based on state after `network-setup` vs. `network-clean`)
 	GIT_RECURSIVE: set to `--recursive` to checkout/update all submodules recursively
 	GIT_DEPTH: set to `--depth 1` to truncate all history when cloning subrepos
 	NO_UPDATE: set to `1` to omit git submodule sync and update
 	VIRTUAL_ENV: absolute path to (re-)use for the virtual environment
 	TMPDIR: path to use for temporary storage instead of the system default
 	PYTHON: name of the Python binary (also used for target `deps-ubuntu` unless set to `python`)
-	PIP_OPTIONS: extra options for the `pip install` command like `-q` or `-v` or `-e`
 	CHECK_HELP: set to `1` to also check each executable can generate help output
 EOF
 endef
@@ -176,6 +175,9 @@ CORE += $(BIN)/ocrd-filter
 OCRD_IMAGES += ocrd/core
 $(CORE): ocrd/core
 	$(call delegate_docker,$@,$<)
+OCRD_EXECUTABLES += $(BIN)/ocrd-process
+$(BIN)/ocrd-process: ocrd/core
+	. $(ACTIVATE_VENV) && python run-network/creator.py create-workflow-client $@
 ocrd/core: DOCKER_PROFILES =
 ocrd/core: ./core
 	$(call pullpolicy_docker,$<,$@)
@@ -678,11 +680,11 @@ core/tests/assets: core
 
 # concatenate executables
 ocrd-all-tool.json: $(OCRD_MODULES:%=%/ocrd-tool.json) $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && $(PYTHON) ocrd-all-tool.py $(wildcard $(OCRD_MODULES:%=%/ocrd-tool.json)) > $@
+	. $(ACTIVATE_VENV) && python ocrd-all-tool.py $(wildcard $(OCRD_MODULES:%=%/ocrd-tool.json)) > $@
 
 # concatenate everything but tools, and add current git revision
 ocrd-all-meta.json: $(OCRD_MODULES:%=%/ocrd-tool.json) $(ACTIVATE_VENV)
-	. $(ACTIVATE_VENV) && $(PYTHON) ocrd-all-meta.py $(wildcard $(OCRD_MODULES:%=%/ocrd-tool.json)) > $@
+	. $(ACTIVATE_VENV) && python ocrd-all-meta.py $(wildcard $(OCRD_MODULES:%=%/ocrd-tool.json)) > $@
 
 ocrd-all-images.yaml: $(OCRD_IMAGES)
 	$(file > $@)
@@ -702,6 +704,8 @@ $(OCRD_EXECUTABLES:%=%-check):
 # without its directory):
 .PHONY: $(OCRD_EXECUTABLES:$(BIN)/%=%)
 $(OCRD_EXECUTABLES:$(BIN)/%=%): %: $(BIN)/%
+
+$(OCRD_EXECUTABLES): $(ACTIVTE_VENV)
 
 # do not delete intermediate targets:
 .SECONDARY:

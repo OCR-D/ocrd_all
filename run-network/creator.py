@@ -83,10 +83,9 @@ def create_client(docker_run_opts: str, path: str, executable: str, image: str) 
     chmod(dest, 0o755)
 
 
-@cli.command()
-@click.option("--docker-run-opts")
+@cli.command("create-workflow-client")
 @click.argument("path")
-def create_workflow_client(docker_run_opts: str, path: str) -> None:
+def create_workflow_client(path: str) -> None:
     """Creates an executable script for the 'ocrd process' functionality (workflow processing)
 
     After validating fileGrp dependencies for the passed workspace,
@@ -95,7 +94,7 @@ def create_workflow_client(docker_run_opts: str, path: str) -> None:
     or (if the network-setup has been run) the client CLI for the
     Processing Server (assuming network-start has been run as well).
     """
-    content = DELEGATOR_WORKFLOW_TEMPLATE.format(docker_run_opts=docker_run_opts)
+    content = DELEGATOR_WORKFLOW_TEMPLATE
     dest = Path(path)
     if not dest.parent.exists():
         exit(f"target {dest} parent directory does not exist")
@@ -457,15 +456,24 @@ params = [param for param in run_cli.params
           ]]
 cli = click.Command(name="{processor_name}",
                     callback=callback,
-                    params=params)
+                    params=params,
+                    help=run_cli.help)
 
 if __name__ == "__main__":
     cli()
 """
 
 
-# FIXME
 DELEGATOR_WORKFLOW_TEMPLATE = """#!/usr/bin/env python
+
+""" + DELEGATOR_DETECTENV_TEMPLATE + """
+
+if not ps_port:
+    from ocrd.cli.process import process_cli
+
+
+    if __name__ == "__main__":
+        process_cli()
 
 from ocrd_network.cli import client_cli
 import click
@@ -473,13 +481,11 @@ import click
 
 run_cli = client_cli.commands['workflow'].commands['run']
 
-
 def callback(*args, **kwargs):
-    kwargs['address'] = "http://localhost:{ps_port}"
+    kwargs['address'] = "http://localhost:" + ps_port
     kwargs['block'] = True
     kwargs['print_state'] = True
     return run_cli.callback(*args, **kwargs)
-
 
 params = [param for param in run_cli.params
           if param.name not in [
@@ -487,8 +493,7 @@ params = [param for param in run_cli.params
                   'block',
                   'print_state',
           ]]
-cli = click.Command(name="ocrd-process", callback=callback, params=params)
-
+cli = click.Command(name="ocrd-process", callback=callback, params=params, help=run_cli.help)
 
 if __name__ == "__main__":
     cli()
