@@ -74,7 +74,16 @@ def create_client(docker_run_opts: str, path: str, executable: str, image: str) 
     or (if the network-setup has been run) the client CLI for the
     Processing Server (assuming network-start has been run as well).
     """
-    content = DELEGATOR_PROCESSOR_TEMPLATE.format(processor_name=executable, docker_image=image, docker_run_opts=docker_run_opts)
+    with open(image, "r") as meta_file:
+        meta = yaml.safe_load(meta_file)
+    content = DELEGATOR_SHEBANG_TEMPLATE
+    if executable in meta['tools']:
+        content += DELEGATOR_DETECTENV_TEMPLATE
+    else:
+        content += "ps_port = None\n\n"
+    content += DELEGATOR_PROCESSOR_TEMPLATE.format(
+        processor_name=executable, docker_image=image,
+        docker_run_opts=docker_run_opts)
     dest = Path(path)
     if not dest.parent.exists():
         exit(f"target {dest} parent directory does not exist")
@@ -94,7 +103,9 @@ def create_workflow_client(path: str) -> None:
     or (if the network-setup has been run) the client CLI for the
     Processing Server (assuming network-start has been run as well).
     """
-    content = DELEGATOR_WORKFLOW_TEMPLATE
+    content = DELEGATOR_SHEBANG_TEMPLATE
+    content += DELEGATOR_DETECTENV_TEMPLATE
+    content += DELEGATOR_WORKFLOW_TEMPLATE
     dest = Path(path)
     if not dest.parent.exists():
         exit(f"target {dest} parent directory does not exist")
@@ -367,7 +378,12 @@ volumes:
 """
 
 
+DELEGATOR_SHEBANG_TEMPLATE = """#!/usr/bin/env python
+
+"""
+
 DELEGATOR_DETECTENV_TEMPLATE = """
+
 import os
 import sys
 import pathlib
@@ -395,16 +411,15 @@ if policy := os.environ.get('DOCKER_RUN_POLICY', None):
     if policy in ['local', 'standalone'] and ps_port:
         ps_port = ''
         print("DOCKER_RUN_POLICY overrides: starting local container", file=sys.stderr)
+
 """
 
-DELEGATOR_PROCESSOR_TEMPLATE = """#!/usr/bin/env python
+DELEGATOR_PROCESSOR_TEMPLATE = """
 
 import sys
 import os
 import pathlib
 import subprocess
-
-""" + DELEGATOR_DETECTENV_TEMPLATE + """
 
 if not ps_port:
     # avoid re-interpreting by shell
@@ -464,9 +479,7 @@ if __name__ == "__main__":
 """
 
 
-DELEGATOR_WORKFLOW_TEMPLATE = """#!/usr/bin/env python
-
-""" + DELEGATOR_DETECTENV_TEMPLATE + """
+DELEGATOR_WORKFLOW_TEMPLATE = """
 
 if not ps_port:
     from ocrd.cli.process import process_cli
