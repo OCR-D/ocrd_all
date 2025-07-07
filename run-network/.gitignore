@@ -1,0 +1,4 @@
+!ocrd-all-tool.json
+docker-compose.yaml
+.env
+clean.sh
