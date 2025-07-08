@@ -637,7 +637,7 @@ docker pull $2
 mkdir -p $(dir $2)
 @echo pulled: `date -Iseconds` > $2
 @echo tools: `jq -c ".tools|keys" $1/ocrd-tool.json` >> $2
-@echo profiles: $(DOCKER_PROFILES), >> $2
+@echo profiles: $(DOCKER_PROFILES) >> $2
 endef
 endif
 
@@ -705,7 +705,7 @@ $(OCRD_EXECUTABLES:%=%-check):
 .PHONY: $(OCRD_EXECUTABLES:$(BIN)/%=%)
 $(OCRD_EXECUTABLES:$(BIN)/%=%): %: $(BIN)/%
 
-$(OCRD_EXECUTABLES): $(ACTIVTE_VENV)
+$(OCRD_EXECUTABLES): $(ACTIVATE_VENV)
 
 # do not delete intermediate targets:
 .SECONDARY:
