@@ -1,4 +1,4 @@
 environment:
     # this folder contains the workspaces and must be created by the user
-    data_dir: /tmp/mydata
+    data_dir: $PWD/data
     mtu: 1300
