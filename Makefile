@@ -625,7 +625,6 @@ DOCKER_RUN_OPTS ?= -v $(DOCKER_VOL_MODELS):/usr/local/share/ocrd-resources -u $$
 ifeq ($(DOCKER_PULL_POLICY),build)
 define pullpolicy_docker
 $(MAKE) -C $1 docker DOCKER_TAG=$2
-endif
 mkdir -p $(dir $2)
 @echo built: `date -Iseconds` > $2
 @echo tools: `jq -c ".tools|keys" $1/ocrd-tool.json` >> $2
