@@ -748,7 +748,7 @@ network-stop:
 	. $(ACTIVATE_VENV) && python run-network/creator.py stop
 network-clean:
 	$(RM) -r $(VIRTUAL_ENV) .env docker-compose.yml ocrd-processing-server-config.yaml
-	docker volume rm $(DOCKER_VOL_MODELS)
+	-docker volume rm $(DOCKER_VOL_MODELS)
 # do not search for implicit rules here:
 Makefile: ;
 local.mk: ;
